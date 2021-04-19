@@ -1,0 +1,360 @@
+{
+    "pipes": [],
+    "interfaces": [],
+    "injectables": [
+        {
+            "name": "ComponentsService",
+            "id": "injectable-ComponentsService-b7227a2afcbe83ba2f5742aac484e6d1",
+            "file": "projects/components/src/lib/components.service.ts",
+            "properties": [],
+            "methods": [],
+            "description": "",
+            "sourceCode": "import { Injectable } from '@angular/core';\n\n@Injectable({\n  providedIn: 'root'\n})\nexport class ComponentsService {\n\n  constructor() { }\n}\n",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "args": [],
+                "line": 6
+            },
+            "type": "injectable"
+        }
+    ],
+    "classes": [],
+    "directives": [],
+    "components": [
+        {
+            "name": "ButtonComponent",
+            "id": "component-ButtonComponent-ec459c7e7fe318f40c0cc47251876a01",
+            "file": "projects/components/src/lib/button/button.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "pm-button",
+            "styleUrls": [
+                "./button.component.scss"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./button.component.html"
+            ],
+            "viewProviders": [],
+            "inputsClass": [
+                {
+                    "name": "label",
+                    "line": 9,
+                    "type": "string | null"
+                },
+                {
+                    "name": "pink",
+                    "line": 10,
+                    "type": "boolean"
+                }
+            ],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [
+                {
+                    "name": "ngOnInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 14
+                }
+            ],
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "",
+            "type": "component",
+            "sourceCode": "import { Component, OnInit, Input } from '@angular/core';\n\n@Component({\n  selector: 'pm-button',\n  templateUrl: './button.component.html',\n  styleUrls: ['./button.component.scss']\n})\nexport class ButtonComponent implements OnInit {\n  @Input('label') label: string | null;\n  @Input('pink') pink: boolean;\n\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": "button {\n  background: blue;\n  padding: 1rem 2rem;\n  border-radius: 3px;\n  appearance: none;\n  border: 0;\n  -webkit-appearance: none;\n  -moz-appearance: none;\n  font-size: 1.5rem;\n  letter-spacing: 1px;\n  color: white;\n  box-shadow: 0 4px 10px rgba(55, 55, 55, 0.3),\n  0 6px 35px rgba(55, 55, 200, 0.7);\n  cursor: pointer;\n\n  &.make-pink {\n    background: #ff00a2;\n    box-shadow: 0 4px 10px rgba(55, 55, 55, 0.3), 0 6px 35px rgb(200 55 150 / 70%);\n  }\n}\n",
+                    "styleUrl": "./button.component.scss"
+                }
+            ],
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "args": [],
+                "line": 10
+            },
+            "implements": [
+                "OnInit"
+            ],
+            "templateData": "<button [attr.is-pink]=\"pink\" [ngClass]=\"{'make-pink': pink}\">{{label ? \"😎 \" + label : \"No Label provided 🧐\"}}</button>\n"
+        },
+        {
+            "name": "ComponentsComponent",
+            "id": "component-ComponentsComponent-b10d994f930dcdc791bfa10ecd8f2428",
+            "file": "projects/components/src/lib/components.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "pm-components",
+            "styleUrls": [],
+            "styles": [],
+            "template": "<p>\n  components works!\n</p>\n",
+            "templateUrl": [],
+            "viewProviders": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [
+                {
+                    "name": "ngOnInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 17
+                }
+            ],
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "",
+            "type": "component",
+            "sourceCode": "import { Component, OnInit } from '@angular/core';\n\n@Component({\n  selector: 'pm-components',\n  template: `\n    <p>\n      components works!\n    </p>\n  `,\n  styles: [\n  ]\n})\nexport class ComponentsComponent implements OnInit {\n\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "args": [],
+                "line": 13
+            },
+            "implements": [
+                "OnInit"
+            ]
+        }
+    ],
+    "modules": [
+        {
+            "name": "ComponentsModule",
+            "children": [
+                {
+                    "type": "providers",
+                    "elements": []
+                },
+                {
+                    "type": "declarations",
+                    "elements": [
+                        {
+                            "name": "ButtonComponent"
+                        },
+                        {
+                            "name": "ComponentsComponent"
+                        }
+                    ]
+                },
+                {
+                    "type": "imports",
+                    "elements": []
+                },
+                {
+                    "type": "exports",
+                    "elements": [
+                        {
+                            "name": "ComponentsComponent"
+                        }
+                    ]
+                },
+                {
+                    "type": "bootstrap",
+                    "elements": []
+                },
+                {
+                    "type": "classes",
+                    "elements": []
+                }
+            ]
+        }
+    ],
+    "miscellaneous": {
+        "variables": [
+            {
+                "name": "context",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/components/src/test.ts",
+                "type": "",
+                "defaultValue": "require.context('./', true, /\\.spec\\.ts$/)"
+            },
+            {
+                "name": "FancyBlueButton",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "stories/Button.stories.ts",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "FancyPinkButton",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "stories/Button.stories.ts",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "require",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/components/src/test.ts",
+                "type": "literal type"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "stories/Button.stories.ts",
+                "type": "Story<ButtonComponent>",
+                "defaultValue": "(args: ButtonComponent) => ({\ncomponent: ButtonComponent,\nprops: args,\n})"
+            }
+        ],
+        "functions": [],
+        "typealiases": [],
+        "enumerations": [],
+        "groupedVariables": {
+            "projects/components/src/test.ts": [
+                {
+                    "name": "context",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/test.ts",
+                    "type": "",
+                    "defaultValue": "require.context('./', true, /\\.spec\\.ts$/)"
+                },
+                {
+                    "name": "require",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/test.ts",
+                    "type": "literal type"
+                }
+            ],
+            "stories/Button.stories.ts": [
+                {
+                    "name": "FancyBlueButton",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "stories/Button.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "FancyPinkButton",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "stories/Button.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "stories/Button.stories.ts",
+                    "type": "Story<ButtonComponent>",
+                    "defaultValue": "(args: ButtonComponent) => ({\ncomponent: ButtonComponent,\nprops: args,\n})"
+                }
+            ]
+        },
+        "groupedFunctions": {},
+        "groupedEnumerations": {},
+        "groupedTypeAliases": {}
+    },
+    "routes": [],
+    "coverage": {
+        "count": 0,
+        "status": "low",
+        "files": [
+            {
+                "filePath": "projects/components/src/lib/button/button.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "ButtonComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/5",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/components/src/lib/components.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "ComponentsComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/components/src/lib/components.service.ts",
+                "type": "injectable",
+                "linktype": "injectable",
+                "name": "ComponentsService",
+                "coveragePercent": 0,
+                "coverageCount": "0/2",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/components/src/test.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "context",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/components/src/test.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "require",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "stories/Button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "FancyBlueButton",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "stories/Button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "FancyPinkButton",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "stories/Button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            }
+        ]
+    }
+}
