@@ -11,7 +11,7 @@ export class ButtonComponent {
   @Input('type') type: MainColors = MainColors.default;
   @Input('busy') busy = false;
   @Input('busyText') busyText: string;
-  @Output() onClick = new EventEmitter<any>();
+  // @Output() onClick = new EventEmitter<any>();
 
   constructor() { }
 

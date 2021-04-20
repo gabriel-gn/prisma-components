@@ -1,0 +1,141 @@
+<ng-template #draggableList let-profiles='profiles'>
+
+  <div class="d-flex w-100">
+    <div class="draggable-item-index-container">
+      <div *ngFor="let profile of profiles.profiles; let i = index;" class="draggable-item-index">
+        <p>{{ i + 1 }}</p>
+      </div>
+    </div>
+    <div (cdkDropListDropped)="drop($event, profiles.profiles)" cdkDropList class="table-item-container w-100">
+
+      <div *ngFor="let profile of profiles.profiles; let i = index;" cdkDrag cdkDragBoundary=".table-item-container"
+           class="draggable-item" (contextmenu)="openContextMenu($event, profile, profiles.profiles, i); $event.preventDefault();"
+           style="cursor: move;">
+        <div *cdkDragPlaceholder class="draggable-placeholder"></div>
+        <div (dblclick)="openProfileDialog(profile)" class="d-flex w-100">
+          <!-- if IsMobile -> para poder reordenar os perfis apenas pelo ícone -->
+          <div *ngIf="false" cdkDragHandle class="move-icon-container">
+            <i class="uil uil-lg uil-draggabledots"></i>
+          </div>
+          <div *ngIf="true" class="move-icon-container">
+            <i class="uil uil-lg uil-draggabledots"></i>
+          </div>
+          <div class="w-100 align-self-center text-overflow">
+            <p class="m-0">{{profile.name}}</p>
+            <p class="m-0 sub-p">{{profile.description}}</p>
+          </div>
+          <div class="d-flex ml-2">
+            <button (click)="openProfileDialog(profile)" class="btn btn-info btn-icon btn-sm"
+                    title="Editar perfil '{{profile}}'"><i class="uil uil-md uil-pen"></i></button>
+            <button (click)=profileActionsSelect.open() class="btn btn-light btn-icon btn-sm ml-2">
+              <i class="uil uil-md uil-ellipsis-h"></i>
+              <mat-select #profileActionsSelect class="mat-select-btn-sm">
+                <mat-option (click)="openProfileDialog(profile)">
+                  Editar perfil
+                </mat-option>
+                <mat-option (click)="duplicateProfile(profiles.profiles, profile, i)">
+                  Duplicar perfil
+                </mat-option>
+                <mat-option (click)="deleteProfile(profile, profiles.profiles, i)">
+                  Apagar perfil
+                </mat-option>
+              </mat-select>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</ng-template>
+
+<swal
+  #deleteProfileSwal
+  [focusConfirm]="false"
+  [hideClass]="{popup: 'animated fadeOutUp faster'}"
+  [reverseButtons]="true"
+  [showClass]="{popup: 'animated fadeInDown faster'}"
+  [showCloseButton]="true"
+  confirmButtonColor="#ef8156"
+  confirmButtonText="Apagar"
+  icon="warning"
+  text=""
+  title="Desejar apagar o perfil 'profile.name'?">
+</swal>
+
+<ng-template #contextMenu let-profile let-profileList="profileList" let-i="i">
+  <div class="mat-menu-panel">
+    <mat-optgroup [label]="'-- ' + profile.name + ' --'">
+      <mat-option (click)="openProfileDialog(profile); closeContextMenu();">
+        Editar perfil
+      </mat-option>
+      <mat-option (click)="duplicateProfile(profileList, profile, i); closeContextMenu();">
+        Duplicar perfil
+      </mat-option>
+      <mat-option (click)="deleteProfile(profile, profileList, i); closeContextMenu();">
+        Apagar perfil
+      </mat-option>
+    </mat-optgroup>
+  </div>
+</ng-template>
+
+<div class="d-flex justify-content-between" *ngIf="originalProfiles">
+  <h5 class="w-100 align-self-center" style="margin-top: 10px;">Perfis</h5>
+  <form #profileUploadForm="ngForm" (ngSubmit)="onSubmitProfileUpload()" autocomplete="off">
+    <input #profileUploadInput (change)="onProfileUploadChange($event)" [style.display]="'none'" accept=".curaprofile"
+           type="file">
+  </form>
+
+  <button (click)=ProfileActionsSelect.open() class="btn btn-light btn-icon btn-sm mr-2">
+    <i class="uil uil-md uil-ellipsis-h"></i>
+    <mat-select #ProfileActionsSelect class="mat-select-btn-sm">
+      <mat-option (click)="profileUploadInput.click()">
+        Importar Perfil
+      </mat-option>
+    </mat-select>
+  </button>
+
+  <button (click)="openProfileDialog()" class="btn btn-success btn-icon btn-sm"
+          title="Adicionar novo perfil"><i class="uil uil-md uil-plus"></i></button>
+</div>
+
+<div class="horizontal-tabs h-100">
+  <mat-tab-group [disableRipple]="true" mat-stretch-tabs>
+
+    <mat-tab class="h-100" label="Editáveis">
+      <div class="row g-0 mt-2" style="margin-top: -10px;">
+        <div class="col-12">
+          <ng-container [ngTemplateOutletContext]="{profiles:{profiles: currentProfiles}}"
+                        [ngTemplateOutlet]="draggableList"></ng-container>
+        </div>
+      </div>
+
+      <div *ngIf="single" class="row mt-3">
+        <div class="col-6 text-left">
+          <swal
+            #discardChangesSwal
+            (confirm)="discardChanges()"
+            [focusConfirm]="false"
+            [hideClass]="{popup: 'animated fadeOutUp faster'}"
+            [reverseButtons]="true"
+            [showClass]="{popup: 'animated fadeInDown faster'}"
+            [showCloseButton]="true"
+            confirmButtonColor="#ef8156"
+            confirmButtonText="Descartar"
+            icon="warning"
+            text=""
+            title="Deseja descartar todas as alterações feitas?">
+          </swal>
+          <button [swal]="discardChangesSwal" class="btn btn-light">Descartar alterações</button>
+        </div>
+        <div class="col-6 text-right">
+          <button (click)="saveChanges()" class="btn btn-primary">Salvar alterações</button>
+        </div>
+      </div>
+    </mat-tab>
+
+    <mat-tab class="h-100" label="Importados">
+    </mat-tab>
+
+  </mat-tab-group>
+</div>

@@ -24,7 +24,7 @@
     "components": [
         {
             "name": "ButtonComponent",
-            "id": "component-ButtonComponent-2c937a26e0b4c0262089c1913f89451f",
+            "id": "component-ButtonComponent-18a4d08ee181600b68f5a15890d16e21",
             "file": "projects/components/src/lib/button/button.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -64,14 +64,7 @@
                     "type": "MainColors"
                 }
             ],
-            "outputsClass": [
-                {
-                    "name": "onClick",
-                    "defaultValue": "new EventEmitter<any>()",
-                    "line": 14,
-                    "type": "EventEmitter"
-                }
-            ],
+            "outputsClass": [],
             "propertiesClass": [],
             "methodsClass": [],
             "hostBindings": [],
@@ -79,7 +72,7 @@
             "description": "",
             "rawdescription": "",
             "type": "component",
-            "sourceCode": "import {Component, Input, Output, EventEmitter} from '@angular/core';\nimport {MainColors} from '../../models/colors';\n\n@Component({\n  selector: 'pm-button',\n  templateUrl: './button.component.html',\n  styleUrls: ['./button.component.scss']\n})\nexport class ButtonComponent {\n  @Input('label') label: string | null = '';  // Usada só pra aparecer no storybook\n  @Input('type') type: MainColors = MainColors.default;\n  @Input('busy') busy = false;\n  @Input('busyText') busyText: string;\n  @Output() onClick = new EventEmitter<any>();\n\n  constructor() { }\n\n}\n",
+            "sourceCode": "import {Component, Input, Output, EventEmitter} from '@angular/core';\nimport {MainColors} from '../../models/colors';\n\n@Component({\n  selector: 'pm-button',\n  templateUrl: './button.component.html',\n  styleUrls: ['./button.component.scss']\n})\nexport class ButtonComponent {\n  @Input('label') label: string | null = '';  // Usada só pra aparecer no storybook\n  @Input('type') type: MainColors = MainColors.default;\n  @Input('busy') busy = false;\n  @Input('busyText') busyText: string;\n  // @Output() onClick = new EventEmitter<any>();\n\n  constructor() { }\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -92,7 +85,7 @@
                 "name": "constructor",
                 "description": "",
                 "args": [],
-                "line": 14
+                "line": 13
             },
             "templateData": "<button [className]=\"type ? 'btn btn-' + type : 'btn'\" [disabled]=\"busy\">\n  <ng-container *ngIf=\"busy; else buttonContent\">\n    <span  class=\"spinner-border spinner-border-sm mx-2\" role=\"status\" aria-hidden=\"true\"></span>\n    {{busyText ? busyText : ''}}\n  </ng-container>\n</button>\n\n<ng-template #buttonContent>\n  <ng-container *ngIf=\"label; else noLabel\">\n    {{label}}\n  </ng-container>\n</ng-template>\n\n<ng-template #noLabel>\n  <ng-content></ng-content>\n</ng-template>\n\n"
         },
@@ -142,11 +135,67 @@
             "implements": [
                 "OnInit"
             ]
+        },
+        {
+            "name": "DraggableListComponent",
+            "id": "component-DraggableListComponent-304877169cd7ab351d67706e9e976d89",
+            "file": "projects/components/src/lib/draggable-list/draggable-list.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "pm-draggable-list",
+            "styleUrls": [
+                "./draggable-list.component.scss"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./draggable-list.component.html"
+            ],
+            "viewProviders": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [
+                {
+                    "name": "ngOnInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 12
+                }
+            ],
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "",
+            "type": "component",
+            "sourceCode": "import { Component, OnInit } from '@angular/core';\n\n@Component({\n  selector: 'pm-draggable-list',\n  templateUrl: './draggable-list.component.html',\n  styleUrls: ['./draggable-list.component.scss']\n})\nexport class DraggableListComponent implements OnInit {\n\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": "",
+                    "styleUrl": "./draggable-list.component.scss"
+                }
+            ],
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "args": [],
+                "line": 8
+            },
+            "implements": [
+                "OnInit"
+            ],
+            "templateData": "<p>draggable-list works!</p>\n"
         }
     ],
     "modules": [
         {
-            "name": "PrismaComponentsModule",
+            "name": "ButtonModule",
             "children": [
                 {
                     "type": "providers",
@@ -157,9 +206,6 @@
                     "elements": [
                         {
                             "name": "ButtonComponent"
-                        },
-                        {
-                            "name": "ComponentsComponent"
                         }
                     ]
                 },
@@ -172,7 +218,85 @@
                     "elements": [
                         {
                             "name": "ButtonComponent"
+                        }
+                    ]
+                },
+                {
+                    "type": "bootstrap",
+                    "elements": []
+                },
+                {
+                    "type": "classes",
+                    "elements": []
+                }
+            ]
+        },
+        {
+            "name": "DraggableListModule",
+            "children": [
+                {
+                    "type": "providers",
+                    "elements": []
+                },
+                {
+                    "type": "declarations",
+                    "elements": [
+                        {
+                            "name": "DraggableListComponent"
+                        }
+                    ]
+                },
+                {
+                    "type": "imports",
+                    "elements": []
+                },
+                {
+                    "type": "exports",
+                    "elements": [
+                        {
+                            "name": "DraggableListComponent"
+                        }
+                    ]
+                },
+                {
+                    "type": "bootstrap",
+                    "elements": []
+                },
+                {
+                    "type": "classes",
+                    "elements": []
+                }
+            ]
+        },
+        {
+            "name": "PrismaComponentsModule",
+            "children": [
+                {
+                    "type": "providers",
+                    "elements": []
+                },
+                {
+                    "type": "declarations",
+                    "elements": [
+                        {
+                            "name": "ComponentsComponent"
+                        }
+                    ]
+                },
+                {
+                    "type": "imports",
+                    "elements": [
+                        {
+                            "name": "ButtonModule"
                         },
+                        {
+                            "name": "DraggableListModule"
+                        }
+                    ]
+                },
+                {
+                    "type": "exports",
+                    "elements": [
                         {
                             "name": "ComponentsComponent"
                         }
@@ -216,6 +340,14 @@
                 "defaultValue": "Template.bind({})"
             },
             {
+                "name": "ExampleList",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "stories/DraggableList.stories.ts",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
                 "name": "PrimaryButton",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -237,6 +369,14 @@
                 "file": "stories/Button.stories.ts",
                 "type": "Story<ButtonComponent>",
                 "defaultValue": "(args: ButtonComponent) => ({\n  component: ButtonComponent,\n  props: args,\n  template: `\n    <pm-button\n        [label]=\"label\"\n        [type]=\"type\"\n        [busy]=\"busy\"\n        [busyText]=\"busyText\"\n    >\n        Botão\n    </pm-button>`\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "stories/DraggableList.stories.ts",
+                "type": "Story<DraggableListComponent>",
+                "defaultValue": "(args: DraggableListComponent) => ({\n  component: DraggableListComponent,\n  props: args,\n  template: `\n    <pm-draggable-list>\n      Botão\n    </pm-button>`\n})"
             }
         ],
         "functions": [],
@@ -458,6 +598,24 @@
                     "file": "projects/components/src/test.ts",
                     "type": "literal type"
                 }
+            ],
+            "stories/DraggableList.stories.ts": [
+                {
+                    "name": "ExampleList",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "stories/DraggableList.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "stories/DraggableList.stories.ts",
+                    "type": "Story<DraggableListComponent>",
+                    "defaultValue": "(args: DraggableListComponent) => ({\n  component: DraggableListComponent,\n  props: args,\n  template: `\n    <pm-draggable-list>\n      Botão\n    </pm-button>`\n})"
+                }
             ]
         },
         "groupedFunctions": {},
@@ -642,7 +800,7 @@
                 "linktype": "component",
                 "name": "ButtonComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/7",
+                "coverageCount": "0/6",
                 "status": "low"
             },
             {
@@ -661,6 +819,15 @@
                 "name": "ComponentsService",
                 "coveragePercent": 0,
                 "coverageCount": "0/2",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/components/src/lib/draggable-list/draggable-list.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "DraggableListComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
                 "status": "low"
             },
             {
@@ -715,6 +882,26 @@
             },
             {
                 "filePath": "stories/Button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "stories/DraggableList.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "ExampleList",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "stories/DraggableList.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",

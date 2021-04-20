@@ -1,20 +1,21 @@
 import {NgModule} from '@angular/core';
 import {ComponentsComponent} from './components.component';
-import {ButtonComponent} from './button/button.component';
 import {CommonModule} from '@angular/common';
+import {ButtonModule} from './button/button.module';
+import {DraggableListModule} from './draggable-list/draggable-list.module';
 
 
 @NgModule({
   declarations: [
-    ComponentsComponent,
-    ButtonComponent
+    ComponentsComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    ButtonModule,
+    DraggableListModule
   ],
   exports: [
-    ComponentsComponent,
-    ButtonComponent
+    ComponentsComponent
   ]
 })
 export class PrismaComponentsModule {
