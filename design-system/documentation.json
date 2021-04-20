@@ -127,7 +127,7 @@
     ],
     "modules": [
         {
-            "name": "ComponentsModule",
+            "name": "PrismaComponentsModule",
             "children": [
                 {
                     "type": "providers",
