@@ -24,7 +24,7 @@
     "components": [
         {
             "name": "ButtonComponent",
-            "id": "component-ButtonComponent-ec459c7e7fe318f40c0cc47251876a01",
+            "id": "component-ButtonComponent-c7edbc873ec5596f25070340b5b98b14",
             "file": "projects/components/src/lib/button/button.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -54,22 +54,13 @@
             ],
             "outputsClass": [],
             "propertiesClass": [],
-            "methodsClass": [
-                {
-                    "name": "ngOnInit",
-                    "args": [],
-                    "optional": false,
-                    "returnType": "void",
-                    "typeParameters": [],
-                    "line": 14
-                }
-            ],
+            "methodsClass": [],
             "hostBindings": [],
             "hostListeners": [],
             "description": "",
             "rawdescription": "",
             "type": "component",
-            "sourceCode": "import { Component, OnInit, Input } from '@angular/core';\n\n@Component({\n  selector: 'pm-button',\n  templateUrl: './button.component.html',\n  styleUrls: ['./button.component.scss']\n})\nexport class ButtonComponent implements OnInit {\n  @Input('label') label: string | null;\n  @Input('pink') pink: boolean;\n\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n\n}\n",
+            "sourceCode": "import { Component, Input } from '@angular/core';\n\n@Component({\n  selector: 'pm-button',\n  templateUrl: './button.component.html',\n  styleUrls: ['./button.component.scss']\n})\nexport class ButtonComponent {\n  @Input('label') label: string | null;\n  @Input('pink') pink: boolean;\n\n  constructor() { }\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -84,9 +75,6 @@
                 "args": [],
                 "line": 10
             },
-            "implements": [
-                "OnInit"
-            ],
             "templateData": "<button [attr.is-pink]=\"pink\" [ngClass]=\"{'make-pink': pink}\">{{label ? \"😎 \" + label : \"No Label provided 🧐\"}}</button>\n"
         },
         {
@@ -163,6 +151,9 @@
                 {
                     "type": "exports",
                     "elements": [
+                        {
+                            "name": "ButtonComponent"
+                        },
                         {
                             "name": "ComponentsComponent"
                         }
@@ -284,7 +275,7 @@
                 "linktype": "component",
                 "name": "ButtonComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/5",
+                "coverageCount": "0/4",
                 "status": "low"
             },
             {
