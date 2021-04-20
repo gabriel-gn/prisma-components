@@ -9,9 +9,10 @@
     "lint": "ng lint",
     "docs:json": "compodoc -p ./tsconfig.json -e json -d .",
     "storybook": "npm run docs:json && start-storybook -p 6006",
-    "build-storybook": "npm run docs:json && build-storybook"
+    "build-storybook": "npm run docs:json && build-storybook",
+    "build-npm": "ng build --project=components --prod"
   },
-  "private": true,
+  "private": false,
   "dependencies": {
     "@angular/animations": "~11.2.10",
     "@angular/common": "~11.2.10",
