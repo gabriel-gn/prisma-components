@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 
 @Component({
   selector: 'ma-root',
@@ -7,4 +7,12 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'app';
+  busy = false;
+
+  public setBusy(): void {
+    this.busy = true;
+    setTimeout(() => {
+      this.busy = false;
+    }, 1500);
+  }
 }

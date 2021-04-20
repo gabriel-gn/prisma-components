@@ -12,7 +12,7 @@
 
 <div>
   <p>Example development application</p>
-  <pm-button>Hello World</pm-button>
+  <pm-button (click)="setBusy()" [busy]="busy">Hello World</pm-button>
 </div>
 
 <!-- you only need this if you added a router: -->
