@@ -2,7 +2,8 @@ import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
 import {AppComponent} from './app.component';
-import {ComponentsModule} from '@mprisma/components';
+import {PrismaComponentsModule} from '@mprisma/components';
+import {RouterModule} from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -10,7 +11,8 @@ import {ComponentsModule} from '@mprisma/components';
   ],
   imports: [
     BrowserModule,
-    ComponentsModule
+    PrismaComponentsModule,
+    RouterModule
   ],
   providers: [],
   bootstrap: [AppComponent]

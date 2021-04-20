@@ -17,5 +17,5 @@ import {CommonModule} from '@angular/common';
     ButtonComponent
   ]
 })
-export class ComponentsModule {
+export class PrismaComponentsModule {
 }
