@@ -1,0 +1,92 @@
+@mixin btn-styles($btn-color, $btn-states-color, $force-uppercase: false) {
+
+  color: #fff;
+  $hover-color: #fff;
+
+  @if type_of($btn-states-color) == 'color' {
+    $btn-states-color: rgb(red($btn-states-color), green($btn-states-color), blue($btn-states-color));
+  } @else {
+    // Caso seja uma variável de css na entrada, utiliza a rgb ao invés por causa da opacidade
+    @if str-index($btn-states-color, 'var') == 1 and str-index($btn-states-color, 'rgb') == null {
+      $btn-states-color: str-insert($btn-states-color, '-rgb', str-length($btn-states-color))
+    }
+
+    @if str-index($btn-states-color, 'light') != null {
+      color: #a6b4c5;
+      $hover-color: #a6b4c5;
+    }
+  }
+
+  @if $force-uppercase == true {
+    text-transform: uppercase !important;
+  }
+
+  background-color: $btn-color;
+  border-color: rgba($btn-states-color, 0.3);
+  border-width: var(--border-width-sm);
+  border-radius: var(--border-radius-md);
+  font-family: var(--font-default);
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.3px;
+
+  &:disabled,
+  &[disabled],
+  &.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+    background-color: $btn-color;
+    border-color: rgba($btn-states-color, 0.3);
+  }
+
+  &:hover,
+  &:focus,
+  &:active,
+  &.active,
+  &:active:focus,
+  &:active:hover,
+  &.active:focus,
+  &.active:hover {
+    background-color: rgba($btn-states-color, 1);
+    border-color: rgba($btn-states-color, 0.3);
+    color: rgba($hover-color, 1);
+    box-shadow: none !important;
+  }
+}
+
+@mixin btn-outline-styles($btn-color, $btn-states-color, $force-uppercase: false) {
+  @include btn-styles($btn-color, $btn-states-color, $force-uppercase);
+
+  color: $btn-color;
+  background-color: transparent;
+  border-color: rgba($btn-color, 1);
+  border-width: var(--border-width-md);
+
+  &:disabled,
+  &[disabled],
+  &.disabled {
+    background-color: transparent;
+    border-color: rgba($btn-color, 1);
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  &:hover,
+  &:focus,
+  &:active,
+  &.active,
+  &:active:focus,
+  &:active:hover,
+  &.active:focus,
+  &.active:hover {
+    color: #fff;
+
+    @if str-index($btn-states-color, 'light') != null {
+      color: #a6b4c5 !important;
+    }
+
+    background-color: $btn-color;
+    border-color: $btn-color;
+    box-shadow: none !important;
+  }
+}

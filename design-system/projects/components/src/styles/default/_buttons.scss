@@ -1,0 +1,115 @@
+@import "mixins/buttons";
+@import "variables";
+
+@each $key, $val in $main-colors {
+  $color-name: str-slice($key, 7, str-length($key));  // remove o "color-" que tem no nome das cores em main-colors
+  .btn-#{$color-name} {  // equivalente a ".btn-primary" de acordo com o nome das cores em main-colors
+    @include btn-styles(var(--color-#{$color-name}), var(--color-#{$color-name}-states), true);
+  }
+}
+
+@each $key, $val in $main-colors {
+  $color-name: str-slice($key, 7, str-length($key));
+  .btn-outline-#{$color-name} {
+    @include btn-outline-styles(var(--color-#{$color-name}), var(--color-#{$color-name}-states), true);
+  }
+}
+
+.btn-circle {
+  border-radius: 50% !important;
+  display: flex;
+  justify-content: center;
+  z-index: 1;
+
+  i {
+    align-self: center;
+  }
+}
+
+.btn-circle-45 {
+  @extend .btn-circle;
+  height: 45px;
+  width: 45px;
+}
+
+.btn-circle-hidden {
+  @extend .btn-circle;
+  height: 40px;
+  width: 40px;
+  background-color: rgba(0, 0, 0, 0) !important;
+  border: none;
+}
+
+.btn-copy {
+  @extend .btn-primary;
+  min-width: 40px !important;
+  max-width: 40px !important;
+  display: flex !important;
+  justify-content: center !important;
+  padding: 3px !important;
+  border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0 !important;
+}
+
+.btn-google {
+  @include btn-styles(#F33934, #bb3934);
+}
+
+.btn-facebook {
+  @include btn-styles(#4580e5, #3061c3);
+}
+
+.btn-social {
+
+  @extend .btn-circle;
+  display: flex;
+  justify-content: space-evenly;
+  padding: 0px;
+  height: 25px;
+  width: 25px;
+  text-decoration: none;
+
+  i:before {
+    vertical-align: middle;
+    display: flex;
+    margin-top: 2px;
+  }
+
+  &-fb {
+    @include btn-styles(#4580e5, #3061c3);
+    @extend .btn-social;
+  }
+
+  &-google {
+    @include btn-styles(#F33934, #bb3934);
+    @extend .btn-social;
+  }
+
+  &-linkedin {
+    @include btn-styles(#005AB6, #1b46b1);
+    @extend .btn-social;
+  }
+
+  &-twitter {
+    @include btn-styles(#00A0EE, #0082be);
+    @extend .btn-social;
+  }
+
+  &-website {
+    @include btn-styles(var(--color-primary), var(--color-primary-states));
+    @extend .btn-social;
+  }
+
+  &-instagram {
+    @include btn-styles(#F33934, #bb3934);
+    @extend .btn-social;
+    background: -webkit-radial-gradient(32% 106%, circle cover, rgb(255, 225, 125) 0%, rgb(255, 205, 105) 10%, rgb(250, 145, 55) 28%, rgb(235, 65, 65) 42%, transparent 82%), -webkit-linear-gradient(-45deg, rgb(35, 75, 215) 12%, rgb(195, 60, 190) 58%);
+    background: -moz-radial-gradient(32% 106%, circle cover, rgb(255, 225, 125) 0%, rgb(255, 205, 105) 10%, rgb(250, 145, 55) 28%, rgb(235, 65, 65) 42%, transparent 82%), -moz-linear-gradient(-45deg, rgb(35, 75, 215) 12%, rgb(195, 60, 190) 58%);
+    background: -ms-radial-gradient(32% 106%, circle cover, rgb(255, 225, 125) 0%, rgb(255, 205, 105) 10%, rgb(250, 145, 55) 28%, rgb(235, 65, 65) 42%, transparent 82%), -ms-linear-gradient(-45deg, rgb(35, 75, 215) 12%, rgb(195, 60, 190) 58%);
+    background: -o-radial-gradient(32% 106%, circle cover, rgb(255, 225, 125) 0%, rgb(255, 205, 105) 10%, rgb(250, 145, 55) 28%, rgb(235, 65, 65) 42%, transparent 82%), -o-linear-gradient(-45deg, rgb(35, 75, 215) 12%, rgb(195, 60, 190) 58%);
+    background: radial-gradient(circle farthest-corner at 32% 106%, rgb(255, 225, 125) 0%, rgb(255, 205, 105) 10%, rgb(250, 145, 55) 28%, rgb(235, 65, 65) 42%, transparent 82%), linear-gradient(135deg, rgb(35, 75, 215) 12%, rgb(195, 60, 190) 58%);
+    &:hover {
+      filter: brightness(85%);
+    }
+  }
+
+}

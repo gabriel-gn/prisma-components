@@ -64,7 +64,7 @@
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": "button {\n  background: blue;\n  padding: 1rem 2rem;\n  border-radius: 3px;\n  appearance: none;\n  border: 0;\n  -webkit-appearance: none;\n  -moz-appearance: none;\n  font-size: 1.5rem;\n  letter-spacing: 1px;\n  color: white;\n  box-shadow: 0 4px 10px rgba(55, 55, 55, 0.3),\n  0 6px 35px rgba(55, 55, 200, 0.7);\n  cursor: pointer;\n\n  &.make-pink {\n    background: #ff00a2;\n    box-shadow: 0 4px 10px rgba(55, 55, 55, 0.3), 0 6px 35px rgb(200 55 150 / 70%);\n  }\n}\n",
+                    "data": "//button {\n//  background: blue;\n//  padding: 1rem 2rem;\n//  border-radius: 3px;\n//  appearance: none;\n//  border: 0;\n//  -webkit-appearance: none;\n//  -moz-appearance: none;\n//  font-size: 1.5rem;\n//  letter-spacing: 1px;\n//  color: white;\n//  box-shadow: 0 4px 10px rgba(55, 55, 55, 0.3),\n//  0 6px 35px rgba(55, 55, 200, 0.7);\n//  cursor: pointer;\n//\n//  &.make-pink {\n//    background: #ff00a2;\n//    box-shadow: 0 4px 10px rgba(55, 55, 55, 0.3), 0 6px 35px rgb(200 55 150 / 70%);\n//  }\n//}\n",
                     "styleUrl": "./button.component.scss"
                 }
             ],
@@ -75,7 +75,7 @@
                 "args": [],
                 "line": 10
             },
-            "templateData": "<button [attr.is-pink]=\"pink\" [ngClass]=\"{'make-pink': pink}\">{{label ? \"😎 \" + label : \"No Label provided 🧐\"}}</button>\n"
+            "templateData": "<button [attr.is-pink]=\"pink\" [ngClass]=\"{'make-pink': pink}\" class=\"btn btn-primary\">{{label ? \"😎 \" + label : \"No Label provided 🧐\"}}</button>\n"
         },
         {
             "name": "ComponentsComponent",
