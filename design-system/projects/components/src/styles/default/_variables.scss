@@ -3,19 +3,19 @@
 ********************************/
 
 // CORES DE TEMA
-$color-primary:                                 #6F5897 !default;
-$color-secondary:                               #efa76c !default;
+$color-primary:                                 #efa76c !default;
+$color-secondary:                               #6F5897 !default;
 $color-success:                                 #6bd098 !default;
 $color-info:                                    #51bcda !default;
 $color-warning:                                 #fbc658 !default;
 $color-danger:                                  #ef8157 !default;
 $color-light:                                   #eff3f8 !default;
 
-$color-default:                                 $color-primary !default;
+$color-default:                                 $color-secondary !default;
 
 
 $main-colors: (  // cores que gerarão sub-cores states, pale, etc
-  color-primary: $color-secondary,
+  color-primary: $color-primary,
   color-secondary: $color-secondary,
   color-success: $color-success,
   color-info: $color-info,

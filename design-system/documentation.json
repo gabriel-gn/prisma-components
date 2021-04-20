@@ -24,7 +24,7 @@
     "components": [
         {
             "name": "ButtonComponent",
-            "id": "component-ButtonComponent-9cbd0b273ea4fefb6cffb258d84fd5c9",
+            "id": "component-ButtonComponent-2c937a26e0b4c0262089c1913f89451f",
             "file": "projects/components/src/lib/button/button.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -44,31 +44,31 @@
                 {
                     "name": "busy",
                     "defaultValue": "false",
-                    "line": 11
+                    "line": 12
                 },
                 {
                     "name": "busyText",
-                    "line": 12,
+                    "line": 13,
                     "type": "string"
                 },
                 {
                     "name": "label",
                     "defaultValue": "''",
-                    "line": 9,
+                    "line": 10,
                     "type": "string | null"
                 },
                 {
                     "name": "type",
-                    "defaultValue": "'default'",
-                    "line": 10,
-                    "type": "\"default\" | \"primary\" | \"info\""
+                    "defaultValue": "MainColors.default",
+                    "line": 11,
+                    "type": "MainColors"
                 }
             ],
             "outputsClass": [
                 {
                     "name": "onClick",
                     "defaultValue": "new EventEmitter<any>()",
-                    "line": 13,
+                    "line": 14,
                     "type": "EventEmitter"
                 }
             ],
@@ -79,7 +79,7 @@
             "description": "",
             "rawdescription": "",
             "type": "component",
-            "sourceCode": "import {Component, Input, Output, EventEmitter} from '@angular/core';\n\n@Component({\n  selector: 'pm-button',\n  templateUrl: './button.component.html',\n  styleUrls: ['./button.component.scss']\n})\nexport class ButtonComponent {\n  @Input('label') label: string | null = '';  // Usada só pra aparecer no storybook\n  @Input('type') type: 'default' | 'primary' | 'info' = 'default';\n  @Input('busy') busy = false;\n  @Input('busyText') busyText: string;\n  @Output() onClick = new EventEmitter<any>();\n\n  constructor() { }\n\n}\n",
+            "sourceCode": "import {Component, Input, Output, EventEmitter} from '@angular/core';\nimport {MainColors} from '../../models/colors';\n\n@Component({\n  selector: 'pm-button',\n  templateUrl: './button.component.html',\n  styleUrls: ['./button.component.scss']\n})\nexport class ButtonComponent {\n  @Input('label') label: string | null = '';  // Usada só pra aparecer no storybook\n  @Input('type') type: MainColors = MainColors.default;\n  @Input('busy') busy = false;\n  @Input('busyText') busyText: string;\n  @Output() onClick = new EventEmitter<any>();\n\n  constructor() { }\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -92,7 +92,7 @@
                 "name": "constructor",
                 "description": "",
                 "args": [],
-                "line": 13
+                "line": 14
             },
             "templateData": "<button [className]=\"type ? 'btn btn-' + type : 'btn'\" [disabled]=\"busy\">\n  <ng-container *ngIf=\"busy; else buttonContent\">\n    <span  class=\"spinner-border spinner-border-sm mx-2\" role=\"status\" aria-hidden=\"true\"></span>\n    {{busyText ? busyText : ''}}\n  </ng-container>\n</button>\n\n<ng-template #buttonContent>\n  <ng-container *ngIf=\"label; else noLabel\">\n    {{label}}\n  </ng-container>\n</ng-template>\n\n<ng-template #noLabel>\n  <ng-content></ng-content>\n</ng-template>\n\n"
         },
@@ -236,12 +236,177 @@
                 "subtype": "variable",
                 "file": "stories/Button.stories.ts",
                 "type": "Story<ButtonComponent>",
-                "defaultValue": "(args: ButtonComponent) => ({\n  component: ButtonComponent,\n  props: args,\n  template: `<pm-button [type]=\"type\">Botão</pm-button>`\n})"
+                "defaultValue": "(args: ButtonComponent) => ({\n  component: ButtonComponent,\n  props: args,\n  template: `\n    <pm-button\n        [label]=\"label\"\n        [type]=\"type\"\n        [busy]=\"busy\"\n        [busyText]=\"busyText\"\n    >\n        Botão\n    </pm-button>`\n})"
             }
         ],
         "functions": [],
         "typealiases": [],
-        "enumerations": [],
+        "enumerations": [
+            {
+                "name": "MainColors",
+                "childs": [
+                    {
+                        "name": "primary",
+                        "value": "primary"
+                    },
+                    {
+                        "name": "secondary",
+                        "value": "secondary"
+                    },
+                    {
+                        "name": "success",
+                        "value": "success"
+                    },
+                    {
+                        "name": "info",
+                        "value": "info"
+                    },
+                    {
+                        "name": "warning",
+                        "value": "warning"
+                    },
+                    {
+                        "name": "danger",
+                        "value": "danger"
+                    },
+                    {
+                        "name": "light",
+                        "value": "light"
+                    },
+                    {
+                        "name": "default",
+                        "value": "default"
+                    }
+                ],
+                "ctype": "miscellaneous",
+                "subtype": "enum",
+                "description": "",
+                "file": "projects/components/src/models/colors.ts"
+            },
+            {
+                "name": "PaleColors",
+                "childs": [
+                    {
+                        "name": "primaryPale",
+                        "value": "primary-pale"
+                    },
+                    {
+                        "name": "secondaryPale",
+                        "value": "secondary-pale"
+                    },
+                    {
+                        "name": "successPale",
+                        "value": "success-pale"
+                    },
+                    {
+                        "name": "infoPale",
+                        "value": "info-pale"
+                    },
+                    {
+                        "name": "warningPale",
+                        "value": "warning-pale"
+                    },
+                    {
+                        "name": "dangerPale",
+                        "value": "danger-pale"
+                    },
+                    {
+                        "name": "lightPale",
+                        "value": "light-pale"
+                    },
+                    {
+                        "name": "defaultPale",
+                        "value": "default-pale"
+                    }
+                ],
+                "ctype": "miscellaneous",
+                "subtype": "enum",
+                "description": "",
+                "file": "projects/components/src/models/colors.ts"
+            },
+            {
+                "name": "SaturatedColors",
+                "childs": [
+                    {
+                        "name": "primarySat",
+                        "value": "primary-sat"
+                    },
+                    {
+                        "name": "secondarySat",
+                        "value": "secondary-sat"
+                    },
+                    {
+                        "name": "successSat",
+                        "value": "success-sat"
+                    },
+                    {
+                        "name": "infoSat",
+                        "value": "info-sat"
+                    },
+                    {
+                        "name": "warningSat",
+                        "value": "warning-sat"
+                    },
+                    {
+                        "name": "dangerSat",
+                        "value": "danger-sat"
+                    },
+                    {
+                        "name": "lightSat",
+                        "value": "light-sat"
+                    },
+                    {
+                        "name": "defaultSat",
+                        "value": "default-sat"
+                    }
+                ],
+                "ctype": "miscellaneous",
+                "subtype": "enum",
+                "description": "",
+                "file": "projects/components/src/models/colors.ts"
+            },
+            {
+                "name": "StateColors",
+                "childs": [
+                    {
+                        "name": "primaryStates",
+                        "value": "primary-states"
+                    },
+                    {
+                        "name": "secondaryStates",
+                        "value": "secondary-states"
+                    },
+                    {
+                        "name": "successStates",
+                        "value": "success-states"
+                    },
+                    {
+                        "name": "infoStates",
+                        "value": "info-states"
+                    },
+                    {
+                        "name": "warningStates",
+                        "value": "warning-states"
+                    },
+                    {
+                        "name": "dangerStates",
+                        "value": "danger-states"
+                    },
+                    {
+                        "name": "lightStates",
+                        "value": "light-states"
+                    },
+                    {
+                        "name": "defaultStates",
+                        "value": "default-states"
+                    }
+                ],
+                "ctype": "miscellaneous",
+                "subtype": "enum",
+                "description": "",
+                "file": "projects/components/src/models/colors.ts"
+            }
+        ],
         "groupedVariables": {
             "stories/Button.stories.ts": [
                 {
@@ -274,7 +439,7 @@
                     "subtype": "variable",
                     "file": "stories/Button.stories.ts",
                     "type": "Story<ButtonComponent>",
-                    "defaultValue": "(args: ButtonComponent) => ({\n  component: ButtonComponent,\n  props: args,\n  template: `<pm-button [type]=\"type\">Botão</pm-button>`\n})"
+                    "defaultValue": "(args: ButtonComponent) => ({\n  component: ButtonComponent,\n  props: args,\n  template: `\n    <pm-button\n        [label]=\"label\"\n        [type]=\"type\"\n        [busy]=\"busy\"\n        [busyText]=\"busyText\"\n    >\n        Botão\n    </pm-button>`\n})"
                 }
             ],
             "projects/components/src/test.ts": [
@@ -296,7 +461,174 @@
             ]
         },
         "groupedFunctions": {},
-        "groupedEnumerations": {},
+        "groupedEnumerations": {
+            "projects/components/src/models/colors.ts": [
+                {
+                    "name": "MainColors",
+                    "childs": [
+                        {
+                            "name": "primary",
+                            "value": "primary"
+                        },
+                        {
+                            "name": "secondary",
+                            "value": "secondary"
+                        },
+                        {
+                            "name": "success",
+                            "value": "success"
+                        },
+                        {
+                            "name": "info",
+                            "value": "info"
+                        },
+                        {
+                            "name": "warning",
+                            "value": "warning"
+                        },
+                        {
+                            "name": "danger",
+                            "value": "danger"
+                        },
+                        {
+                            "name": "light",
+                            "value": "light"
+                        },
+                        {
+                            "name": "default",
+                            "value": "default"
+                        }
+                    ],
+                    "ctype": "miscellaneous",
+                    "subtype": "enum",
+                    "description": "",
+                    "file": "projects/components/src/models/colors.ts"
+                },
+                {
+                    "name": "PaleColors",
+                    "childs": [
+                        {
+                            "name": "primaryPale",
+                            "value": "primary-pale"
+                        },
+                        {
+                            "name": "secondaryPale",
+                            "value": "secondary-pale"
+                        },
+                        {
+                            "name": "successPale",
+                            "value": "success-pale"
+                        },
+                        {
+                            "name": "infoPale",
+                            "value": "info-pale"
+                        },
+                        {
+                            "name": "warningPale",
+                            "value": "warning-pale"
+                        },
+                        {
+                            "name": "dangerPale",
+                            "value": "danger-pale"
+                        },
+                        {
+                            "name": "lightPale",
+                            "value": "light-pale"
+                        },
+                        {
+                            "name": "defaultPale",
+                            "value": "default-pale"
+                        }
+                    ],
+                    "ctype": "miscellaneous",
+                    "subtype": "enum",
+                    "description": "",
+                    "file": "projects/components/src/models/colors.ts"
+                },
+                {
+                    "name": "SaturatedColors",
+                    "childs": [
+                        {
+                            "name": "primarySat",
+                            "value": "primary-sat"
+                        },
+                        {
+                            "name": "secondarySat",
+                            "value": "secondary-sat"
+                        },
+                        {
+                            "name": "successSat",
+                            "value": "success-sat"
+                        },
+                        {
+                            "name": "infoSat",
+                            "value": "info-sat"
+                        },
+                        {
+                            "name": "warningSat",
+                            "value": "warning-sat"
+                        },
+                        {
+                            "name": "dangerSat",
+                            "value": "danger-sat"
+                        },
+                        {
+                            "name": "lightSat",
+                            "value": "light-sat"
+                        },
+                        {
+                            "name": "defaultSat",
+                            "value": "default-sat"
+                        }
+                    ],
+                    "ctype": "miscellaneous",
+                    "subtype": "enum",
+                    "description": "",
+                    "file": "projects/components/src/models/colors.ts"
+                },
+                {
+                    "name": "StateColors",
+                    "childs": [
+                        {
+                            "name": "primaryStates",
+                            "value": "primary-states"
+                        },
+                        {
+                            "name": "secondaryStates",
+                            "value": "secondary-states"
+                        },
+                        {
+                            "name": "successStates",
+                            "value": "success-states"
+                        },
+                        {
+                            "name": "infoStates",
+                            "value": "info-states"
+                        },
+                        {
+                            "name": "warningStates",
+                            "value": "warning-states"
+                        },
+                        {
+                            "name": "dangerStates",
+                            "value": "danger-states"
+                        },
+                        {
+                            "name": "lightStates",
+                            "value": "light-states"
+                        },
+                        {
+                            "name": "defaultStates",
+                            "value": "default-states"
+                        }
+                    ],
+                    "ctype": "miscellaneous",
+                    "subtype": "enum",
+                    "description": "",
+                    "file": "projects/components/src/models/colors.ts"
+                }
+            ]
+        },
         "groupedTypeAliases": {}
     },
     "routes": [],
