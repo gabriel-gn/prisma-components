@@ -1,9 +1,17 @@
-<button [className]="type ? 'btn btn-' + type : 'btn'">
+<button [className]="type ? 'btn btn-' + type : 'btn'" [disabled]="busy">
+  <ng-container *ngIf="busy; else buttonContent">
+    <span  class="spinner-border spinner-border-sm mx-2" role="status" aria-hidden="true"></span>
+    {{busyText ? busyText : ''}}
+  </ng-container>
+</button>
+
+<ng-template #buttonContent>
   <ng-container *ngIf="label; else noLabel">
     {{label}}
   </ng-container>
-</button>
+</ng-template>
 
 <ng-template #noLabel>
   <ng-content></ng-content>
 </ng-template>
+

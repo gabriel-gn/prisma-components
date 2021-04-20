@@ -8,6 +8,8 @@ import {Component, Input, Output, EventEmitter} from '@angular/core';
 export class ButtonComponent {
   @Input('label') label: string | null = '';  // Usada só pra aparecer no storybook
   @Input('type') type: 'default' | 'primary' | 'info' = 'default';
+  @Input('busy') busy = false;
+  @Input('busyText') busyText: string;
   @Output() onClick = new EventEmitter<any>();
 
   constructor() { }

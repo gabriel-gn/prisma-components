@@ -7,6 +7,8 @@ export default {
   argTypes: {
     label: {control: 'text'},
     type: {control: 'select'},
+    busy: {control: 'boolean'},
+    busyText: {control: 'text'},
     // we need to override here since in Angular it could be null as well and therefore it would become an ambigious data type for storybook
   }
 } as Meta;
@@ -14,29 +16,30 @@ export default {
 const Template: Story<ButtonComponent> = (args: ButtonComponent) => ({
   component: ButtonComponent,
   props: args,
-  template: `<pm-button [type]="type">Botão</pm-button>`
+  template: `
+    <pm-button
+        [label]="label"
+        [type]="type"
+        [busy]="busy"
+        [busyText]="busyText"
+    >
+        Botão
+    </pm-button>`
 });
 
-export const Default = Template.bind({});
-Default.args = {
+export const DefaultButton = Template.bind({});
+DefaultButton.args = {
   type: 'default'
 };
 
-export const Primary = Template.bind({});
-Primary.args = {
+export const PrimaryButton = Template.bind({});
+PrimaryButton.args = {
   type: 'primary'
 };
 
-
-// export const Default = () => ({
-//   title: 'Botões',
-//   component: ButtonComponent,
-//   props: {
-//     label: '',
-//   },
-//   argTypes: {
-//     label: {control: 'text'},
-//     // we need to override here since in Angular it could be null as well and therefore it would become an ambigious data type for storybook
-//   },
-//   template: `<pm-button>Botão</pm-button>`,
-// });
+export const BusyButton = Template.bind({});
+BusyButton.args = {
+  type: 'primary',
+  busy: true,
+  busyText: 'Aguarde...'
+};
