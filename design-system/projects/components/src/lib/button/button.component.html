@@ -1,1 +1,9 @@
-<button [attr.is-pink]="pink" [ngClass]="{'make-pink': pink}" class="btn btn-primary">{{label ? "😎 " + label : "No Label provided 🧐"}}</button>
+<button [className]="type ? 'btn btn-' + type : 'btn'">
+  <ng-container *ngIf="label; else noLabel">
+    {{label}}
+  </ng-container>
+</button>
+
+<ng-template #noLabel>
+  <ng-content></ng-content>
+</ng-template>

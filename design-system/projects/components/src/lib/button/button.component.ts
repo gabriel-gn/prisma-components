@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import {Component, Input, Output, EventEmitter} from '@angular/core';
 
 @Component({
   selector: 'pm-button',
@@ -6,8 +6,9 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./button.component.scss']
 })
 export class ButtonComponent {
-  @Input('label') label: string | null;
-  @Input('pink') pink: boolean;
+  @Input('label') label: string | null = '';  // Usada só pra aparecer no storybook
+  @Input('type') type: 'default' | 'primary' | 'info' = 'default';
+  @Output() onClick = new EventEmitter<any>();
 
   constructor() { }
 

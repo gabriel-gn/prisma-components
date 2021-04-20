@@ -24,7 +24,7 @@
     "components": [
         {
             "name": "ButtonComponent",
-            "id": "component-ButtonComponent-c7edbc873ec5596f25070340b5b98b14",
+            "id": "component-ButtonComponent-5f743c5cf37c9e7d23d3552adfbc0657",
             "file": "projects/components/src/lib/button/button.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -43,16 +43,25 @@
             "inputsClass": [
                 {
                     "name": "label",
+                    "defaultValue": "''",
                     "line": 9,
-                    "type": "string | null"
+                    "type": "string"
                 },
                 {
-                    "name": "pink",
+                    "name": "type",
+                    "defaultValue": "'default'",
                     "line": 10,
-                    "type": "boolean"
+                    "type": "\"default\" | \"primary\" | \"info\""
                 }
             ],
-            "outputsClass": [],
+            "outputsClass": [
+                {
+                    "name": "onClick",
+                    "defaultValue": "new EventEmitter<any>()",
+                    "line": 11,
+                    "type": "EventEmitter"
+                }
+            ],
             "propertiesClass": [],
             "methodsClass": [],
             "hostBindings": [],
@@ -60,7 +69,7 @@
             "description": "",
             "rawdescription": "",
             "type": "component",
-            "sourceCode": "import { Component, Input } from '@angular/core';\n\n@Component({\n  selector: 'pm-button',\n  templateUrl: './button.component.html',\n  styleUrls: ['./button.component.scss']\n})\nexport class ButtonComponent {\n  @Input('label') label: string | null;\n  @Input('pink') pink: boolean;\n\n  constructor() { }\n\n}\n",
+            "sourceCode": "import {Component, Input, Output, EventEmitter} from '@angular/core';\n\n@Component({\n  selector: 'pm-button',\n  templateUrl: './button.component.html',\n  styleUrls: ['./button.component.scss']\n})\nexport class ButtonComponent {\n  @Input('label') label: string = '';  // Usada só pra aparecer no storybook\n  @Input('type') type: 'default' | 'primary' | 'info' = 'default';\n  @Output() onClick = new EventEmitter<any>();\n\n  constructor() { }\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -73,9 +82,9 @@
                 "name": "constructor",
                 "description": "",
                 "args": [],
-                "line": 10
+                "line": 11
             },
-            "templateData": "<button [attr.is-pink]=\"pink\" [ngClass]=\"{'make-pink': pink}\" class=\"btn btn-primary\">{{label ? \"😎 \" + label : \"No Label provided 🧐\"}}</button>\n"
+            "templateData": "<button [className]=\"type ? 'btn btn-' + type : 'btn'\">\n  <ng-content></ng-content>{{label}}\n</button>\n"
         },
         {
             "name": "ComponentsComponent",
@@ -181,15 +190,15 @@
                 "defaultValue": "require.context('./', true, /\\.spec\\.ts$/)"
             },
             {
-                "name": "FancyBlueButton",
+                "name": "Default",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
                 "file": "stories/Button.stories.ts",
                 "type": "",
-                "defaultValue": "Template.bind({})"
+                "defaultValue": "() => ({\n  title: 'Botões',\n  component: ButtonComponent,\n  props: {\n    label: '',\n  },\n  argTypes: {\n    label: {control: 'text'},\n    // we need to override here since in Angular it could be null as well and therefore it would become an ambigious data type for storybook\n  },\n  template: `<pm-button>Botão</pm-button>`,\n})"
             },
             {
-                "name": "FancyPinkButton",
+                "name": "Primary",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
                 "file": "stories/Button.stories.ts",
@@ -209,7 +218,7 @@
                 "subtype": "variable",
                 "file": "stories/Button.stories.ts",
                 "type": "Story<ButtonComponent>",
-                "defaultValue": "(args: ButtonComponent) => ({\ncomponent: ButtonComponent,\nprops: args,\n})"
+                "defaultValue": "(args: ButtonComponent) => ({\n  component: ButtonComponent,\n  props: args,\n})"
             }
         ],
         "functions": [],
@@ -235,15 +244,15 @@
             ],
             "stories/Button.stories.ts": [
                 {
-                    "name": "FancyBlueButton",
+                    "name": "Default",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
                     "file": "stories/Button.stories.ts",
                     "type": "",
-                    "defaultValue": "Template.bind({})"
+                    "defaultValue": "() => ({\n  title: 'Botões',\n  component: ButtonComponent,\n  props: {\n    label: '',\n  },\n  argTypes: {\n    label: {control: 'text'},\n    // we need to override here since in Angular it could be null as well and therefore it would become an ambigious data type for storybook\n  },\n  template: `<pm-button>Botão</pm-button>`,\n})"
                 },
                 {
-                    "name": "FancyPinkButton",
+                    "name": "Primary",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
                     "file": "stories/Button.stories.ts",
@@ -256,7 +265,7 @@
                     "subtype": "variable",
                     "file": "stories/Button.stories.ts",
                     "type": "Story<ButtonComponent>",
-                    "defaultValue": "(args: ButtonComponent) => ({\ncomponent: ButtonComponent,\nprops: args,\n})"
+                    "defaultValue": "(args: ButtonComponent) => ({\n  component: ButtonComponent,\n  props: args,\n})"
                 }
             ]
         },
@@ -275,7 +284,7 @@
                 "linktype": "component",
                 "name": "ButtonComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/4",
+                "coverageCount": "0/5",
                 "status": "low"
             },
             {
@@ -321,7 +330,7 @@
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
-                "name": "FancyBlueButton",
+                "name": "Default",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
@@ -331,7 +340,7 @@
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
-                "name": "FancyPinkButton",
+                "name": "Primary",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
