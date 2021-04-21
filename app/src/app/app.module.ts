@@ -5,7 +5,6 @@ import {AppComponent} from './app.component';
 import {AppRoutingModule} from './app-routing.module';
 import {ButtonModule} from '../../../design-system/projects/components/src/lib/button/button.module';
 import {DraggableListModule} from '../../../design-system/projects/components/src/lib/draggable-list/draggable-list.module';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -13,7 +12,6 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
   ],
   imports: [
     BrowserModule,
-    BrowserAnimationsModule,
     AppRoutingModule,
     ButtonModule,
     DraggableListModule,

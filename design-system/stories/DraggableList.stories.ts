@@ -15,7 +15,6 @@ export default {
     }),
   ],
   argTypes: {
-    showIndex: {control: 'boolean'},
   }
 } as Meta;
 
@@ -23,9 +22,7 @@ const Template: Story<DraggableListComponent> = (args: DraggableListComponent) =
   component: DraggableListComponent,
   props: args,
   template: `
-    <pm-draggable-list
-        [showIndex]="true"
-    >
+    <pm-draggable-list>
       conteudo
     </pm-draggable-list>`
 });
@@ -33,8 +30,3 @@ const Template: Story<DraggableListComponent> = (args: DraggableListComponent) =
 export const ExampleList = Template.bind({});
 ExampleList.args = {
 };
-
-// export const ExampleList2 = Template.bind({});
-// ExampleList2.args = {
-//   showIndex: false
-// };
