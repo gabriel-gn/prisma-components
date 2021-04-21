@@ -8,6 +8,7 @@ import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 })
 export class DraggableListComponent {
 
+  @Input('showIndex') showIndex = true;
   @Input('itemList') itemList: any[] = [
     '0',
     '1',
@@ -22,6 +23,14 @@ export class DraggableListComponent {
   ];
 
   constructor() {
+  }
+
+  public getItemList(): any[] {
+    return this.itemList;
+  }
+
+  public setItemList(itemList: any[]): void {
+    this.itemList = itemList;
   }
 
   /**
