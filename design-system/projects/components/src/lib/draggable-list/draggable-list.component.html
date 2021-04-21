@@ -36,7 +36,7 @@
 </div>
 
 <ng-template #contextActions let-item>
-  <mat-option *ngFor="let action of actions" (click)="action.method(item)">{{action.name}}</mat-option>
+  <mat-option *ngFor="let action of actions" (click)="action.method(item)">{{formatItemStringParameters(action.name, item)}}</mat-option>
 </ng-template>
 
 <ng-template #contextMenu let-item>

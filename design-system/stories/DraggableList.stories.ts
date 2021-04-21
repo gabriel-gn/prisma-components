@@ -33,6 +33,19 @@ const Template: Story<DraggableListComponent> = (args: DraggableListComponent) =
 export const ExampleList = Template.bind({});
 ExampleList.args = {
   showIndex: true,
+  itemActionLabel: 'Ações {name}',
+  itemMainLabel: '{name} - {value} (nome - valor)',
+  itemSubLabel: '{value} (valor)',
+  actions: [
+    {
+      name: 'Log Nome {name}',
+      method: (item: any) => console.log(item.name)
+    },
+    {
+      name: 'Log Valor',
+      method: (item: any) => console.log(item.value)
+    }
+  ],
   itemList: [
     {name: '0', value: 10},
     {name: '1', value: 111},
@@ -47,8 +60,17 @@ ExampleList.args = {
   ]
 };
 
-export const NoIndexList = Template.bind({});
-ExampleList.args = {
+export const NoIndexStringList = Template.bind({});
+NoIndexStringList.args = {
   showIndex: false,
-  itemList: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+  itemActionLabel: 'Ações {this}',
+  itemMainLabel: '{this} (string)',
+  itemSubLabel: 'sublabel {this}',
+  actions: [
+    {
+      name: 'Logar',
+      method: (item: any) => console.log(item)
+    }
+  ],
+  itemList: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
 };

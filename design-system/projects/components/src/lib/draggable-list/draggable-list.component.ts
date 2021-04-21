@@ -15,19 +15,10 @@ export class DraggableListComponent {
 
   @Input('showIndex') showIndex = true;
   @Input('itemList') itemList: any[];
-  @Input('itemActionLabel') itemActionLabel = 'Ações {name}';
-  @Input('itemMainLabel') itemMainLabel = '{name} - {value}';
-  @Input('itemSubLabel') itemSubLabel = '{name} - {value}';
-  @Input('actions') actions: any[] = [
-    {
-      name: '1st Method',
-      method: (implicit: any) => this.testMethod(implicit)
-    },
-    {
-      name: '2nd Method',
-      method: (implicit: any) => this.testMethod(implicit)
-    }
-  ];
+  @Input('itemActionLabel') itemActionLabel;
+  @Input('itemMainLabel') itemMainLabel;
+  @Input('itemSubLabel') itemSubLabel;
+  @Input('actions') actions: any[];
 
   sub: Subscription;
   overlayRef: OverlayRef | null;
@@ -37,10 +28,6 @@ export class DraggableListComponent {
     public overlay: Overlay,
     public viewContainerRef: ViewContainerRef,
   ) {
-  }
-
-  private testMethod(item: any): void {
-    console.log(item);
   }
 
   public getItemList(): any[] {
@@ -60,10 +47,16 @@ export class DraggableListComponent {
     moveItemInArray(this.itemList, event.previousIndex, event.currentIndex);
   }
 
-  public openContextMenu({ x, y }: MouseEvent, context): void {
+  /**
+   * Abre o context Menu
+   * @param x: posição x do mouse
+   * @param y: posição y do mouse
+   * @param context: valores que serão passados para o context menu
+   */
+  public openContextMenu({x, y}: MouseEvent, context): void {
     this.closeContextMenu();
     const positionStrategy = this.overlay.position()
-      .flexibleConnectedTo({ x, y })
+      .flexibleConnectedTo({x, y})
       .withPositions([
         {
           originX: 'end',
@@ -105,6 +98,7 @@ export class DraggableListComponent {
   /**
    * Caso o 'originalString' tenha '{algumacoisa}', é substituído por '${item[algumacoisa]}'
    * Fazendo assim ser possível strings dinânimcas de acordo com o objeto
+   * Caso o 'item' seja string, é possível ele ser dinâmico usando {this}
    */
   public formatItemStringParameters(originalString: string, item: any): string {
     if (typeof item !== 'string' && originalString.indexOf('{') !== -1) {
@@ -119,7 +113,7 @@ export class DraggableListComponent {
       }
       return result;
     } else {
-      return originalString;
+      return originalString.replace('{this}', item);
     }
   }
 
