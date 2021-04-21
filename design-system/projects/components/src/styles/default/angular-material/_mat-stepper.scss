@@ -1,0 +1,25 @@
+.mat-step-header {
+
+  max-height: 50px;
+  border-radius: 16px;
+
+  .mat-step-icon{
+    background-color: rgba(var(--color-primary-rgb), 0.5) !important;
+
+    &-selected {
+      background-color: var(--color-primary) !important;
+    }
+  }
+
+  &.cdk-focused,
+  &:hover {
+    max-height: 50px;
+    background-color: rgba(var(--color-primary-states-rgb), 0.07) !important;
+  }
+
+  .mat-step-label,
+  .mat-step-label-active {
+    color: var(--color-primary-states) !important;
+    font-weight: 500;
+  }
+}

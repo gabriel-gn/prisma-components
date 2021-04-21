@@ -1,0 +1,89 @@
+.mirror-x {
+  -moz-transform: scale(-1, 1);
+  -webkit-transform: scale(-1, 1);
+  -o-transform: scale(-1, 1);
+  -ms-transform: scale(-1, 1);
+  transform: scale(-1, 1);
+}
+
+.mirror-y {
+  -moz-transform: scale(1, -1);
+  -webkit-transform: scale(1, -1);
+  -o-transform: scale(1, -1);
+  -ms-transform: scale(1, -1);
+  transform: scale(1, -1);
+}
+
+.no-hover{
+  pointer-events: none;
+}
+
+.no-outline {
+  outline: none !important;
+}
+
+.no-shadow {
+  box-shadow: none !important;
+}
+
+.nav-pills .nav-link,
+.navbar,
+.nav-tabs .nav-link,
+.sidebar .nav a,
+.sidebar .nav a i,
+.animation-transition-general,
+.tag,
+.tag [data-role="remove"],
+.animation-transition-general {
+  @include transition(300ms, ease 0s);
+}
+
+//transition for dropdown caret
+.dropdown-toggle:after,
+.bootstrap-switch-label:before,
+.caret {
+  @include transition(300ms, ease 0s);
+}
+
+.dropdown-toggle[aria-expanded="true"]:after,
+.mat-focused .mat-select-arrow,
+a[data-toggle="collapse"][aria-expanded="true"] .caret,
+.card-collapse .card a[data-toggle="collapse"][aria-expanded="true"] i,
+.card-collapse .card a[data-toggle="collapse"].expanded i {
+  @include rotate-180();
+}
+
+.dropdown-toggle::after,
+.caret {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin-left: 2px;
+  vertical-align: middle;
+  border-top: 5px dashed;
+  border-right: 5px solid transparent;
+  border-left: 5px solid transparent;
+  align-self: center;
+}
+
+.cdk-overlay-container {
+  z-index: 9999;
+}
+
+.cdk-global-scrollblock {
+  overflow-y: hidden !important;
+  position: static !important;
+  width: initial !important;
+}
+
+.stl-controls-container {
+  align-items: center;
+  background-color: var(--color-primary);
+  border-radius: 0px 50px 50px 0px;
+  color: #fff;
+  font-weight: bold;
+
+  .card-body {
+    background-color: #F9FBFD !important;
+  }
+}

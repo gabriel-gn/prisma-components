@@ -1,0 +1,33 @@
+label {
+  color: var(--color-default-pale);
+  align-self: center;
+}
+
+.top-label {
+  margin-bottom: 0.2rem;
+  margin-top: 0.8rem;
+}
+
+.inline-label {
+  margin: 0px;
+  align-self: center;
+}
+
+.forgot-password-label {
+  @extend .small;
+  margin: 0;
+  align-self: center;
+  cursor: pointer;
+}
+
+.sub-label {
+  color: var(--color-default-pale);
+  font-size: 0.9em;
+
+  &-alt {
+    color: var(--color-primary);
+    font-weight: bold;
+    cursor: pointer;
+    outline: none;
+  }
+}

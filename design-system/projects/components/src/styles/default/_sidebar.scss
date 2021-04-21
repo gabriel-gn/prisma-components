@@ -1,0 +1,328 @@
+/*******************************
+*   SIDEBAR GERAL
+********************************/
+
+$sidebar-content-padding-right: 20px;
+$main-link-margin-top: 25px;
+$sub-link-margin-top: 20px;
+
+.wrapper {
+  position: relative;
+  top: 0;
+  height: 100vh;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  height: 100%;
+  bottom: 0;
+  width: 250px;
+  left: 0;
+  z-index: 999;
+  background-color: var(--color-default);
+
+  .sidebar-mini-centralizer {
+    min-width: var(--sidebar-mini-width) !important;
+    width: var(--sidebar-mini-width) !important;
+    display: flex !important;
+    justify-content: center;
+    align-self: center !important;
+    height: 100%;
+
+    > {
+      align-self: center !important;
+    }
+  }
+
+  .logo-img {
+    width: 42px;
+    max-height: 42px;
+
+    img {
+      width: 42px;
+      top: 16px;
+      left: 18px;
+      position: absolute;
+    }
+  }
+
+  .sidebar-content {
+    position: relative;
+    background-color: var(--color-default);
+    height: 100%;
+    overflow: hidden;
+    z-index: 4;
+
+    > * {
+      padding-right: $sidebar-content-padding-right !important;
+    }
+  }
+
+  .navbar-minimize {
+    position: absolute;
+    right: 20px;
+    top: 2px;
+    opacity: 1;
+  }
+
+  .sidebar-nav {
+    padding: 0px;
+    display: block;
+    transition: 0.3s;
+
+    .user a *,
+    a {
+      &:first-child {
+        margin-top: $main-link-margin-top;
+      }
+
+      &.sub {
+        margin-top: $sub-link-margin-top;
+      }
+
+      color: #FFFFFF;
+      text-decoration: none;
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-weight: 500;
+      opacity: 0.7;
+      display: flex;
+
+      > {
+        align-self: center;
+      }
+
+      &:hover {
+        color: #FFFFFF;
+      }
+    }
+
+    .collapse,
+    .collapsing {
+      .nav {
+        margin-top: 0;
+      }
+    }
+
+    p {
+      margin: 0;
+      white-space: nowrap;
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+
+      > {
+        align-self: center;
+      }
+    }
+
+    a:not(.sub) {
+      p {
+        font-size: 14px;
+        font-weight: 700;
+        text-transform: uppercase;
+      }
+    }
+
+    i {
+      font-size: 24px;
+      float: left;
+      line-height: 30px;
+      width: 34px;
+      text-align: center;
+      color: #ffffff;
+      position: relative;
+    }
+
+    ul {
+      margin: 0px;
+    }
+
+    li {
+
+      &.active > a,
+      &.active > a > i {
+        opacity: 1;
+        color: var(--color-primary) !important;
+      }
+
+      a:hover {
+        //transition: 0.3s;
+        opacity: 1;
+
+        * {
+          color: var(--color-primary);
+        }
+      }
+
+    }
+
+  }
+
+  .logo {
+    position: relative;
+    z-index: 4;
+    height: 64px;
+    display: flex;
+
+    * {
+      align-self: center;
+    }
+
+    .logo-mini {
+      // opacity: 0;
+      float: left;
+      min-width: 30px;
+      width: 30px;
+      text-align: center;
+    }
+
+    &:after { // divisória entre logo
+      content: '';
+      position: absolute;
+      bottom: 0;
+      right: 0px;
+      height: 1px;
+      width: 100%;
+      background-color: rgba(255, 255, 255, 0.3);
+    }
+
+    p {
+      float: left;
+      font-size: 20px;
+      margin: 10px 10px;
+      color: #FFFFFF;
+      line-height: 20px;
+    }
+
+    .logo-text {
+      //text-transform: uppercase;
+      display: block;
+      white-space: nowrap;
+      font-size: 20px;
+      color: #FFFFFF;
+      text-decoration: none;
+      font-weight: 700;
+      line-height: 30px;
+      overflow: hidden;
+    }
+  }
+
+  .user {
+    padding: 20px 0px;
+    position: relative;
+
+    &:after { // divisória entre user
+      content: '';
+      position: absolute;
+      bottom: 0;
+      right: 0px;
+      height: 1px;
+      width: 100%;
+      background-color: rgba(255, 255, 255, .3);
+    }
+
+    .user-photo {
+      overflow: hidden;
+      float: left;
+      z-index: 5;
+      border-radius: 50%;
+      display: flex;
+
+      img {
+        align-self: center;
+        width: 100%;
+        min-width: 34px !important;
+        min-height: 34px !important;
+        max-height: 34px;
+        max-width: 34px !important;
+      }
+    }
+
+    a {
+      color: #FFFFFF;
+      text-decoration: none;
+      white-space: nowrap;
+      width: 100%;
+      display: flex;
+      transition: 0.2s;
+
+      &:hover {
+        opacity: 1;
+
+        * {
+          color: var(--color-primary);
+        }
+      }
+
+      p {
+        align-self: center;
+      }
+    }
+  }
+}
+
+.sidebar,
+.sidebar-wrapper {
+  -webkit-transition-property: top, bottom, width;
+  transition-property: top, bottom, width;
+  -webkit-transition-duration: .2s, .2s, .2s;
+  transition-duration: .2s, .2s, .2s;
+  -webkit-transition-timing-function: linear, linear, ease;
+  transition-timing-function: linear, linear, ease;
+  -webkit-overflow-scrolling: touch;
+}
+
+.mat-drawer-backdrop.mat-drawer-shown {
+  background-color: transparent;
+}
+
+.mat-drawer:not(.mat-drawer-side) {
+  box-shadow: none;
+}
+
+/*******************************
+*   SIDEBAR COLLAPSADA
+********************************/
+
+@media (min-width: 768px) {
+
+  mat-sidenav.mat-drawer-opened {
+    visibility: visible !important;
+    transform: translate3d(0, 0, 0) !important;
+    min-width: var(--sidebar-mini-width);
+  }
+
+  mat-sidenav:not(.mat-drawer-opened) {
+    transform: translate3d(0, 0, 0) !important;
+    visibility: visible !important;
+    width: var(--sidebar-mini-width) !important;
+    overflow: hidden;
+    transition: width 0.2s;
+
+    &:hover {
+      width: var(--sidebar-width) !important;
+    }
+  }
+
+  .sidenav-mini-padding {
+    margin-left: var(--sidebar-mini-width);
+  }
+
+  .mat-drawer-container {
+    background-color: var(--bg-default);
+  }
+
+  .mat-drawer-content.mat-sidenav-content{
+    transition-property: none !important;
+  }
+
+  //.mat-drawer-transition .mat-drawer-content {
+  //  transition-property: none !important;
+  //}
+}
+
+.mat-drawer-inner-container {
+  overflow: hidden !important;
+}

@@ -1,0 +1,31 @@
+.auth-main-panel {
+  background: var(--gradient-default-top);
+  padding-top: var(--navbar-height);
+  display: flex;
+  flex-wrap: wrap;
+  height: 100%;
+  overflow-y: auto;
+
+  img {
+    @extend .img-fluid;
+    object-fit: cover;
+  }
+}
+
+.auth-form {
+  max-width: 350px;
+  margin: 0 auto;
+}
+
+.auth-panel {
+
+  .default-label {
+    color: var(--color-default-pale);
+  }
+
+  h5 {
+    color: var(--color-primary);
+    font-weight: 500;
+    font-size: 1.6em;
+  }
+}

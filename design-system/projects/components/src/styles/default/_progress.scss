@@ -1,0 +1,15 @@
+@import "variables";
+
+.progress {
+  background-color: var(--color-light);
+  border-radius: 5px;
+  box-shadow: none;
+  height: 4px;
+}
+
+@each $key, $val in $main-colors {
+  $color-name: str-slice($key, 7, str-length($key));  // remove o "color-" que tem no nome das cores em main-colors
+  .progress-bar-#{$color-name} {  // equivalente a ".btn-primary" de acordo com o nome das cores em main-colors
+    background-color: var(--color-#{$color-name});
+  }
+}

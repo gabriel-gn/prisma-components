@@ -1,0 +1,78 @@
+@import 'variables';
+
+* {
+  font-family: var(--font-default);
+  font-weight: 500;
+}
+
+.font-baloo {
+  font-family: "Baloo 2" !important;
+}
+
+@each $key, $val in $main-colors {
+  .#{$key} {
+    color: var(--#{$key}) !important;
+  }
+}
+
+.color-gray-light {color: var(--color-gray-light) !important;}
+.color-gray-medium {color: var(--color-gray-medium) !important;}
+.color-gray-dark {color: var(--color-gray-dark) !important;}
+
+.text-overflow {
+  // PARA SER UTILIZADO NA DIV!!
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.disable-text-selection {
+  user-select: none; /* supported by Chrome and Opera */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+}
+
+.filler-dashed {
+  left: 0;
+  right: 0;
+  border-bottom: 1px dashed rgba(var(--color-default-pale-rgb), 0.5);
+  height: 50%;
+  width: 100%;
+  padding-top: 10px;
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.routerLinkText {
+  outline: none;
+  box-shadow: none;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.filler-solid {
+  width: 100%;
+  border-bottom: 1px solid rgba(var(--color-default-pale-rgb), 0.5);
+  align-self: center;
+
+  &-md {
+    @extend .filler-solid;
+    border-bottom-width: 2px;
+  }
+}
+
+.form-hint-text {
+  font-size: .8571em;
+  margin-bottom: 5px;
+  margin-top: 3px;
+  color: var(--color-gray-medium);
+}
+
+.form-error-text {
+  font-size: .8571em;
+  margin-bottom: 5px;
+  margin-top: 3px;
+  color: #ef8157;
+}

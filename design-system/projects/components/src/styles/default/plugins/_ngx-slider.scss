@@ -1,0 +1,28 @@
+.ngx-slider .ngx-slider-tick-legend {
+  max-width: 200px !important;
+}
+
+.ngx-slider-pointer {
+  outline: none !important;
+  width: 25px !important;
+  height: 25px !important;
+  top: -10px !important;
+}
+
+.ngx-slider-tick,
+.ngx-slider .ngx-slider-bar {
+  background: #d5f0f1 !important;
+}
+
+.ngx-slider-tick.ngx-slider-selected,
+.ngx-slider-pointer,
+.ngx-slider .ngx-slider-selection {
+  background: var(--color-primary-states) !important;
+}
+
+.ngx-slider .ngx-slider-pointer:after,
+.ngx-slider-active:after {
+  background: #fff !important;
+  top: 9px !important;
+  left: 9px !important;
+}

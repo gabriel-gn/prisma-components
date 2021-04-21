@@ -1,0 +1,70 @@
+.mat-dialog-container {
+  border-radius: var(--border-radius-lg) !important;
+  border: 2px solid var(--color-default);
+  border: none;
+  max-height: 100% !important;
+  overflow: hidden !important;
+  padding: 24px 0px 0px 0px !important;
+
+  .dialog-header {
+    font-weight: 500;
+    margin: -1em -1em 0px -1em;
+    padding: 15px;
+    text-align: center;
+    font-size: 1.5em;
+    background-color: var(--color-default);
+    color: white;
+
+    textarea,
+    input {
+      font-size: 1.0em;
+      font-weight: 500;
+      color: white;
+      background-color: transparent;
+      border: none;
+      text-align-last: center;
+      padding: 0px;
+    }
+  }
+
+  .dialog-description {
+    @extend .dialog-header;
+    background-color: var(--bg-pale);
+    margin-left: -24px;
+    margin-right: -24px;
+    margin-top: 0px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    text-align-last: left;
+
+    textarea {
+      color: var(--color-default);
+      font-size: 15px;
+      text-align-last: left;
+      border: 1px solid var(--color-gray-medium);
+      padding: 5px;
+      min-height: 70px;
+    }
+
+    label {
+      color: var(--color-default);
+      margin-bottom: 5px;
+    }
+  }
+
+  .dialog-body {
+    height: calc(100% - 33px);
+    overflow: auto;
+    padding: 1.5rem;
+  }
+
+  .dialog-body-content {
+    height: calc(100% - 60px);  // 60px é a altura do container de botões
+    max-height: calc(100% - 60px);  // 60px é a altura do container de botões
+  }
+
+}
+
+//.cdk-overlay-container {
+//  z-index: 1000 !important;
+//}

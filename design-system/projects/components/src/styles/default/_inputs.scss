@@ -1,0 +1,55 @@
+@import 'mixins/misc';
+
+.form-control {
+  background-color: #FFFFFF;
+  border: 1px solid var(--color-gray-medium);
+  border-radius: var(--border-radius-md);
+  color: var(--color-font-default);
+  line-height: normal;
+  height: auto;
+  font-size: 15px;
+  @include box-shadow(none);
+
+  &::placeholder {
+    color: var(--color-gray-medium)
+  }
+
+
+  &:focus {
+    border: 1px solid var(--color-primary);
+    @include box-shadow(none);
+    outline: 0 !important;
+    color: var(--color-default);
+  }
+
+  &:read-only {
+    border: none;
+    color: var(--color-font-default);
+    background-color: transparent;
+    cursor: default;
+    padding: 0px;
+    border-radius: 0px;
+  }
+
+  &:disabled {
+    border: 1px solid var(--color-gray-medium);
+    background-color: var(--bg-disabled);
+    opacity: var(--disabled-opacity);
+    cursor: not-allowed;
+    padding: 0.375rem 0.75rem;
+  }
+}
+
+.input-group-text {
+  padding: 0px 0.75rem;
+  border-radius: var(--border-radius-md);
+}
+
+/** Esse aqui é pra sumir com o spinner quando o input type é number **/
+input[type=number],
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+  -webkit-appearance: none;
+  -moz-appearance: textfield; /* Firefox */
+}

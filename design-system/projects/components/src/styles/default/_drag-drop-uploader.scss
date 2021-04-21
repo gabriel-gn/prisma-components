@@ -1,0 +1,48 @@
+.uploadfilecontainer {
+  width: 100%;
+  height: 100%;
+  border: var(--border-width-md) dashed var(--color-primary-states);
+  border-radius: var(--border-radius-md);
+  text-align: center;
+  display: flex;
+  justify-content: center;
+
+  div {
+    align-self: center
+  }
+
+  p {
+    font-size: 1.5rem;
+    margin: 0px;
+    color: var(--color-primary-states);
+    font-weight: 600;
+
+    &.secondary {
+      font-size: 1rem;
+      color: var(--color-default);
+      font-weight: 500;
+    }
+  }
+}
+
+.uploadfilecontainer:hover {
+  cursor: pointer;
+  background-color: rgba(var(--color-primary-rgb), 0.35) !important;
+}
+
+.big-gradient-icon {
+  @extend .uploadfilecontainer;
+  border: none;
+
+  i {
+    font-size: 5rem;
+    background:-moz-linear-gradient(top, var(--color-primary) 0%, var(--color-primary-states) 100%);
+    background: -webkit-linear-gradient(top, var(--color-primary) 0%, var(--color-primary-states) 100%);
+    background: linear-gradient(to bottom, var(--color-primary) 0%, var(--color-primary-states) 100%);
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color:transparent;
+    cursor: pointer;
+  }
+}
