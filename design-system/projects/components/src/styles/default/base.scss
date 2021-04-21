@@ -6,8 +6,79 @@
 @import "mixins/buttons";
 @import "mixins/cursors";
 
+@import "plugins/animate-css-slim";
+@import "plugins/sweetalert2";
+@import 'plugins/ngx-slider';
+@import 'plugins/ngx-gallery';
+@import 'plugins/snotify/snotify';
+
+@import "angular-material/mat-dialog";
+@import "angular-material/mat-form";
+@import "angular-material/mat-menu";
+@import "angular-material/mat-slide-toggle";
+@import "angular-material/mat-stepper";
+@import "angular-material/mat-tab";
+@import "angular-material/mat-select";
+
+@import "drag-drop-uploader";
+
+@import "typography";
 @import "cursors";
 @import "buttons";
-@import "borders";
+@import "sidebar";
+@import "navbar";
+@import "tooltip";
+@import "progress";
 @import "cards";
+@import "borders";
+@import "checkboxes";
+@import "inputs";
+@import "labels";
+@import "misc";
+@import "chat";
+@import "card-model-collection";
 @import "tables-visual";
+@import "auth-layout";
+@import "accordion";
+@import "document";
+@import "variables";
+@import "css-variables";
+
+@import "mixins/misc";
+@import "mixins/buttons";
+@import "mixins/cursors";
+
+@import "plugins/animate-css-slim";
+@import "plugins/sweetalert2";
+@import 'plugins/ngx-slider';
+@import 'plugins/ngx-gallery';
+@import 'plugins/snotify/snotify';
+
+@import "angular-material/mat-dialog";
+@import "angular-material/mat-form";
+@import "angular-material/mat-menu";
+@import "angular-material/mat-slide-toggle";
+@import "angular-material/mat-stepper";
+@import "angular-material/mat-tab";
+@import "angular-material/mat-select";
+
+@import "drag-drop-uploader";
+
+@import "typography";
+@import "cursors";
+@import "buttons";
+@import "sidebar";
+@import "navbar";
+@import "tooltip";
+@import "progress";
+@import "cards";
+@import "borders";
+@import "checkboxes";
+@import "inputs";
+@import "labels";
+@import "misc";
+@import "chat";
+@import "card-model-collection";
+@import "tables-visual";
+@import "auth-layout";
+@import "accordion";

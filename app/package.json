@@ -7,8 +7,7 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e",
-    "install": "npm install ../design-system/projects/components"
+    "e2e": "ng e2e"
   },
   "private": true,
   "dependencies": {
@@ -20,10 +19,14 @@
     "@angular/platform-browser": "~11.2.10",
     "@angular/platform-browser-dynamic": "~11.2.10",
     "@angular/router": "~11.2.10",
-    "@mprisma/components": "file:../design-system/projects/components",
+    "@mprisma/components": "^0.0.4",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
-    "zone.js": "~0.11.3"
+    "zone.js": "~0.11.3",
+    "@angular/cdk": "^11.2.9",
+    "@angular/material": "^11.2.9",
+    "bootstrap": "^5.0.0-beta3",
+    "@popperjs/core": "^2.9.1"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.1102.9",

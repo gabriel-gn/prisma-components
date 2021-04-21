@@ -1,5 +1,10 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, TemplateRef, ViewChild, ViewContainerRef} from '@angular/core';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+
+import {TemplatePortal} from '@angular/cdk/portal';
+import {fromEvent, Subscription} from 'rxjs';
+import {filter, take} from 'rxjs/operators';
+import {Overlay, OverlayRef} from '@angular/cdk/overlay';
 
 @Component({
   selector: 'pm-draggable-list',
@@ -22,7 +27,14 @@ export class DraggableListComponent {
     '9',
   ];
 
-  constructor() {
+  sub: Subscription;
+  overlayRef: OverlayRef | null;
+  @ViewChild('contextMenu') contextMenu: TemplateRef<any>;
+
+  constructor(
+    public overlay: Overlay,
+    public viewContainerRef: ViewContainerRef,
+  ) {
   }
 
   public getItemList(): any[] {
@@ -40,6 +52,45 @@ export class DraggableListComponent {
    */
   public drop(event: CdkDragDrop<string[]>): void {
     moveItemInArray(this.itemList, event.previousIndex, event.currentIndex);
+  }
+
+  public openContextMenu({ x, y }: MouseEvent, context): void {
+    this.closeContextMenu();
+    const positionStrategy = this.overlay.position()
+      .flexibleConnectedTo({ x, y })
+      .withPositions([
+        {
+          originX: 'end',
+          originY: 'bottom',
+          overlayX: 'end',
+          overlayY: 'top',
+        }
+      ]);
+
+    this.overlayRef = this.overlay.create({
+      positionStrategy,
+      scrollStrategy: this.overlay.scrollStrategies.close()
+    });
+
+    this.overlayRef.attach(new TemplatePortal(this.contextMenu, this.viewContainerRef, context));
+
+    this.sub = fromEvent<MouseEvent>(document, 'click')
+      .pipe(
+        filter(event => {
+          const clickTarget = event.target as HTMLElement;
+          return !!this.overlayRef && !this.overlayRef.overlayElement.contains(clickTarget);
+        }),
+        take(1)
+      ).subscribe(() => this.closeContextMenu())
+  }
+
+  public closeContextMenu(): void {
+    // tslint:disable-next-line:no-unused-expression
+    this.sub && this.sub.unsubscribe();
+    if (this.overlayRef) {
+      this.overlayRef.dispose();
+      this.overlayRef = null;
+    }
   }
 
 }
