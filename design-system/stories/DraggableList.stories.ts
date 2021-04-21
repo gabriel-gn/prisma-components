@@ -16,6 +16,11 @@ export default {
   ],
   argTypes: {
     showIndex: {control: 'boolean'},
+    itemActionLabel: {control: 'text'},
+    itemMainLabel: {control: 'text'},
+    itemSubLabel: {control: 'text'},
+    // actions: {control: 'text'},
+    itemList: {control: 'array'},
   }
 } as Meta;
 
@@ -25,6 +30,11 @@ const Template: Story<DraggableListComponent> = (args: DraggableListComponent) =
   template: `
     <pm-draggable-list
         [showIndex]="showIndex"
+        [itemActionLabel]="itemActionLabel"
+        [itemMainLabel]="itemMainLabel"
+        [itemSubLabel]="itemSubLabel"
+        [actions]="actions"
+        [itemList]="itemList"
     >
       conteudo
     </pm-draggable-list>`
@@ -68,7 +78,7 @@ NoIndexStringList.args = {
   itemSubLabel: 'sublabel {this}',
   actions: [
     {
-      name: 'Logar',
+      name: 'Log ({this})',
       method: (item: any) => console.log(item)
     }
   ],
