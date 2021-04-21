@@ -14,17 +14,19 @@ import {Overlay, OverlayRef} from '@angular/cdk/overlay';
 export class DraggableListComponent {
 
   @Input('showIndex') showIndex = true;
-  @Input('itemList') itemList: any[] = [
-    '0',
-    '1',
-    '2',
-    '3',
-    '4',
-    '5',
-    '6',
-    '7',
-    '8',
-    '9',
+  @Input('itemList') itemList: any[];
+  @Input('itemActionLabel') itemActionLabel = 'Ações {name}';
+  @Input('itemMainLabel') itemMainLabel = '{name} - {value}';
+  @Input('itemSubLabel') itemSubLabel = '{name} - {value}';
+  @Input('actions') actions: any[] = [
+    {
+      name: '1st Method',
+      method: (implicit: any) => this.testMethod(implicit)
+    },
+    {
+      name: '2nd Method',
+      method: (implicit: any) => this.testMethod(implicit)
+    }
   ];
 
   sub: Subscription;
@@ -35,6 +37,10 @@ export class DraggableListComponent {
     public overlay: Overlay,
     public viewContainerRef: ViewContainerRef,
   ) {
+  }
+
+  private testMethod(item: any): void {
+    console.log(item);
   }
 
   public getItemList(): any[] {
@@ -81,7 +87,7 @@ export class DraggableListComponent {
           return !!this.overlayRef && !this.overlayRef.overlayElement.contains(clickTarget);
         }),
         take(1)
-      ).subscribe(() => this.closeContextMenu())
+      ).subscribe(() => this.closeContextMenu());
   }
 
   /**
@@ -95,5 +101,27 @@ export class DraggableListComponent {
       this.overlayRef = null;
     }
   }
+
+  /**
+   * Caso o 'originalString' tenha '{algumacoisa}', é substituído por '${item[algumacoisa]}'
+   * Fazendo assim ser possível strings dinânimcas de acordo com o objeto
+   */
+  public formatItemStringParameters(originalString: string, item: any): string {
+    if (typeof item !== 'string' && originalString.indexOf('{') !== -1) {
+      let result = '';
+      for (const str of originalString.split('{')) {
+        if (str.indexOf('}') !== -1) {
+          result += `${item[str.substring(0, str.indexOf('}'))]}`;
+          result += str.substring(str.indexOf('}') + 1, str.length);
+        } else {
+          result += str;
+        }
+      }
+      return result;
+    } else {
+      return originalString;
+    }
+  }
+
 
 }

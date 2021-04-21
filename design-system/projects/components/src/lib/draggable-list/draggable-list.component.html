@@ -6,7 +6,7 @@
   </div>
   <div (cdkDropListDropped)="drop($event)" cdkDropList class="table-item-container w-100">
     <div *ngFor="let item of itemList, let i = index;" cdkDrag cdkDragBoundary=".table-item-container"
-         class="draggable-item" (contextmenu)="openContextMenu($event, {}); $event.preventDefault();"
+         class="draggable-item" (contextmenu)="openContextMenu($event, {$implicit: item}); $event.preventDefault();"
          style="cursor: move;">
       <div *cdkDragPlaceholder class="draggable-placeholder"></div>
       <div class="d-flex w-100">
@@ -18,17 +18,16 @@
           <i class="uil uil-lg uil-draggabledots"></i>
         </div>
         <div class="w-100 align-self-center text-overflow">
-          <p class="m-0">Item {{ item }}</p>
-          <p class="m-0 sub-p">Subitem {{ item }}</p>
+          <p class="m-0">{{ formatItemStringParameters(itemMainLabel, item) }}</p>
+          <p class="m-0 sub-p">{{ formatItemStringParameters(itemSubLabel, item) }}</p>
         </div>
         <div class="d-flex ms-2">
           <button (click)="profileActionsSelect.toggle()" class="btn btn-light btn-icon btn-sm ms-2">
             <i class="uil uil-md uil-ellipsis-h"></i>
           </button>
           <mat-select #profileActionsSelect class="mat-select-btn-sm">
-            <mat-option>Editar perfil</mat-option>
-            <mat-option>Duplicar perfil</mat-option>
-            <mat-option>Apagar perfil</mat-option>
+            <mat-option [hidden]="true"></mat-option>
+            <ng-container *ngTemplateOutlet="contextActions; context: {$implicit: item}"></ng-container>
           </mat-select>
         </div>
       </div>
@@ -36,18 +35,14 @@
   </div>
 </div>
 
+<ng-template #contextActions let-item>
+  <mat-option *ngFor="let action of actions" (click)="action.method(item)">{{action.name}}</mat-option>
+</ng-template>
+
 <ng-template #contextMenu let-item>
   <div class="mat-menu-panel">
-    <mat-optgroup [label]="'-- ' + item?.name + ' --'">
-      <mat-option>
-        Editar perfil
-      </mat-option>
-      <mat-option>
-        Duplicar perfil
-      </mat-option>
-      <mat-option>
-        Apagar perfil
-      </mat-option>
+    <mat-optgroup [label]="formatItemStringParameters(itemActionLabel, item)">
+      <ng-container *ngTemplateOutlet="contextActions; context: {$implicit: item}"></ng-container>
     </mat-optgroup>
   </div>
 </ng-template>
