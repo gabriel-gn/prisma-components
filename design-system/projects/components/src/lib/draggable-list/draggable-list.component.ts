@@ -84,6 +84,9 @@ export class DraggableListComponent {
       ).subscribe(() => this.closeContextMenu())
   }
 
+  /**
+   * Fecha o context menu
+   */
   public closeContextMenu(): void {
     // tslint:disable-next-line:no-unused-expression
     this.sub && this.sub.unsubscribe();
