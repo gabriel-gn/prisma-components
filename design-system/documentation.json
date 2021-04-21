@@ -138,7 +138,7 @@
         },
         {
             "name": "DraggableListComponent",
-            "id": "component-DraggableListComponent-304877169cd7ab351d67706e9e976d89",
+            "id": "component-DraggableListComponent-8d014a7c19ac98a095923e1fd2d670fd",
             "file": "projects/components/src/lib/draggable-list/draggable-list.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -156,23 +156,23 @@
             "viewProviders": [],
             "inputsClass": [],
             "outputsClass": [],
-            "propertiesClass": [],
-            "methodsClass": [
+            "propertiesClass": [
                 {
-                    "name": "ngOnInit",
-                    "args": [],
+                    "name": "itemList",
+                    "defaultValue": "[\n    '0',\n    '1',\n    '2',\n    '3',\n    '4',\n    '5',\n    '6',\n    '7',\n    '8',\n    '9',\n  ]",
+                    "type": "[]",
                     "optional": false,
-                    "returnType": "void",
-                    "typeParameters": [],
-                    "line": 12
+                    "description": "",
+                    "line": 10
                 }
             ],
+            "methodsClass": [],
             "hostBindings": [],
             "hostListeners": [],
             "description": "",
             "rawdescription": "",
             "type": "component",
-            "sourceCode": "import { Component, OnInit } from '@angular/core';\n\n@Component({\n  selector: 'pm-draggable-list',\n  templateUrl: './draggable-list.component.html',\n  styleUrls: ['./draggable-list.component.scss']\n})\nexport class DraggableListComponent implements OnInit {\n\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n\n}\n",
+            "sourceCode": "import {Component} from '@angular/core';\n\n@Component({\n  selector: 'pm-draggable-list',\n  templateUrl: './draggable-list.component.html',\n  styleUrls: ['./draggable-list.component.scss']\n})\nexport class DraggableListComponent {\n\n  itemList = [\n    '0',\n    '1',\n    '2',\n    '3',\n    '4',\n    '5',\n    '6',\n    '7',\n    '8',\n    '9',\n  ];\n\n  constructor() {\n  }\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -185,12 +185,9 @@
                 "name": "constructor",
                 "description": "",
                 "args": [],
-                "line": 8
+                "line": 21
             },
-            "implements": [
-                "OnInit"
-            ],
-            "templateData": "<p>draggable-list works!</p>\n"
+            "templateData": "<div #draggableList>\n\n  <div class=\"d-flex w-100\">\n    <div class=\"draggable-item-index-container\">\n      <div *ngFor=\"let item of itemList, let i = index;\" class=\"draggable-item-index\">\n        <p>{{ i + 1 }} {{ item }}</p>\n      </div>\n    </div>\n    <div cdkDropList class=\"table-item-container w-100\">\n      <div *ngFor=\"let item of itemList, let i = index;\" cdkDrag cdkDragBoundary=\".table-item-container\"\n           class=\"draggable-item\"\n           style=\"cursor: move;\">\n        <div *cdkDragPlaceholder class=\"draggable-placeholder\"></div>\n        <div class=\"d-flex w-100\">\n          <!-- if IsMobile -> para poder reordenar os perfis apenas pelo ícone -->\n          <div *ngIf=\"false\" cdkDragHandle class=\"move-icon-container\">\n            <i class=\"uil uil-lg uil-draggabledots\"></i>\n          </div>\n          <div *ngIf=\"true\" class=\"move-icon-container\">\n            <i class=\"uil uil-lg uil-draggabledots\"></i>\n          </div>\n          <div class=\"w-100 align-self-center text-overflow\">\n            <p class=\"m-0\">Item {{ item }}</p>\n            <p class=\"m-0 sub-p\">Subitem {{ item }}</p>\n          </div>\n          <div class=\"d-flex ml-2\">\n            <button class=\"btn btn-info btn-icon btn-sm\"\n                    title=\"Editar perfil 'C'\"><i class=\"uil uil-md uil-pen\"></i></button>\n            <button (click)=profileActionsSelect.open() class=\"btn btn-light btn-icon btn-sm ml-2\">\n              <i class=\"uil uil-md uil-ellipsis-h\"></i>\n              <mat-select #profileActionsSelect class=\"mat-select-btn-sm\">\n                <mat-option>\n                  Editar perfil\n                </mat-option>\n                <mat-option>\n                  Duplicar perfil\n                </mat-option>\n                <mat-option>\n                  Apagar perfil\n                </mat-option>\n              </mat-select>\n            </button>\n          </div>\n        </div>\n      </div>\n\n    </div>\n  </div>\n</div>\n\n<ng-template #contextMenu let-profile>\n  <div class=\"mat-menu-panel\">\n    <mat-optgroup [label]=\"'-- ' + profile?.name + ' --'\">\n      <mat-option>\n        Editar perfil\n      </mat-option>\n      <mat-option>\n        Duplicar perfil\n      </mat-option>\n      <mat-option>\n        Apagar perfil\n      </mat-option>\n    </mat-optgroup>\n  </div>\n</ng-template>\n"
         }
     ],
     "modules": [
@@ -376,7 +373,7 @@
                 "subtype": "variable",
                 "file": "stories/DraggableList.stories.ts",
                 "type": "Story<DraggableListComponent>",
-                "defaultValue": "(args: DraggableListComponent) => ({\n  component: DraggableListComponent,\n  props: args,\n  template: `\n    <pm-draggable-list>\n      Botão\n    </pm-button>`\n})"
+                "defaultValue": "(args: DraggableListComponent) => ({\n  component: DraggableListComponent,\n  props: args,\n  template: `\n    <pm-draggable-list>\n      conteudo\n    </pm-draggable-list>`\n})"
             }
         ],
         "functions": [],
@@ -614,7 +611,7 @@
                     "subtype": "variable",
                     "file": "stories/DraggableList.stories.ts",
                     "type": "Story<DraggableListComponent>",
-                    "defaultValue": "(args: DraggableListComponent) => ({\n  component: DraggableListComponent,\n  props: args,\n  template: `\n    <pm-draggable-list>\n      Botão\n    </pm-button>`\n})"
+                    "defaultValue": "(args: DraggableListComponent) => ({\n  component: DraggableListComponent,\n  props: args,\n  template: `\n    <pm-draggable-list>\n      conteudo\n    </pm-draggable-list>`\n})"
                 }
             ]
         },
