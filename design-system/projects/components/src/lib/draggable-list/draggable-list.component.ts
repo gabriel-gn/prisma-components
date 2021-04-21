@@ -1,4 +1,5 @@
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
+import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'pm-draggable-list',
@@ -7,7 +8,7 @@ import {Component} from '@angular/core';
 })
 export class DraggableListComponent {
 
-  itemList = [
+  @Input('itemList') itemList: any[] = [
     '0',
     '1',
     '2',
@@ -21,6 +22,15 @@ export class DraggableListComponent {
   ];
 
   constructor() {
+  }
+
+  /**
+   * Evento de drop do cdkDragDrop
+   * @param event: evento de drop
+   * @param profileList: lista a ser dropado
+   */
+  public drop(event: CdkDragDrop<string[]>): void {
+    moveItemInArray(this.itemList, event.previousIndex, event.currentIndex);
   }
 
 }

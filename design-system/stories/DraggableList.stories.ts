@@ -1,13 +1,17 @@
 import {Meta, moduleMetadata, Story} from '@storybook/angular';
 import {DraggableListComponent} from '../projects/components/src/lib/draggable-list/draggable-list.component';
 import {DraggableListModule} from '../projects/components/src/lib/draggable-list/draggable-list.module';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 export default {
   title: 'Prisma/Draggable List',
   component: DraggableListComponent,
   decorators: [
     moduleMetadata({
-      imports: [DraggableListModule],
+      imports: [
+        DraggableListModule,
+        BrowserAnimationsModule
+      ],
     }),
   ],
   argTypes: {
