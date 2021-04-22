@@ -16,10 +16,32 @@ $default-border-radius:   var(--border-radius-md) !default;
 
   &.rounded {
     border-radius: $default-border-radius !important;
+
+    .draggable-item {
+      &:first-child {
+        border-radius: $default-border-radius $default-border-radius 0 0;
+      }
+
+      &:last-child {
+        border-radius: 0 0 $default-border-radius $default-border-radius;
+        border: none;
+      }
+    }
   }
 
   &.rounded-right {
     border-radius: 0 $default-border-radius $default-border-radius 0 !important;
+
+    .draggable-item {
+      &:first-child {
+        border-radius: 0 $default-border-radius 0 0;
+      }
+
+      &:last-child {
+        border-radius: 0 0 $default-border-radius 0;
+        border: none;
+      }
+    }
   }
 
   .img-thumbnail {
@@ -95,15 +117,6 @@ $default-border-radius:   var(--border-radius-md) !default;
   font-size: 14px;
   max-height: $list-item-height;
   height: $list-item-height;
-
-  &:first-child {
-    border-radius: 0 $default-border-radius 0 0;
-  }
-
-  &:last-child {
-    border-radius: 0 0 $default-border-radius 0;
-    border: none;
-  }
 
   .sub-p {
     color: #c0c0c0;

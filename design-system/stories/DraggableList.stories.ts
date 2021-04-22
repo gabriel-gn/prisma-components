@@ -37,6 +37,8 @@ const Template: Story<DraggableListComponent> = (args: DraggableListComponent) =
         [actions]="actions"
         [itemList]="itemList"
         [roundedBorders]="roundedBorders"
+        [enableDragging]="enableDragging"
+        [enableSelection]="enableSelection"
     >
       conteudo
     </pm-draggable-list>`
@@ -70,7 +72,9 @@ ExampleList.args = {
     {name: '8', value: 888},
     {name: '9', value: 999},
   ],
-  roundedBorders: true
+  roundedBorders: true,
+  enableDragging: true,
+  enableSelection: true,
 };
 
 export const NoIndexStringList = Template.bind({});
@@ -86,5 +90,25 @@ NoIndexStringList.args = {
     }
   ],
   itemList: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
-  roundedBorders: true
+  roundedBorders: true,
+  enableDragging: true,
+  enableSelection: true,
+};
+
+export const disabledDragging = Template.bind({});
+disabledDragging.args = {
+  showIndex: false,
+  itemActionLabel: 'Ações {this}',
+  itemMainLabel: '{this} (string)',
+  itemSubLabel: 'sublabel {this}',
+  actions: [
+    {
+      name: 'Log ({this})',
+      method: (item: any) => console.log(item)
+    }
+  ],
+  itemList: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
+  roundedBorders: true,
+  enableDragging: false,
+  enableSelection: true,
 };

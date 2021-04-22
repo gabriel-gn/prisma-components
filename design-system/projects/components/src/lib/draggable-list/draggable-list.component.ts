@@ -1,4 +1,4 @@
-import {Component, Input, TemplateRef, ViewChild, ViewContainerRef} from '@angular/core';
+import {Component, EventEmitter, Input, Output, TemplateRef, ViewChild, ViewContainerRef} from '@angular/core';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 
 import {TemplatePortal} from '@angular/cdk/portal';
@@ -13,6 +13,11 @@ import {Overlay, OverlayRef} from '@angular/cdk/overlay';
 })
 export class DraggableListComponent {
 
+  @Input('enableDragging') enableDragging = true;
+  @Input('enableSelection') enableSelection = true;
+  @Output() onSelectedChange = new EventEmitter();
+  private selectedItem: any;
+
   @Input('showIndex') showIndex = true;
   @Input('itemList') itemList: any[];
   @Input('itemActionLabel') itemActionLabel;
@@ -21,7 +26,6 @@ export class DraggableListComponent {
   @Input('actions') actions: any[];
 
   @Input('roundedBorders') roundedBorders = true;
-
 
   sub: Subscription;
   overlayRef: OverlayRef | null;
@@ -41,13 +45,30 @@ export class DraggableListComponent {
     this.itemList = itemList;
   }
 
+  public getSelectedItem(): any {
+    return this.selectedItem;
+  }
+
+  /**
+   * Setta o novo item como selecionado
+   * @param item: item novo
+   */
+  public setSelectedItem(item: any): void {
+    if (this.enableSelection === true) {
+      this.selectedItem = item;
+      this.onSelectedChange.emit(item);
+    }
+  }
+
   /**
    * Evento de drop do cdkDragDrop
    * @param event: evento de drop
    * @param profileList: lista a ser dropado
    */
   public drop(event: CdkDragDrop<string[]>): void {
-    moveItemInArray(this.itemList, event.previousIndex, event.currentIndex);
+    if (this.enableDragging) {
+      moveItemInArray(this.itemList, event.previousIndex, event.currentIndex);
+    }
   }
 
   /**
@@ -117,6 +138,18 @@ export class DraggableListComponent {
       return result;
     } else {
       return originalString.replace('{this}', item);
+    }
+  }
+
+  /**
+   * Verifica se o item é o atual selecionado
+   * @param item: item a ser comparado com o atual selecionado
+   */
+  public isSelectedItem(item: any): boolean {
+    if (typeof item !== 'undefined') {
+      return this.selectedItem === item;
+    } else {
+      return false;
     }
   }
 

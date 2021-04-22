@@ -13,6 +13,7 @@
       "pm",
       "kebab-case"
     ],
+    "no-output-on-prefix": false,
     "no-input-rename": false
   }
 }
