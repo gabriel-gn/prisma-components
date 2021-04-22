@@ -21,6 +21,7 @@ export default {
     itemSubLabel: {control: 'text'},
     // actions: {control: 'text'},
     itemList: {control: 'array'},
+    roundedBorders: {control: 'boolean'},
   }
 } as Meta;
 
@@ -35,6 +36,7 @@ const Template: Story<DraggableListComponent> = (args: DraggableListComponent) =
         [itemSubLabel]="itemSubLabel"
         [actions]="actions"
         [itemList]="itemList"
+        [roundedBorders]="roundedBorders"
     >
       conteudo
     </pm-draggable-list>`
@@ -67,7 +69,8 @@ ExampleList.args = {
     {name: '7', value: 777},
     {name: '8', value: 888},
     {name: '9', value: 999},
-  ]
+  ],
+  roundedBorders: true
 };
 
 export const NoIndexStringList = Template.bind({});
@@ -83,4 +86,5 @@ NoIndexStringList.args = {
     }
   ],
   itemList: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
+  roundedBorders: true
 };

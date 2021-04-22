@@ -138,7 +138,7 @@
         },
         {
             "name": "DraggableListComponent",
-            "id": "component-DraggableListComponent-fdd1dba7c4c2f90209f6213426c0ded4",
+            "id": "component-DraggableListComponent-334a924376cd68e3ec0c04a787fae435",
             "file": "projects/components/src/lib/draggable-list/draggable-list.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -178,6 +178,11 @@
                     "line": 20
                 },
                 {
+                    "name": "roundedBorders",
+                    "defaultValue": "true",
+                    "line": 23
+                },
+                {
                     "name": "showIndex",
                     "defaultValue": "true",
                     "line": 16
@@ -190,7 +195,7 @@
                     "type": "TemplateRef<any>",
                     "optional": false,
                     "description": "",
-                    "line": 25,
+                    "line": 28,
                     "decorators": [
                         {
                             "name": "ViewChild",
@@ -203,7 +208,7 @@
                     "type": "Overlay",
                     "optional": false,
                     "description": "",
-                    "line": 28,
+                    "line": 31,
                     "modifierKind": [
                         114
                     ]
@@ -213,21 +218,21 @@
                     "type": "OverlayRef | null",
                     "optional": false,
                     "description": "",
-                    "line": 24
+                    "line": 27
                 },
                 {
                     "name": "sub",
                     "type": "Subscription",
                     "optional": false,
                     "description": "",
-                    "line": 23
+                    "line": 26
                 },
                 {
                     "name": "viewContainerRef",
                     "type": "ViewContainerRef",
                     "optional": false,
                     "description": "",
-                    "line": 29,
+                    "line": 32,
                     "modifierKind": [
                         114
                     ]
@@ -240,7 +245,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 83,
+                    "line": 92,
                     "description": "<p>Fecha o context menu</p>\n",
                     "modifierKind": [
                         114
@@ -257,7 +262,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 46,
+                    "line": 49,
                     "description": "<p>Evento de drop do cdkDragDrop</p>\n",
                     "modifierKind": [
                         114
@@ -265,15 +270,15 @@
                     "jsdoctags": [
                         {
                             "name": {
-                                "pos": 1202,
-                                "end": 1207,
+                                "pos": 1254,
+                                "end": 1259,
                                 "flags": 0,
                                 "escapedText": "event"
                             },
                             "type": "CdkDragDrop<string[]>",
                             "tagName": {
-                                "pos": 1196,
-                                "end": 1201,
+                                "pos": 1248,
+                                "end": 1253,
                                 "flags": 0,
                                 "escapedText": "param"
                             },
@@ -296,8 +301,8 @@
                     "optional": false,
                     "returnType": "string",
                     "typeParameters": [],
-                    "line": 97,
-                    "description": "<p>Caso o &#39;originalString&#39; tenha &#39;{algumacoisa}&#39;, é substituído por &#39;${item[algumacoisa]}&#39;\nFazendo assim ser possível strings dinânimcas de acordo com o objeto\nCaso o &#39;item&#39; seja string, é possível ele ser dinâmico usando {this}</p>\n",
+                    "line": 106,
+                    "description": "<p>Caso o originalString tenha {algumacoisa}, é substituído por ${item[algumacoisa]}\nFazendo assim ser possível strings dinânimcas de acordo com o objeto\nCaso o item seja string, é possível ele ser dinâmico usando {this}</p>\n",
                     "modifierKind": [
                         114
                     ],
@@ -324,7 +329,7 @@
                     "optional": false,
                     "returnType": "any[]",
                     "typeParameters": [],
-                    "line": 33,
+                    "line": 36,
                     "modifierKind": [
                         114
                     ]
@@ -343,7 +348,8 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 50,
+                    "line": 59,
+                    "description": "<p>Abre o context Menu</p>\n",
                     "modifierKind": [
                         114
                     ],
@@ -355,11 +361,20 @@
                             }
                         },
                         {
-                            "name": "context",
+                            "name": {
+                                "pos": 1572,
+                                "end": 1579,
+                                "flags": 0,
+                                "escapedText": "context"
+                            },
                             "type": "",
                             "tagName": {
-                                "text": "param"
-                            }
+                                "pos": 1566,
+                                "end": 1571,
+                                "flags": 0,
+                                "escapedText": "param"
+                            },
+                            "comment": "<p>: valores que serão passados para o context menu</p>\n"
                         }
                     ]
                 },
@@ -374,7 +389,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 37,
+                    "line": 40,
                     "modifierKind": [
                         114
                     ],
@@ -394,7 +409,7 @@
             "description": "",
             "rawdescription": "",
             "type": "component",
-            "sourceCode": "import {Component, Input, TemplateRef, ViewChild, ViewContainerRef} from '@angular/core';\nimport {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';\n\nimport {TemplatePortal} from '@angular/cdk/portal';\nimport {fromEvent, Subscription} from 'rxjs';\nimport {filter, take} from 'rxjs/operators';\nimport {Overlay, OverlayRef} from '@angular/cdk/overlay';\n\n@Component({\n  selector: 'pm-draggable-list',\n  templateUrl: './draggable-list.component.html',\n  styleUrls: ['./draggable-list.component.scss']\n})\nexport class DraggableListComponent {\n\n  @Input('showIndex') showIndex = true;\n  @Input('itemList') itemList: any[];\n  @Input('itemActionLabel') itemActionLabel;\n  @Input('itemMainLabel') itemMainLabel;\n  @Input('itemSubLabel') itemSubLabel;\n  @Input('actions') actions: any[];\n\n  sub: Subscription;\n  overlayRef: OverlayRef | null;\n  @ViewChild('contextMenu') contextMenu: TemplateRef<any>;\n\n  constructor(\n    public overlay: Overlay,\n    public viewContainerRef: ViewContainerRef,\n  ) {\n  }\n\n  public getItemList(): any[] {\n    return this.itemList;\n  }\n\n  public setItemList(itemList: any[]): void {\n    this.itemList = itemList;\n  }\n\n  /**\n   * Evento de drop do cdkDragDrop\n   * @param event: evento de drop\n   * @param profileList: lista a ser dropado\n   */\n  public drop(event: CdkDragDrop<string[]>): void {\n    moveItemInArray(this.itemList, event.previousIndex, event.currentIndex);\n  }\n\n  public openContextMenu({x, y}: MouseEvent, context): void {\n    this.closeContextMenu();\n    const positionStrategy = this.overlay.position()\n      .flexibleConnectedTo({x, y})\n      .withPositions([\n        {\n          originX: 'end',\n          originY: 'bottom',\n          overlayX: 'end',\n          overlayY: 'top',\n        }\n      ]);\n\n    this.overlayRef = this.overlay.create({\n      positionStrategy,\n      scrollStrategy: this.overlay.scrollStrategies.close()\n    });\n\n    this.overlayRef.attach(new TemplatePortal(this.contextMenu, this.viewContainerRef, context));\n\n    this.sub = fromEvent<MouseEvent>(document, 'click')\n      .pipe(\n        filter(event => {\n          const clickTarget = event.target as HTMLElement;\n          return !!this.overlayRef && !this.overlayRef.overlayElement.contains(clickTarget);\n        }),\n        take(1)\n      ).subscribe(() => this.closeContextMenu());\n  }\n\n  /**\n   * Fecha o context menu\n   */\n  public closeContextMenu(): void {\n    // tslint:disable-next-line:no-unused-expression\n    this.sub && this.sub.unsubscribe();\n    if (this.overlayRef) {\n      this.overlayRef.dispose();\n      this.overlayRef = null;\n    }\n  }\n\n  /**\n   * Caso o 'originalString' tenha '{algumacoisa}', é substituído por '${item[algumacoisa]}'\n   * Fazendo assim ser possível strings dinânimcas de acordo com o objeto\n   * Caso o 'item' seja string, é possível ele ser dinâmico usando {this}\n   */\n  public formatItemStringParameters(originalString: string, item: any): string {\n    if (typeof item !== 'string' && originalString.indexOf('{') !== -1) {\n      let result = '';\n      for (const str of originalString.split('{')) {\n        if (str.indexOf('}') !== -1) {\n          result += `${item[str.substring(0, str.indexOf('}'))]}`;\n          result += str.substring(str.indexOf('}') + 1, str.length);\n        } else {\n          result += str;\n        }\n      }\n      return result;\n    } else {\n      return originalString.replace('{this}', item);\n    }\n  }\n\n\n}\n",
+            "sourceCode": "import {Component, Input, TemplateRef, ViewChild, ViewContainerRef} from '@angular/core';\nimport {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';\n\nimport {TemplatePortal} from '@angular/cdk/portal';\nimport {fromEvent, Subscription} from 'rxjs';\nimport {filter, take} from 'rxjs/operators';\nimport {Overlay, OverlayRef} from '@angular/cdk/overlay';\n\n@Component({\n  selector: 'pm-draggable-list',\n  templateUrl: './draggable-list.component.html',\n  styleUrls: ['./draggable-list.component.scss']\n})\nexport class DraggableListComponent {\n\n  @Input('showIndex') showIndex = true;\n  @Input('itemList') itemList: any[];\n  @Input('itemActionLabel') itemActionLabel;\n  @Input('itemMainLabel') itemMainLabel;\n  @Input('itemSubLabel') itemSubLabel;\n  @Input('actions') actions: any[];\n\n  @Input('roundedBorders') roundedBorders = true;\n\n\n  sub: Subscription;\n  overlayRef: OverlayRef | null;\n  @ViewChild('contextMenu') contextMenu: TemplateRef<any>;\n\n  constructor(\n    public overlay: Overlay,\n    public viewContainerRef: ViewContainerRef,\n  ) {\n  }\n\n  public getItemList(): any[] {\n    return this.itemList;\n  }\n\n  public setItemList(itemList: any[]): void {\n    this.itemList = itemList;\n  }\n\n  /**\n   * Evento de drop do cdkDragDrop\n   * @param event: evento de drop\n   * @param profileList: lista a ser dropado\n   */\n  public drop(event: CdkDragDrop<string[]>): void {\n    moveItemInArray(this.itemList, event.previousIndex, event.currentIndex);\n  }\n\n  /**\n   * Abre o context Menu\n   * @param x: posição x do mouse\n   * @param y: posição y do mouse\n   * @param context: valores que serão passados para o context menu\n   */\n  public openContextMenu({x, y}: MouseEvent, context): void {\n    this.closeContextMenu();\n    const positionStrategy = this.overlay.position()\n      .flexibleConnectedTo({x, y})\n      .withPositions([\n        {\n          originX: 'end',\n          originY: 'bottom',\n          overlayX: 'end',\n          overlayY: 'top',\n        }\n      ]);\n\n    this.overlayRef = this.overlay.create({\n      positionStrategy,\n      scrollStrategy: this.overlay.scrollStrategies.close()\n    });\n\n    this.overlayRef.attach(new TemplatePortal(this.contextMenu, this.viewContainerRef, context));\n\n    this.sub = fromEvent<MouseEvent>(document, 'click')\n      .pipe(\n        filter(event => {\n          const clickTarget = event.target as HTMLElement;\n          return !!this.overlayRef && !this.overlayRef.overlayElement.contains(clickTarget);\n        }),\n        take(1)\n      ).subscribe(() => this.closeContextMenu());\n  }\n\n  /**\n   * Fecha o context menu\n   */\n  public closeContextMenu(): void {\n    // tslint:disable-next-line:no-unused-expression\n    this.sub && this.sub.unsubscribe();\n    if (this.overlayRef) {\n      this.overlayRef.dispose();\n      this.overlayRef = null;\n    }\n  }\n\n  /**\n   * Caso o originalString tenha {algumacoisa}, é substituído por ${item[algumacoisa]}\n   * Fazendo assim ser possível strings dinânimcas de acordo com o objeto\n   * Caso o item seja string, é possível ele ser dinâmico usando {this}\n   */\n  public formatItemStringParameters(originalString: string, item: any): string {\n    if (typeof item !== 'string' && originalString.indexOf('{') !== -1) {\n      let result = '';\n      for (const str of originalString.split('{')) {\n        if (str.indexOf('}') !== -1) {\n          result += `${item[str.substring(0, str.indexOf('}'))]}`;\n          result += str.substring(str.indexOf('}') + 1, str.length);\n        } else {\n          result += str;\n        }\n      }\n      return result;\n    } else {\n      return originalString.replace('{this}', item);\n    }\n  }\n\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -416,7 +431,7 @@
                         "type": "ViewContainerRef"
                     }
                 ],
-                "line": 25,
+                "line": 28,
                 "jsdoctags": [
                     {
                         "name": "overlay",
@@ -434,7 +449,7 @@
                     }
                 ]
             },
-            "templateData": "<div class=\"d-flex w-100\">\n  <div *ngIf=\"showIndex\" class=\"draggable-item-index-container\">\n    <div *ngFor=\"let item of itemList, let i = index;\" class=\"draggable-item-index\">\n      <p>{{ i + 1 }}</p>\n    </div>\n  </div>\n  <div (cdkDropListDropped)=\"drop($event)\" cdkDropList class=\"table-item-container w-100\">\n    <div *ngFor=\"let item of itemList, let i = index;\" cdkDrag cdkDragBoundary=\".table-item-container\"\n         class=\"draggable-item\" (contextmenu)=\"openContextMenu($event, {$implicit: item}); $event.preventDefault();\"\n         style=\"cursor: move;\">\n      <div *cdkDragPlaceholder class=\"draggable-placeholder\"></div>\n      <div class=\"d-flex w-100\">\n        <!-- if IsMobile -> para poder reordenar os perfis apenas pelo ícone -->\n        <div *ngIf=\"false\" cdkDragHandle class=\"move-icon-container\">\n          <i class=\"uil uil-lg uil-draggabledots\"></i>\n        </div>\n        <div *ngIf=\"true\" class=\"move-icon-container\">\n          <i class=\"uil uil-lg uil-draggabledots\"></i>\n        </div>\n        <div class=\"w-100 align-self-center text-overflow\">\n          <p class=\"m-0\">{{ formatItemStringParameters(itemMainLabel, item) }}</p>\n          <p class=\"m-0 sub-p\">{{ formatItemStringParameters(itemSubLabel, item) }}</p>\n        </div>\n        <div class=\"d-flex ms-2\">\n          <button (click)=\"profileActionsSelect.toggle()\" class=\"btn btn-light btn-icon btn-sm ms-2\">\n            <i class=\"uil uil-md uil-ellipsis-h\"></i>\n          </button>\n          <mat-select #profileActionsSelect class=\"mat-select-btn-sm\">\n            <mat-option [hidden]=\"true\"></mat-option>\n            <ng-container *ngTemplateOutlet=\"contextActions; context: {$implicit: item}\"></ng-container>\n          </mat-select>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n\n<ng-template #contextActions let-item>\n  <mat-option *ngFor=\"let action of actions\" (click)=\"action.method(item)\">{{action.name}}</mat-option>\n</ng-template>\n\n<ng-template #contextMenu let-item>\n  <div class=\"mat-menu-panel\">\n    <mat-optgroup [label]=\"formatItemStringParameters(itemActionLabel, item)\">\n      <ng-container *ngTemplateOutlet=\"contextActions; context: {$implicit: item}\"></ng-container>\n    </mat-optgroup>\n  </div>\n</ng-template>\n"
+            "templateData": "<div class=\"d-flex w-100\">\n  <div *ngIf=\"showIndex\" class=\"draggable-item-index-container\">\n    <div *ngFor=\"let item of itemList, let i = index;\" class=\"draggable-item-index\">\n      <p>{{ i + 1 }}</p>\n    </div>\n  </div>\n  <div (cdkDropListDropped)=\"drop($event)\" cdkDropList class=\"table-item-container w-100\" [ngClass]=\"{rounded: roundedBorders}\">\n    <div *ngFor=\"let item of itemList, let i = index;\" cdkDrag cdkDragBoundary=\".table-item-container\"\n         class=\"draggable-item\" (contextmenu)=\"openContextMenu($event, {$implicit: item}); $event.preventDefault();\"\n         style=\"cursor: move;\">\n      <div *cdkDragPlaceholder class=\"draggable-placeholder\"></div>\n      <div class=\"d-flex w-100\">\n        <!-- if IsMobile -> para poder reordenar os perfis apenas pelo ícone -->\n        <div *ngIf=\"false\" cdkDragHandle class=\"move-icon-container\">\n          <i class=\"uil uil-lg uil-draggabledots\"></i>\n        </div>\n        <div *ngIf=\"true\" class=\"move-icon-container\">\n          <i class=\"uil uil-lg uil-draggabledots\"></i>\n        </div>\n        <div class=\"w-100 align-self-center text-overflow\">\n          <p class=\"m-0\">{{ formatItemStringParameters(itemMainLabel, item) }}</p>\n          <p class=\"m-0 sub-p\">{{ formatItemStringParameters(itemSubLabel, item) }}</p>\n        </div>\n        <div class=\"d-flex ms-2\">\n          <button (click)=\"profileActionsSelect.toggle()\" class=\"btn btn-light btn-icon btn-sm ms-2\">\n            <i class=\"uil uil-md uil-ellipsis-h\"></i>\n          </button>\n          <mat-select #profileActionsSelect class=\"mat-select-btn-sm\">\n            <mat-option [hidden]=\"true\"></mat-option>\n            <ng-container *ngTemplateOutlet=\"contextActions; context: {$implicit: item}\"></ng-container>\n          </mat-select>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n\n<ng-template #contextActions let-item>\n  <mat-option *ngFor=\"let action of actions\" (click)=\"action.method(item)\">{{formatItemStringParameters(action.name, item)}}</mat-option>\n</ng-template>\n\n<ng-template #contextMenu let-item>\n  <div class=\"mat-menu-panel\">\n    <mat-optgroup [label]=\"formatItemStringParameters(itemActionLabel, item)\">\n      <ng-container *ngTemplateOutlet=\"contextActions; context: {$implicit: item}\"></ng-container>\n    </mat-optgroup>\n  </div>\n</ng-template>\n"
         }
     ],
     "modules": [
@@ -628,7 +643,7 @@
                 "subtype": "variable",
                 "file": "stories/DraggableList.stories.ts",
                 "type": "Story<DraggableListComponent>",
-                "defaultValue": "(args: DraggableListComponent) => ({\n  component: DraggableListComponent,\n  props: args,\n  template: `\n    <pm-draggable-list\n        [showIndex]=\"showIndex\"\n    >\n      conteudo\n    </pm-draggable-list>`\n})"
+                "defaultValue": "(args: DraggableListComponent) => ({\n  component: DraggableListComponent,\n  props: args,\n  template: `\n    <pm-draggable-list\n        [showIndex]=\"showIndex\"\n        [itemActionLabel]=\"itemActionLabel\"\n        [itemMainLabel]=\"itemMainLabel\"\n        [itemSubLabel]=\"itemSubLabel\"\n        [actions]=\"actions\"\n        [itemList]=\"itemList\"\n        [roundedBorders]=\"roundedBorders\"\n    >\n      conteudo\n    </pm-draggable-list>`\n})"
             }
         ],
         "functions": [],
@@ -874,7 +889,7 @@
                     "subtype": "variable",
                     "file": "stories/DraggableList.stories.ts",
                     "type": "Story<DraggableListComponent>",
-                    "defaultValue": "(args: DraggableListComponent) => ({\n  component: DraggableListComponent,\n  props: args,\n  template: `\n    <pm-draggable-list\n        [showIndex]=\"showIndex\"\n    >\n      conteudo\n    </pm-draggable-list>`\n})"
+                    "defaultValue": "(args: DraggableListComponent) => ({\n  component: DraggableListComponent,\n  props: args,\n  template: `\n    <pm-draggable-list\n        [showIndex]=\"showIndex\"\n        [itemActionLabel]=\"itemActionLabel\"\n        [itemMainLabel]=\"itemMainLabel\"\n        [itemSubLabel]=\"itemSubLabel\"\n        [actions]=\"actions\"\n        [itemList]=\"itemList\"\n        [roundedBorders]=\"roundedBorders\"\n    >\n      conteudo\n    </pm-draggable-list>`\n})"
                 }
             ]
         },
@@ -1086,8 +1101,8 @@
                 "type": "component",
                 "linktype": "component",
                 "name": "DraggableListComponent",
-                "coveragePercent": 15,
-                "coverageCount": "3/19",
+                "coveragePercent": 20,
+                "coverageCount": "4/20",
                 "status": "low"
             },
             {

@@ -11,8 +11,16 @@ $default-border-radius:   var(--border-radius-md) !default;
   background: #FFFFFF;
   border-left-width: 0px;
   overflow: hidden;
-  border-radius: 0 $default-border-radius $default-border-radius 0 !important;
+  border-radius: 0 !important;
   border: $item-border-width solid #dbdee3;
+
+  &.rounded {
+    border-radius: $default-border-radius !important;
+  }
+
+  &.rounded-right {
+    border-radius: 0 $default-border-radius $default-border-radius 0 !important;
+  }
 
   .img-thumbnail {
     min-width: 60px !important;
@@ -38,11 +46,18 @@ $default-border-radius:   var(--border-radius-md) !default;
 }
 
 .draggable-item-index-container{
-  border-radius: $default-border-radius 0 0 $default-border-radius;
   overflow: hidden;
   border: $item-border-width solid #dbdee3;
   border-right-width: 0px;
   box-shadow: None;
+
+  &.rounded {
+    border-radius: $default-border-radius !important;
+  }
+
+  &.rounded-left {
+    border-radius: $default-border-radius 0 0 $default-border-radius;
+  }
 
   .draggable-item-index {
     background-color: #dbdee3;

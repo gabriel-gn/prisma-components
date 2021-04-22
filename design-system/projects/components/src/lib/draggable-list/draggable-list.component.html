@@ -1,10 +1,15 @@
 <div class="d-flex w-100">
-  <div *ngIf="showIndex" class="draggable-item-index-container">
+  <div *ngIf="showIndex"
+       class="draggable-item-index-container"
+       [ngClass]="{rounded: roundedBorders && !showIndex, 'rounded-left': roundedBorders && showIndex}"
+  >
     <div *ngFor="let item of itemList, let i = index;" class="draggable-item-index">
       <p>{{ i + 1 }}</p>
     </div>
   </div>
-  <div (cdkDropListDropped)="drop($event)" cdkDropList class="table-item-container w-100">
+  <div (cdkDropListDropped)="drop($event)" cdkDropList
+       class="table-item-container w-100"
+       [ngClass]="{rounded: roundedBorders && !showIndex, 'rounded-right': roundedBorders && showIndex}">
     <div *ngFor="let item of itemList, let i = index;" cdkDrag cdkDragBoundary=".table-item-container"
          class="draggable-item" (contextmenu)="openContextMenu($event, {$implicit: item}); $event.preventDefault();"
          style="cursor: move;">

@@ -20,6 +20,9 @@ export class DraggableListComponent {
   @Input('itemSubLabel') itemSubLabel;
   @Input('actions') actions: any[];
 
+  @Input('roundedBorders') roundedBorders = true;
+
+
   sub: Subscription;
   overlayRef: OverlayRef | null;
   @ViewChild('contextMenu') contextMenu: TemplateRef<any>;
@@ -96,9 +99,9 @@ export class DraggableListComponent {
   }
 
   /**
-   * Caso o 'originalString' tenha '{algumacoisa}', é substituído por '${item[algumacoisa]}'
+   * Caso o originalString tenha {algumacoisa}, é substituído por ${item[algumacoisa]}
    * Fazendo assim ser possível strings dinânimcas de acordo com o objeto
-   * Caso o 'item' seja string, é possível ele ser dinâmico usando {this}
+   * Caso o item seja string, é possível ele ser dinâmico usando {this}
    */
   public formatItemStringParameters(originalString: string, item: any): string {
     if (typeof item !== 'string' && originalString.indexOf('{') !== -1) {
