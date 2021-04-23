@@ -13,7 +13,9 @@ jobs:
       - name: npm install && build-npm
         working-directory: ./design-system
         run: |
+          echo "*** Iniciando NPM Install ***"
           npm install
+          echo "*** Iniciando NPM RUN BUILD-NPM ***"
           npm run build-npm
 #      - run: npm test
       - name: npm publish
