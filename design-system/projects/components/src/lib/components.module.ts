@@ -4,6 +4,7 @@ import {CommonModule} from '@angular/common';
 import {ButtonModule} from './button/button.module';
 import {DraggableListModule} from './draggable-list/draggable-list.module';
 import {MatSelectModule} from '@angular/material/select';
+import {TableModule} from './table/table.module';
 
 
 @NgModule({
@@ -14,12 +15,13 @@ import {MatSelectModule} from '@angular/material/select';
     CommonModule,
     ButtonModule,
     DraggableListModule,
-    MatSelectModule
+    MatSelectModule,
+    TableModule
   ],
   exports: [
     ComponentsComponent
   ],
-  schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class PrismaComponentsModule {
 }

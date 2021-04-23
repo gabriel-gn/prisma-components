@@ -1,0 +1,26 @@
+<table mat-table [dataSource]="itemList" class="prisma-table">
+
+  <ng-container *ngFor="let column of columns; let i = index;">
+    <ng-container matColumnDef="{{column}}">
+      <th mat-header-cell *matHeaderCellDef>{{columnNames ? columnNames[i] : column}}</th>
+      <td mat-cell *matCellDef="let item">
+        <ng-container
+          *ngTemplateOutlet="column !== thumbnailPropertyName ? labelCell : imageCell;
+          context: {$implicit: item, column: column}">
+        </ng-container>
+      </td>
+    </ng-container>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="columns" [ngClass]="{'d-none': !showHeader}"></tr>
+  <tr mat-row *matRowDef="let row; columns: columns;"></tr>
+</table>
+
+<ng-template #imageCell let-item let-column="column">
+  <img [attr.src]="item[thumbnailPropertyName]" [attr.alt]="item[thumbnailPropertyName]"
+  class="img-fluid my-2" [ngStyle]="{'height': thumbnailHeight, 'max-height': thumbnailHeight}">
+</ng-template>
+
+<ng-template #labelCell let-item let-column="column">
+  {{item[column]}}
+</ng-template>

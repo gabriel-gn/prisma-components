@@ -97,7 +97,7 @@ NoIndexStringList.args = {
 
 export const disabledDragging = Template.bind({});
 disabledDragging.args = {
-  showIndex: false,
+  showIndex: true,
   itemActionLabel: 'Ações {this}',
   itemMainLabel: '{this} (string)',
   itemSubLabel: 'sublabel {this}',
@@ -108,7 +108,7 @@ disabledDragging.args = {
     }
   ],
   itemList: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
-  roundedBorders: true,
+  roundedBorders: false,
   enableDragging: false,
   enableSelection: true,
 };
