@@ -8,11 +8,11 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 12
-      - name: npm install
+      - name: npm install && build-npm
         working-directory: ./design-system
         run: |
           npm install
-          build-npm
+          npm run build-npm
 #      - run: npm test
       - uses: JS-DevTools/npm-publish@v1
         with:
