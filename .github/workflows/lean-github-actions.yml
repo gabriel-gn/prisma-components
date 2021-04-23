@@ -13,7 +13,6 @@ jobs:
       changed: ${{ steps.check.outputs.changed }}
     steps:
       - name: Checkout repository
-        working-directory: ./design-system
         uses: actions/checkout@v1
       - name: Check version changes
         working-directory: ./design-system/projects/components
