@@ -18,6 +18,8 @@ jobs:
         uses: EndBug/version-check@v2.0.1 # https://github.com/marketplace/actions/version-check
         with:
           file-name: ./design-system/projects/components/package.json
+          file-url: https://registry.npmjs.org/@mprisma/components
+          static-checking: localIsNew
         id: check # This will be the reference for later
       - name: Version checked
         run: 'echo "Version -> ${{ steps.check.outputs.version }}"'
