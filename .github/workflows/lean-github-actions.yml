@@ -15,9 +15,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v1
       - name: Check version changes
-        working-directory: ./design-system/projects/components
         uses: EndBug/version-check@v2.0.1 # https://github.com/marketplace/actions/version-check
+        with:
+          file-name: ./design-system/projects/components/package.json
         id: check # This will be the reference for later
+      - name: Version checked
+        run: 'echo "Version -> ${{ steps.check.outputs.version }}"'
       - name: Version update detected
         if: |
           steps.check.outputs.changed == 'true'
