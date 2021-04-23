@@ -7,14 +7,14 @@ jobs:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
         with:
-          node-version: 10
+          node-version: 12
       - name: npm install on library dir
-        working-directory: ./design-system
+        working-directory: ./design-system/projects/components
         run: npm install
 #      - run: npm test
       - uses: JS-DevTools/npm-publish@v1
         with:
           token: ${{ secrets.NPM_TOKEN }}
-          package: "./design-system/package.json"
+          package: "./design-system/projects/components/package.json"
           access: "public"
           dry-run: true
