@@ -27,7 +27,7 @@ jobs:
     needs: check-version
     runs-on: ubuntu-latest
     if: |
-      needs.check-version.outputs.changed == 'true'
+      "needs.check-version.outputs.changed == 'true'"
     steps:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
