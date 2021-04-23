@@ -16,6 +16,7 @@ jobs:
           npm run build-npm
 #      - run: npm test
       - name: npm publish
+        working-directory: ./design-system
         run: |
           npm run deploy-npm
         env:
