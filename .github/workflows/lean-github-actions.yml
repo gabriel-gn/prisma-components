@@ -13,11 +13,11 @@ jobs:
       changed: ${{ steps.check.outputs.changed }}
     steps:
       - name: Checkout repository
+        working-directory: ./design-system
         uses: actions/checkout@v1
       - name: Check version changes
+        working-directory: ./design-system/projects/components
         uses: EndBug/version-check@v2.0.1 # https://github.com/marketplace/actions/version-check
-        with:
-          file-name: ./design-system/projects/components/package.json
         id: check # This will be the reference for later
       - name: Version update detected
         if: |
@@ -35,14 +35,16 @@ jobs:
         with:
           node-version: 12
           registry-url: https://registry.npmjs.org/
-      - name: npm install && build-npm
+
+      - name: Install dependencies and build package
         working-directory: ./design-system
         run: |
           echo "*** Iniciando NPM Install ***"
           npm install
           echo "*** Iniciando NPM RUN BUILD-NPM ***"
           npm run build-npm
-      - name: npm publish
+
+      - name: Publish package to NPM
         working-directory: ./design-system
         run: |
           npm run deploy-npm
