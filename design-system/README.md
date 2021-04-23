@@ -1,3 +1,5 @@
+[![Actions Status](https://github.com/gabriel-gn/prisma-components/workflows/lean-github-actions/badge.svg)](https://github.com/gabriel-gn/prisma-components/actions)
+
 # DesignSystem
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.2.9.
