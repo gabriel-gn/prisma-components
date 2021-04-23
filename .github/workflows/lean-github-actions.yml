@@ -19,4 +19,4 @@ jobs:
           token: ${{ secrets.NPM_TOKEN }}
           package: "./design-system/projects/components/package.json"
           access: "public"
-          dry-run: true
+          dry-run: false
