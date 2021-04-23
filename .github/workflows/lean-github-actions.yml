@@ -8,9 +8,8 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 10
-      - name: go to library directory
+      - name: npm install on library dir
         working-directory: ./design-system
-      - name: npm install
         run: npm install
 #      - run: npm test
       - uses: JS-DevTools/npm-publish@v1
