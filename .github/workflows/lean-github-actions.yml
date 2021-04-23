@@ -8,9 +8,12 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 12
-      - name: npm install on library dir
-        working-directory: ./design-system/projects/components
+      - name: npm install
+        working-directory: ./design-system
         run: npm install
+      - name: build library npm
+          working-directory: ./design-system
+          run: build-npm
 #      - run: npm test
       - uses: JS-DevTools/npm-publish@v1
         with:
