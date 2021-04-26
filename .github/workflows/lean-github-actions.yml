@@ -13,20 +13,23 @@ jobs:
       changed: ${{ steps.check.outputs.changed }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
       - name: Check version changes
-        uses: EndBug/version-check@v2.0.1 # https://github.com/marketplace/actions/version-check
+        uses: gabriel-gn/hello-world-github-action@v1.0.1
         with:
-          file-name: ./design-system/projects/components/package.json
-          file-url: https://registry.npmjs.org/@mprisma/components
-          static-checking: localIsNew
-        id: check # This will be the reference for later
+          filepath: 'design-system/projects/components/package.json'
+          packageName: '@mprisma/components'
+        id: check # Usa o output checked a partir desse id
       - name: Version checked
-        run: 'echo "Version -> ${{ steps.check.outputs.version }}"'
+        run: 'echo "Version -> ${{ steps.check.outputs.changed }}"'
       - name: Version update detected
         if: |
           steps.check.outputs.changed == 'true'
-        run: 'echo "Version change! -> ${{ steps.check.outputs.type }}"'
+        run: 'echo "Versão alterada, será criada uma nova release no npm!"'
+      - name: Version update not detected
+        if: |
+          steps.check.outputs.changed == 'false'
+        run: 'echo "Versão de pacote não alterada, não será publicado no npm!"'
 
   publish:
     needs: check-version
