@@ -8,24 +8,15 @@ import {Component, EventEmitter, Input, Output, TemplateRef, ViewChild} from '@a
 export class TableComponent {
 
   @Output() onItemListChange = new EventEmitter();
-  @Input() columns: string[] = ['preview', 'name', 'price', 'author'];
-  @Input() columnNames: string[] = ['Modelo', 'Nome', 'Preço', 'Autor'];
-  @Input() imageColumns: string[] = ['preview'];
-  @Input() imageHeight: '50px !important';
+  @Input() columns: string[] = [];
+  @Input() columnNames: string[] = [];
+  @Input() imageColumns: string[] = [];
+  @Input() imageHeight: '50px';
   @Input() showHeader = true;
   @Input() numberFormat = '1.2-2';
   @Input() numberPrefix = '';
   @Input() actionsTemplate: TemplateRef<any>;
-  @Input() itemList: any[] = [
-    {
-      preview: 'https://pbs.twimg.com/profile_images/661223657528651776/94PccMFW.jpg',
-      name: 'Imagem1', price: 2.99, author: 'admin'
-    },
-    {
-      preview: 'https://logz.io/wp-content/uploads/2017/03/open-source-bi-tools-1280x720.jpg',
-      name: ['Imagem1', 'Imagem2'], price: 2.99, author: 'admin22', disabled: true
-    },
-  ];
+  @Input() itemList: any[] = [];
 
   @ViewChild('singleLabelCell', {static: true}) singleLabelCell: TemplateRef<any>;
   @ViewChild('doubleLabelCell', {static: true}) doubleLabelCell: TemplateRef<any>;

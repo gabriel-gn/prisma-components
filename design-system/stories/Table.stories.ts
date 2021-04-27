@@ -17,9 +17,12 @@ export default {
   argTypes: {
     columns: {control: 'array'},
     columnNames: {control: 'array'},
-    showHeader: {control: 'boolean'},
     imageColumns: {control: 'array'},
     imageHeight: {control: 'text'},
+    showHeader: {control: 'boolean'},
+    numberFormat: {control: 'text'},
+    numberPrefix: {control: 'text'},
+    actionsTemplate: {control: 'none'},
     itemList: {control: 'array'},
     // we need to override here since in Angular it could be null as well and therefore it would become an ambigious data type for storybook
   }
@@ -48,6 +51,8 @@ ExampleTable.args = {
   imageColumns: ['preview'],
   imageHeight: '50px',
   showHeader: true,
+  numberFormat: '4.2-2',
+  numberPrefix: 'R$',
   itemList: [
     {preview: 'https://pbs.twimg.com/profile_images/661223657528651776/94PccMFW.jpg',
       name: 'Imagem1', price: 2.99, author: 'admin'},
@@ -58,7 +63,18 @@ ExampleTable.args = {
 
 export const NoHeader = Template.bind({});
 NoHeader.args = {
-  showHeader: false
+  showHeader: false,
+  imageColumns: [],
+  itemList: [
+    {
+      preview: 'Descrição 1',
+      name: 'Imagem1', price: 2.99, author: 'admin'
+    },
+    {
+      preview: 'Descrição 2',
+      name: ['Imagem1', 'Imagem2'], price: 2.99, author: 'admin22', disabled: true
+    },
+  ]
 };
 
 export const ThumbnailTable = Template.bind({});
