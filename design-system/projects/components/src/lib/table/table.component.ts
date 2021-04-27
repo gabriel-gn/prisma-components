@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, Output, TemplateRef, ViewChild} from '@angular/core';
 
 @Component({
   selector: 'pm-table',
@@ -7,19 +7,87 @@ import {Component, Input} from '@angular/core';
 })
 export class TableComponent {
 
-  constructor() {
-  }
-
+  @Output() onItemListChange = new EventEmitter();
   @Input() columns: string[] = ['preview', 'name', 'price', 'author'];
   @Input() columnNames: string[] = ['Modelo', 'Nome', 'Preço', 'Autor'];
-  @Input() thumbnailPropertyName: 'preview';
-  @Input() thumbnailHeight: '50px';
+  @Input() imageColumns: string[] = ['preview'];
+  @Input() imageHeight: '50px !important';
   @Input() showHeader = true;
+  @Input() numberFormat = '1.2-2';
+  @Input() numberPrefix = '';
+  @Input() actionsTemplate: TemplateRef<any>;
   @Input() itemList: any[] = [
-    {preview: 'https://pbs.twimg.com/profile_images/661223657528651776/94PccMFW.jpg',
-      name: 'Imagem1', price: 2.99, author: 'admin'},
-    {preview: 'https://logz.io/wp-content/uploads/2017/03/open-source-bi-tools-1280x720.jpg',
-      name: 'Imagem1', price: 2.99, author: 'admin22'},
+    {
+      preview: 'https://pbs.twimg.com/profile_images/661223657528651776/94PccMFW.jpg',
+      name: 'Imagem1', price: 2.99, author: 'admin'
+    },
+    {
+      preview: 'https://logz.io/wp-content/uploads/2017/03/open-source-bi-tools-1280x720.jpg',
+      name: ['Imagem1', 'Imagem2'], price: 2.99, author: 'admin22', disabled: true
+    },
   ];
 
+  @ViewChild('singleLabelCell', {static: true}) singleLabelCell: TemplateRef<any>;
+  @ViewChild('doubleLabelCell', {static: true}) doubleLabelCell: TemplateRef<any>;
+  @ViewChild('imageCell', {static: true}) imageCell: TemplateRef<any>;
+  @ViewChild('formattedNumberCell', {static: true}) formattedNumberCell: TemplateRef<any>;
+
+  constructor() {
+    if (typeof this.actionsTemplate !== 'undefined') {
+      this.columns.push('ACTIONS');
+      this.columnNames.push('');
+    }
+  }
+
+  /**
+   * Retorna a lista atual de itens na tabela
+   */
+  public getItemList(): any[] {
+    return this.itemList;
+  }
+
+  /**
+   * Troca a lista de itens da tabela
+   */
+  public setItemList(itemList: any[]): void {
+    this.itemList = itemList;
+    this.onItemListChange.emit(true);
+  }
+
+  /**
+   * Mostra a linha de header
+   */
+  public enableHeader(): void {
+    this.showHeader = true;
+  }
+
+  /**
+   * Some com a linha de header
+   */
+  public disableHeader(): void {
+    this.showHeader = false;
+  }
+
+  /**
+   * Retorna o template que será renderizada a celula de acordo com o input de item e coluna
+   * @param item: item da lista de itens
+   * @param column: propriedade do item
+   */
+  public getCellTemplate(item: any, column: string): TemplateRef<any> {
+    if (column === 'ACTIONS') {
+      return this.actionsTemplate;
+    } else if (Array.isArray(item[column])) {
+      return this.doubleLabelCell;
+    } else {
+      if (this.imageColumns.includes(column)) {
+        return this.imageCell;
+      } else {
+        if (!isNaN(item[column])) {
+          return this.formattedNumberCell;
+        } else {
+          return this.singleLabelCell;
+        }
+      }
+    }
+  }
 }

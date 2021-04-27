@@ -3,9 +3,9 @@
   <ng-container *ngFor="let column of columns; let i = index;">
     <ng-container matColumnDef="{{column}}">
       <th mat-header-cell *matHeaderCellDef>{{columnNames ? columnNames[i] : column}}</th>
-      <td mat-cell *matCellDef="let item">
+      <td mat-cell *matCellDef="let item" [ngClass]="{'disabled': item?.disabled === true}">
         <ng-container
-          *ngTemplateOutlet="column !== thumbnailPropertyName ? labelCell : imageCell;
+          *ngTemplateOutlet="getCellTemplate(item, column);
           context: {$implicit: item, column: column}">
         </ng-container>
       </td>
@@ -17,10 +17,19 @@
 </table>
 
 <ng-template #imageCell let-item let-column="column">
-  <img [attr.src]="item[thumbnailPropertyName]" [attr.alt]="item[thumbnailPropertyName]"
-  class="img-fluid my-2" [ngStyle]="{'height': thumbnailHeight, 'max-height': thumbnailHeight}">
+  <img [attr.src]="item[column]" [attr.alt]="item[column]"
+  class="img-fluid my-2" [ngStyle]="{'height': imageHeight ? imageHeight : '50px', 'max-height': imageHeight ? imageHeight : '50px'}">
 </ng-template>
 
-<ng-template #labelCell let-item let-column="column">
-  {{item[column]}}
+<ng-template #singleLabelCell let-item let-column="column">
+  <p class="main-label">{{item[column]}}</p>
+</ng-template>
+
+<ng-template #doubleLabelCell let-item let-column="column">
+  <p class="main-label">{{item[column][0]}}</p>
+  <p class="sub-label">{{item[column][1]}}</p>
+</ng-template>
+
+<ng-template #formattedNumberCell let-item let-column="column">
+  <p class="main-label">{{numberPrefix}}{{item[column] | number: numberFormat}}</p>
 </ng-template>

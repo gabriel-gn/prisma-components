@@ -14,10 +14,12 @@
 <!--  <button (click)="profileActionsSelect.toggle()" class="btn btn-light btn-icon btn-sm ms-2">-->
 <!--    <i class="uil uil-md uil-ellipsis-h"></i>-->
 <!--  </button>-->
-
 <!--  <pm-button (click)="setBusy()" [busy]="busy">Hello World</pm-button>-->
 
-  <pm-draggable-list></pm-draggable-list>
+<!--  <pm-draggable-list></pm-draggable-list>-->
+
+  <button (click)="setTableData()">Mudar dados tabela</button>
+  <pm-table #prismaTable></pm-table>
 </div>
 
 <!-- you only need this if you added a router: -->

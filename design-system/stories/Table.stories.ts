@@ -2,7 +2,6 @@ import {Meta, moduleMetadata, Story} from '@storybook/angular';
 import {TableComponent} from '../projects/components/src/lib/table/table.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {TableModule} from '../projects/components/src/lib/table/table.module';
-import {Input} from "@angular/core";
 
 export default {
   title: 'Prisma/Tables',
@@ -18,10 +17,10 @@ export default {
   argTypes: {
     columns: {control: 'array'},
     columnNames: {control: 'array'},
-    itemList: {control: 'array'},
     showHeader: {control: 'boolean'},
-    thumbnailPropertyName: {control: 'text'},
-    thumbnailHeight: {control: 'text'},
+    imageColumns: {control: 'array'},
+    imageHeight: {control: 'text'},
+    itemList: {control: 'array'},
     // we need to override here since in Angular it could be null as well and therefore it would become an ambigious data type for storybook
   }
 } as Meta;
@@ -33,10 +32,12 @@ const Template: Story<TableComponent> = (args: TableComponent) => ({
     <pm-table
       [columns]="columns"
       [columnNames]="columnNames"
+      [imageColumns]="imageColumns"
+      [imageHeight]="imageHeight"
       [showHeader]="showHeader"
+      [numberFormat]="numberFormat"
+      [numberPrefix]="numberPrefix"
       [itemList]="itemList"
-      [thumbnailPropertyName]="thumbnailPropertyName"
-      [thumbnailHeight]="thumbnailHeight"
     ></pm-table>`
 });
 
@@ -44,8 +45,8 @@ export const ExampleTable = Template.bind({});
 ExampleTable.args = {
   columns: ['preview', 'name', 'price', 'author'],
   columnNames: ['Modelo', 'Nome', 'Preço', 'Autor'],
-  thumbnailPropertyName: 'preview',
-  thumbnailHeight: '50px',
+  imageColumns: ['preview'],
+  imageHeight: '50px',
   showHeader: true,
   itemList: [
     {preview: 'https://pbs.twimg.com/profile_images/661223657528651776/94PccMFW.jpg',
@@ -64,8 +65,8 @@ export const ThumbnailTable = Template.bind({});
 ThumbnailTable.args = {
   columns: ['preview', 'name', 'price', 'author'],
   columnNames: ['Modelo', 'Nome', 'Preço', 'Autor'],
-  thumbnailPropertyName: 'preview',
-  thumbnailHeight: '50px',
+  imageColumns: ['preview'],
+  imageHeight: '50px',
   showHeader: true,
   itemList: [
     {preview: 'https://pbs.twimg.com/profile_images/661223657528651776/94PccMFW.jpg',

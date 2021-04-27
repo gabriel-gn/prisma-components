@@ -29,10 +29,10 @@
           <p class="m-0 sub-p">{{ formatItemStringParameters(itemSubLabel, item) }}</p>
         </div>
         <div class="d-flex ms-2">
-          <button (click)="profileActionsSelect.toggle()" class="btn btn-light btn-icon btn-sm ms-2">
+          <button (click)="actionsSelect.toggle()" class="btn btn-light btn-icon btn-sm ms-2">
             <i class="uil uil-md uil-ellipsis-h"></i>
           </button>
-          <mat-select #profileActionsSelect class="mat-select-btn-sm">
+          <mat-select #actionsSelect class="mat-select-btn-sm">
             <mat-option [hidden]="true"></mat-option>
             <ng-container *ngTemplateOutlet="contextActions; context: {$implicit: item}"></ng-container>
           </mat-select>
