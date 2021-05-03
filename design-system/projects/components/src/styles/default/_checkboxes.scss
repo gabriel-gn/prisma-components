@@ -51,16 +51,10 @@
 
   &.disabled {
     .form-check-label {
-      color: var(--color-gray-dark);
       opacity: .5;
       cursor: not-allowed;
     }
   }
-
-}
-
-.form-check.disabled .form-check-label,
-.form-check.disabled .form-check-label {
 
 }
 

@@ -1,4 +1,5 @@
 import {Component, EventEmitter, Input, Output, TemplateRef, ViewChild} from '@angular/core';
+import {Sizes} from '../../models/sizes';
 
 @Component({
   selector: 'pm-table',
@@ -17,6 +18,8 @@ export class TableComponent {
   @Input() numberPrefix = '';
   @Input() actionsTemplate: TemplateRef<any>;
   @Input() itemList: any[] = [];
+  @Input() borderRadius: Sizes;
+  @Input() backgroundColor: string;
 
   @ViewChild('singleLabelCell', {static: true}) singleLabelCell: TemplateRef<any>;
   @ViewChild('doubleLabelCell', {static: true}) doubleLabelCell: TemplateRef<any>;

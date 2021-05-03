@@ -1,5 +1,11 @@
 .prisma-table {
   width: 100%;
+  border-collapse: collapse;
+  overflow:hidden !important;
+
+  &.mat-table {
+    background-color: transparent;
+  }
 
   th {
     font-size: 16px;

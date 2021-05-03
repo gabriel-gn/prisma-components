@@ -1,4 +1,6 @@
-<table mat-table [dataSource]="itemList" class="prisma-table">
+<table mat-table [dataSource]="itemList" class="prisma-table"
+       [ngStyle]="{'border-radius': borderRadius ? 'var(--border-radius-' + borderRadius + ')' : null, 'background-color': backgroundColor ? backgroundColor : null}"
+>
 
   <ng-container *ngFor="let column of columns; let i = index;">
     <ng-container matColumnDef="{{column}}">

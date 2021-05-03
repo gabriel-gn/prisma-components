@@ -15,3 +15,6 @@ export * from './lib/draggable-list/draggable-list.module';
 
 export * from './lib/table/table.component';
 export * from './lib/table/table.module';
+
+export * from './lib/checkbox/checkbox.component';
+export * from './lib/checkbox/checkbox.module';
