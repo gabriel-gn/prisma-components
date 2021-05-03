@@ -17,7 +17,6 @@ export class CheckboxComponent {
   public setValue(value: boolean): void {
     this.value = value;
     this.onChange.emit(this.value);
-    console.log(this.value);
   }
 
 }
