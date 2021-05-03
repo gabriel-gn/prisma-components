@@ -29,6 +29,7 @@
             ],
             "styles": [
               "src/styles.scss",
+              "../design-system/projects/components/src/styles/base_css.scss",
               "../design-system/projects/components/src/styles/base.scss"
             ],
             "scripts": []
@@ -93,6 +94,7 @@
             ],
             "styles": [
               "src/styles.scss",
+              "../design-system/projects/components/src/styles/base_css.scss",
               "../design-system/projects/components/src/styles/base.scss"
             ],
             "scripts": []
