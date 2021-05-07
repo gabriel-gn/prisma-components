@@ -13,7 +13,7 @@ export default {
     }),
   ],
   argTypes: {
-    value: {control: 'boolean'},
+    checked: {control: 'boolean'},
     disabled: {control: 'boolean'},
   }
 } as Meta;
@@ -23,7 +23,7 @@ const Template: Story<CheckboxComponent> = (args: CheckboxComponent) => ({
   props: args,
   template: `
     <pm-checkbox
-      [value]="value"
+      [checked]="checked"
       [disabled]="disabled"
     >
         Checkbox
@@ -32,12 +32,12 @@ const Template: Story<CheckboxComponent> = (args: CheckboxComponent) => ({
 
 export const DefaultCheckbox = Template.bind({});
 DefaultCheckbox.args = {
-  value: true,
+  checked: true,
   disabled: false
 };
 
 export const DisabledCheckbox = Template.bind({});
 DisabledCheckbox.args = {
-  value: false,
+  checked: false,
   disabled: true
 };

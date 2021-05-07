@@ -91,7 +91,7 @@
         },
         {
             "name": "CheckboxComponent",
-            "id": "component-CheckboxComponent-cf52291871bf4bc1dfe7130e847352fd",
+            "id": "component-CheckboxComponent-2e0500103ba5967e50129be61e4165e8",
             "file": "projects/components/src/lib/checkbox/checkbox.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -109,22 +109,28 @@
             "viewProviders": [],
             "inputsClass": [
                 {
-                    "name": "disabled",
-                    "defaultValue": "true",
-                    "line": 12
+                    "name": "checked",
+                    "defaultValue": "false",
+                    "line": 10
                 },
                 {
-                    "name": "value",
+                    "name": "disabled",
                     "defaultValue": "false",
-                    "line": 11
+                    "line": 12
                 }
             ],
             "outputsClass": [
                 {
-                    "name": "onChange",
-                    "defaultValue": "new EventEmitter()",
-                    "line": 10,
-                    "type": "EventEmitter"
+                    "name": "checkedChange",
+                    "defaultValue": "new EventEmitter<boolean>()",
+                    "line": 11,
+                    "type": "EventEmitter<boolean>"
+                },
+                {
+                    "name": "disabledChange",
+                    "defaultValue": "new EventEmitter<boolean>()",
+                    "line": 13,
+                    "type": "EventEmitter<boolean>"
                 }
             ],
             "propertiesClass": [],
@@ -140,7 +146,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 17,
+                    "line": 18,
                     "modifierKind": [
                         114
                     ],
@@ -160,7 +166,7 @@
             "description": "",
             "rawdescription": "",
             "type": "component",
-            "sourceCode": "import {Component, EventEmitter, Input, Output} from '@angular/core';\n\n@Component({\n  selector: 'pm-checkbox',\n  templateUrl: './checkbox.component.html',\n  styleUrls: ['./checkbox.component.scss']\n})\nexport class CheckboxComponent {\n\n  @Output() onChange = new EventEmitter();\n  @Input() value = false;\n  @Input() disabled = true;\n\n  constructor() {\n  }\n\n  public setValue(value: boolean): void {\n    this.value = value;\n    this.onChange.emit(this.value);\n    console.log(this.value);\n  }\n\n}\n",
+            "sourceCode": "import {Component, EventEmitter, Input, Output} from '@angular/core';\n\n@Component({\n  selector: 'pm-checkbox',\n  templateUrl: './checkbox.component.html',\n  styleUrls: ['./checkbox.component.scss']\n})\nexport class CheckboxComponent {\n\n  @Input() checked = false;\n  @Output() checkedChange: EventEmitter<boolean> = new EventEmitter<boolean>();\n  @Input() disabled = false;\n  @Output() disabledChange: EventEmitter<boolean> = new EventEmitter<boolean>();\n\n  constructor() {\n  }\n\n  public setValue(value: boolean): void {\n    this.checked = value;\n    this.checkedChange.emit(this.checked);\n  }\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -173,9 +179,9 @@
                 "name": "constructor",
                 "description": "",
                 "args": [],
-                "line": 12
+                "line": 13
             },
-            "templateData": "<div class=\"form-check\" [ngClass]=\"{'disabled': disabled}\" (click)=\"$event.stopPropagation();\">\n  <label class=\"form-check-label\">\n    <input (change)=\"setValue($event.target['checked'])\"\n           [(ngModel)]=\"value\"\n           [ngModelOptions]=\"{standalone: true}\"\n           [disabled]=\"disabled\"\n           class=\"form-check-input\" type=\"checkbox\">\n    <span class=\"form-check-sign\"></span>\n    <ng-content></ng-content>\n  </label>\n</div>\n"
+            "templateData": "<div class=\"form-check\" [ngClass]=\"{'disabled': disabled}\" (click)=\"$event.stopPropagation();\">\n  <label class=\"form-check-label\">\n    <input (change)=\"setValue($event.target['checked'])\"\n           [(ngModel)]=\"checked\"\n           [ngModelOptions]=\"{standalone: true}\"\n           [disabled]=\"disabled\"\n           class=\"form-check-input\" type=\"checkbox\">\n    <span class=\"form-check-sign\"></span>\n    <ng-content></ng-content>\n  </label>\n</div>\n"
         },
         {
             "name": "ComponentsComponent",
@@ -1138,6 +1144,14 @@
                 "defaultValue": "Template.bind({})"
             },
             {
+                "name": "ColorTable",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "stories/Table.stories.ts",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
                 "name": "context",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -1236,17 +1250,17 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/DraggableList.stories.ts",
-                "type": "Story<DraggableListComponent>",
-                "defaultValue": "(args: DraggableListComponent) => ({\n  component: DraggableListComponent,\n  props: args,\n  template: `\n    <pm-draggable-list\n        [showIndex]=\"showIndex\"\n        [itemActionLabel]=\"itemActionLabel\"\n        [itemMainLabel]=\"itemMainLabel\"\n        [itemSubLabel]=\"itemSubLabel\"\n        [actions]=\"actions\"\n        [itemList]=\"itemList\"\n        [roundedBorders]=\"roundedBorders\"\n        [enableDragging]=\"enableDragging\"\n        [enableSelection]=\"enableSelection\"\n    >\n      conteudo\n    </pm-draggable-list>`\n})"
+                "file": "stories/Checkbox.stories.ts",
+                "type": "Story<CheckboxComponent>",
+                "defaultValue": "(args: CheckboxComponent) => ({\n  component: CheckboxComponent,\n  props: args,\n  template: `\n    <pm-checkbox\n      [checked]=\"checked\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>`\n})"
             },
             {
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/Checkbox.stories.ts",
-                "type": "Story<CheckboxComponent>",
-                "defaultValue": "(args: CheckboxComponent) => ({\n  component: CheckboxComponent,\n  props: args,\n  template: `\n    <pm-checkbox\n      [value]=\"value\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>`\n})"
+                "file": "stories/DraggableList.stories.ts",
+                "type": "Story<DraggableListComponent>",
+                "defaultValue": "(args: DraggableListComponent) => ({\n  component: DraggableListComponent,\n  props: args,\n  template: `\n    <pm-draggable-list\n        [showIndex]=\"showIndex\"\n        [itemActionLabel]=\"itemActionLabel\"\n        [itemMainLabel]=\"itemMainLabel\"\n        [itemSubLabel]=\"itemSubLabel\"\n        [actions]=\"actions\"\n        [itemList]=\"itemList\"\n        [roundedBorders]=\"roundedBorders\"\n        [enableDragging]=\"enableDragging\"\n        [enableSelection]=\"enableSelection\"\n    >\n      conteudo\n    </pm-draggable-list>`\n})"
             },
             {
                 "name": "Template",
@@ -1501,6 +1515,48 @@
                     "defaultValue": "(args: ButtonComponent) => ({\n  component: ButtonComponent,\n  props: args,\n  template: `\n    <pm-button\n        [label]=\"label\"\n        [type]=\"type\"\n        [busy]=\"busy\"\n        [busyText]=\"busyText\"\n    >\n        Botão\n    </pm-button>`\n})"
                 }
             ],
+            "stories/Table.stories.ts": [
+                {
+                    "name": "ColorTable",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "stories/Table.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "ExampleTable",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "stories/Table.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "NoHeader",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "stories/Table.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "stories/Table.stories.ts",
+                    "type": "Story<TableComponent>",
+                    "defaultValue": "(args: TableComponent) => ({\n  component: TableComponent,\n  props: args,\n  template: `\n    <pm-table\n      [columns]=\"columns\"\n      [columnNames]=\"columnNames\"\n      [imageColumns]=\"imageColumns\"\n      [imageHeight]=\"imageHeight\"\n      [showHeader]=\"showHeader\"\n      [numberFormat]=\"numberFormat\"\n      [numberPrefix]=\"numberPrefix\"\n      [itemList]=\"itemList\"\n      [borderRadius]=\"borderRadius\"\n      [backgroundColor]=\"backgroundColor\"\n    ></pm-table>`\n})"
+                },
+                {
+                    "name": "ThumbnailTable",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "stories/Table.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                }
+            ],
             "projects/components/src/test.ts": [
                 {
                     "name": "context",
@@ -1541,7 +1597,7 @@
                     "subtype": "variable",
                     "file": "stories/Checkbox.stories.ts",
                     "type": "Story<CheckboxComponent>",
-                    "defaultValue": "(args: CheckboxComponent) => ({\n  component: CheckboxComponent,\n  props: args,\n  template: `\n    <pm-checkbox\n      [value]=\"value\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>`\n})"
+                    "defaultValue": "(args: CheckboxComponent) => ({\n  component: CheckboxComponent,\n  props: args,\n  template: `\n    <pm-checkbox\n      [checked]=\"checked\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>`\n})"
                 }
             ],
             "stories/DraggableList.stories.ts": [
@@ -1576,40 +1632,6 @@
                     "file": "stories/DraggableList.stories.ts",
                     "type": "Story<DraggableListComponent>",
                     "defaultValue": "(args: DraggableListComponent) => ({\n  component: DraggableListComponent,\n  props: args,\n  template: `\n    <pm-draggable-list\n        [showIndex]=\"showIndex\"\n        [itemActionLabel]=\"itemActionLabel\"\n        [itemMainLabel]=\"itemMainLabel\"\n        [itemSubLabel]=\"itemSubLabel\"\n        [actions]=\"actions\"\n        [itemList]=\"itemList\"\n        [roundedBorders]=\"roundedBorders\"\n        [enableDragging]=\"enableDragging\"\n        [enableSelection]=\"enableSelection\"\n    >\n      conteudo\n    </pm-draggable-list>`\n})"
-                }
-            ],
-            "stories/Table.stories.ts": [
-                {
-                    "name": "ExampleTable",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "stories/Table.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "NoHeader",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "stories/Table.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "stories/Table.stories.ts",
-                    "type": "Story<TableComponent>",
-                    "defaultValue": "(args: TableComponent) => ({\n  component: TableComponent,\n  props: args,\n  template: `\n    <pm-table\n      [columns]=\"columns\"\n      [columnNames]=\"columnNames\"\n      [imageColumns]=\"imageColumns\"\n      [imageHeight]=\"imageHeight\"\n      [showHeader]=\"showHeader\"\n      [numberFormat]=\"numberFormat\"\n      [numberPrefix]=\"numberPrefix\"\n      [itemList]=\"itemList\"\n      [borderRadius]=\"borderRadius\"\n      [backgroundColor]=\"backgroundColor\"\n    ></pm-table>`\n})"
-                },
-                {
-                    "name": "ThumbnailTable",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "stories/Table.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
                 }
             ]
         },
@@ -1839,7 +1861,7 @@
                 "linktype": "component",
                 "name": "CheckboxComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/6",
+                "coverageCount": "0/7",
                 "status": "low"
             },
             {
@@ -2004,6 +2026,16 @@
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
                 "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "stories/Table.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "ColorTable",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
