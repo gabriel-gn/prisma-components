@@ -10,6 +10,8 @@ export class AppComponent {
   title = 'app';
   @ViewChild('prismaTable', {static: true}) prismaTable: TableComponent;
   busy = false;
+  columns = ['name', 'price'];
+  columnNames = ['Nome', 'Preço'];
 
   public setBusy(): void {
     this.busy = true;

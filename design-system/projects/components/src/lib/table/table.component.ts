@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output, TemplateRef, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild} from '@angular/core';
 import {Sizes} from '../../models/sizes';
 
 @Component({
@@ -6,7 +6,7 @@ import {Sizes} from '../../models/sizes';
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss']
 })
-export class TableComponent {
+export class TableComponent implements OnInit {
 
   @Output() onItemListChange = new EventEmitter();
   @Input() columns: string[] = [];
@@ -27,6 +27,9 @@ export class TableComponent {
   @ViewChild('formattedNumberCell', {static: true}) formattedNumberCell: TemplateRef<any>;
 
   constructor() {
+  }
+
+  ngOnInit(): void {
     if (typeof this.actionsTemplate !== 'undefined') {
       this.columns.push('ACTIONS');
       this.columnNames.push('');

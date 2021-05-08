@@ -19,7 +19,13 @@
 <!--  <pm-draggable-list></pm-draggable-list>-->
 
   <button (click)="setTableData()">Mudar dados tabela</button>
-  <pm-table #prismaTable></pm-table>
+  <pm-table #prismaTable [columns]="columns" [columnNames]="columnNames" [actionsTemplate]="cartActions"></pm-table>
+
+  <ng-template #cartActions let-item let-column="column">
+    <div>
+      <button class="btn btn-primary">Apagar Item</button>
+    </div>
+  </ng-template>
 </div>
 
 <!-- you only need this if you added a router: -->
