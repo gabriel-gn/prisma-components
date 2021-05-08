@@ -31,7 +31,7 @@ jobs:
           steps.check.outputs.changed == 'false'
         run: 'echo "Versão de pacote não alterada, não será publicado no npm!"'
 
-  publish:
+  publish-npm:
     needs: check-version
     runs-on: ubuntu-latest
     if: |
@@ -57,3 +57,14 @@ jobs:
           npm run deploy-npm
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+
+  tag-version:
+    needs: publish-npm
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: Klemensas/action-autotag@stable
+        with:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          package_root: "/design-system"
+          tag_prefix: "v"
