@@ -8,6 +8,7 @@ on:
 
 jobs:
   check-version:
+    name: Check package version
     runs-on: ubuntu-latest
     outputs:
       changed: ${{ steps.check.outputs.changed }}
@@ -33,6 +34,7 @@ jobs:
         run: 'echo "Versão de pacote não alterada, não será publicado no npm!"'
 
   publish-npm:
+    name: publish NPM
     needs: check-version
     runs-on: ubuntu-latest
     if: |
@@ -60,6 +62,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
 
   tag-version:
+    name: Tag Version
     needs: [check-version, publish-npm]
     runs-on: ubuntu-latest
     steps:
@@ -69,3 +72,22 @@ jobs:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
           package_root: "/design-system/projects/components"
           tag_prefix: "v"
+
+  create-release:
+    name: Create Release
+    needs: [check-version, publish-npm, tag-version]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@master
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ needs.check-version.outputs.version }}
+          release_name: Release v${{ needs.check-version.outputs.version }}
+          body: "-"
+          draft: false
+          prerelease: false
