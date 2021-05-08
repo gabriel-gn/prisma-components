@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       changed: ${{ steps.check.outputs.changed }}
+      version: ${{ steps.check.outputs.version }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -59,12 +60,10 @@ jobs:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
 
   tag-version:
-    needs: publish-npm
+    needs: [check-version, publish-npm]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: Klemensas/action-autotag@stable
         with:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-          package_root: "/design-system"
-          tag_prefix: "v"
+          version: "v${{ needs.check-version.outputs.version }}"
