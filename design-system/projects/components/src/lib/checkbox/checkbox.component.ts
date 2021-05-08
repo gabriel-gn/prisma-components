@@ -9,6 +9,7 @@ export class CheckboxComponent {
 
   @Input() checked = false;
   @Output() checkedChange: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() onCheckedChange = new EventEmitter();
   @Input() disabled = false;
   @Output() disabledChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
@@ -18,6 +19,7 @@ export class CheckboxComponent {
   public setValue(value: boolean): void {
     this.checked = value;
     this.checkedChange.emit(this.checked);
+    this.onCheckedChange.emit(this.checked);
   }
 
 }
