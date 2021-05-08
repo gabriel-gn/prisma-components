@@ -53,11 +53,11 @@ jobs:
           echo "*** Iniciando NPM RUN BUILD-NPM ***"
           npm run build-npm
       - name: Publish package to NPM
-        working-directory: ./design-system/dist/components
-        run: npm publish --access public
+        working-directory: ./design-system
+        run: npm run deploy-npm
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      - name: Publish package to GPR
+      - name: setup GPR env
         uses: actions/setup-node@v1
         with:
           node-version: 12
@@ -66,8 +66,9 @@ jobs:
       - name: Authenticate with the GitHub Package Registry
         run: |
           echo "//npm.pkg.github.com:_authToken=${{ secrets.PUBLISH_GITHUB_TOKEN }}" > ~/.npmrc
-      - name: npm publish
-        run: npm publish
+      - name: Publish package to GPR
+        working-directory: ./design-system
+        run: npm run deploy-gpr
         env:
           NODE_AUTH_TOKEN: ${{ secrets.PUBLISH_GITHUB_TOKEN }}
 
