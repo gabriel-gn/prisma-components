@@ -67,4 +67,5 @@ jobs:
       - uses: Klemensas/action-autotag@stable
         with:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-          version: "v${{ needs.check-version.outputs.version }}"
+          package_root: "/design-system/projects/components"
+          tag_prefix: "v"
