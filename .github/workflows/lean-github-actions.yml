@@ -33,8 +33,8 @@ jobs:
           steps.check.outputs.changed == 'false'
         run: 'echo "Versão de pacote não alterada, não será publicado no npm!"'
 
-  build:
-    name: Build package and Publish
+  publish-npm:
+    name: publish NPM
     needs: check-version
     runs-on: ubuntu-latest
     if: |
@@ -45,6 +45,7 @@ jobs:
         with:
           node-version: 12
           registry-url: https://registry.npmjs.org/
+
       - name: Install dependencies and build package
         working-directory: ./design-system
         run: |
@@ -52,26 +53,17 @@ jobs:
           npm install
           echo "*** Iniciando NPM RUN BUILD-NPM ***"
           npm run build-npm
+
       - name: Publish package to NPM
         working-directory: ./design-system
-        run: npm run deploy-npm
+        run: |
+          npm run deploy-npm
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      - name: setup GPR env
-        uses: actions/setup-node@v1
-        with:
-          node-version: 12
-          registry-url: 'https://npm.pkg.github.com'
-          scope: '@gabriel-gn'
-      - name: Publish package to GPR
-        working-directory: ./design-system
-        run: npm run deploy-gpr
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.PUBLISH_GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
 
   tag-version:
     name: Tag Version
-    needs: [build]
+    needs: [check-version, publish-npm]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -83,7 +75,7 @@ jobs:
 
   create-release:
     name: Create Release
-    needs: [build, tag-version]
+    needs: [check-version, publish-npm, tag-version]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
