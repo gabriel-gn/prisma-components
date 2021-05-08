@@ -66,4 +66,5 @@ jobs:
       - uses: actions/checkout@v2
       - uses: Klemensas/action-autotag@stable
         with:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
           version: "v${{ needs.check-version.outputs.version }}"
