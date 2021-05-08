@@ -34,7 +34,7 @@ jobs:
         run: 'echo "Versão de pacote não alterada, não será publicado no npm!"'
 
   build:
-    name: Build package
+    name: Build package and Publish
     needs: check-version
     runs-on: ubuntu-latest
     if: |
@@ -44,6 +44,7 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 12
+          registry-url: https://registry.npmjs.org/
       - name: Install dependencies and build package
         working-directory: ./design-system
         run: |
@@ -51,47 +52,28 @@ jobs:
           npm install
           echo "*** Iniciando NPM RUN BUILD-NPM ***"
           npm run build-npm
-
-  publish-npm:
-    name: publish NPM
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
-        with:
-          node-version: 12
-          registry-url: https://registry.npmjs.org/
-
       - name: Publish package to NPM
         working-directory: ./design-system/dist/components
-        run: |
-          npm publish --access=public
+        run: npm publish --access public
         env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
-
-  publish-gpr:
-    name: publish Github Packages
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Publish package to GPR
+        uses: actions/setup-node@v1
         with:
           node-version: 12
-          registry-url: https://npm.pkg.github.com/
+          registry-url: 'https://npm.pkg.github.com'
           scope: '@gabriel-gn'
-
-      - name: Publish package to Github Packages
-        working-directory: ./design-system/dist/components
+      - name: Authenticate with the GitHub Package Registry
         run: |
-          npm publish
+          echo "//npm.pkg.github.com:_authToken=${{ secrets.PUBLISH_GITHUB_TOKEN }}" > ~/.npmrc
+      - name: npm publish
+        run: npm publish
         env:
-          NODE_AUTH_TOKEN: ${{secrets.PUBLISH_GITHUB_TOKEN}}
+          NODE_AUTH_TOKEN: ${{ secrets.PUBLISH_GITHUB_TOKEN }}
 
   tag-version:
     name: Tag Version
-    needs: [build, publish-npm]
+    needs: [build]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -103,7 +85,7 @@ jobs:
 
   create-release:
     name: Create Release
-    needs: [build, publish-npm, tag-version]
+    needs: [build, tag-version]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
