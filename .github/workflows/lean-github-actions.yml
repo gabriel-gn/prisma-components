@@ -64,6 +64,7 @@ jobs:
           registry-url: 'https://npm.pkg.github.com'
           scope: '@gabriel-gn'
       - name: Authenticate with the GitHub Package Registry
+        working-directory: ./design-system
         run: |
           echo "//npm.pkg.github.com:_authToken=${{ secrets.PUBLISH_GITHUB_TOKEN }}" > ~/.npmrc
       - name: Publish package to GPR
