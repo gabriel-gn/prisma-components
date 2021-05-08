@@ -71,7 +71,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
 
   publish-gpr:
-  name: publish Github Packages
+    name: publish Github Packages
     needs: build
     runs-on: ubuntu-latest
     steps:
