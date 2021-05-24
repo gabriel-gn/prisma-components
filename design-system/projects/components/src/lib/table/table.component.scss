@@ -7,12 +7,12 @@
     background-color: transparent;
   }
 
-  th {
+  mat-header-cell {
     font-size: 16px;
     font-weight: 600;
   }
 
-  td {
+  mat-cell {
     &.disabled {
       background-color: var(--color-gray-light);
 
@@ -32,4 +32,20 @@
     margin: 0px;
     color: #c0c0c0;
   }
+}
+
+.element-row {
+  position: relative;
+}
+
+.element-row:not(.expanded) {
+  cursor: pointer;
+}
+
+.element-row:not(.expanded):hover {
+  background: #f5f5f5;
+}
+
+.element-row.expanded {
+  border-bottom-color: transparent;
 }
