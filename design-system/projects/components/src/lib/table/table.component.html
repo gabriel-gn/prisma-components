@@ -15,14 +15,14 @@
   </ng-container>
 
   <ng-container matColumnDef="expandedDetail">
-    <mat-cell *matCellDef="let item">
-      <ng-container *ngTemplateOutlet="dummyExpandedItem; context: {$implicit: item.element}"></ng-container>
+    <mat-cell *matCellDef="let item" [ngClass]="{'disabled': item?.disabled === true}">
+      <ng-container *ngTemplateOutlet="expandedDetailTemplate; context: {$implicit: item.element}"></ng-container>
     </mat-cell>
   </ng-container>
 
   <mat-header-row *matHeaderRowDef="columns" [ngClass]="{'d-none': !showHeader}"></mat-header-row>
   <mat-row *matRowDef="let row; columns: columns"
-           class="element-row"
+           [ngClass]="{'element-row': expandedDetailTemplate}"
            [class.expanded]="expandedRow == row"
            (click)="setSelectedRow(row)"
   ></mat-row>
@@ -32,11 +32,6 @@
   >
   </mat-row>
 </mat-table>
-
-<ng-template #dummyExpandedItem let-item>
-  <p>{{item.price}}</p>
-  <p>xD</p>
-</ng-template>
 
 <ng-template #imageCell let-item let-column="column">
   <img [attr.src]="item[column]" [attr.alt]="item[column]"

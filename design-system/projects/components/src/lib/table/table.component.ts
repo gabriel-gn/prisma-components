@@ -20,7 +20,7 @@ import _ from 'lodash';
   animations: [
     trigger('detailExpand', [
       state('collapsed', style({height: '0px', minHeight: '0px', visibility: 'hidden'})),
-      state('expanded', style({height: '50px', visibility: 'visible'})),
+      state('expanded', style({height: '*', visibility: 'visible'})),
       transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
     ]),
   ],
@@ -39,6 +39,9 @@ export class TableComponent implements AfterViewInit {
   @Input() itemList: any = [];
   @Input() borderRadius: Sizes;
   @Input() backgroundColor: string;
+
+  @Input() expandedDetailTemplate: TemplateRef<any>;
+  @Input() disableExpandedOnDisabledRow = true;
 
   @ViewChild('table', {static: true}) table: MatTable<any>;
   @ViewChild('singleLabelCell', {static: true}) singleLabelCell: TemplateRef<any>;
@@ -59,21 +62,31 @@ export class TableComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     if (typeof this.actionsTemplate !== 'undefined') {
-      this.columns.push('ACTIONS');
-      this.columnNames.push('');
+      if (this.columns.includes('ACTIONS') === false) {
+        this.columns.push('ACTIONS');
+        this.columnNames.push('');
+      }
     }
     this.reloadExpandedDetail();
   }
 
   /**
-   * dá como selecionada a row atual
+   * dá como selecionada a row atual CASO exista um template de expandedDetailTemplate
    * @param row
    */
   public setSelectedRow(row: any): void {
-    if (row.hasOwnProperty('detailRow') === false) {
-      row = { detailRow: true, element: row };
+    if (!_.isNil(this.expandedDetailTemplate)) {
+      if (row.hasOwnProperty('detailRow') === false) {
+        row = { detailRow: true, element: row };
+      }
+      if (row.element?.disabled) {
+        if (this.disableExpandedOnDisabledRow === false) {
+          this.expandedRow = row;
+        }
+      } else {
+        this.expandedRow = row;
+      }
     }
-    this.expandedRow = row;
   }
 
   /**
@@ -139,7 +152,7 @@ export class TableComponent implements AfterViewInit {
       if (this.imageColumns.includes(column)) {
         return this.imageCell;
       } else {
-        if (!isNaN(item[column])) {
+        if (typeof item[column] === 'number') {
           return this.formattedNumberCell;
         } else {
           return this.singleLabelCell;

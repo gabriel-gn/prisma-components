@@ -661,7 +661,7 @@
         },
         {
             "name": "TableComponent",
-            "id": "component-TableComponent-b9d11a0a4c3498fddea93172759d6c56",
+            "id": "component-TableComponent-7bfd6ccf46e5aad8891ccdf467ba5066",
             "file": "projects/components/src/lib/table/table.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -680,69 +680,74 @@
             "inputsClass": [
                 {
                     "name": "actionsTemplate",
-                    "line": 37,
+                    "line": 38,
                     "type": "TemplateRef<any>"
                 },
                 {
                     "name": "backgroundColor",
-                    "line": 40,
+                    "line": 41,
                     "type": "string"
                 },
                 {
                     "name": "borderRadius",
-                    "line": 39,
+                    "line": 40,
                     "type": "Sizes"
                 },
                 {
                     "name": "columnNames",
                     "defaultValue": "[]",
-                    "line": 31,
+                    "line": 32,
                     "type": "string[]"
                 },
                 {
                     "name": "columns",
                     "defaultValue": "[]",
-                    "line": 30,
+                    "line": 31,
                     "type": "string[]"
+                },
+                {
+                    "name": "expandedDetailTemplate",
+                    "line": 43,
+                    "type": "TemplateRef<any>"
                 },
                 {
                     "name": "imageColumns",
                     "defaultValue": "[]",
-                    "line": 32,
+                    "line": 33,
                     "type": "string[]"
                 },
                 {
                     "name": "imageHeight",
-                    "line": 33,
+                    "line": 34,
                     "type": ""
                 },
                 {
                     "name": "itemList",
                     "defaultValue": "[]",
-                    "line": 38,
+                    "line": 39,
                     "type": "any"
                 },
                 {
                     "name": "numberFormat",
                     "defaultValue": "'1.2-2'",
-                    "line": 35
+                    "line": 36
                 },
                 {
                     "name": "numberPrefix",
                     "defaultValue": "''",
-                    "line": 36
+                    "line": 37
                 },
                 {
                     "name": "showHeader",
                     "defaultValue": "true",
-                    "line": 34
+                    "line": 35
                 }
             ],
             "outputsClass": [
                 {
                     "name": "onItemListChange",
                     "defaultValue": "new EventEmitter()",
-                    "line": 29,
+                    "line": 30,
                     "type": "EventEmitter"
                 }
             ],
@@ -752,7 +757,7 @@
                     "type": "TemplateRef<any>",
                     "optional": false,
                     "description": "",
-                    "line": 44,
+                    "line": 47,
                     "decorators": [
                         {
                             "name": "ViewChild",
@@ -765,7 +770,7 @@
                     "type": "any",
                     "optional": false,
                     "description": "",
-                    "line": 48,
+                    "line": 51,
                     "modifierKind": [
                         114
                     ]
@@ -775,7 +780,7 @@
                     "type": "TemplateRef<any>",
                     "optional": false,
                     "description": "",
-                    "line": 46,
+                    "line": 49,
                     "decorators": [
                         {
                             "name": "ViewChild",
@@ -788,7 +793,7 @@
                     "type": "TemplateRef<any>",
                     "optional": false,
                     "description": "",
-                    "line": 45,
+                    "line": 48,
                     "decorators": [
                         {
                             "name": "ViewChild",
@@ -802,14 +807,22 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 50
+                    "line": 53
+                },
+                {
+                    "name": "isNormalRow",
+                    "defaultValue": "() => {...}",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 55
                 },
                 {
                     "name": "singleLabelCell",
                     "type": "TemplateRef<any>",
                     "optional": false,
                     "description": "",
-                    "line": 43,
+                    "line": 46,
                     "decorators": [
                         {
                             "name": "ViewChild",
@@ -822,7 +835,7 @@
                     "type": "MatTable<any>",
                     "optional": false,
                     "description": "",
-                    "line": 42,
+                    "line": 45,
                     "decorators": [
                         {
                             "name": "ViewChild",
@@ -838,7 +851,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 107,
+                    "line": 128,
                     "description": "<p>Some com a linha de header</p>\n",
                     "modifierKind": [
                         114
@@ -850,7 +863,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 100,
+                    "line": 121,
                     "description": "<p>Mostra a linha de header</p>\n",
                     "modifierKind": [
                         114
@@ -871,7 +884,7 @@
                     "optional": false,
                     "returnType": "TemplateRef<any>",
                     "typeParameters": [],
-                    "line": 116,
+                    "line": 137,
                     "description": "<p>Retorna o template que será renderizada a celula de acordo com o input de item e coluna</p>\n",
                     "modifierKind": [
                         114
@@ -879,15 +892,15 @@
                     "jsdoctags": [
                         {
                             "name": {
-                                "pos": 3222,
-                                "end": 3226,
+                                "pos": 3817,
+                                "end": 3821,
                                 "flags": 0,
                                 "escapedText": "item"
                             },
                             "type": "any",
                             "tagName": {
-                                "pos": 3216,
-                                "end": 3221,
+                                "pos": 3811,
+                                "end": 3816,
                                 "flags": 0,
                                 "escapedText": "param"
                             },
@@ -895,15 +908,15 @@
                         },
                         {
                             "name": {
-                                "pos": 3263,
-                                "end": 3269,
+                                "pos": 3858,
+                                "end": 3864,
                                 "flags": 0,
                                 "escapedText": "column"
                             },
                             "type": "string",
                             "tagName": {
-                                "pos": 3257,
-                                "end": 3262,
+                                "pos": 3852,
+                                "end": 3857,
                                 "flags": 0,
                                 "escapedText": "param"
                             },
@@ -917,10 +930,45 @@
                     "optional": false,
                     "returnType": "any[]",
                     "typeParameters": [],
-                    "line": 84,
+                    "line": 105,
                     "description": "<p>Retorna a lista atual de itens na tabela</p>\n",
                     "modifierKind": [
                         114
+                    ]
+                },
+                {
+                    "name": "isSelectedRow",
+                    "args": [
+                        {
+                            "name": "row",
+                            "type": "any"
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "boolean",
+                    "typeParameters": [],
+                    "line": 87,
+                    "description": "<p>Verifica se a row é igual à selecionada</p>\n",
+                    "modifierKind": [
+                        114
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": {
+                                "pos": 2674,
+                                "end": 2677,
+                                "flags": 0,
+                                "escapedText": "row"
+                            },
+                            "type": "any",
+                            "tagName": {
+                                "pos": 2668,
+                                "end": 2673,
+                                "flags": 0,
+                                "escapedText": "param"
+                            },
+                            "comment": ""
+                        }
                     ]
                 },
                 {
@@ -929,7 +977,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 57
+                    "line": 62
                 },
                 {
                     "name": "reloadExpandedDetail",
@@ -937,7 +985,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 74,
+                    "line": 95,
                     "description": "<p>Reconstroi os elementos da tabela para incluir o &quot;detail row&quot; e deixar ela expansível</p>\n",
                     "modifierKind": [
                         112
@@ -945,8 +993,8 @@
                     "jsdoctags": [
                         {
                             "tagName": {
-                                "pos": 2286,
-                                "end": 2293,
+                                "pos": 2881,
+                                "end": 2888,
                                 "flags": 0,
                                 "escapedText": "private"
                             },
@@ -965,7 +1013,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 91,
+                    "line": 112,
                     "description": "<p>Troca a lista de itens da tabela</p>\n",
                     "modifierKind": [
                         114
@@ -991,17 +1039,27 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 65,
+                    "line": 74,
+                    "description": "<p>dá como selecionada a row atual CASO exista um template de expandedDetailTemplate</p>\n",
                     "modifierKind": [
                         114
                     ],
                     "jsdoctags": [
                         {
-                            "name": "row",
+                            "name": {
+                                "pos": 2357,
+                                "end": 2360,
+                                "flags": 0,
+                                "escapedText": "row"
+                            },
                             "type": "any",
                             "tagName": {
-                                "text": "param"
-                            }
+                                "pos": 2351,
+                                "end": 2356,
+                                "flags": 0,
+                                "escapedText": "param"
+                            },
+                            "comment": ""
                         }
                     ]
                 }
@@ -1011,11 +1069,11 @@
             "description": "",
             "rawdescription": "",
             "type": "component",
-            "sourceCode": "import {\n  AfterViewInit,\n  ChangeDetectorRef,\n  Component,\n  EventEmitter,\n  Input,\n  Output,\n  TemplateRef,\n  ViewChild\n} from '@angular/core';\nimport {Sizes} from '../../models/sizes';\nimport {animate, state, style, transition, trigger} from '@angular/animations';\nimport {MatTable, MatTableDataSource} from '@angular/material/table';\n\n@Component({\n  selector: 'pm-table',\n  templateUrl: './table.component.html',\n  styleUrls: ['./table.component.scss'],\n  animations: [\n    trigger('detailExpand', [\n      state('collapsed', style({height: '0px', minHeight: '10px', visibility: 'visible'})),\n      state('expanded', style({height: '50px', visibility: 'visible'})),\n      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),\n    ]),\n  ],\n})\nexport class TableComponent implements AfterViewInit {\n\n  @Output() onItemListChange = new EventEmitter();\n  @Input() columns: string[] = [];\n  @Input() columnNames: string[] = [];\n  @Input() imageColumns: string[] = [];\n  @Input() imageHeight: '50px';\n  @Input() showHeader = true;\n  @Input() numberFormat = '1.2-2';\n  @Input() numberPrefix = '';\n  @Input() actionsTemplate: TemplateRef<any>;\n  @Input() itemList: any = [];\n  @Input() borderRadius: Sizes;\n  @Input() backgroundColor: string;\n\n  @ViewChild('table', {static: true}) table: MatTable<any>;\n  @ViewChild('singleLabelCell', {static: true}) singleLabelCell: TemplateRef<any>;\n  @ViewChild('doubleLabelCell', {static: true}) doubleLabelCell: TemplateRef<any>;\n  @ViewChild('imageCell', {static: true}) imageCell: TemplateRef<any>;\n  @ViewChild('formattedNumberCell', {static: true}) formattedNumberCell: TemplateRef<any>;\n\n  public expandedRow: any;\n  // tslint:disable-next-line:ban-types\n  isExpansionDetailRow = (i: number, row: Object) => row.hasOwnProperty('detailRow');\n\n  constructor(\n    private changeDetectorRef: ChangeDetectorRef\n  ) {\n  }\n\n  ngAfterViewInit(): void {\n    if (typeof this.actionsTemplate !== 'undefined') {\n      this.columns.push('ACTIONS');\n      this.columnNames.push('');\n    }\n    this.reloadExpandedDetail();\n  }\n\n  public setSelectedRow(row: any): void {\n    console.log(row);\n    this.expandedRow = row;\n  }\n\n  /**\n   * Reconstroi os elementos da tabela para incluir o \"detail row\" e deixar ela expansível\n   * @private\n   */\n  private reloadExpandedDetail(): void {\n    const newItems = [];\n    this.itemList.forEach(element => newItems.push(element, { detailRow: true, element }));\n    this.itemList = new MatTableDataSource(newItems);\n    this.changeDetectorRef.detectChanges();\n  }\n\n  /**\n   * Retorna a lista atual de itens na tabela\n   */\n  public getItemList(): any[] {\n    return this.itemList;\n  }\n\n  /**\n   * Troca a lista de itens da tabela\n   */\n  public setItemList(itemList: any[]): void {\n    this.itemList = itemList;\n    this.reloadExpandedDetail();\n    this.onItemListChange.emit(this.itemList);\n  }\n\n  /**\n   * Mostra a linha de header\n   */\n  public enableHeader(): void {\n    this.showHeader = true;\n  }\n\n  /**\n   * Some com a linha de header\n   */\n  public disableHeader(): void {\n    this.showHeader = false;\n  }\n\n  /**\n   * Retorna o template que será renderizada a celula de acordo com o input de item e coluna\n   * @param item: item da lista de itens\n   * @param column: propriedade do item\n   */\n  public getCellTemplate(item: any, column: string): TemplateRef<any> {\n    if (column === 'ACTIONS') {\n      return this.actionsTemplate;\n    } else if (Array.isArray(item[column])) {\n      return this.doubleLabelCell;\n    } else {\n      if (this.imageColumns.includes(column)) {\n        return this.imageCell;\n      } else {\n        if (!isNaN(item[column])) {\n          return this.formattedNumberCell;\n        } else {\n          return this.singleLabelCell;\n        }\n      }\n    }\n  }\n}\n",
+            "sourceCode": "import {\n  AfterViewInit,\n  ChangeDetectorRef,\n  Component,\n  EventEmitter,\n  Input,\n  Output,\n  TemplateRef,\n  ViewChild\n} from '@angular/core';\nimport {Sizes} from '../../models/sizes';\nimport {animate, state, style, transition, trigger} from '@angular/animations';\nimport {MatTable, MatTableDataSource} from '@angular/material/table';\nimport _ from 'lodash';\n\n@Component({\n  selector: 'pm-table',\n  templateUrl: './table.component.html',\n  styleUrls: ['./table.component.scss'],\n  animations: [\n    trigger('detailExpand', [\n      state('collapsed', style({height: '0px', minHeight: '0px', visibility: 'hidden'})),\n      state('expanded', style({height: '50px', visibility: 'visible'})),\n      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),\n    ]),\n  ],\n})\nexport class TableComponent implements AfterViewInit {\n\n  @Output() onItemListChange = new EventEmitter();\n  @Input() columns: string[] = [];\n  @Input() columnNames: string[] = [];\n  @Input() imageColumns: string[] = [];\n  @Input() imageHeight: '50px';\n  @Input() showHeader = true;\n  @Input() numberFormat = '1.2-2';\n  @Input() numberPrefix = '';\n  @Input() actionsTemplate: TemplateRef<any>;\n  @Input() itemList: any = [];\n  @Input() borderRadius: Sizes;\n  @Input() backgroundColor: string;\n\n  @Input() expandedDetailTemplate: TemplateRef<any>;\n\n  @ViewChild('table', {static: true}) table: MatTable<any>;\n  @ViewChild('singleLabelCell', {static: true}) singleLabelCell: TemplateRef<any>;\n  @ViewChild('doubleLabelCell', {static: true}) doubleLabelCell: TemplateRef<any>;\n  @ViewChild('imageCell', {static: true}) imageCell: TemplateRef<any>;\n  @ViewChild('formattedNumberCell', {static: true}) formattedNumberCell: TemplateRef<any>;\n\n  public expandedRow: any;\n  // tslint:disable-next-line:ban-types\n  isExpansionDetailRow = (i: number, row: Object) => row.hasOwnProperty('detailRow');\n  // tslint:disable-next-line:ban-types\n  isNormalRow = (i: number, row: Object) => true;\n\n  constructor(\n    private changeDetectorRef: ChangeDetectorRef\n  ) {\n  }\n\n  ngAfterViewInit(): void {\n    if (typeof this.actionsTemplate !== 'undefined') {\n      this.columns.push('ACTIONS');\n      this.columnNames.push('');\n    }\n    this.reloadExpandedDetail();\n  }\n\n  /**\n   * dá como selecionada a row atual CASO exista um template de expandedDetailTemplate\n   * @param row\n   */\n  public setSelectedRow(row: any): void {\n    if (!_.isNil(this.expandedDetailTemplate)) {\n      if (row.hasOwnProperty('detailRow') === false) {\n        row = { detailRow: true, element: row };\n      }\n      this.expandedRow = row;\n    }\n  }\n\n  /**\n   * Verifica se a row é igual à selecionada\n   * @param row\n   */\n  public isSelectedRow(row: any): boolean {\n    return _.isEqual(row, this.expandedRow);\n  }\n\n  /**\n   * Reconstroi os elementos da tabela para incluir o \"detail row\" e deixar ela expansível\n   * @private\n   */\n  private reloadExpandedDetail(): void {\n    const newItems = [];\n    this.itemList.forEach(element => newItems.push(element, { detailRow: true, element }));\n    this.itemList = new MatTableDataSource(newItems);\n    this.changeDetectorRef.detectChanges();\n  }\n\n  /**\n   * Retorna a lista atual de itens na tabela\n   */\n  public getItemList(): any[] {\n    return this.itemList;\n  }\n\n  /**\n   * Troca a lista de itens da tabela\n   */\n  public setItemList(itemList: any[]): void {\n    this.itemList = itemList;\n    this.reloadExpandedDetail();\n    this.onItemListChange.emit(this.itemList);\n  }\n\n  /**\n   * Mostra a linha de header\n   */\n  public enableHeader(): void {\n    this.showHeader = true;\n  }\n\n  /**\n   * Some com a linha de header\n   */\n  public disableHeader(): void {\n    this.showHeader = false;\n  }\n\n  /**\n   * Retorna o template que será renderizada a celula de acordo com o input de item e coluna\n   * @param item: item da lista de itens\n   * @param column: propriedade do item\n   */\n  public getCellTemplate(item: any, column: string): TemplateRef<any> {\n    if (column === 'ACTIONS') {\n      return this.actionsTemplate;\n    } else if (Array.isArray(item[column])) {\n      return this.doubleLabelCell;\n    } else {\n      if (this.imageColumns.includes(column)) {\n        return this.imageCell;\n      } else {\n        if (typeof item[column] === 'number') {\n          return this.formattedNumberCell;\n        } else {\n          return this.singleLabelCell;\n        }\n      }\n    }\n  }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": ".prisma-table {\n  width: 100%;\n  border-collapse: collapse;\n  overflow:hidden !important;\n\n  &.mat-table {\n    background-color: transparent;\n  }\n\n  mat-header-cell {\n    font-size: 16px;\n    font-weight: 600;\n  }\n\n  mat-cell {\n    &.disabled {\n      background-color: var(--color-gray-light);\n\n      * {\n        color: var(--color-gray-dark) !important;\n      }\n    }\n  }\n\n  .main-label {\n    margin: 0px;\n    color: rgba(0, 0, 0, 0.87);\n    font-size: 14px;\n  }\n\n  .sub-label {\n    margin: 0px;\n    color: #c0c0c0;\n  }\n}\n\n.element-row {\n  position: relative;\n}\n\n.element-row:not(.expanded) {\n  cursor: pointer;\n}\n\n.element-row:not(.expanded):hover {\n  background: #f5f5f5;\n}\n\n.element-row.expanded {\n  border-bottom-color: transparent;\n}\n",
+                    "data": ".prisma-table {\n  width: 100%;\n  border-collapse: collapse;\n  overflow:hidden !important;\n\n  &.mat-table {\n    background-color: transparent;\n  }\n\n  mat-header-cell {\n    font-size: 16px;\n    font-weight: 600;\n  }\n\n  mat-cell {\n    &.disabled {\n      background-color: var(--color-gray-light);\n\n      * {\n        color: var(--color-gray-dark) !important;\n      }\n    }\n  }\n\n  .main-label {\n    margin: 0px;\n    color: rgba(0, 0, 0, 0.87);\n    font-size: 14px;\n  }\n\n  .sub-label {\n    margin: 0px;\n    color: #c0c0c0;\n  }\n}\n\n.element-row {\n  position: relative;\n}\n\n.element-row:not(.expanded) {\n  cursor: pointer;\n}\n\n.element-row.expanded {\n  border-bottom-color: transparent;\n}\n",
                     "styleUrl": "./table.component.scss"
                 }
             ],
@@ -1029,7 +1087,7 @@
                         "type": "ChangeDetectorRef"
                     }
                 ],
-                "line": 50,
+                "line": 55,
                 "jsdoctags": [
                     {
                         "name": "changeDetectorRef",
@@ -1043,7 +1101,7 @@
             "implements": [
                 "AfterViewInit"
             ],
-            "templateData": "<mat-table #table [dataSource]=\"itemList\" class=\"prisma-table\"\n       [ngStyle]=\"{'border-radius': borderRadius ? 'var(--border-radius-' + borderRadius + ')' : null, 'background-color': backgroundColor ? backgroundColor : null}\"\n>\n\n  <ng-container *ngFor=\"let column of columns; let i = index;\">\n    <ng-container matColumnDef=\"{{column}}\">\n      <mat-header-cell *matHeaderCellDef>{{columnNames ? columnNames[i] : column}}</mat-header-cell>\n      <mat-cell *matCellDef=\"let item\" [ngClass]=\"{'disabled': item?.disabled === true}\">\n        <ng-container\n          *ngTemplateOutlet=\"getCellTemplate(item, column);\n          context: {$implicit: item, column: column}\">\n        </ng-container>\n      </mat-cell>\n    </ng-container>\n  </ng-container>\n\n  <ng-container matColumnDef=\"expandedDetail\">\n    <mat-cell *matCellDef=\"let item\">\n      <ng-container *ngTemplateOutlet=\"dummyExpandedItem; context: {$implicit: item}\"></ng-container>\n    </mat-cell>\n  </ng-container>\n\n  <mat-header-row *matHeaderRowDef=\"columns\" [ngClass]=\"{'d-none': !showHeader}\"></mat-header-row>\n  <mat-row *matRowDef=\"let row; columns: columns;\"\n           class=\"element-row\"\n           [class.expanded]=\"expandedRow == row\"\n           (click)=\"setSelectedRow(row)\"\n  ></mat-row>\n  <mat-row *matRowDef=\"let row; columns: ['expandedDetail']; when: isExpansionDetailRow\"\n           [@detailExpand]=\"row == expandedRow ? 'expanded' : 'collapsed'\"\n           (click)=\"setSelectedRow(row)\"\n  >\n  </mat-row>\n</mat-table>\n\n<ng-template #dummyExpandedItem let-item>\n  <p>{{item.price}}</p>\n  <p>xD</p>\n</ng-template>\n\n<ng-template #imageCell let-item let-column=\"column\">\n  <img [attr.src]=\"item[column]\" [attr.alt]=\"item[column]\"\n  class=\"img-fluid my-2\" [ngStyle]=\"{'height': imageHeight ? imageHeight : '50px', 'max-height': imageHeight ? imageHeight : '50px'}\">\n</ng-template>\n\n<ng-template #singleLabelCell let-item let-column=\"column\">\n  <p class=\"main-label\">{{item[column]}}</p>\n</ng-template>\n\n<ng-template #doubleLabelCell let-item let-column=\"column\">\n  <div class=\"d-block\">\n    <p class=\"main-label\">{{item[column][0]}}</p>\n    <p class=\"sub-label\">{{item[column][1]}}</p>\n  </div>\n</ng-template>\n\n<ng-template #formattedNumberCell let-item let-column=\"column\">\n  <p class=\"main-label\">{{numberPrefix}}{{item[column] | number: numberFormat}}</p>\n</ng-template>\n"
+            "templateData": "<mat-table #table [dataSource]=\"itemList\" class=\"prisma-table\"\n       [ngStyle]=\"{'border-radius': borderRadius ? 'var(--border-radius-' + borderRadius + ')' : null, 'background-color': backgroundColor ? backgroundColor : null}\"\n>\n\n  <ng-container *ngFor=\"let column of columns; let i = index;\">\n    <ng-container matColumnDef=\"{{column}}\">\n      <mat-header-cell *matHeaderCellDef>{{columnNames ? columnNames[i] : column}}</mat-header-cell>\n      <mat-cell *matCellDef=\"let item\" [ngClass]=\"{'disabled': item?.disabled === true}\">\n        <ng-container\n          *ngTemplateOutlet=\"getCellTemplate(item, column);\n          context: {$implicit: item, column: column}\">\n        </ng-container>\n      </mat-cell>\n    </ng-container>\n  </ng-container>\n\n  <ng-container matColumnDef=\"expandedDetail\">\n    <mat-cell *matCellDef=\"let item\">\n      <ng-container *ngTemplateOutlet=\"dummyExpandedItem; context: {$implicit: item.element}\"></ng-container>\n    </mat-cell>\n  </ng-container>\n\n  <mat-header-row *matHeaderRowDef=\"columns\" [ngClass]=\"{'d-none': !showHeader}\"></mat-header-row>\n  <mat-row *matRowDef=\"let row; columns: columns\"\n           [ngClass]=\"{'element-row': expandedDetailTemplate}\"\n           [class.expanded]=\"expandedRow == row\"\n           (click)=\"setSelectedRow(row)\"\n  ></mat-row>\n  <mat-row *matRowDef=\"let row; columns: ['expandedDetail']; when: isExpansionDetailRow\"\n           [@detailExpand]=\"isSelectedRow(row) ? 'expanded' : 'collapsed'\"\n           (click)=\"setSelectedRow(row)\"\n  >\n  </mat-row>\n</mat-table>\n\n<ng-template #dummyExpandedItem let-item>\n  <p>{{item.price}}</p>\n  <p>xD</p>\n</ng-template>\n\n<ng-template #imageCell let-item let-column=\"column\">\n  <img [attr.src]=\"item[column]\" [attr.alt]=\"item[column]\"\n  class=\"img-fluid my-2\" [ngStyle]=\"{'height': imageHeight ? imageHeight : '50px', 'max-height': imageHeight ? imageHeight : '50px'}\">\n</ng-template>\n\n<ng-template #singleLabelCell let-item let-column=\"column\">\n  <p class=\"main-label\">{{item[column]}}</p>\n</ng-template>\n\n<ng-template #doubleLabelCell let-item let-column=\"column\">\n  <div class=\"d-block\">\n    <p class=\"main-label\">{{item[column][0]}}</p>\n    <p class=\"sub-label\">{{item[column][1]}}</p>\n  </div>\n</ng-template>\n\n<ng-template #formattedNumberCell let-item let-column=\"column\">\n  <p class=\"main-label\">{{numberPrefix}}{{item[column] | number: numberFormat}}</p>\n</ng-template>\n"
         }
     ],
     "modules": [
@@ -1311,6 +1369,14 @@
             },
             {
                 "name": "ExampleTable",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "stories/Table.stories.ts",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "ExpandedDetailsTable",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
                 "file": "stories/Table.stories.ts",
@@ -1636,6 +1702,14 @@
                 },
                 {
                     "name": "ExampleTable",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "stories/Table.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "ExpandedDetailsTable",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
                     "file": "stories/Table.stories.ts",
@@ -2006,8 +2080,8 @@
                 "type": "component",
                 "linktype": "component",
                 "name": "TableComponent",
-                "coveragePercent": 20,
-                "coverageCount": "6/29",
+                "coveragePercent": 25,
+                "coverageCount": "8/32",
                 "status": "low"
             },
             {
@@ -2156,6 +2230,16 @@
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
                 "name": "ExampleTable",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "stories/Table.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "ExpandedDetailsTable",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
