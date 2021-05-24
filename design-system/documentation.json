@@ -1455,17 +1455,17 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/DraggableList.stories.ts",
-                "type": "Story<DraggableListComponent>",
-                "defaultValue": "(args: DraggableListComponent) => ({\n  component: DraggableListComponent,\n  props: args,\n  template: `\n    <pm-draggable-list\n        [showIndex]=\"showIndex\"\n        [itemActionLabel]=\"itemActionLabel\"\n        [itemMainLabel]=\"itemMainLabel\"\n        [itemSubLabel]=\"itemSubLabel\"\n        [actions]=\"actions\"\n        [itemList]=\"itemList\"\n        [roundedBorders]=\"roundedBorders\"\n        [enableDragging]=\"enableDragging\"\n        [enableSelection]=\"enableSelection\"\n    >\n      conteudo\n    </pm-draggable-list>`\n})"
+                "file": "stories/Checkbox.stories.ts",
+                "type": "Story<CheckboxComponent>",
+                "defaultValue": "(args: CheckboxComponent) => ({\n  component: CheckboxComponent,\n  props: args,\n  template: `\n    <pm-checkbox\n      [checked]=\"checked\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>`\n})"
             },
             {
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/Checkbox.stories.ts",
-                "type": "Story<CheckboxComponent>",
-                "defaultValue": "(args: CheckboxComponent) => ({\n  component: CheckboxComponent,\n  props: args,\n  template: `\n    <pm-checkbox\n      [checked]=\"checked\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>`\n})"
+                "file": "stories/DraggableList.stories.ts",
+                "type": "Story<DraggableListComponent>",
+                "defaultValue": "(args: DraggableListComponent) => ({\n  component: DraggableListComponent,\n  props: args,\n  template: `\n    <pm-draggable-list\n        [showIndex]=\"showIndex\"\n        [itemActionLabel]=\"itemActionLabel\"\n        [itemMainLabel]=\"itemMainLabel\"\n        [itemSubLabel]=\"itemSubLabel\"\n        [actions]=\"actions\"\n        [itemList]=\"itemList\"\n        [roundedBorders]=\"roundedBorders\"\n        [enableDragging]=\"enableDragging\"\n        [enableSelection]=\"enableSelection\"\n    >\n      conteudo\n    </pm-draggable-list>`\n})"
             },
             {
                 "name": "Template",
