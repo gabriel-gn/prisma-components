@@ -1,11 +1,12 @@
-<button [className]="type ? 'btn btn-' + type : 'btn'" [disabled]="busy">
+<button [className]="getClassName()" [disabled]="busy">
   <ng-container *ngIf="busy; else buttonContent">
-    <span  class="spinner-border spinner-border-sm mx-2" role="status" aria-hidden="true"></span>
+    <span class="spinner-border spinner-border-sm mx-2" role="status" aria-hidden="true"></span>
     {{busyText ? busyText : ''}}
   </ng-container>
 </button>
 
 <ng-template #buttonContent>
+  <i *ngIf="iconClass && busy === false" class="{{iconClass}}"></i>
   <ng-container *ngIf="label; else noLabel">
     {{label}}
   </ng-container>

@@ -9,6 +9,8 @@ export default {
     type: {control: 'select'},
     busy: {control: 'boolean'},
     busyText: {control: 'text'},
+    iconClass: {control: 'text'},
+    outline: {control: 'boolean'},
     // we need to override here since in Angular it could be null as well and therefore it would become an ambigious data type for storybook
   }
 } as Meta;
@@ -22,6 +24,8 @@ const Template: Story<ButtonComponent> = (args: ButtonComponent) => ({
         [type]="type"
         [busy]="busy"
         [busyText]="busyText"
+        [iconClass]="iconClass"
+        [outline]="outline"
     >
         Botão
     </pm-button>`
@@ -42,4 +46,28 @@ BusyButton.args = {
   type: 'primary',
   busy: true,
   busyText: 'Aguarde...'
+};
+
+const IconButtonTemplate: Story<ButtonComponent> = (args: ButtonComponent) => ({
+  component: ButtonComponent,
+  props: args,
+  template: `
+    <pm-button
+        [label]="label"
+        [type]="type"
+        [busy]="busy"
+        [busyText]="busyText"
+        [iconClass]="iconClass"
+        [outline]="outline"
+    >
+        Download
+    </pm-button>`
+});
+export const IconButton = IconButtonTemplate.bind({});
+IconButton.args = {
+  type: 'primary',
+  busy: false,
+  busyText: 'Aguarde...',
+  iconClass: 'uil uil-lg uil-arrow-to-bottom',
+  outline: true,
 };

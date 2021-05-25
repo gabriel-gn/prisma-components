@@ -12,6 +12,10 @@
   $color-name: str-slice($key, 7, str-length($key));
   .btn-outline-#{$color-name} {
     @include btn-outline-styles(var(--color-#{$color-name}), var(--color-#{$color-name}-states), true);
+
+    &:disabled {
+      color: var(--color-#{$color-name});
+    }
   }
 }
 
