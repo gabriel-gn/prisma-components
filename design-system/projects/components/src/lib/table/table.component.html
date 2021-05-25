@@ -29,6 +29,7 @@
   <mat-row *matRowDef="let row; columns: ['expandedDetail']; when: isExpansionDetailRow"
            [@detailExpand]="isSelectedRow(row) ? 'expanded' : 'collapsed'"
            (click)="setSelectedRow(row)"
+           style="overflow: hidden"
   >
   </mat-row>
 </mat-table>

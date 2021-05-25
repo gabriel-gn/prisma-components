@@ -24,7 +24,7 @@
     "components": [
         {
             "name": "ButtonComponent",
-            "id": "component-ButtonComponent-18a4d08ee181600b68f5a15890d16e21",
+            "id": "component-ButtonComponent-be68465faa0d7fb2beebf42f60d7d5d5",
             "file": "projects/components/src/lib/button/button.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -52,10 +52,20 @@
                     "type": "string"
                 },
                 {
+                    "name": "iconClass",
+                    "line": 14,
+                    "type": "string"
+                },
+                {
                     "name": "label",
                     "defaultValue": "''",
                     "line": 10,
                     "type": "string | null"
+                },
+                {
+                    "name": "outline",
+                    "defaultValue": "false",
+                    "line": 15
                 },
                 {
                     "name": "type",
@@ -66,13 +76,25 @@
             ],
             "outputsClass": [],
             "propertiesClass": [],
-            "methodsClass": [],
+            "methodsClass": [
+                {
+                    "name": "getClassName",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "string",
+                    "typeParameters": [],
+                    "line": 20,
+                    "modifierKind": [
+                        114
+                    ]
+                }
+            ],
             "hostBindings": [],
             "hostListeners": [],
             "description": "",
             "rawdescription": "",
             "type": "component",
-            "sourceCode": "import {Component, Input, Output, EventEmitter} from '@angular/core';\nimport {MainColors} from '../../models/colors';\n\n@Component({\n  selector: 'pm-button',\n  templateUrl: './button.component.html',\n  styleUrls: ['./button.component.scss']\n})\nexport class ButtonComponent {\n  @Input('label') label: string | null = '';  // Usada só pra aparecer no storybook\n  @Input('type') type: MainColors = MainColors.default;\n  @Input('busy') busy = false;\n  @Input('busyText') busyText: string;\n  // @Output() onClick = new EventEmitter<any>();\n\n  constructor() { }\n\n}\n",
+            "sourceCode": "import {Component, Input, Output, EventEmitter} from '@angular/core';\nimport {MainColors} from '../../models/colors';\n\n@Component({\n  selector: 'pm-button',\n  templateUrl: './button.component.html',\n  styleUrls: ['./button.component.scss']\n})\nexport class ButtonComponent {\n  @Input('label') label: string | null = '';  // Usada só pra aparecer no storybook\n  @Input('type') type: MainColors = MainColors.default;\n  @Input('busy') busy = false;\n  @Input('busyText') busyText: string;\n  @Input('iconClass') iconClass: string;\n  @Input('outline') outline = false;\n  // @Output() onClick = new EventEmitter<any>();\n\n  constructor() { }\n\n  public getClassName(): string {\n    let name = 'btn';\n    if (this.type) {\n      if (this.outline) {\n        name += ` btn-outline-${this.type}`;\n      } else {\n        name += ` btn-${this.type}`;\n      }\n    }\n    return name;\n  }\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -85,9 +107,9 @@
                 "name": "constructor",
                 "description": "",
                 "args": [],
-                "line": 13
+                "line": 15
             },
-            "templateData": "<button [className]=\"type ? 'btn btn-' + type : 'btn'\" [disabled]=\"busy\">\n  <ng-container *ngIf=\"busy; else buttonContent\">\n    <span  class=\"spinner-border spinner-border-sm mx-2\" role=\"status\" aria-hidden=\"true\"></span>\n    {{busyText ? busyText : ''}}\n  </ng-container>\n</button>\n\n<ng-template #buttonContent>\n  <ng-container *ngIf=\"label; else noLabel\">\n    {{label}}\n  </ng-container>\n</ng-template>\n\n<ng-template #noLabel>\n  <ng-content></ng-content>\n</ng-template>\n\n"
+            "templateData": "<button [className]=\"getClassName()\" [disabled]=\"busy\">\n  <ng-container *ngIf=\"busy; else buttonContent\">\n    <span class=\"spinner-border spinner-border-sm mx-2\" role=\"status\" aria-hidden=\"true\"></span>\n    {{busyText ? busyText : ''}}\n  </ng-container>\n</button>\n\n<ng-template #buttonContent>\n  <i *ngIf=\"iconClass && busy === false\" class=\"{{iconClass}}\"></i>\n  <ng-container *ngIf=\"label; else noLabel\">\n    {{label}}\n  </ng-container>\n</ng-template>\n\n<ng-template #noLabel>\n  <ng-content></ng-content>\n</ng-template>\n\n"
         },
         {
             "name": "CheckboxComponent",
@@ -661,7 +683,7 @@
         },
         {
             "name": "TableComponent",
-            "id": "component-TableComponent-8e8b08ecc80f40d3ab1ba626f509c321",
+            "id": "component-TableComponent-801760de8e20eb59cad4a98817c9946b",
             "file": "projects/components/src/lib/table/table.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -897,15 +919,15 @@
                     "jsdoctags": [
                         {
                             "name": {
-                                "pos": 4093,
-                                "end": 4097,
+                                "pos": 4095,
+                                "end": 4099,
                                 "flags": 0,
                                 "escapedText": "item"
                             },
                             "type": "any",
                             "tagName": {
-                                "pos": 4087,
-                                "end": 4092,
+                                "pos": 4089,
+                                "end": 4094,
                                 "flags": 0,
                                 "escapedText": "param"
                             },
@@ -913,15 +935,15 @@
                         },
                         {
                             "name": {
-                                "pos": 4134,
-                                "end": 4140,
+                                "pos": 4136,
+                                "end": 4142,
                                 "flags": 0,
                                 "escapedText": "column"
                             },
                             "type": "string",
                             "tagName": {
-                                "pos": 4128,
-                                "end": 4133,
+                                "pos": 4130,
+                                "end": 4135,
                                 "flags": 0,
                                 "escapedText": "param"
                             },
@@ -960,15 +982,15 @@
                     "jsdoctags": [
                         {
                             "name": {
-                                "pos": 2950,
-                                "end": 2953,
+                                "pos": 2952,
+                                "end": 2955,
                                 "flags": 0,
                                 "escapedText": "row"
                             },
                             "type": "any",
                             "tagName": {
-                                "pos": 2944,
-                                "end": 2949,
+                                "pos": 2946,
+                                "end": 2951,
                                 "flags": 0,
                                 "escapedText": "param"
                             },
@@ -998,8 +1020,8 @@
                     "jsdoctags": [
                         {
                             "tagName": {
-                                "pos": 3157,
-                                "end": 3164,
+                                "pos": 3159,
+                                "end": 3166,
                                 "flags": 0,
                                 "escapedText": "private"
                             },
@@ -1052,15 +1074,15 @@
                     "jsdoctags": [
                         {
                             "name": {
-                                "pos": 2470,
-                                "end": 2473,
+                                "pos": 2472,
+                                "end": 2475,
                                 "flags": 0,
                                 "escapedText": "row"
                             },
                             "type": "any",
                             "tagName": {
-                                "pos": 2464,
-                                "end": 2469,
+                                "pos": 2466,
+                                "end": 2471,
                                 "flags": 0,
                                 "escapedText": "param"
                             },
@@ -1074,7 +1096,7 @@
             "description": "",
             "rawdescription": "",
             "type": "component",
-            "sourceCode": "import {\n  AfterViewInit,\n  ChangeDetectorRef,\n  Component,\n  EventEmitter,\n  Input,\n  Output,\n  TemplateRef,\n  ViewChild\n} from '@angular/core';\nimport {Sizes} from '../../models/sizes';\nimport {animate, state, style, transition, trigger} from '@angular/animations';\nimport {MatTable, MatTableDataSource} from '@angular/material/table';\nimport _ from 'lodash';\n\n@Component({\n  selector: 'pm-table',\n  templateUrl: './table.component.html',\n  styleUrls: ['./table.component.scss'],\n  animations: [\n    trigger('detailExpand', [\n      state('collapsed', style({height: '0px', minHeight: '0px', visibility: 'hidden'})),\n      state('expanded', style({height: '*', visibility: 'visible'})),\n      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),\n    ]),\n  ],\n})\nexport class TableComponent implements AfterViewInit {\n\n  @Output() onItemListChange = new EventEmitter();\n  @Input() columns: string[] = [];\n  @Input() columnNames: string[] = [];\n  @Input() imageColumns: string[] = [];\n  @Input() imageHeight: '50px';\n  @Input() showHeader = true;\n  @Input() numberFormat = '1.2-2';\n  @Input() numberPrefix = '';\n  @Input() actionsTemplate: TemplateRef<any>;\n  @Input() itemList: any = [];\n  @Input() borderRadius: Sizes;\n  @Input() backgroundColor: string;\n\n  @Input() expandedDetailTemplate: TemplateRef<any>;\n  @Input() disableExpandedOnDisabledRow = true;\n\n  @ViewChild('table', {static: true}) table: MatTable<any>;\n  @ViewChild('singleLabelCell', {static: true}) singleLabelCell: TemplateRef<any>;\n  @ViewChild('doubleLabelCell', {static: true}) doubleLabelCell: TemplateRef<any>;\n  @ViewChild('imageCell', {static: true}) imageCell: TemplateRef<any>;\n  @ViewChild('formattedNumberCell', {static: true}) formattedNumberCell: TemplateRef<any>;\n\n  public expandedRow: any;\n  // tslint:disable-next-line:ban-types\n  isExpansionDetailRow = (i: number, row: Object) => row.hasOwnProperty('detailRow');\n  // tslint:disable-next-line:ban-types\n  isNormalRow = (i: number, row: Object) => true;\n\n  constructor(\n    private changeDetectorRef: ChangeDetectorRef\n  ) {\n  }\n\n  ngAfterViewInit(): void {\n    if (typeof this.actionsTemplate !== 'undefined') {\n      if (this.columns.includes('ACTIONS') === false) {\n        this.columns.push('ACTIONS');\n        this.columnNames.push('');\n      }\n    }\n    this.reloadExpandedDetail();\n  }\n\n  /**\n   * dá como selecionada a row atual CASO exista um template de expandedDetailTemplate\n   * @param row\n   */\n  public setSelectedRow(row: any): void {\n    if (!_.isNil(this.expandedDetailTemplate)) {\n      if (row.hasOwnProperty('detailRow') === false) {\n        row = { detailRow: true, element: row };\n      }\n      if (row.element?.disabled) {\n        if (this.disableExpandedOnDisabledRow === false) {\n          this.expandedRow = row;\n        }\n      } else {\n        this.expandedRow = row;\n      }\n    }\n  }\n\n  /**\n   * Verifica se a row é igual à selecionada\n   * @param row\n   */\n  public isSelectedRow(row: any): boolean {\n    return _.isEqual(row, this.expandedRow);\n  }\n\n  /**\n   * Reconstroi os elementos da tabela para incluir o \"detail row\" e deixar ela expansível\n   * @private\n   */\n  private reloadExpandedDetail(): void {\n    const newItems = [];\n    this.itemList.forEach(element => newItems.push(element, { detailRow: true, element }));\n    this.itemList = new MatTableDataSource(newItems);\n    this.changeDetectorRef.detectChanges();\n  }\n\n  /**\n   * Retorna a lista atual de itens na tabela\n   */\n  public getItemList(): any[] {\n    return this.itemList;\n  }\n\n  /**\n   * Troca a lista de itens da tabela\n   */\n  public setItemList(itemList: any[]): void {\n    this.itemList = itemList;\n    this.reloadExpandedDetail();\n    this.onItemListChange.emit(this.itemList);\n  }\n\n  /**\n   * Mostra a linha de header\n   */\n  public enableHeader(): void {\n    this.showHeader = true;\n  }\n\n  /**\n   * Some com a linha de header\n   */\n  public disableHeader(): void {\n    this.showHeader = false;\n  }\n\n  /**\n   * Retorna o template que será renderizada a celula de acordo com o input de item e coluna\n   * @param item: item da lista de itens\n   * @param column: propriedade do item\n   */\n  public getCellTemplate(item: any, column: string): TemplateRef<any> {\n    if (column === 'ACTIONS') {\n      return this.actionsTemplate;\n    } else if (Array.isArray(item[column])) {\n      return this.doubleLabelCell;\n    } else {\n      if (this.imageColumns.includes(column)) {\n        return this.imageCell;\n      } else {\n        if (typeof item[column] === 'number') {\n          return this.formattedNumberCell;\n        } else {\n          return this.singleLabelCell;\n        }\n      }\n    }\n  }\n}\n",
+            "sourceCode": "import {\n  AfterViewInit,\n  ChangeDetectorRef,\n  Component,\n  EventEmitter,\n  Input,\n  Output,\n  TemplateRef,\n  ViewChild\n} from '@angular/core';\nimport {Sizes} from '../../models/sizes';\nimport {animate, state, style, transition, trigger} from '@angular/animations';\nimport {MatTable, MatTableDataSource} from '@angular/material/table';\nimport _ from 'lodash';\n\n@Component({\n  selector: 'pm-table',\n  templateUrl: './table.component.html',\n  styleUrls: ['./table.component.scss'],\n  animations: [\n    trigger('detailExpand', [\n      state('collapsed', style({ height: '0px', minHeight: '0', visibility: 'hidden' })),\n      state('expanded', style({ height: '*', visibility: 'visible' })),\n      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),\n    ]),\n  ],\n})\nexport class TableComponent implements AfterViewInit {\n\n  @Output() onItemListChange = new EventEmitter();\n  @Input() columns: string[] = [];\n  @Input() columnNames: string[] = [];\n  @Input() imageColumns: string[] = [];\n  @Input() imageHeight: '50px';\n  @Input() showHeader = true;\n  @Input() numberFormat = '1.2-2';\n  @Input() numberPrefix = '';\n  @Input() actionsTemplate: TemplateRef<any>;\n  @Input() itemList: any = [];\n  @Input() borderRadius: Sizes;\n  @Input() backgroundColor: string;\n\n  @Input() expandedDetailTemplate: TemplateRef<any>;\n  @Input() disableExpandedOnDisabledRow = true;\n\n  @ViewChild('table', {static: true}) table: MatTable<any>;\n  @ViewChild('singleLabelCell', {static: true}) singleLabelCell: TemplateRef<any>;\n  @ViewChild('doubleLabelCell', {static: true}) doubleLabelCell: TemplateRef<any>;\n  @ViewChild('imageCell', {static: true}) imageCell: TemplateRef<any>;\n  @ViewChild('formattedNumberCell', {static: true}) formattedNumberCell: TemplateRef<any>;\n\n  public expandedRow: any;\n  // tslint:disable-next-line:ban-types\n  isExpansionDetailRow = (i: number, row: Object) => row.hasOwnProperty('detailRow');\n  // tslint:disable-next-line:ban-types\n  isNormalRow = (i: number, row: Object) => true;\n\n  constructor(\n    private changeDetectorRef: ChangeDetectorRef\n  ) {\n  }\n\n  ngAfterViewInit(): void {\n    if (typeof this.actionsTemplate !== 'undefined') {\n      if (this.columns.includes('ACTIONS') === false) {\n        this.columns.push('ACTIONS');\n        this.columnNames.push('');\n      }\n    }\n    this.reloadExpandedDetail();\n  }\n\n  /**\n   * dá como selecionada a row atual CASO exista um template de expandedDetailTemplate\n   * @param row\n   */\n  public setSelectedRow(row: any): void {\n    if (!_.isNil(this.expandedDetailTemplate)) {\n      if (row.hasOwnProperty('detailRow') === false) {\n        row = { detailRow: true, element: row };\n      }\n      if (row.element?.disabled) {\n        if (this.disableExpandedOnDisabledRow === false) {\n          this.expandedRow = row;\n        }\n      } else {\n        this.expandedRow = row;\n      }\n    }\n  }\n\n  /**\n   * Verifica se a row é igual à selecionada\n   * @param row\n   */\n  public isSelectedRow(row: any): boolean {\n    return _.isEqual(row, this.expandedRow);\n  }\n\n  /**\n   * Reconstroi os elementos da tabela para incluir o \"detail row\" e deixar ela expansível\n   * @private\n   */\n  private reloadExpandedDetail(): void {\n    const newItems = [];\n    this.itemList.forEach(element => newItems.push(element, { detailRow: true, element }));\n    this.itemList = new MatTableDataSource(newItems);\n    this.changeDetectorRef.detectChanges();\n  }\n\n  /**\n   * Retorna a lista atual de itens na tabela\n   */\n  public getItemList(): any[] {\n    return this.itemList;\n  }\n\n  /**\n   * Troca a lista de itens da tabela\n   */\n  public setItemList(itemList: any[]): void {\n    this.itemList = itemList;\n    this.reloadExpandedDetail();\n    this.onItemListChange.emit(this.itemList);\n  }\n\n  /**\n   * Mostra a linha de header\n   */\n  public enableHeader(): void {\n    this.showHeader = true;\n  }\n\n  /**\n   * Some com a linha de header\n   */\n  public disableHeader(): void {\n    this.showHeader = false;\n  }\n\n  /**\n   * Retorna o template que será renderizada a celula de acordo com o input de item e coluna\n   * @param item: item da lista de itens\n   * @param column: propriedade do item\n   */\n  public getCellTemplate(item: any, column: string): TemplateRef<any> {\n    if (column === 'ACTIONS') {\n      return this.actionsTemplate;\n    } else if (Array.isArray(item[column])) {\n      return this.doubleLabelCell;\n    } else {\n      if (this.imageColumns.includes(column)) {\n        return this.imageCell;\n      } else {\n        if (typeof item[column] === 'number') {\n          return this.formattedNumberCell;\n        } else {\n          return this.singleLabelCell;\n        }\n      }\n    }\n  }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -1413,6 +1435,22 @@
                 "defaultValue": "(args: TableComponent) => ({\n  component: TableComponent,\n  props: args,\n  template: `\n    <ng-template #dummyExpandedItem let-item>\n      <div class=\"d-block\">\n        <p>{{item.name}} - {{item.price}}</p>\n        <p>Here is an example item</p>\n        <p>Here is an example item</p>\n      </div>\n    </ng-template>\n\n    <pm-table\n      [columns]=\"columns\"\n      [columnNames]=\"columnNames\"\n      [imageColumns]=\"imageColumns\"\n      [imageHeight]=\"imageHeight\"\n      [showHeader]=\"showHeader\"\n      [numberFormat]=\"numberFormat\"\n      [numberPrefix]=\"numberPrefix\"\n      [itemList]=\"itemList\"\n      [borderRadius]=\"borderRadius\"\n      [backgroundColor]=\"backgroundColor\"\n      [expandedDetailTemplate]=\"dummyExpandedItem\"\n      [disableExpandedOnDisabledRow]=\"disableExpandedOnDisabledRow\"\n    ></pm-table>\n`\n})"
             },
             {
+                "name": "IconButton",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "stories/Button.stories.ts",
+                "type": "",
+                "defaultValue": "IconButtonTemplate.bind({})"
+            },
+            {
+                "name": "IconButtonTemplate",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "stories/Button.stories.ts",
+                "type": "Story<ButtonComponent>",
+                "defaultValue": "(args: ButtonComponent) => ({\n  component: ButtonComponent,\n  props: args,\n  template: `\n    <pm-button\n        [label]=\"label\"\n        [type]=\"type\"\n        [busy]=\"busy\"\n        [busyText]=\"busyText\"\n        [iconClass]=\"iconClass\"\n        [outline]=\"outline\"\n    >\n        Download\n    </pm-button>`\n})"
+            },
+            {
                 "name": "NoHeader",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -1449,7 +1487,7 @@
                 "subtype": "variable",
                 "file": "stories/Button.stories.ts",
                 "type": "Story<ButtonComponent>",
-                "defaultValue": "(args: ButtonComponent) => ({\n  component: ButtonComponent,\n  props: args,\n  template: `\n    <pm-button\n        [label]=\"label\"\n        [type]=\"type\"\n        [busy]=\"busy\"\n        [busyText]=\"busyText\"\n    >\n        Botão\n    </pm-button>`\n})"
+                "defaultValue": "(args: ButtonComponent) => ({\n  component: ButtonComponent,\n  props: args,\n  template: `\n    <pm-button\n        [label]=\"label\"\n        [type]=\"type\"\n        [busy]=\"busy\"\n        [busyText]=\"busyText\"\n        [iconClass]=\"iconClass\"\n        [outline]=\"outline\"\n    >\n        Botão\n    </pm-button>`\n})"
             },
             {
                 "name": "Template",
@@ -1778,6 +1816,22 @@
                     "defaultValue": "Template.bind({})"
                 },
                 {
+                    "name": "IconButton",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "stories/Button.stories.ts",
+                    "type": "",
+                    "defaultValue": "IconButtonTemplate.bind({})"
+                },
+                {
+                    "name": "IconButtonTemplate",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "stories/Button.stories.ts",
+                    "type": "Story<ButtonComponent>",
+                    "defaultValue": "(args: ButtonComponent) => ({\n  component: ButtonComponent,\n  props: args,\n  template: `\n    <pm-button\n        [label]=\"label\"\n        [type]=\"type\"\n        [busy]=\"busy\"\n        [busyText]=\"busyText\"\n        [iconClass]=\"iconClass\"\n        [outline]=\"outline\"\n    >\n        Download\n    </pm-button>`\n})"
+                },
+                {
                     "name": "PrimaryButton",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
@@ -1791,7 +1845,7 @@
                     "subtype": "variable",
                     "file": "stories/Button.stories.ts",
                     "type": "Story<ButtonComponent>",
-                    "defaultValue": "(args: ButtonComponent) => ({\n  component: ButtonComponent,\n  props: args,\n  template: `\n    <pm-button\n        [label]=\"label\"\n        [type]=\"type\"\n        [busy]=\"busy\"\n        [busyText]=\"busyText\"\n    >\n        Botão\n    </pm-button>`\n})"
+                    "defaultValue": "(args: ButtonComponent) => ({\n  component: ButtonComponent,\n  props: args,\n  template: `\n    <pm-button\n        [label]=\"label\"\n        [type]=\"type\"\n        [busy]=\"busy\"\n        [busyText]=\"busyText\"\n        [iconClass]=\"iconClass\"\n        [outline]=\"outline\"\n    >\n        Botão\n    </pm-button>`\n})"
                 }
             ],
             "projects/components/src/test.ts": [
@@ -2089,7 +2143,7 @@
                 "linktype": "component",
                 "name": "ButtonComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/6",
+                "coverageCount": "0/9",
                 "status": "low"
             },
             {
@@ -2173,6 +2227,26 @@
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
                 "name": "DefaultButton",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "stories/Button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "IconButton",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "stories/Button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "IconButtonTemplate",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
