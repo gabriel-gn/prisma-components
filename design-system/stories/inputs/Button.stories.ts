@@ -1,8 +1,8 @@
-import {ButtonComponent} from '../projects/components/src/lib/button/button.component';
+import {ButtonComponent} from '../../projects/components/src/lib/button/button.component';
 import {Meta, Story} from '@storybook/angular';
 
 export default {
-  title: 'Prisma/Buttons',
+  title: 'Prisma/Inputs/Buttons',
   component: ButtonComponent,
   argTypes: {
     label: {control: 'text'},

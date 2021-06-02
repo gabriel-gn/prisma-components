@@ -259,6 +259,68 @@
             ]
         },
         {
+            "name": "CopyContentInputComponent",
+            "id": "component-CopyContentInputComponent-a8cd4b1cee26bb46f62281b9ef94ff13",
+            "file": "projects/components/src/lib/copy-content-input/copy-content-input.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "pm-copy-content-input",
+            "styleUrls": [
+                "./copy-content-input.component.scss"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./copy-content-input.component.html"
+            ],
+            "viewProviders": [],
+            "inputsClass": [
+                {
+                    "name": "text",
+                    "defaultValue": "''",
+                    "line": 10
+                }
+            ],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [
+                {
+                    "name": "ngOnInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 19
+                }
+            ],
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "",
+            "type": "component",
+            "sourceCode": "import {Component, Input, OnInit} from '@angular/core';\n\n@Component({\n  selector: 'pm-copy-content-input',\n  templateUrl: './copy-content-input.component.html',\n  styleUrls: ['./copy-content-input.component.scss']\n})\nexport class CopyContentInputComponent implements OnInit {\n\n  @Input() text = '';\n  // public readonly notifier: SnotifyService;\n\n  constructor(\n    // private notifierService: SnotifyService\n  ) {\n    // this.notifier = notifierService;\n  }\n\n  ngOnInit(): void {\n  }\n\n  // /**\n  //  * Notifica que o valor foi copiado para a clipboard.\n  //  * O que copia mesmo é a diretiva [cdkCopyToClipboard]=\"texto\"\n  //  * @param inputElement: uma tag input\n  //  */\n  // copyInputMessage(inputElement) {\n  //   this.notifier.info('Link copiado para a área de transferência')\n  // }\n\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": "",
+                    "styleUrl": "./copy-content-input.component.scss"
+                }
+            ],
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "args": [],
+                "line": 10
+            },
+            "implements": [
+                "OnInit"
+            ],
+            "templateData": "<ng-container *ngIf=\"text\">\n  <div class=\"d-flex\">\n    <input #slicerLinkInput [readonly]=\"true\" [attr.disabled]=\"true\" [value]=\"text\" class=\"form-control\" [title]=\"text\"\n           style=\"border-radius: var(--border-radius-md) 0px 0px var(--border-radius-md) !important;\" type=\"text\">\n    <button [cdkCopyToClipboard]=\"text\" class=\"btn-copy\">\n      <i class=\"uil uil-lg uil-copy\"></i>\n    </button>\n  </div>\n</ng-container>\n"
+        },
+        {
             "name": "DraggableListComponent",
             "id": "component-DraggableListComponent-7f67272b7828fde27164e5bba92460c2",
             "file": "projects/components/src/lib/draggable-list/draggable-list.component.ts",
@@ -682,8 +744,124 @@
             "templateData": "<div class=\"d-flex w-100\">\n  <div *ngIf=\"showIndex\"\n       class=\"draggable-item-index-container\"\n       [ngClass]=\"{rounded: roundedBorders && !showIndex, 'rounded-left': roundedBorders && showIndex}\"\n  >\n    <div *ngFor=\"let item of itemList, let i = index;\" class=\"draggable-item-index\">\n      <p>{{ i + 1 }}</p>\n    </div>\n  </div>\n  <div (cdkDropListDropped)=\"drop($event)\" cdkDropList\n       class=\"table-item-container w-100\"\n       [ngClass]=\"{rounded: roundedBorders && !showIndex, 'rounded-right': roundedBorders && showIndex}\">\n    <div *ngFor=\"let item of itemList, let i = index;\" cdkDrag cdkDragBoundary=\".table-item-container\" [cdkDragDisabled]=\"enableDragging === false\"\n         class=\"draggable-item\" (contextmenu)=\"openContextMenu($event, {$implicit: item}); $event.preventDefault();\"\n         [ngClass]=\"{'draggable-item-selected': isSelectedItem(item)}\"\n         (click)=\"setSelectedItem(item)\"\n         [ngStyle]=\"{'cursor': enableDragging ? 'move' : (enableSelection ? 'pointer' : null)}\">\n      <div *cdkDragPlaceholder class=\"draggable-placeholder\"></div>\n      <div class=\"d-flex w-100\">\n        <!-- if IsMobile -> para poder reordenar os perfis apenas pelo ícone -->\n        <div *ngIf=\"false\" cdkDragHandle class=\"move-icon-container\">\n          <i class=\"uil uil-lg uil-draggabledots\"></i>\n        </div>\n        <div *ngIf=\"enableDragging\" class=\"move-icon-container\">\n          <i class=\"uil uil-lg uil-draggabledots\"></i>\n        </div>\n        <div class=\"w-100 align-self-center text-overflow\">\n          <p class=\"m-0\">{{ formatItemStringParameters(itemMainLabel, item) }}</p>\n          <p class=\"m-0 sub-p\">{{ formatItemStringParameters(itemSubLabel, item) }}</p>\n        </div>\n        <div class=\"d-flex ms-2\">\n          <button (click)=\"actionsSelect.toggle()\" class=\"btn btn-light btn-icon btn-sm ms-2\">\n            <i class=\"uil uil-md uil-ellipsis-h\"></i>\n          </button>\n          <mat-select #actionsSelect class=\"mat-select-btn-sm\">\n            <mat-option [hidden]=\"true\"></mat-option>\n            <ng-container *ngTemplateOutlet=\"contextActions; context: {$implicit: item}\"></ng-container>\n          </mat-select>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n\n<ng-template #contextActions let-item>\n  <mat-option *ngFor=\"let action of actions\" (click)=\"action.method(item)\">{{formatItemStringParameters(action.name, item)}}</mat-option>\n</ng-template>\n\n<ng-template #contextMenu let-item>\n  <div class=\"mat-menu-panel\">\n    <mat-optgroup [label]=\"formatItemStringParameters(itemActionLabel, item)\">\n      <ng-container *ngTemplateOutlet=\"contextActions; context: {$implicit: item}\"></ng-container>\n    </mat-optgroup>\n  </div>\n</ng-template>\n"
         },
         {
+            "name": "RadioButtonComponent",
+            "id": "component-RadioButtonComponent-a2f81a812384c4958114ab543f7bf525",
+            "file": "projects/components/src/lib/radio-button/radio-button.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "pm-radio-button",
+            "styleUrls": [
+                "./radio-button.component.scss"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./radio-button.component.html"
+            ],
+            "viewProviders": [],
+            "inputsClass": [
+                {
+                    "name": "disabled",
+                    "defaultValue": "false",
+                    "line": 16
+                },
+                {
+                    "name": "orientation",
+                    "defaultValue": "OrientationEnum.Y",
+                    "line": 15,
+                    "type": "OrientationEnum"
+                },
+                {
+                    "name": "values",
+                    "defaultValue": "[]",
+                    "line": 17,
+                    "type": "string[]"
+                }
+            ],
+            "outputsClass": [
+                {
+                    "name": "valueChange",
+                    "defaultValue": "new EventEmitter<any>()",
+                    "line": 18,
+                    "type": "EventEmitter<any>"
+                }
+            ],
+            "propertiesClass": [
+                {
+                    "name": "favoriteSeason",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 21,
+                    "modifierKind": [
+                        114
+                    ]
+                },
+                {
+                    "name": "selectedValue",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 19,
+                    "modifierKind": [
+                        114
+                    ]
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "setValue",
+                    "args": [
+                        {
+                            "name": "value",
+                            "type": "any"
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 26,
+                    "modifierKind": [
+                        114
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "value",
+                            "type": "any",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "",
+            "type": "component",
+            "sourceCode": "import {Component, EventEmitter, Input, Output} from '@angular/core';\n\nexport const enum OrientationEnum {\n  X = 'horizontal',\n  Y = 'vertical',\n}\n\n@Component({\n  selector: 'pm-radio-button',\n  templateUrl: './radio-button.component.html',\n  styleUrls: ['./radio-button.component.scss']\n})\nexport class RadioButtonComponent {\n\n  @Input() orientation: OrientationEnum = OrientationEnum.Y;\n  @Input() disabled = false;\n  @Input() values: string[] = [];\n  @Output() valueChange: EventEmitter<any> = new EventEmitter<any>();\n  public selectedValue: string;\n\n  public favoriteSeason: string;\n\n  constructor() {\n  }\n\n  public setValue(value: any): void {\n    this.selectedValue = value;\n    this.valueChange.emit(this.selectedValue);\n  }\n\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": "",
+                    "styleUrl": "./radio-button.component.scss"
+                }
+            ],
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "args": [],
+                "line": 21
+            },
+            "templateData": "<mat-radio-group\n  [(ngModel)]=\"selectedValue\"\n  [disabled]=\"disabled\"\n  (change)=\"setValue($event.value)\"\n  [ngClass]=\"{'d-flex flex-column': orientation === 'vertical'}\">\n  <mat-radio-button *ngFor=\"let value of values\" [value]=\"value\" class=\"example-radio-button\">\n    {{value}}\n  </mat-radio-button>\n</mat-radio-group>\n"
+        },
+        {
             "name": "TableComponent",
-            "id": "component-TableComponent-801760de8e20eb59cad4a98817c9946b",
+            "id": "component-TableComponent-8e8b08ecc80f40d3ab1ba626f509c321",
             "file": "projects/components/src/lib/table/table.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -919,15 +1097,15 @@
                     "jsdoctags": [
                         {
                             "name": {
-                                "pos": 4095,
-                                "end": 4099,
+                                "pos": 4093,
+                                "end": 4097,
                                 "flags": 0,
                                 "escapedText": "item"
                             },
                             "type": "any",
                             "tagName": {
-                                "pos": 4089,
-                                "end": 4094,
+                                "pos": 4087,
+                                "end": 4092,
                                 "flags": 0,
                                 "escapedText": "param"
                             },
@@ -935,15 +1113,15 @@
                         },
                         {
                             "name": {
-                                "pos": 4136,
-                                "end": 4142,
+                                "pos": 4134,
+                                "end": 4140,
                                 "flags": 0,
                                 "escapedText": "column"
                             },
                             "type": "string",
                             "tagName": {
-                                "pos": 4130,
-                                "end": 4135,
+                                "pos": 4128,
+                                "end": 4133,
                                 "flags": 0,
                                 "escapedText": "param"
                             },
@@ -982,15 +1160,15 @@
                     "jsdoctags": [
                         {
                             "name": {
-                                "pos": 2952,
-                                "end": 2955,
+                                "pos": 2950,
+                                "end": 2953,
                                 "flags": 0,
                                 "escapedText": "row"
                             },
                             "type": "any",
                             "tagName": {
-                                "pos": 2946,
-                                "end": 2951,
+                                "pos": 2944,
+                                "end": 2949,
                                 "flags": 0,
                                 "escapedText": "param"
                             },
@@ -1020,8 +1198,8 @@
                     "jsdoctags": [
                         {
                             "tagName": {
-                                "pos": 3159,
-                                "end": 3166,
+                                "pos": 3157,
+                                "end": 3164,
                                 "flags": 0,
                                 "escapedText": "private"
                             },
@@ -1074,15 +1252,15 @@
                     "jsdoctags": [
                         {
                             "name": {
-                                "pos": 2472,
-                                "end": 2475,
+                                "pos": 2470,
+                                "end": 2473,
                                 "flags": 0,
                                 "escapedText": "row"
                             },
                             "type": "any",
                             "tagName": {
-                                "pos": 2466,
-                                "end": 2471,
+                                "pos": 2464,
+                                "end": 2469,
                                 "flags": 0,
                                 "escapedText": "param"
                             },
@@ -1096,7 +1274,7 @@
             "description": "",
             "rawdescription": "",
             "type": "component",
-            "sourceCode": "import {\n  AfterViewInit,\n  ChangeDetectorRef,\n  Component,\n  EventEmitter,\n  Input,\n  Output,\n  TemplateRef,\n  ViewChild\n} from '@angular/core';\nimport {Sizes} from '../../models/sizes';\nimport {animate, state, style, transition, trigger} from '@angular/animations';\nimport {MatTable, MatTableDataSource} from '@angular/material/table';\nimport _ from 'lodash';\n\n@Component({\n  selector: 'pm-table',\n  templateUrl: './table.component.html',\n  styleUrls: ['./table.component.scss'],\n  animations: [\n    trigger('detailExpand', [\n      state('collapsed', style({ height: '0px', minHeight: '0', visibility: 'hidden' })),\n      state('expanded', style({ height: '*', visibility: 'visible' })),\n      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),\n    ]),\n  ],\n})\nexport class TableComponent implements AfterViewInit {\n\n  @Output() onItemListChange = new EventEmitter();\n  @Input() columns: string[] = [];\n  @Input() columnNames: string[] = [];\n  @Input() imageColumns: string[] = [];\n  @Input() imageHeight: '50px';\n  @Input() showHeader = true;\n  @Input() numberFormat = '1.2-2';\n  @Input() numberPrefix = '';\n  @Input() actionsTemplate: TemplateRef<any>;\n  @Input() itemList: any = [];\n  @Input() borderRadius: Sizes;\n  @Input() backgroundColor: string;\n\n  @Input() expandedDetailTemplate: TemplateRef<any>;\n  @Input() disableExpandedOnDisabledRow = true;\n\n  @ViewChild('table', {static: true}) table: MatTable<any>;\n  @ViewChild('singleLabelCell', {static: true}) singleLabelCell: TemplateRef<any>;\n  @ViewChild('doubleLabelCell', {static: true}) doubleLabelCell: TemplateRef<any>;\n  @ViewChild('imageCell', {static: true}) imageCell: TemplateRef<any>;\n  @ViewChild('formattedNumberCell', {static: true}) formattedNumberCell: TemplateRef<any>;\n\n  public expandedRow: any;\n  // tslint:disable-next-line:ban-types\n  isExpansionDetailRow = (i: number, row: Object) => row.hasOwnProperty('detailRow');\n  // tslint:disable-next-line:ban-types\n  isNormalRow = (i: number, row: Object) => true;\n\n  constructor(\n    private changeDetectorRef: ChangeDetectorRef\n  ) {\n  }\n\n  ngAfterViewInit(): void {\n    if (typeof this.actionsTemplate !== 'undefined') {\n      if (this.columns.includes('ACTIONS') === false) {\n        this.columns.push('ACTIONS');\n        this.columnNames.push('');\n      }\n    }\n    this.reloadExpandedDetail();\n  }\n\n  /**\n   * dá como selecionada a row atual CASO exista um template de expandedDetailTemplate\n   * @param row\n   */\n  public setSelectedRow(row: any): void {\n    if (!_.isNil(this.expandedDetailTemplate)) {\n      if (row.hasOwnProperty('detailRow') === false) {\n        row = { detailRow: true, element: row };\n      }\n      if (row.element?.disabled) {\n        if (this.disableExpandedOnDisabledRow === false) {\n          this.expandedRow = row;\n        }\n      } else {\n        this.expandedRow = row;\n      }\n    }\n  }\n\n  /**\n   * Verifica se a row é igual à selecionada\n   * @param row\n   */\n  public isSelectedRow(row: any): boolean {\n    return _.isEqual(row, this.expandedRow);\n  }\n\n  /**\n   * Reconstroi os elementos da tabela para incluir o \"detail row\" e deixar ela expansível\n   * @private\n   */\n  private reloadExpandedDetail(): void {\n    const newItems = [];\n    this.itemList.forEach(element => newItems.push(element, { detailRow: true, element }));\n    this.itemList = new MatTableDataSource(newItems);\n    this.changeDetectorRef.detectChanges();\n  }\n\n  /**\n   * Retorna a lista atual de itens na tabela\n   */\n  public getItemList(): any[] {\n    return this.itemList;\n  }\n\n  /**\n   * Troca a lista de itens da tabela\n   */\n  public setItemList(itemList: any[]): void {\n    this.itemList = itemList;\n    this.reloadExpandedDetail();\n    this.onItemListChange.emit(this.itemList);\n  }\n\n  /**\n   * Mostra a linha de header\n   */\n  public enableHeader(): void {\n    this.showHeader = true;\n  }\n\n  /**\n   * Some com a linha de header\n   */\n  public disableHeader(): void {\n    this.showHeader = false;\n  }\n\n  /**\n   * Retorna o template que será renderizada a celula de acordo com o input de item e coluna\n   * @param item: item da lista de itens\n   * @param column: propriedade do item\n   */\n  public getCellTemplate(item: any, column: string): TemplateRef<any> {\n    if (column === 'ACTIONS') {\n      return this.actionsTemplate;\n    } else if (Array.isArray(item[column])) {\n      return this.doubleLabelCell;\n    } else {\n      if (this.imageColumns.includes(column)) {\n        return this.imageCell;\n      } else {\n        if (typeof item[column] === 'number') {\n          return this.formattedNumberCell;\n        } else {\n          return this.singleLabelCell;\n        }\n      }\n    }\n  }\n}\n",
+            "sourceCode": "import {\n  AfterViewInit,\n  ChangeDetectorRef,\n  Component,\n  EventEmitter,\n  Input,\n  Output,\n  TemplateRef,\n  ViewChild\n} from '@angular/core';\nimport {Sizes} from '../../models/sizes';\nimport {animate, state, style, transition, trigger} from '@angular/animations';\nimport {MatTable, MatTableDataSource} from '@angular/material/table';\nimport _ from 'lodash';\n\n@Component({\n  selector: 'pm-table',\n  templateUrl: './table.component.html',\n  styleUrls: ['./table.component.scss'],\n  animations: [\n    trigger('detailExpand', [\n      state('collapsed', style({height: '0px', minHeight: '0px', visibility: 'hidden'})),\n      state('expanded', style({height: '*', visibility: 'visible'})),\n      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),\n    ]),\n  ],\n})\nexport class TableComponent implements AfterViewInit {\n\n  @Output() onItemListChange = new EventEmitter();\n  @Input() columns: string[] = [];\n  @Input() columnNames: string[] = [];\n  @Input() imageColumns: string[] = [];\n  @Input() imageHeight: '50px';\n  @Input() showHeader = true;\n  @Input() numberFormat = '1.2-2';\n  @Input() numberPrefix = '';\n  @Input() actionsTemplate: TemplateRef<any>;\n  @Input() itemList: any = [];\n  @Input() borderRadius: Sizes;\n  @Input() backgroundColor: string;\n\n  @Input() expandedDetailTemplate: TemplateRef<any>;\n  @Input() disableExpandedOnDisabledRow = true;\n\n  @ViewChild('table', {static: true}) table: MatTable<any>;\n  @ViewChild('singleLabelCell', {static: true}) singleLabelCell: TemplateRef<any>;\n  @ViewChild('doubleLabelCell', {static: true}) doubleLabelCell: TemplateRef<any>;\n  @ViewChild('imageCell', {static: true}) imageCell: TemplateRef<any>;\n  @ViewChild('formattedNumberCell', {static: true}) formattedNumberCell: TemplateRef<any>;\n\n  public expandedRow: any;\n  // tslint:disable-next-line:ban-types\n  isExpansionDetailRow = (i: number, row: Object) => row.hasOwnProperty('detailRow');\n  // tslint:disable-next-line:ban-types\n  isNormalRow = (i: number, row: Object) => true;\n\n  constructor(\n    private changeDetectorRef: ChangeDetectorRef\n  ) {\n  }\n\n  ngAfterViewInit(): void {\n    if (typeof this.actionsTemplate !== 'undefined') {\n      if (this.columns.includes('ACTIONS') === false) {\n        this.columns.push('ACTIONS');\n        this.columnNames.push('');\n      }\n    }\n    this.reloadExpandedDetail();\n  }\n\n  /**\n   * dá como selecionada a row atual CASO exista um template de expandedDetailTemplate\n   * @param row\n   */\n  public setSelectedRow(row: any): void {\n    if (!_.isNil(this.expandedDetailTemplate)) {\n      if (row.hasOwnProperty('detailRow') === false) {\n        row = { detailRow: true, element: row };\n      }\n      if (row.element?.disabled) {\n        if (this.disableExpandedOnDisabledRow === false) {\n          this.expandedRow = row;\n        }\n      } else {\n        this.expandedRow = row;\n      }\n    }\n  }\n\n  /**\n   * Verifica se a row é igual à selecionada\n   * @param row\n   */\n  public isSelectedRow(row: any): boolean {\n    return _.isEqual(row, this.expandedRow);\n  }\n\n  /**\n   * Reconstroi os elementos da tabela para incluir o \"detail row\" e deixar ela expansível\n   * @private\n   */\n  private reloadExpandedDetail(): void {\n    const newItems = [];\n    this.itemList.forEach(element => newItems.push(element, { detailRow: true, element }));\n    this.itemList = new MatTableDataSource(newItems);\n    this.changeDetectorRef.detectChanges();\n  }\n\n  /**\n   * Retorna a lista atual de itens na tabela\n   */\n  public getItemList(): any[] {\n    return this.itemList;\n  }\n\n  /**\n   * Troca a lista de itens da tabela\n   */\n  public setItemList(itemList: any[]): void {\n    this.itemList = itemList;\n    this.reloadExpandedDetail();\n    this.onItemListChange.emit(this.itemList);\n  }\n\n  /**\n   * Mostra a linha de header\n   */\n  public enableHeader(): void {\n    this.showHeader = true;\n  }\n\n  /**\n   * Some com a linha de header\n   */\n  public disableHeader(): void {\n    this.showHeader = false;\n  }\n\n  /**\n   * Retorna o template que será renderizada a celula de acordo com o input de item e coluna\n   * @param item: item da lista de itens\n   * @param column: propriedade do item\n   */\n  public getCellTemplate(item: any, column: string): TemplateRef<any> {\n    if (column === 'ACTIONS') {\n      return this.actionsTemplate;\n    } else if (Array.isArray(item[column])) {\n      return this.doubleLabelCell;\n    } else {\n      if (this.imageColumns.includes(column)) {\n        return this.imageCell;\n      } else {\n        if (typeof item[column] === 'number') {\n          return this.formattedNumberCell;\n        } else {\n          return this.singleLabelCell;\n        }\n      }\n    }\n  }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -1128,7 +1306,7 @@
             "implements": [
                 "AfterViewInit"
             ],
-            "templateData": "<mat-table #table [dataSource]=\"itemList\" class=\"prisma-table\"\n       [ngStyle]=\"{'border-radius': borderRadius ? 'var(--border-radius-' + borderRadius + ')' : null, 'background-color': backgroundColor ? backgroundColor : null}\"\n>\n\n  <ng-container *ngFor=\"let column of columns; let i = index;\">\n    <ng-container matColumnDef=\"{{column}}\">\n      <mat-header-cell *matHeaderCellDef>{{columnNames ? columnNames[i] : column}}</mat-header-cell>\n      <mat-cell *matCellDef=\"let item\" [ngClass]=\"{'disabled': item?.disabled === true}\">\n        <ng-container\n          *ngTemplateOutlet=\"getCellTemplate(item, column);\n          context: {$implicit: item, column: column}\">\n        </ng-container>\n      </mat-cell>\n    </ng-container>\n  </ng-container>\n\n  <ng-container matColumnDef=\"expandedDetail\">\n    <mat-cell *matCellDef=\"let item\" [ngClass]=\"{'disabled': item?.disabled === true}\">\n      <ng-container *ngTemplateOutlet=\"expandedDetailTemplate; context: {$implicit: item.element}\"></ng-container>\n    </mat-cell>\n  </ng-container>\n\n  <mat-header-row *matHeaderRowDef=\"columns\" [ngClass]=\"{'d-none': !showHeader}\"></mat-header-row>\n  <mat-row *matRowDef=\"let row; columns: columns\"\n           [ngClass]=\"{'element-row': expandedDetailTemplate}\"\n           [class.expanded]=\"expandedRow == row\"\n           (click)=\"setSelectedRow(row)\"\n  ></mat-row>\n  <mat-row *matRowDef=\"let row; columns: ['expandedDetail']; when: isExpansionDetailRow\"\n           [@detailExpand]=\"isSelectedRow(row) ? 'expanded' : 'collapsed'\"\n           (click)=\"setSelectedRow(row)\"\n  >\n  </mat-row>\n</mat-table>\n\n<ng-template #imageCell let-item let-column=\"column\">\n  <img [attr.src]=\"item[column]\" [attr.alt]=\"item[column]\"\n  class=\"img-fluid my-2\" [ngStyle]=\"{'height': imageHeight ? imageHeight : '50px', 'max-height': imageHeight ? imageHeight : '50px'}\">\n</ng-template>\n\n<ng-template #singleLabelCell let-item let-column=\"column\">\n  <p class=\"main-label\">{{item[column]}}</p>\n</ng-template>\n\n<ng-template #doubleLabelCell let-item let-column=\"column\">\n  <div class=\"d-block\">\n    <p class=\"main-label\">{{item[column][0]}}</p>\n    <p class=\"sub-label\">{{item[column][1]}}</p>\n  </div>\n</ng-template>\n\n<ng-template #formattedNumberCell let-item let-column=\"column\">\n  <p class=\"main-label\">{{numberPrefix}}{{item[column] | number: numberFormat}}</p>\n</ng-template>\n"
+            "templateData": "<mat-table #table [dataSource]=\"itemList\" class=\"prisma-table\"\n       [ngStyle]=\"{'border-radius': borderRadius ? 'var(--border-radius-' + borderRadius + ')' : null, 'background-color': backgroundColor ? backgroundColor : null}\"\n>\n\n  <ng-container *ngFor=\"let column of columns; let i = index;\">\n    <ng-container matColumnDef=\"{{column}}\">\n      <mat-header-cell *matHeaderCellDef>{{columnNames ? columnNames[i] : column}}</mat-header-cell>\n      <mat-cell *matCellDef=\"let item\" [ngClass]=\"{'disabled': item?.disabled === true}\">\n        <ng-container\n          *ngTemplateOutlet=\"getCellTemplate(item, column);\n          context: {$implicit: item, column: column}\">\n        </ng-container>\n      </mat-cell>\n    </ng-container>\n  </ng-container>\n\n  <ng-container matColumnDef=\"expandedDetail\">\n    <mat-cell *matCellDef=\"let item\" [ngClass]=\"{'disabled': item?.disabled === true}\">\n      <ng-container *ngTemplateOutlet=\"expandedDetailTemplate; context: {$implicit: item.element}\"></ng-container>\n    </mat-cell>\n  </ng-container>\n\n  <mat-header-row *matHeaderRowDef=\"columns\" [ngClass]=\"{'d-none': !showHeader}\"></mat-header-row>\n  <mat-row *matRowDef=\"let row; columns: columns\"\n           [ngClass]=\"{'element-row': expandedDetailTemplate}\"\n           [class.expanded]=\"expandedRow == row\"\n           (click)=\"setSelectedRow(row)\"\n  ></mat-row>\n  <mat-row *matRowDef=\"let row; columns: ['expandedDetail']; when: isExpansionDetailRow\"\n           [@detailExpand]=\"isSelectedRow(row) ? 'expanded' : 'collapsed'\"\n           (click)=\"setSelectedRow(row)\"\n           style=\"overflow: hidden\"\n  >\n  </mat-row>\n</mat-table>\n\n<ng-template #imageCell let-item let-column=\"column\">\n  <img [attr.src]=\"item[column]\" [attr.alt]=\"item[column]\"\n  class=\"img-fluid my-2\" [ngStyle]=\"{'height': imageHeight ? imageHeight : '50px', 'max-height': imageHeight ? imageHeight : '50px'}\">\n</ng-template>\n\n<ng-template #singleLabelCell let-item let-column=\"column\">\n  <p class=\"main-label\">{{item[column]}}</p>\n</ng-template>\n\n<ng-template #doubleLabelCell let-item let-column=\"column\">\n  <div class=\"d-block\">\n    <p class=\"main-label\">{{item[column][0]}}</p>\n    <p class=\"sub-label\">{{item[column][1]}}</p>\n  </div>\n</ng-template>\n\n<ng-template #formattedNumberCell let-item let-column=\"column\">\n  <p class=\"main-label\">{{numberPrefix}}{{item[column] | number: numberFormat}}</p>\n</ng-template>\n"
         }
     ],
     "modules": [
@@ -1193,6 +1371,43 @@
                     "elements": [
                         {
                             "name": "CheckboxComponent"
+                        }
+                    ]
+                },
+                {
+                    "type": "bootstrap",
+                    "elements": []
+                },
+                {
+                    "type": "classes",
+                    "elements": []
+                }
+            ]
+        },
+        {
+            "name": "CopyContentInputModule",
+            "children": [
+                {
+                    "type": "providers",
+                    "elements": []
+                },
+                {
+                    "type": "declarations",
+                    "elements": [
+                        {
+                            "name": "CopyContentInputComponent"
+                        }
+                    ]
+                },
+                {
+                    "type": "imports",
+                    "elements": []
+                },
+                {
+                    "type": "exports",
+                    "elements": [
+                        {
+                            "name": "CopyContentInputComponent"
                         }
                     ]
                 },
@@ -1291,6 +1506,43 @@
             ]
         },
         {
+            "name": "RadioButtonModule",
+            "children": [
+                {
+                    "type": "providers",
+                    "elements": []
+                },
+                {
+                    "type": "declarations",
+                    "elements": [
+                        {
+                            "name": "RadioButtonComponent"
+                        }
+                    ]
+                },
+                {
+                    "type": "imports",
+                    "elements": []
+                },
+                {
+                    "type": "exports",
+                    "elements": [
+                        {
+                            "name": "RadioButtonComponent"
+                        }
+                    ]
+                },
+                {
+                    "type": "bootstrap",
+                    "elements": []
+                },
+                {
+                    "type": "classes",
+                    "elements": []
+                }
+            ]
+        },
+        {
             "name": "TableModule",
             "children": [
                 {
@@ -1350,7 +1602,7 @@
                 "name": "BusyButton",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/Button.stories.ts",
+                "file": "stories/inputs/Button.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             },
@@ -1371,10 +1623,18 @@
                 "defaultValue": "require.context('./', true, /\\.spec\\.ts$/)"
             },
             {
+                "name": "CopyContentInput",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "stories/inputs/CopyContentInput.stories.ts",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
                 "name": "DefaultButton",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/Button.stories.ts",
+                "file": "stories/inputs/Button.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             },
@@ -1382,7 +1642,15 @@
                 "name": "DefaultCheckbox",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/Checkbox.stories.ts",
+                "file": "stories/inputs/Checkbox.stories.ts",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "DefaultRadioButton",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "stories/inputs/RadioButton.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             },
@@ -1390,7 +1658,7 @@
                 "name": "DisabledCheckbox",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/Checkbox.stories.ts",
+                "file": "stories/inputs/Checkbox.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             },
@@ -1438,7 +1706,7 @@
                 "name": "IconButton",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/Button.stories.ts",
+                "file": "stories/inputs/Button.stories.ts",
                 "type": "",
                 "defaultValue": "IconButtonTemplate.bind({})"
             },
@@ -1446,7 +1714,7 @@
                 "name": "IconButtonTemplate",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/Button.stories.ts",
+                "file": "stories/inputs/Button.stories.ts",
                 "type": "Story<ButtonComponent>",
                 "defaultValue": "(args: ButtonComponent) => ({\n  component: ButtonComponent,\n  props: args,\n  template: `\n    <pm-button\n        [label]=\"label\"\n        [type]=\"type\"\n        [busy]=\"busy\"\n        [busyText]=\"busyText\"\n        [iconClass]=\"iconClass\"\n        [outline]=\"outline\"\n    >\n        Download\n    </pm-button>`\n})"
             },
@@ -1470,7 +1738,7 @@
                 "name": "PrimaryButton",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/Button.stories.ts",
+                "file": "stories/inputs/Button.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             },
@@ -1480,22 +1748,6 @@
                 "subtype": "variable",
                 "file": "projects/components/src/test.ts",
                 "type": "literal type"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "stories/Button.stories.ts",
-                "type": "Story<ButtonComponent>",
-                "defaultValue": "(args: ButtonComponent) => ({\n  component: ButtonComponent,\n  props: args,\n  template: `\n    <pm-button\n        [label]=\"label\"\n        [type]=\"type\"\n        [busy]=\"busy\"\n        [busyText]=\"busyText\"\n        [iconClass]=\"iconClass\"\n        [outline]=\"outline\"\n    >\n        Botão\n    </pm-button>`\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "stories/Checkbox.stories.ts",
-                "type": "Story<CheckboxComponent>",
-                "defaultValue": "(args: CheckboxComponent) => ({\n  component: CheckboxComponent,\n  props: args,\n  template: `\n    <pm-checkbox\n      [checked]=\"checked\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>`\n})"
             },
             {
                 "name": "Template",
@@ -1512,6 +1764,38 @@
                 "file": "stories/Table.stories.ts",
                 "type": "Story<TableComponent>",
                 "defaultValue": "(args: TableComponent) => ({\n  component: TableComponent,\n  props: args,\n  template: `\n    <pm-table\n      [columns]=\"columns\"\n      [columnNames]=\"columnNames\"\n      [imageColumns]=\"imageColumns\"\n      [imageHeight]=\"imageHeight\"\n      [showHeader]=\"showHeader\"\n      [numberFormat]=\"numberFormat\"\n      [numberPrefix]=\"numberPrefix\"\n      [itemList]=\"itemList\"\n      [borderRadius]=\"borderRadius\"\n      [backgroundColor]=\"backgroundColor\"\n      [expandedDetailTemplate]=\"expandedDetailTemplate\"\n      [disableExpandedOnDisabledRow]=\"disableExpandedOnDisabledRow\"\n    ></pm-table>`\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "stories/inputs/Button.stories.ts",
+                "type": "Story<ButtonComponent>",
+                "defaultValue": "(args: ButtonComponent) => ({\n  component: ButtonComponent,\n  props: args,\n  template: `\n    <pm-button\n        [label]=\"label\"\n        [type]=\"type\"\n        [busy]=\"busy\"\n        [busyText]=\"busyText\"\n        [iconClass]=\"iconClass\"\n        [outline]=\"outline\"\n    >\n        Botão\n    </pm-button>`\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "stories/inputs/Checkbox.stories.ts",
+                "type": "Story<CheckboxComponent>",
+                "defaultValue": "(args: CheckboxComponent) => ({\n  component: CheckboxComponent,\n  props: args,\n  template: `\n    <pm-checkbox\n      [checked]=\"checked\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>`\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "stories/inputs/CopyContentInput.stories.ts",
+                "type": "Story<CopyContentInputComponent>",
+                "defaultValue": "(args: CopyContentInputComponent) => ({\n  component: CopyContentInputComponent,\n  props: args,\n  template: `\n    <pm-copy-content-input\n        [text]=\"textToCopy\"\n    >\n        Conteúdo\n    </pm-copy-content-input>`\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "stories/inputs/RadioButton.stories.ts",
+                "type": "Story<RadioButtonComponent>",
+                "defaultValue": "(args: RadioButtonComponent) => ({\n  component: RadioButtonComponent,\n  props: args,\n  template: `\n    <pm-radio-button\n        [values]=\"['Winter', 'Spring', 'Summer', 'Autumn']\"\n    >\n        Conteúdo\n    </pm-radio-button>`\n})"
             },
             {
                 "name": "ThumbnailTable",
@@ -1565,6 +1849,23 @@
                 "subtype": "enum",
                 "description": "",
                 "file": "projects/components/src/models/colors.ts"
+            },
+            {
+                "name": "OrientationEnum",
+                "childs": [
+                    {
+                        "name": "X",
+                        "value": "horizontal"
+                    },
+                    {
+                        "name": "Y",
+                        "value": "vertical"
+                    }
+                ],
+                "ctype": "miscellaneous",
+                "subtype": "enum",
+                "description": "",
+                "file": "projects/components/src/lib/radio-button/radio-button.component.ts"
             },
             {
                 "name": "PaleColors",
@@ -1798,12 +2099,12 @@
                     "defaultValue": "Template.bind({})"
                 }
             ],
-            "stories/Button.stories.ts": [
+            "stories/inputs/Button.stories.ts": [
                 {
                     "name": "BusyButton",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "stories/Button.stories.ts",
+                    "file": "stories/inputs/Button.stories.ts",
                     "type": "",
                     "defaultValue": "Template.bind({})"
                 },
@@ -1811,7 +2112,7 @@
                     "name": "DefaultButton",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "stories/Button.stories.ts",
+                    "file": "stories/inputs/Button.stories.ts",
                     "type": "",
                     "defaultValue": "Template.bind({})"
                 },
@@ -1819,7 +2120,7 @@
                     "name": "IconButton",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "stories/Button.stories.ts",
+                    "file": "stories/inputs/Button.stories.ts",
                     "type": "",
                     "defaultValue": "IconButtonTemplate.bind({})"
                 },
@@ -1827,7 +2128,7 @@
                     "name": "IconButtonTemplate",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "stories/Button.stories.ts",
+                    "file": "stories/inputs/Button.stories.ts",
                     "type": "Story<ButtonComponent>",
                     "defaultValue": "(args: ButtonComponent) => ({\n  component: ButtonComponent,\n  props: args,\n  template: `\n    <pm-button\n        [label]=\"label\"\n        [type]=\"type\"\n        [busy]=\"busy\"\n        [busyText]=\"busyText\"\n        [iconClass]=\"iconClass\"\n        [outline]=\"outline\"\n    >\n        Download\n    </pm-button>`\n})"
                 },
@@ -1835,7 +2136,7 @@
                     "name": "PrimaryButton",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "stories/Button.stories.ts",
+                    "file": "stories/inputs/Button.stories.ts",
                     "type": "",
                     "defaultValue": "Template.bind({})"
                 },
@@ -1843,7 +2144,7 @@
                     "name": "Template",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "stories/Button.stories.ts",
+                    "file": "stories/inputs/Button.stories.ts",
                     "type": "Story<ButtonComponent>",
                     "defaultValue": "(args: ButtonComponent) => ({\n  component: ButtonComponent,\n  props: args,\n  template: `\n    <pm-button\n        [label]=\"label\"\n        [type]=\"type\"\n        [busy]=\"busy\"\n        [busyText]=\"busyText\"\n        [iconClass]=\"iconClass\"\n        [outline]=\"outline\"\n    >\n        Botão\n    </pm-button>`\n})"
                 }
@@ -1865,20 +2166,12 @@
                     "type": "literal type"
                 }
             ],
-            "stories/Checkbox.stories.ts": [
+            "stories/inputs/CopyContentInput.stories.ts": [
                 {
-                    "name": "DefaultCheckbox",
+                    "name": "CopyContentInput",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "stories/Checkbox.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "DisabledCheckbox",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "stories/Checkbox.stories.ts",
+                    "file": "stories/inputs/CopyContentInput.stories.ts",
                     "type": "",
                     "defaultValue": "Template.bind({})"
                 },
@@ -1886,9 +2179,53 @@
                     "name": "Template",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "stories/Checkbox.stories.ts",
+                    "file": "stories/inputs/CopyContentInput.stories.ts",
+                    "type": "Story<CopyContentInputComponent>",
+                    "defaultValue": "(args: CopyContentInputComponent) => ({\n  component: CopyContentInputComponent,\n  props: args,\n  template: `\n    <pm-copy-content-input\n        [text]=\"textToCopy\"\n    >\n        Conteúdo\n    </pm-copy-content-input>`\n})"
+                }
+            ],
+            "stories/inputs/Checkbox.stories.ts": [
+                {
+                    "name": "DefaultCheckbox",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "stories/inputs/Checkbox.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "DisabledCheckbox",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "stories/inputs/Checkbox.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "stories/inputs/Checkbox.stories.ts",
                     "type": "Story<CheckboxComponent>",
                     "defaultValue": "(args: CheckboxComponent) => ({\n  component: CheckboxComponent,\n  props: args,\n  template: `\n    <pm-checkbox\n      [checked]=\"checked\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>`\n})"
+                }
+            ],
+            "stories/inputs/RadioButton.stories.ts": [
+                {
+                    "name": "DefaultRadioButton",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "stories/inputs/RadioButton.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "stories/inputs/RadioButton.stories.ts",
+                    "type": "Story<RadioButtonComponent>",
+                    "defaultValue": "(args: RadioButtonComponent) => ({\n  component: RadioButtonComponent,\n  props: args,\n  template: `\n    <pm-radio-button\n        [values]=\"['Winter', 'Spring', 'Summer', 'Autumn']\"\n    >\n        Conteúdo\n    </pm-radio-button>`\n})"
                 }
             ],
             "stories/DraggableList.stories.ts": [
@@ -2094,6 +2431,25 @@
                     "file": "projects/components/src/models/colors.ts"
                 }
             ],
+            "projects/components/src/lib/radio-button/radio-button.component.ts": [
+                {
+                    "name": "OrientationEnum",
+                    "childs": [
+                        {
+                            "name": "X",
+                            "value": "horizontal"
+                        },
+                        {
+                            "name": "Y",
+                            "value": "vertical"
+                        }
+                    ],
+                    "ctype": "miscellaneous",
+                    "subtype": "enum",
+                    "description": "",
+                    "file": "projects/components/src/lib/radio-button/radio-button.component.ts"
+                }
+            ],
             "projects/components/src/models/sizes.ts": [
                 {
                     "name": "Sizes",
@@ -2174,12 +2530,30 @@
                 "status": "low"
             },
             {
+                "filePath": "projects/components/src/lib/copy-content-input/copy-content-input.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "CopyContentInputComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/4",
+                "status": "low"
+            },
+            {
                 "filePath": "projects/components/src/lib/draggable-list/draggable-list.component.ts",
                 "type": "component",
                 "linktype": "component",
                 "name": "DraggableListComponent",
                 "coveragePercent": 22,
                 "coverageCount": "6/27",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/components/src/lib/radio-button/radio-button.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "RadioButtonComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/9",
                 "status": "low"
             },
             {
@@ -2207,96 +2581,6 @@
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
                 "name": "require",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "stories/Button.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "BusyButton",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "stories/Button.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "DefaultButton",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "stories/Button.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "IconButton",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "stories/Button.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "IconButtonTemplate",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "stories/Button.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "PrimaryButton",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "stories/Button.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "Template",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "stories/Checkbox.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "DefaultCheckbox",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "stories/Checkbox.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "DisabledCheckbox",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "stories/Checkbox.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "Template",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
@@ -2427,6 +2711,136 @@
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
                 "name": "ThumbnailTable",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "stories/inputs/Button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "BusyButton",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "stories/inputs/Button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "DefaultButton",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "stories/inputs/Button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "IconButton",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "stories/inputs/Button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "IconButtonTemplate",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "stories/inputs/Button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "PrimaryButton",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "stories/inputs/Button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "stories/inputs/Checkbox.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "DefaultCheckbox",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "stories/inputs/Checkbox.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "DisabledCheckbox",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "stories/inputs/Checkbox.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "stories/inputs/CopyContentInput.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "CopyContentInput",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "stories/inputs/CopyContentInput.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "stories/inputs/RadioButton.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "DefaultRadioButton",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "stories/inputs/RadioButton.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"

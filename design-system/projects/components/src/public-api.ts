@@ -18,3 +18,9 @@ export * from './lib/table/table.module';
 
 export * from './lib/checkbox/checkbox.component';
 export * from './lib/checkbox/checkbox.module';
+
+export * from './lib/radio-button/radio-button.component';
+export * from './lib/radio-button/radio-button.module';
+
+export * from './lib/copy-content-input/copy-content-input.component';
+export * from './lib/copy-content-input/copy-content-input.module';

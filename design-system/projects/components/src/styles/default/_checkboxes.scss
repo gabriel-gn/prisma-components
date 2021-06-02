@@ -96,14 +96,14 @@
 }
 
 .form-check-radio .form-check-sign::before {
-  font-family: 'FontAwesome';
-  content: "\f10c";
-  font-size: 22px;
+  font-family: 'unicons-line';
+  content: "\e859";
+  font-size: 26px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   display: inline-block;
   position: absolute;
-  opacity: .50;
+  opacity: 1;
   left: 5px;
   top: -5px;
 }
@@ -121,13 +121,16 @@
 }
 
 .form-check-radio input[type="radio"]:checked + .form-check-sign::after {
-  font-family: 'FontAwesome';
-  content: "\f192";
+  //background-color: var(--color-default);
+  //border-radius: 50%;
+  //height: 26px;
+  font-family: 'unicons-line';
+  content: "\e9c2";
+  font-size: 26px;
   top: -5px;
   position: absolute;
   left: 5px;
   opacity: 1;
-  font-size: 22px;
 }
 
 .form-check-radio input[type="radio"]:checked + .form-check-sign::after {
@@ -138,4 +141,26 @@
 .form-check-radio input[type="radio"]:disabled + .form-check-sign::before,
 .form-check-radio input[type="radio"]:disabled + .form-check-sign::after {
   color: var(--color-gray-dark);
+}
+
+
+.mat-radio-outer-circle,
+.mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
+  border-width: 3px;
+}
+
+.mat-radio-disabled:not(.mat-radio-persistent-ripple),
+.mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle:not(.mat-radio-persistent-ripple) {
+  border-color: var(--color-default);
+}
+
+.mat-radio-button.mat-accent .mat-radio-inner-circle,
+.mat-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element:not(.mat-radio-persistent-ripple),
+.mat-radio-button.mat-accent.mat-radio-checked .mat-radio-persistent-ripple,
+.mat-radio-button.mat-accent:active .mat-radio-persistent-ripple {
+  background-color: var(--color-default);
+}
+
+.mat-radio-ripple {
+  display: none;
 }

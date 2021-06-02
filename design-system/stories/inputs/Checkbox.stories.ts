@@ -1,9 +1,9 @@
 import {Meta, moduleMetadata, Story} from '@storybook/angular';
-import {CheckboxComponent} from '../projects/components/src/lib/checkbox/checkbox.component';
-import {CheckboxModule} from '../projects/components/src/lib/checkbox/checkbox.module';
+import {CheckboxComponent} from '../../projects/components/src/lib/checkbox/checkbox.component';
+import {CheckboxModule} from '../../projects/components/src/lib/checkbox/checkbox.module';
 
 export default {
-  title: 'Prisma/Checkbox',
+  title: 'Prisma/Inputs/Checkbox',
   component: CheckboxComponent,
   decorators: [
     moduleMetadata({
