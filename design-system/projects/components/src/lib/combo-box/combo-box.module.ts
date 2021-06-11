@@ -4,7 +4,6 @@ import {ComboBoxComponent} from './combo-box.component';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
 import {FormsModule} from '@angular/forms';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 
 @NgModule({
@@ -12,7 +11,6 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
   exports: [ComboBoxComponent],
   imports: [
     CommonModule,
-    BrowserAnimationsModule,
     MatFormFieldModule,
     MatSelectModule,
     FormsModule

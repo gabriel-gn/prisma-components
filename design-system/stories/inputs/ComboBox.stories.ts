@@ -1,6 +1,7 @@
 import {Meta, moduleMetadata, Story} from '@storybook/angular';
 import {ComboBoxModule} from '../../projects/components/src/lib/combo-box/combo-box.module';
 import {ComboBoxComponent} from '../../projects/components/src/lib/combo-box/combo-box.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 export default {
   title: 'Prisma/Inputs/ComboBox',
@@ -9,6 +10,7 @@ export default {
     moduleMetadata({
       imports: [
         ComboBoxModule,
+        BrowserAnimationsModule,
       ],
     }),
   ],
