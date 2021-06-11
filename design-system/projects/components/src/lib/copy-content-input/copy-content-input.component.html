@@ -1,6 +1,6 @@
 <ng-container *ngIf="text">
   <div class="d-flex">
-    <input #slicerLinkInput [readonly]="true" [attr.disabled]="true" [value]="text" class="form-control" [title]="text"
+    <input [attr.readonly]="disabled" [attr.disabled]="disabled" [value]="text" class="form-control" [title]="text"
            style="border-radius: var(--border-radius-md) 0px 0px var(--border-radius-md) !important;" type="text">
     <button [cdkCopyToClipboard]="text" class="btn-copy">
       <i class="uil uil-lg uil-copy"></i>

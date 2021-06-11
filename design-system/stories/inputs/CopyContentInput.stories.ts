@@ -13,7 +13,8 @@ export default {
     }),
   ],
   argTypes: {
-    text: {control: 'text'}
+    text: {control: 'text'},
+    disabled: {control: 'boolean'}
     // we need to override here since in Angular it could be null as well and therefore it would become an ambigious data type for storybook
   }
 } as Meta;
@@ -23,13 +24,15 @@ const Template: Story<CopyContentInputComponent> = (args: CopyContentInputCompon
   props: args,
   template: `
     <pm-copy-content-input
-        [text]="textToCopy"
+        [text]="text"
+        [disabled]="disabled"
     >
         Conteúdo
     </pm-copy-content-input>`
 });
 
-export const CopyContentInput = Template.bind({});
-CopyContentInput.args = {
-  textToCopy: 'Some input value'
+export const DefaultInput = Template.bind({});
+DefaultInput.args = {
+  text: 'Some input value',
+  disabled: true
 };

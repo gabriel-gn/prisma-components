@@ -24,3 +24,6 @@ export * from './lib/radio-button/radio-button.module';
 
 export * from './lib/copy-content-input/copy-content-input.component';
 export * from './lib/copy-content-input/copy-content-input.module';
+
+export * from './lib/combo-box/combo-box.component';
+export * from './lib/combo-box/combo-box.module';

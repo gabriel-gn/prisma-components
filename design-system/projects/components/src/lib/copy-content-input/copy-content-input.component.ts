@@ -8,6 +8,7 @@ import {Component, Input, OnInit} from '@angular/core';
 export class CopyContentInputComponent implements OnInit {
 
   @Input() text = '';
+  @Input() disabled = true;
   // public readonly notifier: SnotifyService;
 
   constructor(
