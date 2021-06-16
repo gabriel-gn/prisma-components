@@ -3,6 +3,7 @@ $card-height-sm: 320px;
 $card-width-sm: 280px;
 
 .card-basic {
+  transition: box-shadow 0.2s ease-in-out/*, height 0.15s ease-in-out, max-height 0.15s ease-in-out*/;
   background-color: #fff;
   border: solid 1px var(--color-gray-light);
   border-radius: var(--border-radius-default);

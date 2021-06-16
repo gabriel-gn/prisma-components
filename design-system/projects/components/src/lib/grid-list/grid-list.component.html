@@ -1,0 +1,55 @@
+<div class="col-12 d-flex justify-content-end">
+  <button (click)="displayStyle = 'list'" class="btn no-outline no-shadow">
+    <i class="uil uil-md uil-grids rotate-90"></i>
+  </button>
+  <button (click)="displayStyle = 'grid'" class="btn no-outline no-shadow">
+    <i class="uil uil-md uil-th"></i>
+  </button>
+</div>
+<div class="row g-0 d-flex justify-content-center" [ngClass]="{'card-basic': displayStyle === 'list'}">
+  <ng-container *ngFor="let item of items">
+    <ng-container *ngTemplateOutlet="displayStyle === 'grid' ? gridTemplate : listTemplate"></ng-container>
+  </ng-container>
+</div>
+
+<ng-template #gridTemplate>
+  <div class="card-basic model-collection-card rad-md col-auto"
+       style="height: auto;"
+  >
+    <div class="model-collection-card-header">
+      <div [ngStyle]="{'background-image': 'url(' + thumbnailPicture + ')'}" class="img-thumbnail me-2">
+      </div>
+      <div class="d-block flex-fill text-overflow">
+        <p (click)="titleCallback()"
+           class="title-link">Titulo ai</p>
+        <p (click)="subtitleCallback()" class="secondary-link">Subtítulo ae</p>
+      </div>
+      <button (click)="iconCallback()" class="btn no-outline no-shadow">
+        <i [className]="iconClass"></i>
+      </button>
+    </div>
+    <div
+      (click)="bodyCallback()"
+      [ngClass]="{'cursor-pointer': bodyCallback}"
+      class="model-collection-card-body fixed-height d-flex justify-content-center rad-md-bottom"
+    >
+      <img [attr.alt]="bodyPicture" [attr.src]="bodyPicture">
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #listTemplate>
+  <div class="d-flex py-3 pe-5" style="height: 200px; max-height: 200px; border-bottom: 2px solid var(--color-gray-light)">
+    <div class="d-flex px-4">
+      <img width="160" height="160" class="img-fluid" [attr.alt]="bodyPicture" [attr.src]="bodyPicture">
+    </div>
+    <div class="d-block flex-fill text-overflow">
+      <p (click)="titleCallback()"
+         class="title-link">Titulo ai</p>
+      <p (click)="subtitleCallback()" class="secondary-link">Subtítulo ae</p>
+    </div>
+    <button (click)="iconCallback()" class="btn no-outline no-shadow">
+      <i [className]="iconClass"></i>
+    </button>
+  </div>
+</ng-template>
