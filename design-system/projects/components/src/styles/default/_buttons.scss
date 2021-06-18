@@ -59,14 +59,20 @@
   box-shadow: none !important;
   outline: none !important;
 
-  i {
-    color: var(--color-primary);
-  }
+  // necessário colocar class="btn-icon-action color-primary" por exemplo
+  @each $key, $val in $main-colors {
+    $color-name: str-slice($key, 7, str-length($key));
+    &.color-#{$color-name} {
+      i {
+        color: var(--color-#{$color-name});
+      }
 
-  &:hover {
-    * {
-      color: var(--color-primary-states);
-      text-shadow: 0px 0px 20px var(--color-primary-pale);
+      &:hover {
+        * {
+          color: var(--color-#{$color-name}-states);
+          text-shadow: 0px 0px 20px var(--color-#{$color-name}-pale);
+        }
+      }
     }
   }
 }

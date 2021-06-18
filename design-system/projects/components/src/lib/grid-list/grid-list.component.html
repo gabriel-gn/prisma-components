@@ -1,10 +1,10 @@
 <div class="pm-grid-list">
 
   <div class="d-flex justify-content-end">
-    <button (click)="displayStyle = 'list'" class="btn-icon-action">
+    <button (click)="displayStyle = 'list'" class="btn-icon-action color-primary">
       <i class="uil uil-md uil-grids rotate-90"></i>
     </button>
-    <button (click)="displayStyle = 'grid'" class="btn-icon-action">
+    <button (click)="displayStyle = 'grid'" class="btn-icon-action color-primary">
       <i class="uil uil-md uil-th"></i>
     </button>
   </div>
@@ -30,7 +30,7 @@
            class="title-link align-self-start">Titulo ai</p>
         <p (click)="item.subtitleCallback()" class="secondary-link align-self-start">Subtítulo ae</p>
       </div>
-      <button (click)="item.iconCallback()" class="btn-icon-action">
+      <button (click)="item.iconCallback()" [className]="'btn-icon-action color-' + item.iconColor">
         <i [className]="item.iconClass"></i>
       </button>
     </div>
@@ -59,7 +59,7 @@
          class="title-link">Titulo ai</p>
       <p (click)="item.subtitleCallback()" class="secondary-link">Subtítulo ae</p>
     </div>
-    <button (click)="item.iconCallback()" class="btn-icon-action">
+    <button (click)="item.iconCallback()" [className]="'btn-icon-action color-' + item.iconColor">
       <i [className]="item.iconClass"></i>
     </button>
   </div>

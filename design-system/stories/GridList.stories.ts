@@ -34,6 +34,7 @@ export const DefaultGridList = Template.bind({});
 DefaultGridList.args = {
   items: Array(20).fill({
     iconClass: 'uil uil-xl uil-arrow-to-bottom',
+    iconColor: 'primary',
     thumbnailPicture: 'https://picsum.photos/500/500',
     bodyPicture: 'https://picsum.photos/1200/800',
     iconCallback: () => console.log('aaaa'),
