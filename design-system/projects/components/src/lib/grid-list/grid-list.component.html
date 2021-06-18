@@ -18,7 +18,8 @@
 </div>
 
 <ng-template #gridTemplate let-item>
-  <div class="card-basic model-collection-card hoverable rad-md col-auto m-3" [ngClass]="{'reverse': gridHeaderReverse}"
+  <div class="card-basic model-collection-card hoverable rad-md col-auto m-3"
+       [ngClass]="{'reverse': gridHeaderReverse}"
        style="height: auto;"
   >
     <div class="model-collection-card-header">
@@ -26,16 +27,16 @@
         <div [ngStyle]="{'background-image': 'url(' + item.thumbnailPicture + ')'}" class="img-thumbnail align-self-center"></div>
       </ng-container>
       <div class="d-flex flex-column justify-content-center flex-fill text-overflow ms-2">
-        <p (click)="item.titleCallback()"
+        <p (click)="item.titleCallback(item)"
            class="title-link align-self-start">Titulo ai</p>
-        <p (click)="item.subtitleCallback()" class="secondary-link align-self-start">Subtítulo ae</p>
+        <p (click)="item.subtitleCallback(item)" class="secondary-link align-self-start">Subtítulo ae</p>
       </div>
-      <button (click)="item.iconCallback()" [className]="'btn-icon-action color-' + item.iconColor">
+      <button (click)="item.iconCallback(item)" [className]="'btn-icon-action py-0 color-' + item.iconColor">
         <i [className]="item.iconClass"></i>
       </button>
     </div>
     <div
-      (click)="item.bodyCallback()"
+      (click)="item.bodyCallback(item)"
       [ngClass]="{'cursor-pointer': item.bodyCallback, 'rad-md-top': gridHeaderReverse, 'rad-md-bottom': !gridHeaderReverse}"
       class="model-collection-card-body fixed-height image-fluid-container"
     >
@@ -55,11 +56,13 @@
       >
     </div>
     <div class="d-block flex-fill text-overflow">
-      <p (click)="item.titleCallback()"
+      <p (click)="item.titleCallback(item)"
          class="title-link">Titulo ai</p>
-      <p (click)="item.subtitleCallback()" class="secondary-link">Subtítulo ae</p>
+      <p (click)="item.subtitleCallback(item)" class="secondary-link">Subtítulo ae</p>
     </div>
-    <button (click)="item.iconCallback()" [className]="'btn-icon-action color-' + item.iconColor">
+    <button (click)="item.iconCallback(item)"
+            [className]="'btn-icon-action color-' + item.iconColor"
+    >
       <i [className]="item.iconClass"></i>
     </button>
   </div>

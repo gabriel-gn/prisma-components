@@ -37,9 +37,9 @@ DefaultGridList.args = {
     iconColor: 'primary',
     thumbnailPicture: 'https://picsum.photos/500/500',
     bodyPicture: 'https://picsum.photos/1200/800',
-    iconCallback: () => console.log('aaaa'),
-    titleCallback: () => console.log('bbb'),
-    subtitleCallback: () => console.log('ccc'),
-    bodyCallback: () => console.log('ddd'),
+    iconCallback: (item) => console.log(item.bodyPicture + 'aaa'),
+    titleCallback: (item) => console.log(item.bodyPicture + 'bbb'),
+    subtitleCallback: (item) => console.log(item.bodyPicture + 'ccc'),
+    bodyCallback: (item) => console.log(item.bodyPicture + 'ddd'),
   })
 };
