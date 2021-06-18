@@ -54,6 +54,23 @@
   border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0 !important;
 }
 
+.btn-icon-action {
+  @extend .btn;
+  box-shadow: none !important;
+  outline: none !important;
+
+  i {
+    color: var(--color-primary);
+  }
+
+  &:hover {
+    * {
+      color: var(--color-primary-states);
+      text-shadow: 0px 0px 20px var(--color-primary-pale);
+    }
+  }
+}
+
 .btn-google {
   @include btn-styles(#F33934, #bb3934);
 }

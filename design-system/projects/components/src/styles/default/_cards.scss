@@ -10,9 +10,36 @@ $card-width-sm: 280px;
   display: flex;
   flex-direction: column;
 
+  &.reverse {
+    flex-direction: column-reverse;
+  }
+
   &.selected {
     border: 5px solid var(--color-primary) !important;
     margin: 4px !important;
+  }
+
+  &.hoverable {
+    &:hover {
+      box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 20px 0px;
+
+      .market-card-actions {
+        &[class*=" animated-"] {
+          opacity: 1;
+          @extend .fadeIn !optional;
+        }
+      }
+    }
+    &:not(:hover) {
+      .market-card-actions {
+        &[class*=" animated-"] {
+          visibility: hidden;
+          pointer-events: none;
+          opacity: 0;
+          @extend .fadeOut !optional;
+        }
+      }
+    }
   }
 
   .card-basic-header {

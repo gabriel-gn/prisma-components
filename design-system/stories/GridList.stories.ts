@@ -24,6 +24,7 @@ const Template: Story<GridListComponent> = (args: GridListComponent) => ({
   props: args,
   template: `
     <pm-grid-list
+    [items]="items"
     >
       conteudo
     </pm-grid-list>`
@@ -31,4 +32,13 @@ const Template: Story<GridListComponent> = (args: GridListComponent) => ({
 
 export const DefaultGridList = Template.bind({});
 DefaultGridList.args = {
+  items: Array(20).fill({
+    iconClass: 'uil uil-xl uil-arrow-to-bottom',
+    thumbnailPicture: 'https://picsum.photos/500/500',
+    bodyPicture: 'https://picsum.photos/1200/800',
+    iconCallback: () => console.log('aaaa'),
+    titleCallback: () => console.log('bbb'),
+    subtitleCallback: () => console.log('ccc'),
+    bodyCallback: () => console.log('ddd'),
+  })
 };
