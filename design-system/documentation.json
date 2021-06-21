@@ -265,7 +265,7 @@
             "implements": [
                 "OnInit"
             ],
-            "templateData": "<p>card works!</p>\n"
+            "templateData": "<div class=\"card-basic model-collection-card hoverable rad-md w-100\" style=\"height: auto;\">\n  <p>aa</p>\n</div>\n"
         },
         {
             "name": "CheckboxComponent",
