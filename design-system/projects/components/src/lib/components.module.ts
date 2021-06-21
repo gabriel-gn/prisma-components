@@ -7,6 +7,7 @@ import {MatSelectModule} from '@angular/material/select';
 import {TableModule} from './table/table.module';
 import {ComboBoxModule} from './combo-box/combo-box.module';
 import {GridListModule} from './grid-list/grid-list.module';
+import {CardModule} from './card/card.module';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import {GridListModule} from './grid-list/grid-list.module';
     MatSelectModule,
     TableModule,
     ComboBoxModule,
-    GridListModule
+    GridListModule,
+    CardModule
   ],
   exports: [
     ComponentsComponent

@@ -212,6 +212,62 @@
             "templateData": "<button [className]=\"getClassName()\" [disabled]=\"busy\">\n  <ng-container *ngIf=\"busy; else buttonContent\">\n    <span class=\"spinner-border spinner-border-sm mx-2\" role=\"status\" aria-hidden=\"true\"></span>\n    {{busyText ? busyText : ''}}\n  </ng-container>\n</button>\n\n<ng-template #buttonContent>\n  <i *ngIf=\"iconClass && busy === false\" class=\"{{iconClass}}\"></i>\n  <ng-container *ngIf=\"label; else noLabel\">\n    {{label}}\n  </ng-container>\n</ng-template>\n\n<ng-template #noLabel>\n  <ng-content></ng-content>\n</ng-template>\n\n"
         },
         {
+            "name": "CardComponent",
+            "id": "component-CardComponent-39e594e939687161d8bbf7c2ba320a45",
+            "file": "projects/components/src/lib/card/card.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "pm-card",
+            "styleUrls": [
+                "./card.component.scss"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./card.component.html"
+            ],
+            "viewProviders": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [
+                {
+                    "name": "ngOnInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 12
+                }
+            ],
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "",
+            "type": "component",
+            "sourceCode": "import { Component, OnInit } from '@angular/core';\n\n@Component({\n  selector: 'pm-card',\n  templateUrl: './card.component.html',\n  styleUrls: ['./card.component.scss']\n})\nexport class CardComponent implements OnInit {\n\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": "",
+                    "styleUrl": "./card.component.scss"
+                }
+            ],
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "args": [],
+                "line": 8
+            },
+            "implements": [
+                "OnInit"
+            ],
+            "templateData": "<p>card works!</p>\n"
+        },
+        {
             "name": "CheckboxComponent",
             "id": "component-CheckboxComponent-51774af61e4b842886e893ae3df7b183",
             "file": "projects/components/src/lib/checkbox/checkbox.component.ts",
@@ -1040,7 +1096,7 @@
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": ".pm-grid-list {\n  .list-item {\n    height: 200px;\n    max-height: 160px;\n    border-bottom: 2px solid var(--color-gray-light);\n  }\n}\n",
+                    "data": ".pm-grid-list {\n  .list-item {\n    height: 200px;\n    max-height: 160px;\n    border-bottom: 2px solid var(--color-gray-light);\n\n    .title {\n      font-weight: 500;\n      font-size: 1.3rem;\n      color: var(--color-default-states);\n      cursor: pointer;\n    }\n\n    .title-link {\n      font-weight: 500;\n      font-size: 1.3rem;\n      color: var(--color-default-states);\n      cursor: pointer;\n\n      &:hover {\n        color: var(--color-default-sat);\n      }\n\n      &:focus {\n        outline: none !important;\n        box-shadow: none;\n      }\n    }\n\n    .secondary {\n      font-size: 1.1rem;\n      color: var(--color-gray-dark);\n      font-weight: 400;\n      width: fit-content;\n\n      &:focus {\n        outline: none !important;\n      }\n    }\n\n    .secondary-link {\n      font-size: 1.1rem;\n      color: var(--color-gray-dark);\n      font-weight: 400;\n      cursor: pointer;\n      width: fit-content;\n\n      &:hover {\n        color: var(--color-default);\n      }\n\n      &:focus {\n        outline: none !important;\n      }\n    }\n  }\n}\n",
                     "styleUrl": "./grid-list.component.scss"
                 }
             ],
@@ -1051,7 +1107,7 @@
                 "args": [],
                 "line": 24
             },
-            "templateData": "<div class=\"pm-grid-list\">\n\n  <div class=\"d-flex justify-content-end\">\n    <button (click)=\"displayStyle = 'list'\" class=\"btn-icon-action color-primary\">\n      <i class=\"uil uil-md uil-grids rotate-90\"></i>\n    </button>\n    <button (click)=\"displayStyle = 'grid'\" class=\"btn-icon-action color-primary\">\n      <i class=\"uil uil-md uil-th\"></i>\n    </button>\n  </div>\n\n  <div class=\"row g-0 d-flex justify-content-center\" [ngClass]=\"{'card-basic': displayStyle === 'list'}\">\n    <ng-container *ngFor=\"let item of items\">\n      <ng-container *ngTemplateOutlet=\"displayStyle === 'grid' ? gridTemplate : listTemplate; context: {$implicit: item}\"></ng-container>\n    </ng-container>\n  </div>\n\n</div>\n\n<ng-template #gridTemplate let-item>\n  <div class=\"card-basic model-collection-card hoverable rad-md col-auto m-3\" [ngClass]=\"{'reverse': gridHeaderReverse}\"\n       style=\"height: auto;\"\n  >\n    <div class=\"model-collection-card-header\">\n      <ng-container *ngIf=\"item.thumbnailPicture\">\n        <div [ngStyle]=\"{'background-image': 'url(' + item.thumbnailPicture + ')'}\" class=\"img-thumbnail align-self-center\"></div>\n      </ng-container>\n      <div class=\"d-flex flex-column justify-content-center flex-fill text-overflow ms-2\">\n        <p (click)=\"item.titleCallback()\"\n           class=\"title-link align-self-start\">Titulo ai</p>\n        <p (click)=\"item.subtitleCallback()\" class=\"secondary-link align-self-start\">Subtítulo ae</p>\n      </div>\n      <button (click)=\"item.iconCallback()\" [className]=\"'btn-icon-action color-' + item.iconColor\">\n        <i [className]=\"item.iconClass\"></i>\n      </button>\n    </div>\n    <div\n      (click)=\"item.bodyCallback()\"\n      [ngClass]=\"{'cursor-pointer': item.bodyCallback, 'rad-md-top': gridHeaderReverse, 'rad-md-bottom': !gridHeaderReverse}\"\n      class=\"model-collection-card-body fixed-height image-fluid-container\"\n    >\n      <img [attr.alt]=\"item.bodyPicture\" [attr.src]=\"item.bodyPicture\">\n    </div>\n  </div>\n</ng-template>\n\n<ng-template #listTemplate let-item>\n  <div class=\"list-item d-flex py-3 pe-5\">\n    <div class=\"image-fluid-container mx-4\"\n         style=\"width: 200px\"\n    >\n      <img style=\"max-height: 125px;\"\n           [attr.alt]=\"item.bodyPicture\"\n           [attr.src]=\"item.bodyPicture\"\n      >\n    </div>\n    <div class=\"d-block flex-fill text-overflow\">\n      <p (click)=\"item.titleCallback()\"\n         class=\"title-link\">Titulo ai</p>\n      <p (click)=\"item.subtitleCallback()\" class=\"secondary-link\">Subtítulo ae</p>\n    </div>\n    <button (click)=\"item.iconCallback()\" [className]=\"'btn-icon-action color-' + item.iconColor\">\n      <i [className]=\"item.iconClass\"></i>\n    </button>\n  </div>\n</ng-template>\n"
+            "templateData": "<div class=\"pm-grid-list\">\n\n  <div class=\"d-flex justify-content-end\">\n    <button (click)=\"displayStyle = 'list'\" class=\"btn-icon-action color-primary\">\n      <i class=\"uil uil-md uil-grids rotate-90\"></i>\n    </button>\n    <button (click)=\"displayStyle = 'grid'\" class=\"btn-icon-action color-primary\">\n      <i class=\"uil uil-md uil-th\"></i>\n    </button>\n  </div>\n\n  <div class=\"row g-0 d-flex justify-content-center\" [ngClass]=\"{'card-basic': displayStyle === 'list'}\">\n    <ng-container *ngFor=\"let item of items\">\n      <ng-container *ngTemplateOutlet=\"displayStyle === 'grid' ? gridTemplate : listTemplate; context: {$implicit: item}\"></ng-container>\n    </ng-container>\n  </div>\n\n</div>\n\n<ng-template #gridTemplate let-item>\n  <div class=\"card-basic model-collection-card hoverable rad-md col-auto m-3\"\n       [ngClass]=\"{'reverse': gridHeaderReverse}\"\n       style=\"height: auto;\"\n  >\n    <div class=\"model-collection-card-header\">\n      <ng-container *ngIf=\"item.thumbnailPicture\">\n        <div [ngStyle]=\"{'background-image': 'url(' + item.thumbnailPicture + ')'}\" class=\"img-thumbnail align-self-center\"></div>\n      </ng-container>\n      <div class=\"d-flex flex-column justify-content-center flex-fill text-overflow ms-2\">\n        <p (click)=\"item.titleCallback(item)\"\n           class=\"title-link align-self-start\">Titulo ai</p>\n        <p (click)=\"item.subtitleCallback(item)\" class=\"secondary-link align-self-start\">Subtítulo ae</p>\n      </div>\n      <button (click)=\"item.iconCallback(item)\" [className]=\"'btn-icon-action py-0 color-' + item.iconColor\">\n        <i [className]=\"item.iconClass\"></i>\n      </button>\n    </div>\n    <div\n      (click)=\"item.bodyCallback(item)\"\n      [ngClass]=\"{'cursor-pointer': item.bodyCallback, 'rad-md-top': gridHeaderReverse, 'rad-md-bottom': !gridHeaderReverse}\"\n      class=\"model-collection-card-body fixed-height image-fluid-container\"\n    >\n      <img [attr.alt]=\"item.bodyPicture\" [attr.src]=\"item.bodyPicture\">\n    </div>\n  </div>\n</ng-template>\n\n<ng-template #listTemplate let-item>\n  <div class=\"list-item d-flex py-3 pe-5\">\n    <div class=\"image-fluid-container mx-4\"\n         style=\"width: 200px\"\n    >\n      <img style=\"max-height: 125px;\"\n           [attr.alt]=\"item.bodyPicture\"\n           [attr.src]=\"item.bodyPicture\"\n      >\n    </div>\n    <div class=\"d-block flex-fill text-overflow\">\n      <p (click)=\"item.titleCallback(item)\"\n         class=\"title-link\">Titulo ai</p>\n      <p (click)=\"item.subtitleCallback(item)\" class=\"secondary-link\">Subtítulo ae</p>\n    </div>\n    <button (click)=\"item.iconCallback(item)\"\n            [className]=\"'btn-icon-action color-' + item.iconColor\"\n    >\n      <i [className]=\"item.iconClass\"></i>\n    </button>\n  </div>\n</ng-template>\n"
         },
         {
             "name": "RadioButtonComponent",
@@ -1653,6 +1709,43 @@
             ]
         },
         {
+            "name": "CardModule",
+            "children": [
+                {
+                    "type": "providers",
+                    "elements": []
+                },
+                {
+                    "type": "declarations",
+                    "elements": [
+                        {
+                            "name": "CardComponent"
+                        }
+                    ]
+                },
+                {
+                    "type": "imports",
+                    "elements": []
+                },
+                {
+                    "type": "exports",
+                    "elements": [
+                        {
+                            "name": "CardComponent"
+                        }
+                    ]
+                },
+                {
+                    "type": "bootstrap",
+                    "elements": []
+                },
+                {
+                    "type": "classes",
+                    "elements": []
+                }
+            ]
+        },
+        {
             "name": "CheckboxModule",
             "children": [
                 {
@@ -1859,6 +1952,9 @@
                             "name": "ButtonModule"
                         },
                         {
+                            "name": "CardModule"
+                        },
+                        {
                             "name": "ComboBoxModule"
                         },
                         {
@@ -2016,6 +2112,14 @@
                 "defaultValue": "Template.bind({})"
             },
             {
+                "name": "DefaultCard",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "stories/Card.stories.ts",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
                 "name": "DefaultCheckbox",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -2149,6 +2253,14 @@
                 "subtype": "variable",
                 "file": "projects/components/src/test.ts",
                 "type": "literal type"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "stories/Card.stories.ts",
+                "type": "Story<CardComponent>",
+                "defaultValue": "(args: CardComponent) => ({\n  component: CardComponent,\n  props: args,\n  template: `\n    <pm-card>\n      conteudo\n    </pm-card>`\n})"
             },
             {
                 "name": "Template",
@@ -2583,6 +2695,24 @@
                     "type": "literal type"
                 }
             ],
+            "stories/Card.stories.ts": [
+                {
+                    "name": "DefaultCard",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "stories/Card.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "stories/Card.stories.ts",
+                    "type": "Story<CardComponent>",
+                    "defaultValue": "(args: CardComponent) => ({\n  component: CardComponent,\n  props: args,\n  template: `\n    <pm-card>\n      conteudo\n    </pm-card>`\n})"
+                }
+            ],
             "stories/inputs/Checkbox.stories.ts": [
                 {
                     "name": "DefaultCheckbox",
@@ -2943,7 +3073,7 @@
     },
     "routes": [],
     "coverage": {
-        "count": 1,
+        "count": 0,
         "status": "low",
         "files": [
             {
@@ -2953,6 +3083,15 @@
                 "name": "ButtonComponent",
                 "coveragePercent": 0,
                 "coverageCount": "0/9",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/components/src/lib/card/card.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "CardComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
                 "status": "low"
             },
             {
@@ -3070,6 +3209,26 @@
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
                 "name": "require",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "stories/Card.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "DefaultCard",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "stories/Card.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
