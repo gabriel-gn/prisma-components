@@ -12,7 +12,7 @@
 @each $key, $val in $main-colors {
   $colors: addColorSet(#{$key}, $val);
   $colors: addColorSet(#{$key}-pale, desaturate($val, 10%));
-  $colors: addColorSet(#{$key}-states, lighten($val, 10%));
+  $colors: addColorSet(#{$key}-states, darken($val, 10%));
   $colors: addColorSet(#{$key}-sat, saturate($val, 30%));
 }
 
