@@ -69,6 +69,6 @@
          class="title-link">{{item.title}}</p>
       <p *ngIf="item.subtitle" (click)="item.subtitleCallback(item)" class="secondary-link">{{item.subtitle}}</p>
     </div>
-    <ng-container *ngTemplateOutlet="actionButton; context: {$implicit: item}"></ng-container>
+    <ng-container *ngTemplateOutlet="actionTemplate ? actionTemplate : actionButton; context: {$implicit: item}"></ng-container>
   </div>
 </ng-template>
