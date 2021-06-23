@@ -37,15 +37,12 @@
         <div [ngStyle]="{'background-image': 'url(' + item.thumbnailPicture + ')'}" class="img-thumbnail align-self-center"></div>
       </ng-container>
       <div class="d-flex flex-column justify-content-center flex-fill text-overflow ms-2">
-        <p (click)="item.titleCallback(item)"
-           [ngClass]="{'bigger': !!item.thumbnailPicture === false}"
-           class="title-link align-self-start">{{item.title}}</p>
-        <p *ngIf="item.subtitle" (click)="item.subtitleCallback(item)" class="secondary-link align-self-start">{{item.subtitle}}</p>
+        <ng-container *ngTemplateOutlet="titleSubtitle; context: {$implicit: item}"></ng-container>
       </div>
       <ng-container *ngTemplateOutlet="actionTemplate ? actionTemplate : actionButton; context: {$implicit: item}"></ng-container>
     </div>
     <div
-      (click)="item.bodyCallback(item)"
+      (click)="item.bodyCallback ? item.bodyCallback(item) : null"
       [ngClass]="{'cursor-pointer': item.bodyCallback, 'rad-md-top': gridHeaderReverse, 'rad-md-bottom': !gridHeaderReverse}"
       class="model-collection-card-body fixed-height image-fluid-container"
       [ngStyle]="{'background-color': bodyBackgroundColor ? bodyBackgroundColor : null}"
@@ -57,19 +54,33 @@
 
 <ng-template #listTemplate let-item>
   <div class="list-item d-flex py-3 pe-5">
-    <div class="image-fluid-container mx-4"
-         style="width: 200px"
-    >
-      <img style="max-height: 125px;"
-           [attr.alt]="item.bodyPicture"
-           [attr.src]="item.bodyPicture"
-      >
+    <div class="image-fluid-container mx-4" style="width: 200px">
+      <img style="max-height: 125px;" [attr.alt]="item.bodyPicture" [attr.src]="item.bodyPicture">
     </div>
     <div class="d-block flex-fill text-overflow">
-      <p (click)="item.titleCallback(item)"
-         class="title-link">{{item.title}}</p>
-      <p *ngIf="item.subtitle" (click)="item.subtitleCallback(item)" class="secondary-link">{{item.subtitle}}</p>
+      <ng-container *ngTemplateOutlet="titleSubtitle; context: {$implicit: item}"></ng-container>
     </div>
     <ng-container *ngTemplateOutlet="actionTemplate ? actionTemplate : actionButton; context: {$implicit: item}"></ng-container>
   </div>
+</ng-template>
+
+<ng-template #titleSubtitle let-item>
+  <p (click)="item.titleCallback ? item.titleCallback(item) : null"
+     [ngClass]="{
+            'title-link': !!item.titleCallback === true,
+            'title': !!item.titleCallback === false,
+            'bigger': !!item.thumbnailPicture === false
+           }"
+     class="align-self-start">{{item.title}}
+  </p>
+  <p *ngIf="item.subtitle"
+     (click)="item.subtitleCallback ? item.subtitleCallback(item) : null"
+     class="secondary-link align-self-start"
+     [ngClass]="{
+            'secondary-link': !!item.subtitleCallback === true,
+            'secondary': !!item.subtitleCallback === false
+           }"
+  >
+    {{item.subtitle}}
+  </p>
 </ng-template>

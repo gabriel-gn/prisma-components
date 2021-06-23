@@ -30,7 +30,6 @@ $card-height: 402px !default;
       font-weight: 500;
       font-size: 1.1rem;
       color: var(--color-default-states);
-      cursor: pointer;
 
       &.bigger {
         font-size: 1.2rem;
@@ -40,6 +39,7 @@ $card-height: 402px !default;
 
     .title-link {
       @extend .title;
+      cursor: pointer;
 
       &:hover {
         color: var(--color-default-sat);
@@ -61,10 +61,16 @@ $card-height: 402px !default;
         outline: none !important;
         @include box-shadow(none);
       }
+
+      &.bigger {
+        font-size: 1rem;
+        font-weight: 600;
+      }
     }
 
     .secondary-link {
       @extend .secondary;
+      cursor: pointer;
 
       &:hover {
         color: var(--color-default);
