@@ -18,9 +18,9 @@
 </div>
 
 <ng-template #actionButton let-item>
-  <button *ngIf="item.iconCallback"
+  <button *ngIf="item.iconCallback && item.iconClass"
           (click)="item.iconCallback(item)"
-          [className]="'btn btn-icon-action px-2 py-0 color-' + item.iconColor + (item.iconOutline ? ' btn-outline-' + item.iconColor : '')"
+          [className]="'btn btn-icon-action px-2 py-0 color-' + (item.iconColor ? item.iconColor : 'primary') + (item.iconOutline ? ' btn-outline-' + item.iconColor : '')"
           style="height: fit-content; align-self: center;"
   >
     <i [className]="item.iconClass"></i>
@@ -41,7 +41,7 @@
            class="title-link align-self-start">{{item.title}}</p>
         <p *ngIf="item.subtitle" (click)="item.subtitleCallback(item)" class="secondary-link align-self-start">{{item.subtitle}}</p>
       </div>
-      <ng-container *ngTemplateOutlet="actionButton; context: {$implicit: item}"></ng-container>
+      <ng-container *ngTemplateOutlet="actionTemplate ? actionTemplate : actionButton; context: {$implicit: item}"></ng-container>
     </div>
     <div
       (click)="item.bodyCallback(item)"

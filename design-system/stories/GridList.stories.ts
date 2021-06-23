@@ -29,6 +29,7 @@ const Template: Story<GridListComponent> = (args: GridListComponent) => ({
         [displayStyle]="displayStyle"
         [gridHeaderReverse]="gridHeaderReverse"
         [bodyBackgroundColor]="bodyBackgroundColor"
+        [actionTemplate]="undefined"
     >
       conteudo
     </pm-grid-list>`

@@ -1,13 +1,13 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, TemplateRef} from '@angular/core';
 import {MainColors} from '../../models/colors';
 
 export interface GridListItem {
   title: string;
   subtitle?: string;
-  iconClass: string;
-  iconColor: MainColors | string;
-  iconOutline: boolean;
-  thumbnailPicture: string;
+  iconClass?: string;
+  iconColor?: MainColors | string;
+  iconOutline?: boolean;
+  thumbnailPicture?: string;
   bodyPicture: string;
   iconCallback?: void;
   titleCallback?: void;
@@ -26,6 +26,7 @@ export class GridListComponent {
   @Input() items: GridListItem[];
   @Input() gridHeaderReverse = false;
   @Input() bodyBackgroundColor;
+  @Input() actionTemplate: TemplateRef<any>;
 
   constructor() { }
 
