@@ -27,3 +27,9 @@ export * from './lib/copy-content-input/copy-content-input.module';
 
 export * from './lib/combo-box/combo-box.component';
 export * from './lib/combo-box/combo-box.module';
+
+export * from './lib/grid-list/grid-list.component';
+export * from './lib/grid-list/grid-list.module';
+
+export * from './lib/card/card.component';
+export * from './lib/card/card.module';

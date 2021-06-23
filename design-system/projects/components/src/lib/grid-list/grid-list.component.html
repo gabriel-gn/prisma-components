@@ -1,0 +1,74 @@
+<div class="pm-grid-list">
+
+  <div class="d-flex justify-content-end">
+    <button (click)="displayStyle = 'list'" class="btn btn-icon-action color-primary">
+      <i class="uil uil-md uil-grids rotate-90"></i>
+    </button>
+    <button (click)="displayStyle = 'grid'" class="btn btn-icon-action color-primary">
+      <i class="uil uil-md uil-th"></i>
+    </button>
+  </div>
+
+  <div class="row g-0 d-flex justify-content-center" [ngClass]="{'card-basic': displayStyle === 'list'}">
+    <ng-container *ngFor="let item of items">
+      <ng-container *ngTemplateOutlet="displayStyle === 'grid' ? gridTemplate : listTemplate; context: {$implicit: item}"></ng-container>
+    </ng-container>
+  </div>
+
+</div>
+
+<ng-template #actionButton let-item>
+  <button *ngIf="item.iconCallback"
+          (click)="item.iconCallback(item)"
+          [className]="'btn btn-icon-action px-2 py-0 color-' + item.iconColor + (item.iconOutline ? ' btn-outline-' + item.iconColor : '')"
+          style="height: fit-content; align-self: center;"
+  >
+    <i [className]="item.iconClass"></i>
+  </button>
+</ng-template>
+
+<ng-template #gridTemplate let-item>
+  <div class="card-basic model-collection-card hoverable rad-md col-auto m-3"
+       [ngClass]="{'reverse': gridHeaderReverse}"
+       style="height: auto;"
+  >
+    <div class="model-collection-card-header">
+      <ng-container *ngIf="item.thumbnailPicture">
+        <div [ngStyle]="{'background-image': 'url(' + item.thumbnailPicture + ')'}" class="img-thumbnail align-self-center"></div>
+      </ng-container>
+      <div class="d-flex flex-column justify-content-center flex-fill text-overflow ms-2">
+        <p (click)="item.titleCallback(item)"
+           class="title-link align-self-start">Titulo ai</p>
+        <p (click)="item.subtitleCallback(item)" class="secondary-link align-self-start">Subtítulo ae</p>
+      </div>
+      <ng-container *ngTemplateOutlet="actionButton; context: {$implicit: item}"></ng-container>
+    </div>
+    <div
+      (click)="item.bodyCallback(item)"
+      [ngClass]="{'cursor-pointer': item.bodyCallback, 'rad-md-top': gridHeaderReverse, 'rad-md-bottom': !gridHeaderReverse}"
+      class="model-collection-card-body fixed-height image-fluid-container"
+      [ngStyle]="{'background-color': bodyBackgroundColor ? bodyBackgroundColor : null}"
+    >
+      <img [attr.alt]="item.bodyPicture" [attr.src]="item.bodyPicture">
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #listTemplate let-item>
+  <div class="list-item d-flex py-3 pe-5">
+    <div class="image-fluid-container mx-4"
+         style="width: 200px"
+    >
+      <img style="max-height: 125px;"
+           [attr.alt]="item.bodyPicture"
+           [attr.src]="item.bodyPicture"
+      >
+    </div>
+    <div class="d-block flex-fill text-overflow">
+      <p (click)="item.titleCallback(item)"
+         class="title-link">Titulo ai</p>
+      <p (click)="item.subtitleCallback(item)" class="secondary-link">Subtítulo ae</p>
+    </div>
+    <ng-container *ngTemplateOutlet="actionButton; context: {$implicit: item}"></ng-container>
+  </div>
+</ng-template>

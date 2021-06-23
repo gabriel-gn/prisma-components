@@ -80,9 +80,15 @@
   &.active:focus,
   &.active:hover {
     color: #fff;
+    * {
+      color: #fff !important;
+    }
 
     @if str-index($btn-states-color, 'light') != null {
       color: #a6b4c5 !important;
+      * {
+        color: #a6b4c5 !important;
+      }
     }
 
     background-color: $btn-color;

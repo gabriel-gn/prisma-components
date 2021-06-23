@@ -1,4 +1,4 @@
-export const enum Sizes {
+export enum Sizes {
   xs = 'xs',
   sm = 'sm',
   md = 'md',

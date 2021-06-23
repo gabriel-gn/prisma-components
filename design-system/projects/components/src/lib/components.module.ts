@@ -6,6 +6,8 @@ import {DraggableListModule} from './draggable-list/draggable-list.module';
 import {MatSelectModule} from '@angular/material/select';
 import {TableModule} from './table/table.module';
 import {ComboBoxModule} from './combo-box/combo-box.module';
+import {GridListModule} from './grid-list/grid-list.module';
+import {CardModule} from './card/card.module';
 
 
 @NgModule({
@@ -18,7 +20,9 @@ import {ComboBoxModule} from './combo-box/combo-box.module';
     DraggableListModule,
     MatSelectModule,
     TableModule,
-    ComboBoxModule
+    ComboBoxModule,
+    GridListModule,
+    CardModule
   ],
   exports: [
     ComponentsComponent

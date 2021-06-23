@@ -54,6 +54,28 @@
   border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0 !important;
 }
 
+.btn-icon-action {
+  box-shadow: none !important;
+  outline: none !important;
+
+  // necessário colocar class="btn-icon-action color-primary" por exemplo
+  @each $key, $val in $main-colors {
+    $color-name: str-slice($key, 7, str-length($key));
+    &.color-#{$color-name} {
+      i {
+        color: var(--color-#{$color-name});
+      }
+
+      &:hover {
+        * {
+          color: var(--color-#{$color-name}-states);
+          text-shadow: 0px 0px 20px var(--color-#{$color-name}-pale);
+        }
+      }
+    }
+  }
+}
+
 .btn-google {
   @include btn-styles(#F33934, #bb3934);
 }

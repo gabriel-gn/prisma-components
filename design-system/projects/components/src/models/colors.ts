@@ -1,4 +1,4 @@
-export const enum MainColors {
+export enum MainColors {
   primary = 'primary',
   secondary = 'secondary',
   success = 'success',
