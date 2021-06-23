@@ -1,10 +1,10 @@
 <div class="pm-grid-list">
 
   <div class="d-flex justify-content-end">
-    <button (click)="displayStyle = 'list'" class="btn-icon-action color-primary">
+    <button (click)="displayStyle = 'list'" class="btn btn-icon-action color-primary">
       <i class="uil uil-md uil-grids rotate-90"></i>
     </button>
-    <button (click)="displayStyle = 'grid'" class="btn-icon-action color-primary">
+    <button (click)="displayStyle = 'grid'" class="btn btn-icon-action color-primary">
       <i class="uil uil-md uil-th"></i>
     </button>
   </div>
@@ -16,6 +16,16 @@
   </div>
 
 </div>
+
+<ng-template #actionButton let-item>
+  <button *ngIf="item.iconCallback"
+          (click)="item.iconCallback(item)"
+          [className]="'btn btn-icon-action px-2 py-0 color-' + item.iconColor + (item.iconOutline ? ' btn-outline-' + item.iconColor : '')"
+          style="height: fit-content; align-self: center;"
+  >
+    <i [className]="item.iconClass"></i>
+  </button>
+</ng-template>
 
 <ng-template #gridTemplate let-item>
   <div class="card-basic model-collection-card hoverable rad-md col-auto m-3"
@@ -31,14 +41,13 @@
            class="title-link align-self-start">Titulo ai</p>
         <p (click)="item.subtitleCallback(item)" class="secondary-link align-self-start">Subtítulo ae</p>
       </div>
-      <button (click)="item.iconCallback(item)" [className]="'btn-icon-action py-0 color-' + item.iconColor">
-        <i [className]="item.iconClass"></i>
-      </button>
+      <ng-container *ngTemplateOutlet="actionButton; context: {$implicit: item}"></ng-container>
     </div>
     <div
       (click)="item.bodyCallback(item)"
       [ngClass]="{'cursor-pointer': item.bodyCallback, 'rad-md-top': gridHeaderReverse, 'rad-md-bottom': !gridHeaderReverse}"
       class="model-collection-card-body fixed-height image-fluid-container"
+      [ngStyle]="{'background-color': bodyBackgroundColor ? bodyBackgroundColor : null}"
     >
       <img [attr.alt]="item.bodyPicture" [attr.src]="item.bodyPicture">
     </div>
@@ -60,10 +69,6 @@
          class="title-link">Titulo ai</p>
       <p (click)="item.subtitleCallback(item)" class="secondary-link">Subtítulo ae</p>
     </div>
-    <button (click)="item.iconCallback(item)"
-            [className]="'btn-icon-action color-' + item.iconColor"
-    >
-      <i [className]="item.iconClass"></i>
-    </button>
+    <ng-container *ngTemplateOutlet="actionButton; context: {$implicit: item}"></ng-container>
   </div>
 </ng-template>

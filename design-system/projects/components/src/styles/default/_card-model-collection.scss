@@ -77,12 +77,6 @@ $card-height: 402px !default;
         @include box-shadow(none);
       }
     }
-
-    button {
-      background: transparent;
-      color: var(--color-default-states);
-      outline: none;
-    }
   }
 
   p {

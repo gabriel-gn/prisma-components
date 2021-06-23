@@ -4,6 +4,7 @@ import {MainColors} from '../../models/colors';
 export interface GridListItem {
   iconClass: string;
   iconColor: MainColors;
+  iconOutline: boolean;
   thumbnailPicture: string;
   bodyPicture: string;
   iconCallback(): void;
@@ -19,9 +20,10 @@ export interface GridListItem {
 })
 export class GridListComponent {
 
-  @Input() displayStyle: 'list' | 'grid' = 'list';
+  @Input() displayStyle: 'list' | 'grid' = 'grid';
   @Input() items: GridListItem[];
-  @Input() gridHeaderReverse = true;
+  @Input() gridHeaderReverse = false;
+  @Input() bodyBackgroundColor;
 
   constructor() { }
 
