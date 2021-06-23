@@ -41,6 +41,8 @@ DefaultGridList.args = {
   gridHeaderReverse: false,
   bodyBackgroundColor: undefined,
   items: Array(20).fill({
+    title: 'Item title',
+    subtitle: 'item subtitle',
     iconClass: 'uil uil-xl uil-arrow-to-bottom',
     iconColor: getColor(),
     iconOutline: true,

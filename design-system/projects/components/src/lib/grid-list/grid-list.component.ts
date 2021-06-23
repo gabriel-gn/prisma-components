@@ -2,6 +2,8 @@ import {Component, Input} from '@angular/core';
 import {MainColors} from '../../models/colors';
 
 export interface GridListItem {
+  title: string;
+  subtitle?: string;
   iconClass: string;
   iconColor: MainColors;
   iconOutline: boolean;

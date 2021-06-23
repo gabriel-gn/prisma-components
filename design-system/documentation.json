@@ -2317,17 +2317,17 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/inputs/Checkbox.stories.ts",
-                "type": "Story<CheckboxComponent>",
-                "defaultValue": "(args: CheckboxComponent) => ({\n  component: CheckboxComponent,\n  props: args,\n  template: `\n    <pm-checkbox\n      [checked]=\"checked\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>`\n})"
+                "file": "stories/inputs/ComboBox.stories.ts",
+                "type": "Story<ComboBoxComponent>",
+                "defaultValue": "(args: ComboBoxComponent) => ({\n  component: ComboBoxComponent,\n  props: args,\n  template: `\n    <pm-combo-box\n        [items]=\"items\"\n    >\n        Conteúdo\n    </pm-combo-box>`\n})"
             },
             {
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/inputs/ComboBox.stories.ts",
-                "type": "Story<ComboBoxComponent>",
-                "defaultValue": "(args: ComboBoxComponent) => ({\n  component: ComboBoxComponent,\n  props: args,\n  template: `\n    <pm-combo-box\n        [items]=\"items\"\n    >\n        Conteúdo\n    </pm-combo-box>`\n})"
+                "file": "stories/inputs/Checkbox.stories.ts",
+                "type": "Story<CheckboxComponent>",
+                "defaultValue": "(args: CheckboxComponent) => ({\n  component: CheckboxComponent,\n  props: args,\n  template: `\n    <pm-checkbox\n      [checked]=\"checked\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>`\n})"
             },
             {
                 "name": "Template",

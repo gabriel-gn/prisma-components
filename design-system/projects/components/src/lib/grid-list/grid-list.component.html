@@ -38,8 +38,8 @@
       </ng-container>
       <div class="d-flex flex-column justify-content-center flex-fill text-overflow ms-2">
         <p (click)="item.titleCallback(item)"
-           class="title-link align-self-start">Titulo ai</p>
-        <p (click)="item.subtitleCallback(item)" class="secondary-link align-self-start">Subtítulo ae</p>
+           class="title-link align-self-start">{{item.title}}</p>
+        <p *ngIf="item.subtitle" (click)="item.subtitleCallback(item)" class="secondary-link align-self-start">{{item.subtitle}}</p>
       </div>
       <ng-container *ngTemplateOutlet="actionButton; context: {$implicit: item}"></ng-container>
     </div>
