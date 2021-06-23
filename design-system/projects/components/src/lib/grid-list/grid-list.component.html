@@ -38,6 +38,7 @@
       </ng-container>
       <div class="d-flex flex-column justify-content-center flex-fill text-overflow ms-2">
         <p (click)="item.titleCallback(item)"
+           [ngClass]="{'bigger': !!item.thumbnailPicture === false}"
            class="title-link align-self-start">{{item.title}}</p>
         <p *ngIf="item.subtitle" (click)="item.subtitleCallback(item)" class="secondary-link align-self-start">{{item.subtitle}}</p>
       </div>

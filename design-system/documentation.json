@@ -29,52 +29,59 @@
         },
         {
             "name": "GridListItem",
-            "id": "interface-GridListItem-e949541b79cf42396264ae43d15f150b",
+            "id": "interface-GridListItem-de5296e97f6e07b6bda0b6599fde2d55",
             "file": "projects/components/src/lib/grid-list/grid-list.component.ts",
             "type": "interface",
-            "sourceCode": "import {Component, Input, TemplateRef} from '@angular/core';\nimport {MainColors} from '../../models/colors';\n\nexport interface GridListItem {\n  title: string;\n  subtitle?: string;\n  iconClass?: string;\n  iconColor?: MainColors | string;\n  iconOutline?: boolean;\n  thumbnailPicture?: string;\n  bodyPicture: string;\n  iconCallback?: void;\n  titleCallback?: void;\n  subtitleCallback?: void;\n  bodyCallback?: void;\n}\n\n@Component({\n  selector: 'pm-grid-list',\n  templateUrl: './grid-list.component.html',\n  styleUrls: ['./grid-list.component.scss']\n})\nexport class GridListComponent {\n\n  @Input() displayStyle: 'list' | 'grid' = 'grid';\n  @Input() items: GridListItem[];\n  @Input() gridHeaderReverse = false;\n  @Input() bodyBackgroundColor;\n  @Input() actionTemplate: TemplateRef<any>;\n\n  constructor() { }\n\n}\n",
+            "sourceCode": "import {Component, Input, TemplateRef} from '@angular/core';\nimport {MainColors} from '../../models/colors';\n\nexport interface GridListItem {\n  title: string;\n  subtitle?: string;\n  context?: any;\n  iconClass?: string;\n  iconColor?: MainColors | string;\n  iconOutline?: boolean;\n  thumbnailPicture?: string;\n  bodyPicture: string;\n  iconCallback?: void;\n  titleCallback?: void;\n  subtitleCallback?: void;\n  bodyCallback?: void;\n}\n\n@Component({\n  selector: 'pm-grid-list',\n  templateUrl: './grid-list.component.html',\n  styleUrls: ['./grid-list.component.scss']\n})\nexport class GridListComponent {\n\n  @Input() displayStyle: 'list' | 'grid' = 'grid';\n  @Input() items: GridListItem[];\n  @Input() gridHeaderReverse = false;\n  @Input() bodyBackgroundColor;\n  @Input() actionTemplate: TemplateRef<any>;\n\n  constructor() { }\n\n}\n",
             "properties": [
                 {
                     "name": "bodyCallback",
                     "type": "void",
                     "optional": true,
                     "description": "",
-                    "line": 15
+                    "line": 16
                 },
                 {
                     "name": "bodyPicture",
                     "type": "string",
                     "optional": false,
                     "description": "",
-                    "line": 11
+                    "line": 12
+                },
+                {
+                    "name": "context",
+                    "type": "any",
+                    "optional": true,
+                    "description": "",
+                    "line": 7
                 },
                 {
                     "name": "iconCallback",
                     "type": "void",
                     "optional": true,
                     "description": "",
-                    "line": 12
+                    "line": 13
                 },
                 {
                     "name": "iconClass",
                     "type": "string",
                     "optional": true,
                     "description": "",
-                    "line": 7
+                    "line": 8
                 },
                 {
                     "name": "iconColor",
                     "type": "MainColors | string",
                     "optional": true,
                     "description": "",
-                    "line": 8
+                    "line": 9
                 },
                 {
                     "name": "iconOutline",
                     "type": "boolean",
                     "optional": true,
                     "description": "",
-                    "line": 9
+                    "line": 10
                 },
                 {
                     "name": "subtitle",
@@ -88,14 +95,14 @@
                     "type": "void",
                     "optional": true,
                     "description": "",
-                    "line": 14
+                    "line": 15
                 },
                 {
                     "name": "thumbnailPicture",
                     "type": "string",
                     "optional": true,
                     "description": "",
-                    "line": 10
+                    "line": 11
                 },
                 {
                     "name": "title",
@@ -109,7 +116,7 @@
                     "type": "void",
                     "optional": true,
                     "description": "",
-                    "line": 13
+                    "line": 14
                 }
             ],
             "indexSignatures": [],
@@ -1066,7 +1073,7 @@
         },
         {
             "name": "GridListComponent",
-            "id": "component-GridListComponent-e949541b79cf42396264ae43d15f150b",
+            "id": "component-GridListComponent-de5296e97f6e07b6bda0b6599fde2d55",
             "file": "projects/components/src/lib/grid-list/grid-list.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -1085,27 +1092,27 @@
             "inputsClass": [
                 {
                     "name": "actionTemplate",
-                    "line": 29,
+                    "line": 30,
                     "type": "TemplateRef<any>"
                 },
                 {
                     "name": "bodyBackgroundColor",
-                    "line": 28
+                    "line": 29
                 },
                 {
                     "name": "displayStyle",
                     "defaultValue": "'grid'",
-                    "line": 25,
+                    "line": 26,
                     "type": "\"list\" | \"grid\""
                 },
                 {
                     "name": "gridHeaderReverse",
                     "defaultValue": "false",
-                    "line": 27
+                    "line": 28
                 },
                 {
                     "name": "items",
-                    "line": 26,
+                    "line": 27,
                     "type": "GridListItem[]"
                 }
             ],
@@ -1117,7 +1124,7 @@
             "description": "",
             "rawdescription": "",
             "type": "component",
-            "sourceCode": "import {Component, Input, TemplateRef} from '@angular/core';\nimport {MainColors} from '../../models/colors';\n\nexport interface GridListItem {\n  title: string;\n  subtitle?: string;\n  iconClass?: string;\n  iconColor?: MainColors | string;\n  iconOutline?: boolean;\n  thumbnailPicture?: string;\n  bodyPicture: string;\n  iconCallback?: void;\n  titleCallback?: void;\n  subtitleCallback?: void;\n  bodyCallback?: void;\n}\n\n@Component({\n  selector: 'pm-grid-list',\n  templateUrl: './grid-list.component.html',\n  styleUrls: ['./grid-list.component.scss']\n})\nexport class GridListComponent {\n\n  @Input() displayStyle: 'list' | 'grid' = 'grid';\n  @Input() items: GridListItem[];\n  @Input() gridHeaderReverse = false;\n  @Input() bodyBackgroundColor;\n  @Input() actionTemplate: TemplateRef<any>;\n\n  constructor() { }\n\n}\n",
+            "sourceCode": "import {Component, Input, TemplateRef} from '@angular/core';\nimport {MainColors} from '../../models/colors';\n\nexport interface GridListItem {\n  title: string;\n  subtitle?: string;\n  context?: any;\n  iconClass?: string;\n  iconColor?: MainColors | string;\n  iconOutline?: boolean;\n  thumbnailPicture?: string;\n  bodyPicture: string;\n  iconCallback?: void;\n  titleCallback?: void;\n  subtitleCallback?: void;\n  bodyCallback?: void;\n}\n\n@Component({\n  selector: 'pm-grid-list',\n  templateUrl: './grid-list.component.html',\n  styleUrls: ['./grid-list.component.scss']\n})\nexport class GridListComponent {\n\n  @Input() displayStyle: 'list' | 'grid' = 'grid';\n  @Input() items: GridListItem[];\n  @Input() gridHeaderReverse = false;\n  @Input() bodyBackgroundColor;\n  @Input() actionTemplate: TemplateRef<any>;\n\n  constructor() { }\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -1130,9 +1137,9 @@
                 "name": "constructor",
                 "description": "",
                 "args": [],
-                "line": 29
+                "line": 30
             },
-            "templateData": "<div class=\"pm-grid-list\">\n\n  <div class=\"d-flex justify-content-end\">\n    <button (click)=\"displayStyle = 'list'\" class=\"btn btn-icon-action color-primary\">\n      <i class=\"uil uil-md uil-grids rotate-90\"></i>\n    </button>\n    <button (click)=\"displayStyle = 'grid'\" class=\"btn btn-icon-action color-primary\">\n      <i class=\"uil uil-md uil-th\"></i>\n    </button>\n  </div>\n\n  <div class=\"row g-0 d-flex justify-content-center\" [ngClass]=\"{'card-basic': displayStyle === 'list'}\">\n    <ng-container *ngFor=\"let item of items\">\n      <ng-container *ngTemplateOutlet=\"displayStyle === 'grid' ? gridTemplate : listTemplate; context: {$implicit: item}\"></ng-container>\n    </ng-container>\n  </div>\n\n</div>\n\n<ng-template #actionButton let-item>\n  <button *ngIf=\"item.iconCallback && item.iconClass\"\n          (click)=\"item.iconCallback(item)\"\n          [className]=\"'btn btn-icon-action px-2 py-0 color-' + item.iconColor + (item.iconOutline ? ' btn-outline-' + item.iconColor : '')\"\n          style=\"height: fit-content; align-self: center;\"\n  >\n    <i [className]=\"item.iconClass\"></i>\n  </button>\n</ng-template>\n\n<ng-template #gridTemplate let-item>\n  <div class=\"card-basic model-collection-card hoverable rad-md col-auto m-3\"\n       [ngClass]=\"{'reverse': gridHeaderReverse}\"\n       style=\"height: auto;\"\n  >\n    <div class=\"model-collection-card-header\">\n      <ng-container *ngIf=\"item.thumbnailPicture\">\n        <div [ngStyle]=\"{'background-image': 'url(' + item.thumbnailPicture + ')'}\" class=\"img-thumbnail align-self-center\"></div>\n      </ng-container>\n      <div class=\"d-flex flex-column justify-content-center flex-fill text-overflow ms-2\">\n        <p (click)=\"item.titleCallback(item)\"\n           class=\"title-link align-self-start\">{{item.title}}</p>\n        <p *ngIf=\"item.subtitle\" (click)=\"item.subtitleCallback(item)\" class=\"secondary-link align-self-start\">{{item.subtitle}}</p>\n      </div>\n      <ng-container *ngTemplateOutlet=\"actionTemplate ? actionTemplate : actionButton; context: {$implicit: item}\"></ng-container>\n    </div>\n    <div\n      (click)=\"item.bodyCallback(item)\"\n      [ngClass]=\"{'cursor-pointer': item.bodyCallback, 'rad-md-top': gridHeaderReverse, 'rad-md-bottom': !gridHeaderReverse}\"\n      class=\"model-collection-card-body fixed-height image-fluid-container\"\n      [ngStyle]=\"{'background-color': bodyBackgroundColor ? bodyBackgroundColor : null}\"\n    >\n      <img [attr.alt]=\"item.bodyPicture\" [attr.src]=\"item.bodyPicture\">\n    </div>\n  </div>\n</ng-template>\n\n<ng-template #listTemplate let-item>\n  <div class=\"list-item d-flex py-3 pe-5\">\n    <div class=\"image-fluid-container mx-4\"\n         style=\"width: 200px\"\n    >\n      <img style=\"max-height: 125px;\"\n           [attr.alt]=\"item.bodyPicture\"\n           [attr.src]=\"item.bodyPicture\"\n      >\n    </div>\n    <div class=\"d-block flex-fill text-overflow\">\n      <p (click)=\"item.titleCallback(item)\"\n         class=\"title-link\">{{item.title}}</p>\n      <p *ngIf=\"item.subtitle\" (click)=\"item.subtitleCallback(item)\" class=\"secondary-link\">{{item.subtitle}}</p>\n    </div>\n    <ng-container *ngTemplateOutlet=\"actionButton; context: {$implicit: item}\"></ng-container>\n  </div>\n</ng-template>\n"
+            "templateData": "<div class=\"pm-grid-list\">\n\n  <div class=\"d-flex justify-content-end\">\n    <button (click)=\"displayStyle = 'list'\" class=\"btn btn-icon-action color-primary\">\n      <i class=\"uil uil-md uil-grids rotate-90\"></i>\n    </button>\n    <button (click)=\"displayStyle = 'grid'\" class=\"btn btn-icon-action color-primary\">\n      <i class=\"uil uil-md uil-th\"></i>\n    </button>\n  </div>\n\n  <div class=\"row g-0 d-flex justify-content-center\" [ngClass]=\"{'card-basic': displayStyle === 'list'}\">\n    <ng-container *ngFor=\"let item of items\">\n      <ng-container *ngTemplateOutlet=\"displayStyle === 'grid' ? gridTemplate : listTemplate; context: {$implicit: item}\"></ng-container>\n    </ng-container>\n  </div>\n\n</div>\n\n<ng-template #actionButton let-item>\n  <button *ngIf=\"item.iconCallback && item.iconClass\"\n          (click)=\"item.iconCallback(item)\"\n          [className]=\"'btn btn-icon-action px-2 py-0 color-' + (item.iconColor ? item.iconColor : 'primary') + (item.iconOutline ? ' btn-outline-' + item.iconColor : '')\"\n          style=\"height: fit-content; align-self: center;\"\n  >\n    <i [className]=\"item.iconClass\"></i>\n  </button>\n</ng-template>\n\n<ng-template #gridTemplate let-item>\n  <div class=\"card-basic model-collection-card hoverable rad-md col-auto m-3\"\n       [ngClass]=\"{'reverse': gridHeaderReverse}\"\n       style=\"height: auto;\"\n  >\n    <div class=\"model-collection-card-header\">\n      <ng-container *ngIf=\"item.thumbnailPicture\">\n        <div [ngStyle]=\"{'background-image': 'url(' + item.thumbnailPicture + ')'}\" class=\"img-thumbnail align-self-center\"></div>\n      </ng-container>\n      <div class=\"d-flex flex-column justify-content-center flex-fill text-overflow ms-2\">\n        <p (click)=\"item.titleCallback(item)\"\n           class=\"title-link align-self-start\">{{item.title}}</p>\n        <p *ngIf=\"item.subtitle\" (click)=\"item.subtitleCallback(item)\" class=\"secondary-link align-self-start\">{{item.subtitle}}</p>\n      </div>\n      <ng-container *ngTemplateOutlet=\"actionTemplate ? actionTemplate : actionButton; context: {$implicit: item}\"></ng-container>\n    </div>\n    <div\n      (click)=\"item.bodyCallback(item)\"\n      [ngClass]=\"{'cursor-pointer': item.bodyCallback, 'rad-md-top': gridHeaderReverse, 'rad-md-bottom': !gridHeaderReverse}\"\n      class=\"model-collection-card-body fixed-height image-fluid-container\"\n      [ngStyle]=\"{'background-color': bodyBackgroundColor ? bodyBackgroundColor : null}\"\n    >\n      <img [attr.alt]=\"item.bodyPicture\" [attr.src]=\"item.bodyPicture\">\n    </div>\n  </div>\n</ng-template>\n\n<ng-template #listTemplate let-item>\n  <div class=\"list-item d-flex py-3 pe-5\">\n    <div class=\"image-fluid-container mx-4\"\n         style=\"width: 200px\"\n    >\n      <img style=\"max-height: 125px;\"\n           [attr.alt]=\"item.bodyPicture\"\n           [attr.src]=\"item.bodyPicture\"\n      >\n    </div>\n    <div class=\"d-block flex-fill text-overflow\">\n      <p (click)=\"item.titleCallback(item)\"\n         class=\"title-link\">{{item.title}}</p>\n      <p *ngIf=\"item.subtitle\" (click)=\"item.subtitleCallback(item)\" class=\"secondary-link\">{{item.subtitle}}</p>\n    </div>\n    <ng-container *ngTemplateOutlet=\"actionTemplate ? actionTemplate : actionButton; context: {$implicit: item}\"></ng-container>\n  </div>\n</ng-template>\n"
         },
         {
             "name": "RadioButtonComponent",
@@ -2291,9 +2298,9 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/DraggableList.stories.ts",
-                "type": "Story<DraggableListComponent>",
-                "defaultValue": "(args: DraggableListComponent) => ({\n  component: DraggableListComponent,\n  props: args,\n  template: `\n    <pm-draggable-list\n        [showIndex]=\"showIndex\"\n        [itemActionLabel]=\"itemActionLabel\"\n        [itemMainLabel]=\"itemMainLabel\"\n        [itemSubLabel]=\"itemSubLabel\"\n        [actions]=\"actions\"\n        [itemList]=\"itemList\"\n        [roundedBorders]=\"roundedBorders\"\n        [enableDragging]=\"enableDragging\"\n        [enableSelection]=\"enableSelection\"\n    >\n      conteudo\n    </pm-draggable-list>`\n})"
+                "file": "stories/Card.stories.ts",
+                "type": "Story<CardComponent>",
+                "defaultValue": "(args: CardComponent) => ({\n  component: CardComponent,\n  props: args,\n  template: `\n    <pm-card\n        [hoverable]=\"hoverable\"\n        [borderRadius]=\"borderRadius\"\n    >\n      conteudo\n    </pm-card>`\n})"
             },
             {
                 "name": "Template",
@@ -2307,17 +2314,17 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/Card.stories.ts",
-                "type": "Story<CardComponent>",
-                "defaultValue": "(args: CardComponent) => ({\n  component: CardComponent,\n  props: args,\n  template: `\n    <pm-card\n        [hoverable]=\"hoverable\"\n        [borderRadius]=\"borderRadius\"\n    >\n      conteudo\n    </pm-card>`\n})"
+                "file": "stories/Table.stories.ts",
+                "type": "Story<TableComponent>",
+                "defaultValue": "(args: TableComponent) => ({\n  component: TableComponent,\n  props: args,\n  template: `\n    <pm-table\n      [columns]=\"columns\"\n      [columnNames]=\"columnNames\"\n      [imageColumns]=\"imageColumns\"\n      [imageHeight]=\"imageHeight\"\n      [showHeader]=\"showHeader\"\n      [numberFormat]=\"numberFormat\"\n      [numberPrefix]=\"numberPrefix\"\n      [itemList]=\"itemList\"\n      [borderRadius]=\"borderRadius\"\n      [backgroundColor]=\"backgroundColor\"\n      [expandedDetailTemplate]=\"expandedDetailTemplate\"\n      [disableExpandedOnDisabledRow]=\"disableExpandedOnDisabledRow\"\n    ></pm-table>`\n})"
             },
             {
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/Table.stories.ts",
-                "type": "Story<TableComponent>",
-                "defaultValue": "(args: TableComponent) => ({\n  component: TableComponent,\n  props: args,\n  template: `\n    <pm-table\n      [columns]=\"columns\"\n      [columnNames]=\"columnNames\"\n      [imageColumns]=\"imageColumns\"\n      [imageHeight]=\"imageHeight\"\n      [showHeader]=\"showHeader\"\n      [numberFormat]=\"numberFormat\"\n      [numberPrefix]=\"numberPrefix\"\n      [itemList]=\"itemList\"\n      [borderRadius]=\"borderRadius\"\n      [backgroundColor]=\"backgroundColor\"\n      [expandedDetailTemplate]=\"expandedDetailTemplate\"\n      [disableExpandedOnDisabledRow]=\"disableExpandedOnDisabledRow\"\n    ></pm-table>`\n})"
+                "file": "stories/DraggableList.stories.ts",
+                "type": "Story<DraggableListComponent>",
+                "defaultValue": "(args: DraggableListComponent) => ({\n  component: DraggableListComponent,\n  props: args,\n  template: `\n    <pm-draggable-list\n        [showIndex]=\"showIndex\"\n        [itemActionLabel]=\"itemActionLabel\"\n        [itemMainLabel]=\"itemMainLabel\"\n        [itemSubLabel]=\"itemSubLabel\"\n        [actions]=\"actions\"\n        [itemList]=\"itemList\"\n        [roundedBorders]=\"roundedBorders\"\n        [enableDragging]=\"enableDragging\"\n        [enableSelection]=\"enableSelection\"\n    >\n      conteudo\n    </pm-draggable-list>`\n})"
             },
             {
                 "name": "Template",
@@ -3213,7 +3220,7 @@
                 "linktype": "interface",
                 "name": "GridListItem",
                 "coveragePercent": 0,
-                "coverageCount": "0/12",
+                "coverageCount": "0/13",
                 "status": "low"
             },
             {
