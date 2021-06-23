@@ -5,7 +5,7 @@ export interface GridListItem {
   title: string;
   subtitle?: string;
   iconClass: string;
-  iconColor: MainColors;
+  iconColor: MainColors | string;
   iconOutline: boolean;
   thumbnailPicture: string;
   bodyPicture: string;
