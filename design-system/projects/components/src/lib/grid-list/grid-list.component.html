@@ -66,8 +66,8 @@
     </div>
     <div class="d-block flex-fill text-overflow">
       <p (click)="item.titleCallback(item)"
-         class="title-link">Titulo ai</p>
-      <p (click)="item.subtitleCallback(item)" class="secondary-link">Subtítulo ae</p>
+         class="title-link">{{item.title}}</p>
+      <p *ngIf="item.subtitle" (click)="item.subtitleCallback(item)" class="secondary-link">{{item.subtitle}}</p>
     </div>
     <ng-container *ngTemplateOutlet="actionButton; context: {$implicit: item}"></ng-container>
   </div>
