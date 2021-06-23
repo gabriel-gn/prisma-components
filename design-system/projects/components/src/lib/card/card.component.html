@@ -1,3 +1,6 @@
-<div class="card-basic model-collection-card hoverable rad-md w-100" style="height: auto;">
-  <p>aa</p>
+<div
+  [ngClass]="{'hoverable': hoverable}"
+  class="card-basic {{borderRadius ? 'rad-' + borderRadius : ''}} w-100 p-3"
+  style="height: auto;">
+  <ng-content></ng-content>
 </div>
