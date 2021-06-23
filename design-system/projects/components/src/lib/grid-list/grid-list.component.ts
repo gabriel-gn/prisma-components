@@ -9,10 +9,10 @@ export interface GridListItem {
   iconOutline: boolean;
   thumbnailPicture: string;
   bodyPicture: string;
-  iconCallback(): void;
-  titleCallback(): void;
-  subtitleCallback(): void;
-  bodyCallback(): void;
+  iconCallback?: void;
+  titleCallback?: void;
+  subtitleCallback?: void;
+  bodyCallback?: void;
 }
 
 @Component({
