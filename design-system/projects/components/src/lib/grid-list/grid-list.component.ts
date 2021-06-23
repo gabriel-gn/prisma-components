@@ -4,6 +4,7 @@ import {MainColors} from '../../models/colors';
 export interface GridListItem {
   title: string;
   subtitle?: string;
+  context?: any;
   iconClass?: string;
   iconColor?: MainColors | string;
   iconOutline?: boolean;
