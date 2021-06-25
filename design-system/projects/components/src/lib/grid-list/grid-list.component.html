@@ -53,9 +53,9 @@
 </ng-template>
 
 <ng-template #listTemplate let-item>
-  <div class="list-item d-flex py-3 pe-5">
-    <div class="image-fluid-container mx-4" style="width: 200px">
-      <img style="max-height: 125px;" [attr.alt]="item.bodyPicture" [attr.src]="item.bodyPicture">
+  <div class="list-item d-flex py-3 pe-3 pe-lg-5">
+    <div class="image-fluid-container mx-3 mx-lg-4">
+      <img [attr.alt]="item.bodyPicture" [attr.src]="item.bodyPicture">
     </div>
     <div class="d-block flex-fill text-overflow">
       <ng-container *ngTemplateOutlet="titleSubtitle; context: {$implicit: item}"></ng-container>
