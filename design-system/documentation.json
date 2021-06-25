@@ -1128,7 +1128,7 @@
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": ".pm-grid-list {\n  .list-item {\n    height: 200px;\n    max-height: 160px;\n    border-bottom: 2px solid var(--color-gray-light);\n\n    .title {\n      font-weight: 500;\n      font-size: 1.3rem;\n      color: var(--color-default-states);\n\n      &.bigger {\n        font-size: 1.4rem;\n        font-weight: 600;\n      }\n    }\n\n    .title-link {\n      @extend .title;\n      cursor: pointer;\n\n      &:hover {\n        color: var(--color-default-sat);\n      }\n\n      &:focus {\n        outline: none !important;\n        box-shadow: none;\n      }\n    }\n\n    .secondary {\n      font-size: 1.1rem;\n      color: var(--color-gray-dark);\n      font-weight: 400;\n      width: fit-content;\n\n      &:focus {\n        outline: none !important;\n      }\n\n      &.bigger {\n        font-size: 1.2rem;\n        font-weight: 600;\n      }\n    }\n\n    .secondary-link {\n      @extend .secondary;\n      cursor: pointer;\n\n      &:hover {\n        color: var(--color-default);\n      }\n\n      &:focus {\n        outline: none !important;\n      }\n    }\n  }\n}\n",
+                    "data": ".pm-grid-list {\n\n  .list-item {\n    height: 200px;\n    max-height: 160px;\n    border-bottom: 2px solid var(--color-gray-light);\n\n    .image-fluid-container {\n      width: 200px;\n\n      img {\n        max-height: 125px;\n      }\n    }\n\n    .title {\n      font-weight: 500;\n      font-size: 1.3rem;\n      color: var(--color-default-states);\n\n      &.bigger {\n        font-size: 1.4rem;\n        font-weight: 600;\n      }\n    }\n\n    .title-link {\n      @extend .title;\n      cursor: pointer;\n\n      &:hover {\n        color: var(--color-default-sat);\n      }\n\n      &:focus {\n        outline: none !important;\n        box-shadow: none;\n      }\n    }\n\n    .secondary {\n      font-size: 1.1rem;\n      color: var(--color-gray-dark);\n      font-weight: 400;\n      width: fit-content;\n\n      &:focus {\n        outline: none !important;\n      }\n\n      &.bigger {\n        font-size: 1.2rem;\n        font-weight: 600;\n      }\n    }\n\n    .secondary-link {\n      @extend .secondary;\n      cursor: pointer;\n\n      &:hover {\n        color: var(--color-default);\n      }\n\n      &:focus {\n        outline: none !important;\n      }\n    }\n  }\n\n  @media (max-width: 991px) {\n    .list-item {\n      height: 120px;\n      max-height: 90px;\n\n      .image-fluid-container {\n        width: 100px;\n\n        img {\n          max-height: 60px;\n        }\n      }\n\n      .title {\n        font-size: 1.1em;\n        margin-bottom: 0px;\n      }\n\n      .secondary {\n        font-size: 0.9em;\n      }\n\n    }\n  }\n}\n",
                     "styleUrl": "./grid-list.component.scss"
                 }
             ],
@@ -1139,7 +1139,7 @@
                 "args": [],
                 "line": 30
             },
-            "templateData": "<div class=\"pm-grid-list\">\n\n  <div class=\"d-flex justify-content-end\">\n    <button (click)=\"displayStyle = 'list'\" class=\"btn btn-icon-action color-primary\">\n      <i class=\"uil uil-md uil-grids rotate-90\"></i>\n    </button>\n    <button (click)=\"displayStyle = 'grid'\" class=\"btn btn-icon-action color-primary\">\n      <i class=\"uil uil-md uil-th\"></i>\n    </button>\n  </div>\n\n  <div class=\"row g-0 d-flex justify-content-center\" [ngClass]=\"{'card-basic': displayStyle === 'list'}\">\n    <ng-container *ngFor=\"let item of items\">\n      <ng-container *ngTemplateOutlet=\"displayStyle === 'grid' ? gridTemplate : listTemplate; context: {$implicit: item}\"></ng-container>\n    </ng-container>\n  </div>\n\n</div>\n\n<ng-template #actionButton let-item>\n  <button *ngIf=\"item.iconCallback && item.iconClass\"\n          (click)=\"item.iconCallback(item)\"\n          [className]=\"'btn btn-icon-action px-2 py-0 color-' + (item.iconColor ? item.iconColor : 'primary') + (item.iconOutline ? ' btn-outline-' + item.iconColor : '')\"\n          style=\"height: fit-content; align-self: center;\"\n  >\n    <i [className]=\"item.iconClass\"></i>\n  </button>\n</ng-template>\n\n<ng-template #gridTemplate let-item>\n  <div class=\"card-basic model-collection-card hoverable rad-md col-auto m-3\"\n       [ngClass]=\"{'reverse': gridHeaderReverse}\"\n       style=\"height: auto;\"\n  >\n    <div class=\"model-collection-card-header\">\n      <ng-container *ngIf=\"item.thumbnailPicture\">\n        <div [ngStyle]=\"{'background-image': 'url(' + item.thumbnailPicture + ')'}\" class=\"img-thumbnail align-self-center\"></div>\n      </ng-container>\n      <div class=\"d-flex flex-column justify-content-center flex-fill text-overflow ms-2\">\n        <ng-container *ngTemplateOutlet=\"titleSubtitle; context: {$implicit: item}\"></ng-container>\n      </div>\n      <ng-container *ngTemplateOutlet=\"actionTemplate ? actionTemplate : actionButton; context: {$implicit: item}\"></ng-container>\n    </div>\n    <div\n      (click)=\"item.bodyCallback ? item.bodyCallback(item) : null\"\n      [ngClass]=\"{'cursor-pointer': item.bodyCallback, 'rad-md-top': gridHeaderReverse, 'rad-md-bottom': !gridHeaderReverse}\"\n      class=\"model-collection-card-body fixed-height image-fluid-container\"\n      [ngStyle]=\"{'background-color': bodyBackgroundColor ? bodyBackgroundColor : null}\"\n    >\n      <img [attr.alt]=\"item.bodyPicture\" [attr.src]=\"item.bodyPicture\">\n    </div>\n  </div>\n</ng-template>\n\n<ng-template #listTemplate let-item>\n  <div class=\"list-item d-flex py-3 pe-5\">\n    <div class=\"image-fluid-container mx-4\" style=\"width: 200px\">\n      <img style=\"max-height: 125px;\" [attr.alt]=\"item.bodyPicture\" [attr.src]=\"item.bodyPicture\">\n    </div>\n    <div class=\"d-block flex-fill text-overflow\">\n      <ng-container *ngTemplateOutlet=\"titleSubtitle; context: {$implicit: item}\"></ng-container>\n    </div>\n    <ng-container *ngTemplateOutlet=\"actionTemplate ? actionTemplate : actionButton; context: {$implicit: item}\"></ng-container>\n  </div>\n</ng-template>\n\n<ng-template #titleSubtitle let-item>\n  <p (click)=\"item.titleCallback ? item.titleCallback(item) : null\"\n     [ngClass]=\"{\n            'title-link': !!item.titleCallback === true,\n            'title': !!item.titleCallback === false,\n            'bigger': !!item.thumbnailPicture === false\n           }\"\n     class=\"align-self-start\">{{item.title}}\n  </p>\n  <p *ngIf=\"item.subtitle\"\n     (click)=\"item.subtitleCallback ? item.subtitleCallback(item) : null\"\n     class=\"secondary-link align-self-start\"\n     [ngClass]=\"{\n            'secondary-link': !!item.subtitleCallback === true,\n            'secondary': !!item.subtitleCallback === false\n           }\"\n  >\n    {{item.subtitle}}\n  </p>\n</ng-template>\n"
+            "templateData": "<div class=\"pm-grid-list\">\n\n  <div class=\"d-flex justify-content-end\">\n    <button (click)=\"displayStyle = 'list'\" class=\"btn btn-icon-action color-primary\">\n      <i class=\"uil uil-md uil-grids rotate-90\"></i>\n    </button>\n    <button (click)=\"displayStyle = 'grid'\" class=\"btn btn-icon-action color-primary\">\n      <i class=\"uil uil-md uil-th\"></i>\n    </button>\n  </div>\n\n  <div class=\"row g-0 d-flex justify-content-center\" [ngClass]=\"{'card-basic': displayStyle === 'list'}\">\n    <ng-container *ngFor=\"let item of items\">\n      <ng-container *ngTemplateOutlet=\"displayStyle === 'grid' ? gridTemplate : listTemplate; context: {$implicit: item}\"></ng-container>\n    </ng-container>\n  </div>\n\n</div>\n\n<ng-template #actionButton let-item>\n  <button *ngIf=\"item.iconCallback && item.iconClass\"\n          (click)=\"item.iconCallback(item)\"\n          [className]=\"'btn btn-icon-action px-2 py-0 color-' + (item.iconColor ? item.iconColor : 'primary') + (item.iconOutline ? ' btn-outline-' + item.iconColor : '')\"\n          style=\"height: fit-content; align-self: center;\"\n  >\n    <i [className]=\"item.iconClass\"></i>\n  </button>\n</ng-template>\n\n<ng-template #gridTemplate let-item>\n  <div class=\"card-basic model-collection-card hoverable rad-md col-auto m-3\"\n       [ngClass]=\"{'reverse': gridHeaderReverse}\"\n       style=\"height: auto;\"\n  >\n    <div class=\"model-collection-card-header\">\n      <ng-container *ngIf=\"item.thumbnailPicture\">\n        <div [ngStyle]=\"{'background-image': 'url(' + item.thumbnailPicture + ')'}\" class=\"img-thumbnail align-self-center\"></div>\n      </ng-container>\n      <div class=\"d-flex flex-column justify-content-center flex-fill text-overflow ms-2\">\n        <ng-container *ngTemplateOutlet=\"titleSubtitle; context: {$implicit: item}\"></ng-container>\n      </div>\n      <ng-container *ngTemplateOutlet=\"actionTemplate ? actionTemplate : actionButton; context: {$implicit: item}\"></ng-container>\n    </div>\n    <div\n      (click)=\"item.bodyCallback ? item.bodyCallback(item) : null\"\n      [ngClass]=\"{'cursor-pointer': item.bodyCallback, 'rad-md-top': gridHeaderReverse, 'rad-md-bottom': !gridHeaderReverse}\"\n      class=\"model-collection-card-body fixed-height image-fluid-container\"\n      [ngStyle]=\"{'background-color': bodyBackgroundColor ? bodyBackgroundColor : null}\"\n    >\n      <img [attr.alt]=\"item.bodyPicture\" [attr.src]=\"item.bodyPicture\">\n    </div>\n  </div>\n</ng-template>\n\n<ng-template #listTemplate let-item>\n  <div class=\"list-item d-flex py-3 pe-3 pe-lg-5\">\n    <div class=\"image-fluid-container mx-3 mx-lg-4\">\n      <img [attr.alt]=\"item.bodyPicture\" [attr.src]=\"item.bodyPicture\">\n    </div>\n    <div class=\"d-block flex-fill text-overflow\">\n      <ng-container *ngTemplateOutlet=\"titleSubtitle; context: {$implicit: item}\"></ng-container>\n    </div>\n    <ng-container *ngTemplateOutlet=\"actionTemplate ? actionTemplate : actionButton; context: {$implicit: item}\"></ng-container>\n  </div>\n</ng-template>\n\n<ng-template #titleSubtitle let-item>\n  <p (click)=\"item.titleCallback ? item.titleCallback(item) : null\"\n     [ngClass]=\"{\n            'title-link': !!item.titleCallback === true,\n            'title': !!item.titleCallback === false,\n            'bigger': !!item.thumbnailPicture === false\n           }\"\n     class=\"align-self-start\">{{item.title}}\n  </p>\n  <p *ngIf=\"item.subtitle\"\n     (click)=\"item.subtitleCallback ? item.subtitleCallback(item) : null\"\n     class=\"secondary-link align-self-start\"\n     [ngClass]=\"{\n            'secondary-link': !!item.subtitleCallback === true,\n            'secondary': !!item.subtitleCallback === false\n           }\"\n  >\n    {{item.subtitle}}\n  </p>\n</ng-template>\n"
         },
         {
             "name": "RadioButtonComponent",
@@ -1251,6 +1251,73 @@
                 "line": 21
             },
             "templateData": "<mat-radio-group\n  [(ngModel)]=\"selectedValue\"\n  [disabled]=\"disabled\"\n  (change)=\"setValue($event.value)\"\n  [ngClass]=\"{'d-flex flex-column': orientation === 'vertical'}\">\n  <mat-radio-button *ngFor=\"let value of values\" [value]=\"value\">\n    {{value}}\n  </mat-radio-button>\n</mat-radio-group>\n"
+        },
+        {
+            "name": "StepperComponent",
+            "id": "component-StepperComponent-3da625f623e2a5940f942c81f06d1447",
+            "file": "projects/components/src/lib/stepper/stepper.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [
+                {
+                    "name": "{ provide: CdkStepper, useExisting: StepperComponent }",
+                    "type": "component"
+                }
+            ],
+            "selector": "pm-stepper",
+            "styleUrls": [
+                "./stepper.component.scss"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./stepper.component.html"
+            ],
+            "viewProviders": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [
+                {
+                    "name": "selectStepByIndex",
+                    "args": [
+                        {
+                            "name": "index",
+                            "type": "number"
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 12,
+                    "jsdoctags": [
+                        {
+                            "name": "index",
+                            "type": "number",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "",
+            "type": "component",
+            "sourceCode": "import {Component} from '@angular/core';\nimport {CdkStepper} from '@angular/cdk/stepper';\n\n@Component({\n  selector: 'pm-stepper',\n  templateUrl: './stepper.component.html',\n  styleUrls: ['./stepper.component.scss'],\n  providers: [{provide: CdkStepper, useExisting: StepperComponent}]\n})\nexport class StepperComponent extends CdkStepper {\n\n  selectStepByIndex(index: number): void {\n    this.selectedIndex = index;\n  }\n\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": ".example-container {\n  border: 1px solid;\n  padding: 10px;\n  margin: 10px;\n}\n\n.example-step-navigation-bar {\n  display: flex;\n  justify-content: flex-start;\n  margin-top: 10px;\n}\n\n.example-step {\n  background: transparent;\n  border: 0;\n  margin: 0 10px;\n  padding: 10px;\n  color: inherit;\n}\n\n.example-step.example-active {\n  border-bottom: 1px solid;\n  font-weight: 600;\n}\n\n.example-nav-button {\n  background: transparent;\n  border: 0;\n  color: inherit;\n}\n",
+                    "styleUrl": "./stepper.component.scss"
+                }
+            ],
+            "stylesData": "",
+            "extends": "CdkStepper",
+            "templateData": "<section class=\"example-container\">\n  <header>\n    <ng-container *ngTemplateOutlet=\"footerActions\"></ng-container>\n    <h2>Step {{ selectedIndex + 1 }}/{{ steps.length }}</h2>\n  </header>\n\n  <div [ngTemplateOutlet]=\"selected ? selected.content : null\"></div>\n\n  <footer class=\"example-step-navigation-bar\">\n  </footer>\n</section>\n\n<ng-template #footerActions>\n  <button class=\"example-nav-button\" cdkStepperPrevious>&larr;</button>\n  <button\n    class=\"example-step\"\n    [class.example-active]=\"selectedIndex === i\"\n    *ngFor=\"let step of steps; let i = index\"\n    (click)=\"selectStepByIndex(i)\"\n  >\n    Step {{ i + 1 }}\n  </button>\n  <button class=\"example-nav-button\" cdkStepperNext>&rarr;</button>\n</ng-template>\n"
         },
         {
             "name": "TableComponent",
@@ -1996,6 +2063,9 @@
                             "name": "GridListModule"
                         },
                         {
+                            "name": "StepperModule"
+                        },
+                        {
                             "name": "TableModule"
                         }
                     ]
@@ -2042,6 +2112,43 @@
                     "elements": [
                         {
                             "name": "RadioButtonComponent"
+                        }
+                    ]
+                },
+                {
+                    "type": "bootstrap",
+                    "elements": []
+                },
+                {
+                    "type": "classes",
+                    "elements": []
+                }
+            ]
+        },
+        {
+            "name": "StepperModule",
+            "children": [
+                {
+                    "type": "providers",
+                    "elements": []
+                },
+                {
+                    "type": "declarations",
+                    "elements": [
+                        {
+                            "name": "StepperComponent"
+                        }
+                    ]
+                },
+                {
+                    "type": "imports",
+                    "elements": []
+                },
+                {
+                    "type": "exports",
+                    "elements": [
+                        {
+                            "name": "StepperComponent"
                         }
                     ]
                 },
@@ -2192,6 +2299,14 @@
                 "defaultValue": "Template.bind({})"
             },
             {
+                "name": "DefaultStepper",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "stories/Stepper.stories.ts",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
                 "name": "DisabledCheckbox",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -2330,9 +2445,9 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/inputs/Button.stories.ts",
-                "type": "Story<ButtonComponent>",
-                "defaultValue": "(args: ButtonComponent) => ({\n  component: ButtonComponent,\n  props: args,\n  template: `\n    <pm-button\n        [label]=\"label\"\n        [type]=\"type\"\n        [busy]=\"busy\"\n        [busyText]=\"busyText\"\n        [iconClass]=\"iconClass\"\n        [outline]=\"outline\"\n    >\n        Botão\n    </pm-button>`\n})"
+                "file": "stories/Stepper.stories.ts",
+                "type": "Story<StepperComponent>",
+                "defaultValue": "(args: StepperComponent) => ({\n  component: StepperComponent,\n  props: args,\n  template: `\n    <pm-stepper>\n      <cdk-step> <p>This is any content of \"Step 1\"</p> </cdk-step>\n      <cdk-step> <p>This is any content of \"Step 2\"</p> </cdk-step>\n    </pm-stepper>`\n})"
             },
             {
                 "name": "Template",
@@ -2341,6 +2456,14 @@
                 "file": "stories/inputs/Checkbox.stories.ts",
                 "type": "Story<CheckboxComponent>",
                 "defaultValue": "(args: CheckboxComponent) => ({\n  component: CheckboxComponent,\n  props: args,\n  template: `\n    <pm-checkbox\n      [checked]=\"checked\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>`\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "stories/inputs/Button.stories.ts",
+                "type": "Story<ButtonComponent>",
+                "defaultValue": "(args: ButtonComponent) => ({\n  component: ButtonComponent,\n  props: args,\n  template: `\n    <pm-button\n        [label]=\"label\"\n        [type]=\"type\"\n        [busy]=\"busy\"\n        [busyText]=\"busyText\"\n        [iconClass]=\"iconClass\"\n        [outline]=\"outline\"\n    >\n        Botão\n    </pm-button>`\n})"
             },
             {
                 "name": "Template",
@@ -2859,6 +2982,24 @@
                     "defaultValue": "(args: RadioButtonComponent) => ({\n  component: RadioButtonComponent,\n  props: args,\n  template: `\n    <pm-radio-button\n        [values]=\"values\"\n        [selectedValue]=\"selectedValue\"\n    >\n        Conteúdo\n    </pm-radio-button>`\n})"
                 }
             ],
+            "stories/Stepper.stories.ts": [
+                {
+                    "name": "DefaultStepper",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "stories/Stepper.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "stories/Stepper.stories.ts",
+                    "type": "Story<StepperComponent>",
+                    "defaultValue": "(args: StepperComponent) => ({\n  component: StepperComponent,\n  props: args,\n  template: `\n    <pm-stepper>\n      <cdk-step> <p>This is any content of \"Step 1\"</p> </cdk-step>\n      <cdk-step> <p>This is any content of \"Step 2\"</p> </cdk-step>\n    </pm-stepper>`\n})"
+                }
+            ],
             "stories/DraggableList.stories.ts": [
                 {
                     "name": "disabledDragging",
@@ -3233,6 +3374,15 @@
                 "status": "low"
             },
             {
+                "filePath": "projects/components/src/lib/stepper/stepper.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "StepperComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/2",
+                "status": "low"
+            },
+            {
                 "filePath": "projects/components/src/lib/table/table.component.ts",
                 "type": "component",
                 "linktype": "component",
@@ -3343,6 +3493,26 @@
             },
             {
                 "filePath": "stories/GridList.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "stories/Stepper.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "DefaultStepper",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "stories/Stepper.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",

@@ -8,6 +8,7 @@ import {TableModule} from './table/table.module';
 import {ComboBoxModule} from './combo-box/combo-box.module';
 import {GridListModule} from './grid-list/grid-list.module';
 import {CardModule} from './card/card.module';
+import {StepperModule} from './stepper/stepper.module';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import {CardModule} from './card/card.module';
     TableModule,
     ComboBoxModule,
     GridListModule,
-    CardModule
+    CardModule,
+    StepperModule
   ],
   exports: [
     ComponentsComponent

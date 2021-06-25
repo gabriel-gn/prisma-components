@@ -8,7 +8,7 @@ import {MainColors} from '../../models/colors';
 })
 export class ButtonComponent {
   @Input('label') label: string | null = '';  // Usada só pra aparecer no storybook
-  @Input('type') type: MainColors = MainColors.default;
+  @Input('type') type: MainColors | string = MainColors.default;
   @Input('busy') busy = false;
   @Input('busyText') busyText: string;
   @Input('iconClass') iconClass: string;

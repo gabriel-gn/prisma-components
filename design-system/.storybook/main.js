@@ -11,6 +11,7 @@ module.exports = {
     "@storybook/addon-storysource",
     "@etchteam/storybook-addon-css-variables-theme"
   ],
+  builder: 'webpack5',
   webpackFinal: async (config, { configType }) => {
     // `configType` has a value of 'DEVELOPMENT' or 'PRODUCTION'
     // You can change the configuration based on that.
