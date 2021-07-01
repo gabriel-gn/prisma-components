@@ -26,6 +26,7 @@ const Template: Story<ButtonComponent> = (args: ButtonComponent) => ({
         [busyText]="busyText"
         [iconClass]="iconClass"
         [outline]="outline"
+        [disabled]="disabled"
     >
         Botão
     </pm-button>`
@@ -39,6 +40,12 @@ DefaultButton.args = {
 export const PrimaryButton = Template.bind({});
 PrimaryButton.args = {
   type: 'primary'
+};
+
+export const DisabledButton = Template.bind({});
+DisabledButton.args = {
+  type: 'primary',
+  disabled: true
 };
 
 export const BusyButton = Template.bind({});

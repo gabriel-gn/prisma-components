@@ -13,6 +13,7 @@ export class ButtonComponent {
   @Input('busyText') busyText: string;
   @Input('iconClass') iconClass: string;
   @Input('outline') outline = false;
+  @Input() disabled = false;
   // @Output() onClick = new EventEmitter<any>();
 
   constructor() { }

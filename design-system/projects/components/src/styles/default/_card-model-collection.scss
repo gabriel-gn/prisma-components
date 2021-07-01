@@ -1,11 +1,26 @@
 $card-width: 282px !default;
 $card-height: 402px !default;
 
+// 1,4255
+$card-width-sm: 140px !default;
+$card-height-sm: 200px !default;
+
 .model-collection-card {
-  height: $card-height;
-  width: $card-width;
-  max-width: $card-width;
-  margin: 0.5rem;
+
+  &:not(.square-sm) {
+    height: $card-height;
+    width: $card-width;
+    max-width: $card-width;
+    margin: 0.5rem;
+  }
+
+  &.square-sm {
+    height: 140px !important;
+    width: 140px !important;
+    max-width: 140px !important;
+    margin: 1px !important;
+    border: none !important;
+  }
 
   .model-collection-card-header {
 
@@ -110,6 +125,21 @@ $card-height: 402px !default;
 
       > img {
         max-height: $body-height-fixed;
+        width: auto;
+        align-self: center;
+      }
+    }
+
+    &.square-sm {
+      min-height: 140px;
+      height: 140px;
+      max-height: 140px;
+      min-width: 140px;
+      width: 140px;
+      max-width: 140px;
+
+      > img {
+        max-height: 140px;
         width: auto;
         align-self: center;
       }

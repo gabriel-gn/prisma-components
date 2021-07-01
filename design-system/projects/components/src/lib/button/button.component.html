@@ -1,4 +1,4 @@
-<button [className]="getClassName()" [disabled]="busy">
+<button [className]="getClassName()" [disabled]="busy || disabled">
   <ng-container *ngIf="busy; else buttonContent">
     <span class="spinner-border spinner-border-sm mx-2" role="status" aria-hidden="true"></span>
     {{busyText ? busyText : ''}}
