@@ -1,4 +1,4 @@
-import {Component, Input, TemplateRef} from '@angular/core';
+import {Component, Input, TemplateRef, ViewChild} from '@angular/core';
 import {MainColors} from '../../models/colors';
 
 export interface GridListItem {
@@ -23,12 +23,29 @@ export interface GridListItem {
 })
 export class GridListComponent {
 
-  @Input() displayStyle: 'list' | 'grid' = 'grid';
+  @ViewChild('gridTemplate', {static: true}) gridTemplateRef: TemplateRef<any>;
+  @ViewChild('listTemplate', {static: true}) listTemplateRef: TemplateRef<any>;
+  @ViewChild('galleryTemplate', {static: true}) galleryTemplateRef: TemplateRef<any>;
+  @Input() displayStyle: 'list' | 'grid' | 'gallery' = 'grid';
+  @Input() overflowGallery = true;
   @Input() items: GridListItem[];
   @Input() gridHeaderReverse = false;
   @Input() bodyBackgroundColor;
   @Input() actionTemplate: TemplateRef<any>;
 
   constructor() { }
+
+  public getTemplate(): TemplateRef<any> {
+    switch (this.displayStyle) {
+      case 'grid':
+        return this.gridTemplateRef;
+      case 'gallery':
+        return this.galleryTemplateRef;
+      case 'list':
+        return this.listTemplateRef;
+      default:
+        return this.gridTemplateRef;
+    }
+  }
 
 }

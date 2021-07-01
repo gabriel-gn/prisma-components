@@ -30,6 +30,7 @@ const Template: Story<GridListComponent> = (args: GridListComponent) => ({
         [gridHeaderReverse]="gridHeaderReverse"
         [bodyBackgroundColor]="bodyBackgroundColor"
         [actionTemplate]="undefined"
+        [overflowGallery]="overflowGallery"
     >
       conteudo
     </pm-grid-list>`
@@ -39,6 +40,7 @@ export const DefaultGridList = Template.bind({});
 const getColor = () => MainColors.primary;
 DefaultGridList.args = {
   displayStyle: 'grid',
+  overflowGallery: true,
   gridHeaderReverse: false,
   bodyBackgroundColor: undefined,
   items: Array(20).fill({
