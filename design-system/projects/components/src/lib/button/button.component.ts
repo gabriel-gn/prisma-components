@@ -20,6 +20,7 @@ export class ButtonComponent {
 
   public getClassName(): string {
     let name = 'btn';
+    name = (this.disabled || this.busy) ? name + ' cursor-disabled' : name;
     if (this.type) {
       if (this.outline) {
         name += ` btn-outline-${this.type}`;

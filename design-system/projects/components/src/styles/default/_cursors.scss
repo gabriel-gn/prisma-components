@@ -14,3 +14,8 @@
   cursor: default;
   pointer-events: none;
 }
+
+.cursor-disabled {
+  cursor: not-allowed;
+  pointer-events: none;
+}
