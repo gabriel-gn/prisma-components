@@ -9,6 +9,7 @@ import {MainColors} from '../../models/colors';
 })
 export class MultiLevelDropdownMenuComponent implements OnInit {
 
+  @Input('actions') actions = [];
   @Input() closeOnClick = true;
   @Input() buttonTemplate: TemplateRef<any>;
 
@@ -20,7 +21,6 @@ export class MultiLevelDropdownMenuComponent implements OnInit {
   @Input('outline') outline = false;
   @Input('disabled') disabled = false;
 
-  public actions = [];
   constructor() { }
 
   ngOnInit(): void {
