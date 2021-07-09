@@ -1,0 +1,18 @@
+<ng-container *ngTemplateOutlet="buttonTemplate ? buttonTemplate : defaultButtonTemplate; context: {$implicit: actionsSelect}"></ng-container>
+
+<mat-select #actionsSelect class="mat-select-btn-sm">
+  <mat-option [hidden]="true"></mat-option>
+  <mat-option *ngFor="let action of actions" (click)="callMethod(action, actionsSelect)">{{action.label}}</mat-option>
+</mat-select>
+
+<ng-template #defaultButtonTemplate let-select>
+  <pm-button (click)="select.toggle()"
+             [type]="type"
+             [busy]="busy"
+             [busyText]="busyText"
+             [iconClass]="iconClass"
+             [outline]="outline"
+             [disabled]="disabled"
+  >
+  </pm-button>
+</ng-template>

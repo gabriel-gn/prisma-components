@@ -9,6 +9,7 @@ import {ComboBoxModule} from './combo-box/combo-box.module';
 import {GridListModule} from './grid-list/grid-list.module';
 import {CardModule} from './card/card.module';
 import {StepperModule} from './stepper/stepper.module';
+import {MultiLevelDropdownMenuModule} from "./multi-level-dropdown-menu/multi-level-dropdown-menu.module";
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import {StepperModule} from './stepper/stepper.module';
     ComboBoxModule,
     GridListModule,
     CardModule,
-    StepperModule
+    StepperModule,
+    MultiLevelDropdownMenuModule
   ],
   exports: [
     ComponentsComponent
