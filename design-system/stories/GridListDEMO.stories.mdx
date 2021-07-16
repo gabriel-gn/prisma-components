@@ -1,23 +1,64 @@
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
-import {ButtonComponent} from '../projects/components/src/lib/button/button.component'; import {ButtonModule} from "../projects/components/src/lib/button/button.module";
+import {ButtonComponent} from '../projects/components/src/lib/button/button.component';
+import {MainColors} from "../projects/components/src/models/colors";
+import {moduleMetadata} from "@storybook/angular";
+import {ButtonModule} from "../projects/components/src/lib/button/button.module";
 
-<Meta title='Prisma/teste mdx' component={ButtonComponent}/>
+<Meta
+  title='Prisma/teste mdx'
+  component={ButtonComponent}
+  decorators={[
+    moduleMetadata({
+      declarations: [ButtonModule]
+    })
+  ]}
+/>
 
-Some **markdown** description, or whatever you want.
-
-export const Template = (args) => <ButtonComponent {...args} />
+export const defaultTemplate = `
+    <pm-button
+        [label]="label"
+        [type]="type"
+        [busy]="busy"
+        [busyText]="busyText"
+        [iconClass]="iconClass"
+        [outline]="outline"
+        [disabled]="disabled"
+    >
+        Template btn
+    </pm-button>
+`;
 
 export const defaultArgs = {
-  type: 'default',
+  type: MainColors.default,
   label: 'Button',
 };
 
+export const defaultControls = {
+  label: {control: 'text'},
+  type: {control: 'select', options: Object.values(MainColors),},
+  busy: {control: 'boolean'},
+  busyText: {control: 'text'},
+  iconClass: {control: 'text'},
+  outline: {control: 'boolean'},
+};
+
+export const Template = (args) => <ButtonComponent {...args} />
+
+Some **markdown** description, or whatever you want.
 
 <Canvas>
-  <Story name='default' args={defaultArgs}>
+  <Story
+    name='default'
+    args={defaultArgs}
+    argTypes={defaultControls}
+  >
     {Template.bind({})}
   </Story>
-  <Story name='primary' args={{...defaultArgs, ...{type: 'primary'}}}>
+  <Story
+    name='primary'
+    args={{...defaultArgs, type: MainColors.primary}}
+    argTypes={defaultControls}
+  >
     {Template.bind({})}
   </Story>
 </Canvas>
