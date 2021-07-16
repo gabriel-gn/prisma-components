@@ -147,7 +147,7 @@
     "components": [
         {
             "name": "ButtonComponent",
-            "id": "component-ButtonComponent-fcc5feb588d202c53f85902d05c7b7f5",
+            "id": "component-ButtonComponent-c8f32f67022e25a48ea4c26aef28db07",
             "file": "projects/components/src/lib/button/button.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -222,7 +222,7 @@
             "description": "",
             "rawdescription": "",
             "type": "component",
-            "sourceCode": "import {Component, Input, Output, EventEmitter} from '@angular/core';\nimport {MainColors} from '../../models/colors';\n\n@Component({\n  selector: 'pm-button',\n  templateUrl: './button.component.html',\n  styleUrls: ['./button.component.scss']\n})\nexport class ButtonComponent {\n  @Input('label') label: string | null = '';  // Usada só pra aparecer no storybook\n  @Input('type') type: MainColors | string = MainColors.default;\n  @Input('busy') busy = false;\n  @Input('busyText') busyText: string;\n  @Input('iconClass') iconClass: string;\n  @Input('outline') outline = false;\n  @Input() disabled = false;\n  // @Output() onClick = new EventEmitter<any>();\n\n  constructor() { }\n\n  public getClassName(): string {\n    let name = 'btn';\n    if (this.type) {\n      if (this.outline) {\n        name += ` btn-outline-${this.type}`;\n      } else {\n        name += ` btn-${this.type}`;\n      }\n    }\n    return name;\n  }\n\n}\n",
+            "sourceCode": "import {Component, Input, Output, EventEmitter} from '@angular/core';\nimport {MainColors} from '../../models/colors';\n\n@Component({\n  selector: 'pm-button',\n  templateUrl: './button.component.html',\n  styleUrls: ['./button.component.scss']\n})\nexport class ButtonComponent {\n  @Input('label') label: string | null = '';  // Usada só pra aparecer no storybook\n  @Input('type') type: MainColors | string = MainColors.default;\n  @Input('busy') busy = false;\n  @Input('busyText') busyText: string;\n  @Input('iconClass') iconClass: string;\n  @Input('outline') outline = false;\n  @Input('disabled') disabled = false;\n  // @Output() onClick = new EventEmitter<any>();\n\n  constructor() { }\n\n  public getClassName(): string {\n    let name = 'btn';\n    if (this.type) {\n      if (this.outline) {\n        name += ` btn-outline-${this.type}`;\n      } else {\n        name += ` btn-${this.type}`;\n      }\n    }\n    return name;\n  }\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -1205,7 +1205,7 @@
         },
         {
             "name": "MultiLevelDropdownMenuComponent",
-            "id": "component-MultiLevelDropdownMenuComponent-f9b857f0ca022375fe563d97131e9fc1",
+            "id": "component-MultiLevelDropdownMenuComponent-2b9b9b0243b413be470996a51d629c6f",
             "file": "projects/components/src/lib/multi-level-dropdown-menu/multi-level-dropdown-menu.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -1221,17 +1221,100 @@
                 "./multi-level-dropdown-menu.component.html"
             ],
             "viewProviders": [],
-            "inputsClass": [],
+            "inputsClass": [
+                {
+                    "name": "actions",
+                    "defaultValue": "[]",
+                    "line": 12
+                },
+                {
+                    "name": "busy",
+                    "defaultValue": "false",
+                    "line": 18
+                },
+                {
+                    "name": "busyText",
+                    "defaultValue": "''",
+                    "line": 19
+                },
+                {
+                    "name": "buttonTemplate",
+                    "line": 14,
+                    "type": "TemplateRef<any>"
+                },
+                {
+                    "name": "closeOnClick",
+                    "defaultValue": "true",
+                    "line": 13
+                },
+                {
+                    "name": "disabled",
+                    "defaultValue": "false",
+                    "line": 22
+                },
+                {
+                    "name": "iconClass",
+                    "defaultValue": "'uil uil-md uil-ellipsis-h'",
+                    "line": 20
+                },
+                {
+                    "name": "outline",
+                    "defaultValue": "false",
+                    "line": 21
+                },
+                {
+                    "name": "type",
+                    "defaultValue": "MainColors.light",
+                    "line": 17,
+                    "type": "MainColors | string"
+                }
+            ],
             "outputsClass": [],
             "propertiesClass": [],
             "methodsClass": [
+                {
+                    "name": "callMethod",
+                    "args": [
+                        {
+                            "name": "action",
+                            "type": "any"
+                        },
+                        {
+                            "name": "actionsSelect",
+                            "type": "MatSelect"
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 29,
+                    "modifierKind": [
+                        114
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "action",
+                            "type": "any",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        },
+                        {
+                            "name": "actionsSelect",
+                            "type": "MatSelect",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
                 {
                     "name": "ngOnInit",
                     "args": [],
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 12
+                    "line": 26
                 }
             ],
             "hostBindings": [],
@@ -1239,7 +1322,7 @@
             "description": "",
             "rawdescription": "",
             "type": "component",
-            "sourceCode": "import { Component, OnInit } from '@angular/core';\n\n@Component({\n  selector: 'pm-multi-level-dropdown-menu',\n  templateUrl: './multi-level-dropdown-menu.component.html',\n  styleUrls: ['./multi-level-dropdown-menu.component.scss']\n})\nexport class MultiLevelDropdownMenuComponent implements OnInit {\n\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n\n}\n",
+            "sourceCode": "import {Component, Input, OnInit, TemplateRef} from '@angular/core';\nimport {MatSelect} from '@angular/material/select';\nimport {MainColors} from '../../models/colors';\n\n@Component({\n  selector: 'pm-multi-level-dropdown-menu',\n  templateUrl: './multi-level-dropdown-menu.component.html',\n  styleUrls: ['./multi-level-dropdown-menu.component.scss']\n})\nexport class MultiLevelDropdownMenuComponent implements OnInit {\n\n  @Input('actions') actions = [];\n  @Input() closeOnClick = true;\n  @Input() buttonTemplate: TemplateRef<any>;\n\n  // buttons input\n  @Input('type') type: MainColors | string = MainColors.light;\n  @Input('busy') busy = false;\n  @Input('busyText') busyText = '';\n  @Input('iconClass') iconClass = 'uil uil-md uil-ellipsis-h';\n  @Input('outline') outline = false;\n  @Input('disabled') disabled = false;\n\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n\n  public callMethod(action: any, actionsSelect: MatSelect): void {\n    action.method();\n    if (this.closeOnClick) {\n      actionsSelect.close();\n    }\n  }\n\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -1252,12 +1335,12 @@
                 "name": "constructor",
                 "description": "",
                 "args": [],
-                "line": 8
+                "line": 22
             },
             "implements": [
                 "OnInit"
             ],
-            "templateData": "<p>multi-level-dropdown-menu works!</p>\n"
+            "templateData": "<ng-container *ngTemplateOutlet=\"buttonTemplate ? buttonTemplate : defaultButtonTemplate; context: {$implicit: actionsSelect}\"></ng-container>\n\n<mat-select #actionsSelect class=\"mat-select-btn-sm\">\n  <mat-option [hidden]=\"true\"></mat-option>\n  <mat-option *ngFor=\"let action of actions\" (click)=\"callMethod(action, actionsSelect)\">{{action.label}}</mat-option>\n</mat-select>\n\n<ng-template #defaultButtonTemplate let-select>\n  <pm-button (click)=\"select.toggle()\"\n             [type]=\"type\"\n             [busy]=\"busy\"\n             [busyText]=\"busyText\"\n             [iconClass]=\"iconClass\"\n             [outline]=\"outline\"\n             [disabled]=\"disabled\"\n  >\n  </pm-button>\n</ng-template>\n"
         },
         {
             "name": "RadioButtonComponent",
@@ -2164,7 +2247,11 @@
                 },
                 {
                     "type": "imports",
-                    "elements": []
+                    "elements": [
+                        {
+                            "name": "ButtonModule"
+                        }
+                    ]
                 },
                 {
                     "type": "exports",
@@ -2453,6 +2540,14 @@
                 "defaultValue": "Template.bind({})"
             },
             {
+                "name": "DefaultMultiLevelDropdownMenu",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "stories/multi-level-dropdown-menu.stories.ts",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
                 "name": "DefaultRadioButton",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -2465,14 +2560,6 @@
                 "ctype": "miscellaneous",
                 "subtype": "variable",
                 "file": "stories/Stepper.stories.ts",
-                "type": "",
-                "defaultValue": "Template.bind({})"
-            },
-            {
-                "name": "DefaultStepper",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "stories/multi-level-dropdown-menu.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             },
@@ -2591,17 +2678,17 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/DraggableList.stories.ts",
-                "type": "Story<DraggableListComponent>",
-                "defaultValue": "(args: DraggableListComponent) => ({\n  component: DraggableListComponent,\n  props: args,\n  template: `\n    <pm-draggable-list\n        [showIndex]=\"showIndex\"\n        [itemActionLabel]=\"itemActionLabel\"\n        [itemMainLabel]=\"itemMainLabel\"\n        [itemSubLabel]=\"itemSubLabel\"\n        [actions]=\"actions\"\n        [itemList]=\"itemList\"\n        [roundedBorders]=\"roundedBorders\"\n        [enableDragging]=\"enableDragging\"\n        [enableSelection]=\"enableSelection\"\n    >\n      conteudo\n    </pm-draggable-list>`\n})"
+                "file": "stories/Card.stories.ts",
+                "type": "Story<CardComponent>",
+                "defaultValue": "(args: CardComponent) => ({\n  component: CardComponent,\n  props: args,\n  template: `\n    <pm-card\n        [hoverable]=\"hoverable\"\n        [borderRadius]=\"borderRadius\"\n    >\n      conteudo\n    </pm-card>`\n})"
             },
             {
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/Card.stories.ts",
-                "type": "Story<CardComponent>",
-                "defaultValue": "(args: CardComponent) => ({\n  component: CardComponent,\n  props: args,\n  template: `\n    <pm-card\n        [hoverable]=\"hoverable\"\n        [borderRadius]=\"borderRadius\"\n    >\n      conteudo\n    </pm-card>`\n})"
+                "file": "stories/DraggableList.stories.ts",
+                "type": "Story<DraggableListComponent>",
+                "defaultValue": "(args: DraggableListComponent) => ({\n  component: DraggableListComponent,\n  props: args,\n  template: `\n    <pm-draggable-list\n        [showIndex]=\"showIndex\"\n        [itemActionLabel]=\"itemActionLabel\"\n        [itemMainLabel]=\"itemMainLabel\"\n        [itemSubLabel]=\"itemSubLabel\"\n        [actions]=\"actions\"\n        [itemList]=\"itemList\"\n        [roundedBorders]=\"roundedBorders\"\n        [enableDragging]=\"enableDragging\"\n        [enableSelection]=\"enableSelection\"\n    >\n      conteudo\n    </pm-draggable-list>`\n})"
             },
             {
                 "name": "Template",
@@ -3158,6 +3245,24 @@
                     "defaultValue": "(args: CopyContentInputComponent) => ({\n  component: CopyContentInputComponent,\n  props: args,\n  template: `\n    <pm-copy-content-input\n        [text]=\"text\"\n        [disabled]=\"disabled\"\n    >\n        Conteúdo\n    </pm-copy-content-input>`\n})"
                 }
             ],
+            "stories/multi-level-dropdown-menu.stories.ts": [
+                {
+                    "name": "DefaultMultiLevelDropdownMenu",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "stories/multi-level-dropdown-menu.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "stories/multi-level-dropdown-menu.stories.ts",
+                    "type": "Story<MultiLevelDropdownMenuComponent>",
+                    "defaultValue": "(args: MultiLevelDropdownMenuComponent) => ({\n  component: MultiLevelDropdownMenuComponent,\n  props: args,\n  template: `\n    <pm-multi-level-dropdown-menu>\n    </pm-multi-level-dropdown-menu>`\n})"
+                }
+            ],
             "stories/inputs/RadioButton.stories.ts": [
                 {
                     "name": "DefaultRadioButton",
@@ -3192,24 +3297,6 @@
                     "file": "stories/Stepper.stories.ts",
                     "type": "Story<StepperComponent>",
                     "defaultValue": "(args: StepperComponent) => ({\n  component: StepperComponent,\n  props: args,\n  template: `\n    <pm-stepper>\n      <cdk-step> <p>This is any content of \"Step 1\"</p> </cdk-step>\n      <cdk-step> <p>This is any content of \"Step 2\"</p> </cdk-step>\n    </pm-stepper>`\n})"
-                }
-            ],
-            "stories/multi-level-dropdown-menu.stories.ts": [
-                {
-                    "name": "DefaultStepper",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "stories/multi-level-dropdown-menu.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "stories/multi-level-dropdown-menu.stories.ts",
-                    "type": "Story<MultiLevelDropdownMenuComponent>",
-                    "defaultValue": "(args: MultiLevelDropdownMenuComponent) => ({\n  component: MultiLevelDropdownMenuComponent,\n  props: args,\n  template: `\n    <pm-multi-level-dropdown-menu>\n    </pm-multi-level-dropdown-menu>`\n})"
                 }
             ],
             "stories/DraggableList.stories.ts": [
@@ -3582,7 +3669,7 @@
                 "linktype": "component",
                 "name": "MultiLevelDropdownMenuComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/3",
+                "coverageCount": "0/13",
                 "status": "low"
             },
             {
@@ -3997,7 +4084,7 @@
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
-                "name": "DefaultStepper",
+                "name": "DefaultMultiLevelDropdownMenu",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"

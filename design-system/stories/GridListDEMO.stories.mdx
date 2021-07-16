@@ -1,0 +1,27 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
+import {ButtonComponent} from '../projects/components/src/lib/button/button.component'; import {ButtonModule} from "../projects/components/src/lib/button/button.module";
+
+<Meta title='Prisma/teste mdx' component={ButtonComponent}/>
+
+Some **markdown** description, or whatever you want.
+
+export const Template = (args) => <ButtonComponent {...args} />
+
+export const defaultArgs = {
+  type: 'default',
+  label: 'Button',
+};
+
+
+<Canvas>
+  <Story name='default' args={defaultArgs}>
+    {Template.bind({})}
+  </Story>
+  <Story name='primary' args={{...defaultArgs, ...{type: 'primary'}}}>
+    {Template.bind({})}
+  </Story>
+</Canvas>
+
+## Args Table
+
+<ArgsTable of={ButtonComponent}/>
