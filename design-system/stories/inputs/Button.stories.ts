@@ -1,12 +1,13 @@
 import {ButtonComponent} from '../../projects/components/src/lib/button/button.component';
 import {Meta, Story} from '@storybook/angular';
+import {MainColors} from '../../projects/components/src/models/colors';
 
 export default {
-  title: 'Prisma/Inputs/Buttons',
+  title: 'Prisma/Inputs/Buttons/Stories',
   component: ButtonComponent,
   argTypes: {
     label: {control: 'text'},
-    type: {control: 'select'},
+    type: {control: { type: 'select' }, options: Object.values(MainColors)},
     busy: {control: 'boolean'},
     busyText: {control: 'text'},
     iconClass: {control: 'text'},
@@ -28,7 +29,7 @@ const Template: Story<ButtonComponent> = (args: ButtonComponent) => ({
         [outline]="outline"
         [disabled]="disabled"
     >
-        Botão
+        Button Content
     </pm-button>`
 });
 

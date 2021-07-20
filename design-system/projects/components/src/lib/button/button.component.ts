@@ -1,4 +1,4 @@
-import {Component, Input, Output, EventEmitter} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {MainColors} from '../../models/colors';
 
 @Component({
@@ -8,13 +8,15 @@ import {MainColors} from '../../models/colors';
 })
 export class ButtonComponent {
   @Input('label') label: string | null = '';  // Usada só pra aparecer no storybook
-  @Input('type') type: MainColors | string = MainColors.default;
-  @Input('busy') busy = false;
+  /**
+   * Utilizar as propriedades do tipo "MainColors"
+   */
+  @Input('type') type: MainColors | string = `${MainColors.default}`;
+  @Input('busy') busy: boolean = false;
   @Input('busyText') busyText: string;
   @Input('iconClass') iconClass: string;
-  @Input('outline') outline = false;
-  @Input('disabled') disabled = false;
-  // @Output() onClick = new EventEmitter<any>();
+  @Input('outline') outline: boolean = false;
+  @Input('disabled') disabled: boolean = false;
 
   constructor() { }
 

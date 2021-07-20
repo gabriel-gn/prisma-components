@@ -3,9 +3,10 @@ import {ButtonComponent} from '../projects/components/src/lib/button/button.comp
 import {MainColors} from "../projects/components/src/models/colors";
 import {moduleMetadata} from "@storybook/angular";
 import {ButtonModule} from "../projects/components/src/lib/button/button.module";
+import {DefaultButton, PrimaryButton} from "./inputs/Button.stories";
 
 <Meta
-  title='Prisma/teste mdx'
+  title='Prisma/Inputs/Buttons'
   component={ButtonComponent}
   decorators={[
     moduleMetadata({
@@ -13,20 +14,6 @@ import {ButtonModule} from "../projects/components/src/lib/button/button.module"
     })
   ]}
 />
-
-export const defaultTemplate = `
-    <pm-button
-        [label]="label"
-        [type]="type"
-        [busy]="busy"
-        [busyText]="busyText"
-        [iconClass]="iconClass"
-        [outline]="outline"
-        [disabled]="disabled"
-    >
-        Template btn
-    </pm-button>
-`;
 
 export const defaultArgs = {
   type: MainColors.default,
@@ -47,20 +34,9 @@ export const Template = (args) => <ButtonComponent {...args} />
 Some **markdown** description, or whatever you want.
 
 <Canvas>
-  <Story
-    name='default'
-    args={defaultArgs}
-    argTypes={defaultControls}
-  >
-    {Template.bind({})}
-  </Story>
-  <Story
-    name='primary'
-    args={{...defaultArgs, type: MainColors.primary}}
-    argTypes={defaultControls}
-  >
-    {Template.bind({})}
-  </Story>
+  <Story name='Default' story={DefaultButton}></Story>
+  <Story name='Primary' story={PrimaryButton}></Story>
+  <Story id='prisma-inputs-buttons--default-button'></Story>
 </Canvas>
 
 ## Args Table
