@@ -9,7 +9,8 @@ module.exports = {
     "@storybook/addon-links",
     "@storybook/addon-essentials",
     "@storybook/addon-storysource",
-    "@etchteam/storybook-addon-css-variables-theme"
+    "@etchteam/storybook-addon-css-variables-theme",
+    "@geometricpanda/storybook-addon-badges"
   ],
   builder: 'webpack5',
   webpackFinal: async (config, { configType }) => {

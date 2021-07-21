@@ -29,5 +29,22 @@ export const parameters = {
       light,
       dark
     }
+  },
+  badgesConfig: {
+    stable: {
+      contrast: '#FFF',
+      color: '#0a8701',
+      title: 'Stable'
+    },
+    beta: {
+      contrast: '#FFF',
+      color: '#018786',
+      title: 'Beta'
+    },
+    deprecated: {
+      contrast: '#d02828',
+      color: '#ffffff',
+      title: 'Deprecated'
+    }
   }
 }
