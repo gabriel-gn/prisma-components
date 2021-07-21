@@ -1,9 +1,17 @@
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
-import {ButtonComponent} from '../projects/components/src/lib/button/button.component';
+import {ButtonComponent} from '../../projects/components/src/lib/button/button.component';
 import {moduleMetadata} from "@storybook/angular";
-import {ButtonModule} from "../projects/components/src/lib/button/button.module";
-import {defaultArgs, DefaultButton, PrimaryButton} from "./inputs/Button.stories";
-import {MainColors} from "../projects/components/src/models/colors";
+import {ButtonModule} from "../../projects/components/src/lib/button/button.module";
+import {
+  DangerButton,
+  defaultArgs,
+  DefaultButton,
+  InfoButton, LightButton,
+  PrimaryButton,
+  SecondaryButton,
+  WarningButton
+} from "./button.stories";
+import {MainColors} from "../../projects/components/src/models/colors";
 
 export const argTypes = {
   type: {
@@ -65,13 +73,50 @@ export const argTypes = {
 
 export const Template = (args) => <ButtonComponent {...args} />
 
-Some **markdown** description, or whatever you want.
+# BUTTON
+
+#### Botões em geral para serem utilizados em aplicações.
+##### Permitem o uso de outputs como `(click)` do angular.
+
+<br/>
+<br/>
+
+## Botões padrões
+
+Usados em geral para componentes angular. Pra mudar a cor, utilizar o input `type`.
+
+Devem ser usados da seguinte forma:
+
+```
+<pm-button [type]='primary'>
+  Button Content
+<pm-button>
+```
 
 <Canvas>
   <Story name='Default' story={DefaultButton}></Story>
   <Story name='Primary' story={PrimaryButton}></Story>
-  <Story id='prisma-inputs-buttons--default-button'></Story>
+  <Story name='Secondary' story={SecondaryButton}></Story>
+  <Story name='Info' story={InfoButton}></Story>
+  <Story name='Warning' story={WarningButton}></Story>
+  <Story name='Danger' story={DangerButton}></Story>
+  <Story name='Light' story={LightButton}></Story>
 </Canvas>
+
+
+## Module Config
+
+```
+import {ButtonModule} from '@mprisma/components';
+
+@NgModule({
+  imports: [
+    ...,
+    ButtonModule,
+    ...,
+  ]
+})
+```
 
 ## Args Table
 

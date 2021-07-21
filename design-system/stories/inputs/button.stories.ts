@@ -46,6 +46,36 @@ PrimaryButton.args = {
   type: MainColors.primary
 };
 
+export const SecondaryButton = Template.bind({});
+SecondaryButton.args = {
+  ...defaultArgs,
+  type: MainColors.secondary
+};
+
+export const InfoButton = Template.bind({});
+InfoButton.args = {
+  ...defaultArgs,
+  type: MainColors.info
+};
+
+export const WarningButton = Template.bind({});
+WarningButton.args = {
+  ...defaultArgs,
+  type: MainColors.warning
+};
+
+export const DangerButton = Template.bind({});
+DangerButton.args = {
+  ...defaultArgs,
+  type: MainColors.danger
+};
+
+export const LightButton = Template.bind({});
+LightButton.args = {
+  ...defaultArgs,
+  type: MainColors.light
+};
+
 export const DisabledButton = Template.bind({});
 DisabledButton.args = {
   ...defaultArgs,

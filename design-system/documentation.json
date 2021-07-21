@@ -147,7 +147,7 @@
     "components": [
         {
             "name": "ButtonComponent",
-            "id": "component-ButtonComponent-6273fb26acd18823f551d0534364064c",
+            "id": "component-ButtonComponent-c1d58fe813f03b0aad2b098042ac73d7",
             "file": "projects/components/src/lib/button/button.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -167,23 +167,27 @@
                 {
                     "name": "busy",
                     "defaultValue": "false",
-                    "line": 15,
+                    "description": "<p>Exibe botão de &quot;carregamento&quot; e desabilita o botão.\nPara alterar o texto, utilizar a propriedade <code>busyText</code></p>\n",
+                    "line": 20,
                     "type": "boolean"
                 },
                 {
                     "name": "busyText",
-                    "line": 16,
+                    "description": "<p>Texto exibido junto ao botão de &quot;carregando&quot; quando a propriedade <code>busy</code> está como <code>true</code></p>\n",
+                    "line": 24,
                     "type": "string"
                 },
                 {
                     "name": "disabled",
                     "defaultValue": "false",
-                    "line": 19,
+                    "description": "<p>Propriedade de habilitado ou desabilitado</p>\n",
+                    "line": 36,
                     "type": "boolean"
                 },
                 {
                     "name": "iconClass",
-                    "line": 17,
+                    "description": "<p>Ícone que será exibido no botão junto ao texto. Ex: <code>uil uil-md uil-tabs</code></p>\n",
+                    "line": 28,
                     "type": "string"
                 },
                 {
@@ -195,14 +199,15 @@
                 {
                     "name": "outline",
                     "defaultValue": "false",
-                    "line": 18,
+                    "description": "<p>Se o botão será cheio ou apenas contornado pela borda</p>\n",
+                    "line": 32,
                     "type": "boolean"
                 },
                 {
                     "name": "type",
                     "defaultValue": "`${MainColors.default}`",
-                    "description": "<p>Utilizar as propriedades do tipo &quot;MainColors&quot;</p>\n",
-                    "line": 14,
+                    "description": "<p>Cor do botão que será exibido.\nUtilizar as propriedades do tipo &quot;MainColors&quot;</p>\n",
+                    "line": 15,
                     "type": "MainColors | string"
                 }
             ],
@@ -215,7 +220,7 @@
                     "optional": false,
                     "returnType": "string",
                     "typeParameters": [],
-                    "line": 23,
+                    "line": 40,
                     "modifierKind": [
                         114
                     ]
@@ -226,7 +231,7 @@
             "description": "",
             "rawdescription": "",
             "type": "component",
-            "sourceCode": "import {Component, Input} from '@angular/core';\nimport {MainColors} from '../../models/colors';\n\n@Component({\n  selector: 'pm-button',\n  templateUrl: './button.component.html',\n  styleUrls: ['./button.component.scss']\n})\nexport class ButtonComponent {\n  @Input('label') label: string | null = '';  // Usada só pra aparecer no storybook\n  /**\n   * Utilizar as propriedades do tipo \"MainColors\"\n   */\n  @Input('type') type: MainColors | string = `${MainColors.default}`;\n  @Input('busy') busy: boolean = false;\n  @Input('busyText') busyText: string;\n  @Input('iconClass') iconClass: string;\n  @Input('outline') outline: boolean = false;\n  @Input('disabled') disabled: boolean = false;\n\n  constructor() { }\n\n  public getClassName(): string {\n    let name = 'btn';\n    if (this.type) {\n      if (this.outline) {\n        name += ` btn-outline-${this.type}`;\n      } else {\n        name += ` btn-${this.type}`;\n      }\n    }\n    return name;\n  }\n\n}\n",
+            "sourceCode": "import {Component, Input} from '@angular/core';\nimport {MainColors} from '../../models/colors';\n\n@Component({\n  selector: 'pm-button',\n  templateUrl: './button.component.html',\n  styleUrls: ['./button.component.scss']\n})\nexport class ButtonComponent {\n  @Input('label') label: string | null = '';  // Usada só pra aparecer no storybook\n  /**\n   * Cor do botão que será exibido.\n   * Utilizar as propriedades do tipo \"MainColors\"\n   */\n  @Input('type') type: MainColors | string = `${MainColors.default}`;\n  /**\n   * Exibe botão de \"carregamento\" e desabilita o botão.\n   * Para alterar o texto, utilizar a propriedade `busyText`\n   */\n  @Input('busy') busy: boolean = false;\n  /**\n   * Texto exibido junto ao botão de \"carregando\" quando a propriedade `busy` está como `true`\n   */\n  @Input('busyText') busyText: string;\n  /**\n   * Ícone que será exibido no botão junto ao texto. Ex: `uil uil-md uil-tabs`\n   */\n  @Input('iconClass') iconClass: string;\n  /**\n   * Se o botão será cheio ou apenas contornado pela borda\n   */\n  @Input('outline') outline: boolean = false;\n  /**\n   * Propriedade de habilitado ou desabilitado\n   */\n  @Input('disabled') disabled: boolean = false;\n\n  constructor() { }\n\n  public getClassName(): string {\n    let name = 'btn';\n    if (this.type) {\n      if (this.outline) {\n        name += ` btn-outline-${this.type}`;\n      } else {\n        name += ` btn-${this.type}`;\n      }\n    }\n    return name;\n  }\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -239,7 +244,7 @@
                 "name": "constructor",
                 "description": "",
                 "args": [],
-                "line": 19
+                "line": 36
             },
             "templateData": "<div class=\"pm-button\">\n  <button [className]=\"getClassName()\" [disabled]=\"busy || disabled\">\n    <ng-container *ngIf=\"busy; else buttonContent\">\n      <span class=\"spinner-border spinner-border-sm mx-2\" role=\"status\" aria-hidden=\"true\"></span>\n      {{busyText ? busyText : ''}}\n    </ng-container>\n  </button>\n</div>\n\n<ng-template #buttonContent>\n  <i *ngIf=\"iconClass && busy === false\" class=\"{{iconClass}}\"></i>\n  <ng-container *ngIf=\"label; else noLabel\">\n    {{label}}\n  </ng-container>\n</ng-template>\n\n<ng-template #noLabel>\n  <ng-content></ng-content>\n</ng-template>\n\n"
         },
@@ -2475,7 +2480,7 @@
                 "name": "BusyButton",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/inputs/Button.stories.ts",
+                "file": "stories/inputs/button.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             },
@@ -2496,10 +2501,18 @@
                 "defaultValue": "require.context('./', true, /\\.spec\\.ts$/)"
             },
             {
+                "name": "DangerButton",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "stories/inputs/button.stories.ts",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/inputs/Button.stories.ts",
+                "file": "stories/inputs/button.stories.ts",
                 "type": "object",
                 "defaultValue": "{\n  label: '',\n  type: MainColors.default,\n  busy: false,\n  busyText: '',\n  iconClass: '',\n  outline: false,\n  disabled: false,\n}"
             },
@@ -2507,7 +2520,7 @@
                 "name": "DefaultButton",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/inputs/Button.stories.ts",
+                "file": "stories/inputs/button.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             },
@@ -2579,7 +2592,7 @@
                 "name": "DisabledButton",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/inputs/Button.stories.ts",
+                "file": "stories/inputs/button.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             },
@@ -2643,7 +2656,7 @@
                 "name": "IconButton",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/inputs/Button.stories.ts",
+                "file": "stories/inputs/button.stories.ts",
                 "type": "",
                 "defaultValue": "IconButtonTemplate.bind({})"
             },
@@ -2651,9 +2664,25 @@
                 "name": "IconButtonTemplate",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/inputs/Button.stories.ts",
+                "file": "stories/inputs/button.stories.ts",
                 "type": "",
                 "defaultValue": "(args: ButtonComponent) => ({\n  component: ButtonComponent,\n  props: args,\n  template: `\n    <pm-button\n        [label]=\"label\"\n        [type]=\"type\"\n        [busy]=\"busy\"\n        [busyText]=\"busyText\"\n        [iconClass]=\"iconClass\"\n        [outline]=\"outline\"\n    >\n        Download\n    </pm-button>`\n})"
+            },
+            {
+                "name": "InfoButton",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "stories/inputs/button.stories.ts",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "LightButton",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "stories/inputs/button.stories.ts",
+                "type": "",
+                "defaultValue": "Template.bind({})"
             },
             {
                 "name": "NoHeader",
@@ -2675,7 +2704,7 @@
                 "name": "PrimaryButton",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/inputs/Button.stories.ts",
+                "file": "stories/inputs/button.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             },
@@ -2685,6 +2714,14 @@
                 "subtype": "variable",
                 "file": "projects/components/src/test.ts",
                 "type": "literal type"
+            },
+            {
+                "name": "SecondaryButton",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "stories/inputs/button.stories.ts",
+                "type": "",
+                "defaultValue": "Template.bind({})"
             },
             {
                 "name": "Template",
@@ -2706,14 +2743,6 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/Table.stories.ts",
-                "type": "Story<TableComponent>",
-                "defaultValue": "(args: TableComponent) => ({\n  component: TableComponent,\n  props: args,\n  template: `\n    <pm-table\n      [columns]=\"columns\"\n      [columnNames]=\"columnNames\"\n      [imageColumns]=\"imageColumns\"\n      [imageHeight]=\"imageHeight\"\n      [showHeader]=\"showHeader\"\n      [numberFormat]=\"numberFormat\"\n      [numberPrefix]=\"numberPrefix\"\n      [itemList]=\"itemList\"\n      [borderRadius]=\"borderRadius\"\n      [backgroundColor]=\"backgroundColor\"\n      [expandedDetailTemplate]=\"expandedDetailTemplate\"\n      [disableExpandedOnDisabledRow]=\"disableExpandedOnDisabledRow\"\n    ></pm-table>`\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "stories/GridList.stories.ts",
                 "type": "Story<GridListComponent>",
                 "defaultValue": "(args: GridListComponent) => ({\n  component: GridListComponent,\n  props: args,\n  template: `\n    <pm-grid-list\n        [items]=\"items\"\n        [displayStyle]=\"displayStyle\"\n        [gridHeaderReverse]=\"gridHeaderReverse\"\n        [bodyBackgroundColor]=\"bodyBackgroundColor\"\n        [actionTemplate]=\"undefined\"\n        [overflowGallery]=\"overflowGallery\"\n    >\n      conteudo\n    </pm-grid-list>`\n})"
@@ -2730,17 +2759,17 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/multi-level-dropdown-menu.stories.ts",
-                "type": "Story<MultiLevelDropdownMenuComponent>",
-                "defaultValue": "(args: MultiLevelDropdownMenuComponent) => ({\n  component: MultiLevelDropdownMenuComponent,\n  props: args,\n  template: `\n    <pm-multi-level-dropdown-menu>\n    </pm-multi-level-dropdown-menu>`\n})"
+                "file": "stories/Table.stories.ts",
+                "type": "Story<TableComponent>",
+                "defaultValue": "(args: TableComponent) => ({\n  component: TableComponent,\n  props: args,\n  template: `\n    <pm-table\n      [columns]=\"columns\"\n      [columnNames]=\"columnNames\"\n      [imageColumns]=\"imageColumns\"\n      [imageHeight]=\"imageHeight\"\n      [showHeader]=\"showHeader\"\n      [numberFormat]=\"numberFormat\"\n      [numberPrefix]=\"numberPrefix\"\n      [itemList]=\"itemList\"\n      [borderRadius]=\"borderRadius\"\n      [backgroundColor]=\"backgroundColor\"\n      [expandedDetailTemplate]=\"expandedDetailTemplate\"\n      [disableExpandedOnDisabledRow]=\"disableExpandedOnDisabledRow\"\n    ></pm-table>`\n})"
             },
             {
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/inputs/Button.stories.ts",
-                "type": "Story<ButtonComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-button\n        [label]=\"label\"\n        [type]=\"type\"\n        [busy]=\"busy\"\n        [busyText]=\"busyText\"\n        [iconClass]=\"iconClass\"\n        [outline]=\"outline\"\n        [disabled]=\"disabled\"\n    >\n        Button Content\n    </pm-button>\n  `\n})"
+                "file": "stories/multi-level-dropdown-menu.stories.ts",
+                "type": "Story<MultiLevelDropdownMenuComponent>",
+                "defaultValue": "(args: MultiLevelDropdownMenuComponent) => ({\n  component: MultiLevelDropdownMenuComponent,\n  props: args,\n  template: `\n    <pm-multi-level-dropdown-menu>\n    </pm-multi-level-dropdown-menu>`\n})"
             },
             {
                 "name": "Template",
@@ -2775,10 +2804,26 @@
                 "defaultValue": "(args: RadioButtonComponent) => ({\n  component: RadioButtonComponent,\n  props: args,\n  template: `\n    <pm-radio-button\n        [values]=\"values\"\n        [selectedValue]=\"selectedValue\"\n    >\n        Conteúdo\n    </pm-radio-button>`\n})"
             },
             {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "stories/inputs/button.stories.ts",
+                "type": "Story<ButtonComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-button\n        [label]=\"label\"\n        [type]=\"type\"\n        [busy]=\"busy\"\n        [busyText]=\"busyText\"\n        [iconClass]=\"iconClass\"\n        [outline]=\"outline\"\n        [disabled]=\"disabled\"\n    >\n        Button Content\n    </pm-button>\n  `\n})"
+            },
+            {
                 "name": "ThumbnailTable",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
                 "file": "stories/Table.stories.ts",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "WarningButton",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "stories/inputs/button.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             }
@@ -3076,12 +3121,20 @@
                     "defaultValue": "Template.bind({})"
                 }
             ],
-            "stories/inputs/Button.stories.ts": [
+            "stories/inputs/button.stories.ts": [
                 {
                     "name": "BusyButton",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "stories/inputs/Button.stories.ts",
+                    "file": "stories/inputs/button.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "DangerButton",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "stories/inputs/button.stories.ts",
                     "type": "",
                     "defaultValue": "Template.bind({})"
                 },
@@ -3089,7 +3142,7 @@
                     "name": "defaultArgs",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "stories/inputs/Button.stories.ts",
+                    "file": "stories/inputs/button.stories.ts",
                     "type": "object",
                     "defaultValue": "{\n  label: '',\n  type: MainColors.default,\n  busy: false,\n  busyText: '',\n  iconClass: '',\n  outline: false,\n  disabled: false,\n}"
                 },
@@ -3097,7 +3150,7 @@
                     "name": "DefaultButton",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "stories/inputs/Button.stories.ts",
+                    "file": "stories/inputs/button.stories.ts",
                     "type": "",
                     "defaultValue": "Template.bind({})"
                 },
@@ -3105,7 +3158,7 @@
                     "name": "DisabledButton",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "stories/inputs/Button.stories.ts",
+                    "file": "stories/inputs/button.stories.ts",
                     "type": "",
                     "defaultValue": "Template.bind({})"
                 },
@@ -3113,7 +3166,7 @@
                     "name": "IconButton",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "stories/inputs/Button.stories.ts",
+                    "file": "stories/inputs/button.stories.ts",
                     "type": "",
                     "defaultValue": "IconButtonTemplate.bind({})"
                 },
@@ -3121,15 +3174,39 @@
                     "name": "IconButtonTemplate",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "stories/inputs/Button.stories.ts",
+                    "file": "stories/inputs/button.stories.ts",
                     "type": "",
                     "defaultValue": "(args: ButtonComponent) => ({\n  component: ButtonComponent,\n  props: args,\n  template: `\n    <pm-button\n        [label]=\"label\"\n        [type]=\"type\"\n        [busy]=\"busy\"\n        [busyText]=\"busyText\"\n        [iconClass]=\"iconClass\"\n        [outline]=\"outline\"\n    >\n        Download\n    </pm-button>`\n})"
+                },
+                {
+                    "name": "InfoButton",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "stories/inputs/button.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "LightButton",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "stories/inputs/button.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
                 },
                 {
                     "name": "PrimaryButton",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "stories/inputs/Button.stories.ts",
+                    "file": "stories/inputs/button.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "SecondaryButton",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "stories/inputs/button.stories.ts",
                     "type": "",
                     "defaultValue": "Template.bind({})"
                 },
@@ -3137,9 +3214,17 @@
                     "name": "Template",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "stories/inputs/Button.stories.ts",
+                    "file": "stories/inputs/button.stories.ts",
                     "type": "Story<ButtonComponent>",
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-button\n        [label]=\"label\"\n        [type]=\"type\"\n        [busy]=\"busy\"\n        [busyText]=\"busyText\"\n        [iconClass]=\"iconClass\"\n        [outline]=\"outline\"\n        [disabled]=\"disabled\"\n    >\n        Button Content\n    </pm-button>\n  `\n})"
+                },
+                {
+                    "name": "WarningButton",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "stories/inputs/button.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
                 }
             ],
             "projects/components/src/test.ts": [
@@ -3589,9 +3674,9 @@
                 "type": "component",
                 "linktype": "component",
                 "name": "ButtonComponent",
-                "coveragePercent": 10,
-                "coverageCount": "1/10",
-                "status": "low"
+                "coveragePercent": 60,
+                "coverageCount": "6/10",
+                "status": "good"
             },
             {
                 "filePath": "projects/components/src/lib/card/card.component.ts",
@@ -3940,86 +4025,6 @@
                 "status": "low"
             },
             {
-                "filePath": "stories/inputs/Button.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "BusyButton",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "stories/inputs/Button.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "defaultArgs",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "stories/inputs/Button.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "DefaultButton",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "stories/inputs/Button.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "DisabledButton",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "stories/inputs/Button.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "IconButton",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "stories/inputs/Button.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "IconButtonTemplate",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "stories/inputs/Button.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "PrimaryButton",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "stories/inputs/Button.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "Template",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
                 "filePath": "stories/inputs/Checkbox.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
@@ -4105,6 +4110,136 @@
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
                 "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "stories/inputs/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "BusyButton",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "stories/inputs/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "DangerButton",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "stories/inputs/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "defaultArgs",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "stories/inputs/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "DefaultButton",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "stories/inputs/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "DisabledButton",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "stories/inputs/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "IconButton",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "stories/inputs/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "IconButtonTemplate",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "stories/inputs/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "InfoButton",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "stories/inputs/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "LightButton",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "stories/inputs/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "PrimaryButton",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "stories/inputs/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "SecondaryButton",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "stories/inputs/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "stories/inputs/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "WarningButton",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
