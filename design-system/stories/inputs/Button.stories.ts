@@ -1,23 +1,22 @@
 import {ButtonComponent} from '../../projects/components/src/lib/button/button.component';
-import {Meta, Story} from '@storybook/angular';
+import {Meta} from '@storybook/angular/types-6-0';
 import {MainColors} from '../../projects/components/src/models/colors';
+import {Story} from '@storybook/angular';
 
 export default {
   title: 'Prisma/Inputs/Buttons/Stories',
   component: ButtonComponent,
   argTypes: {
-    label: {control: 'text'},
+    label: {control: 'text' },
     type: {control: { type: 'select' }, options: Object.values(MainColors)},
     busy: {control: 'boolean'},
     busyText: {control: 'text'},
     iconClass: {control: 'text'},
     outline: {control: 'boolean'},
-    // we need to override here since in Angular it could be null as well and therefore it would become an ambigious data type for storybook
   }
 } as Meta;
 
-const Template: Story<ButtonComponent> = (args: ButtonComponent) => ({
-  component: ButtonComponent,
+export const Template: Story<ButtonComponent> = (args) => ({
   props: args,
   template: `
     <pm-button
@@ -30,7 +29,8 @@ const Template: Story<ButtonComponent> = (args: ButtonComponent) => ({
         [disabled]="disabled"
     >
         Button Content
-    </pm-button>`
+    </pm-button>
+  `
 });
 
 export const DefaultButton = Template.bind({});
@@ -56,7 +56,7 @@ BusyButton.args = {
   busyText: 'Aguarde...'
 };
 
-const IconButtonTemplate: Story<ButtonComponent> = (args: ButtonComponent) => ({
+const IconButtonTemplate = (args: ButtonComponent) => ({
   component: ButtonComponent,
   props: args,
   template: `
