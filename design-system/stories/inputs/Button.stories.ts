@@ -1,6 +1,7 @@
 import {ButtonComponent} from '../../projects/components/src/lib/button/button.component';
 import {Meta} from '@storybook/angular/types-6-0';
 import {Story} from '@storybook/angular';
+import {MainColors} from '../../projects/components/src/models/colors';
 
 export default {
   title: 'Prisma/Inputs/Buttons/Stories',
@@ -24,25 +25,37 @@ export const Template: Story<ButtonComponent> = (args) => ({
   `
 });
 
+export const defaultArgs = {
+  label: '',
+  type: MainColors.default,
+  busy: false,
+  busyText: '',
+  iconClass: '',
+  outline: false,
+  disabled: false,
+};
+
 export const DefaultButton = Template.bind({});
-// DefaultButton.parameters = { controls: { include: ['label', 'busy'] } };
 DefaultButton.args = {
-  type: 'default'
+  ...defaultArgs
 };
 
 export const PrimaryButton = Template.bind({});
 PrimaryButton.args = {
-  type: 'primary'
+  ...defaultArgs,
+  type: MainColors.primary
 };
 
 export const DisabledButton = Template.bind({});
 DisabledButton.args = {
+  ...defaultArgs,
   type: 'primary',
   disabled: true
 };
 
 export const BusyButton = Template.bind({});
 BusyButton.args = {
+  ...defaultArgs,
   type: 'primary',
   busy: true,
   busyText: 'Aguarde...'
@@ -65,6 +78,7 @@ const IconButtonTemplate = (args: ButtonComponent) => ({
 });
 export const IconButton = IconButtonTemplate.bind({});
 IconButton.args = {
+  ...defaultArgs,
   type: 'primary',
   busy: false,
   busyText: 'Aguarde...',

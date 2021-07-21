@@ -2496,6 +2496,14 @@
                 "defaultValue": "require.context('./', true, /\\.spec\\.ts$/)"
             },
             {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "stories/inputs/Button.stories.ts",
+                "type": "object",
+                "defaultValue": "{\n  label: '',\n  type: MainColors.default,\n  busy: false,\n  busyText: '',\n  iconClass: '',\n  outline: false,\n  disabled: false,\n}"
+            },
+            {
                 "name": "DefaultButton",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -2698,6 +2706,14 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
+                "file": "stories/Table.stories.ts",
+                "type": "Story<TableComponent>",
+                "defaultValue": "(args: TableComponent) => ({\n  component: TableComponent,\n  props: args,\n  template: `\n    <pm-table\n      [columns]=\"columns\"\n      [columnNames]=\"columnNames\"\n      [imageColumns]=\"imageColumns\"\n      [imageHeight]=\"imageHeight\"\n      [showHeader]=\"showHeader\"\n      [numberFormat]=\"numberFormat\"\n      [numberPrefix]=\"numberPrefix\"\n      [itemList]=\"itemList\"\n      [borderRadius]=\"borderRadius\"\n      [backgroundColor]=\"backgroundColor\"\n      [expandedDetailTemplate]=\"expandedDetailTemplate\"\n      [disableExpandedOnDisabledRow]=\"disableExpandedOnDisabledRow\"\n    ></pm-table>`\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
                 "file": "stories/GridList.stories.ts",
                 "type": "Story<GridListComponent>",
                 "defaultValue": "(args: GridListComponent) => ({\n  component: GridListComponent,\n  props: args,\n  template: `\n    <pm-grid-list\n        [items]=\"items\"\n        [displayStyle]=\"displayStyle\"\n        [gridHeaderReverse]=\"gridHeaderReverse\"\n        [bodyBackgroundColor]=\"bodyBackgroundColor\"\n        [actionTemplate]=\"undefined\"\n        [overflowGallery]=\"overflowGallery\"\n    >\n      conteudo\n    </pm-grid-list>`\n})"
@@ -2709,14 +2725,6 @@
                 "file": "stories/Stepper.stories.ts",
                 "type": "Story<StepperComponent>",
                 "defaultValue": "(args: StepperComponent) => ({\n  component: StepperComponent,\n  props: args,\n  template: `\n    <pm-stepper>\n      <cdk-step> <p>This is any content of \"Step 1\"</p> </cdk-step>\n      <cdk-step> <p>This is any content of \"Step 2\"</p> </cdk-step>\n    </pm-stepper>`\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "stories/Table.stories.ts",
-                "type": "Story<TableComponent>",
-                "defaultValue": "(args: TableComponent) => ({\n  component: TableComponent,\n  props: args,\n  template: `\n    <pm-table\n      [columns]=\"columns\"\n      [columnNames]=\"columnNames\"\n      [imageColumns]=\"imageColumns\"\n      [imageHeight]=\"imageHeight\"\n      [showHeader]=\"showHeader\"\n      [numberFormat]=\"numberFormat\"\n      [numberPrefix]=\"numberPrefix\"\n      [itemList]=\"itemList\"\n      [borderRadius]=\"borderRadius\"\n      [backgroundColor]=\"backgroundColor\"\n      [expandedDetailTemplate]=\"expandedDetailTemplate\"\n      [disableExpandedOnDisabledRow]=\"disableExpandedOnDisabledRow\"\n    ></pm-table>`\n})"
             },
             {
                 "name": "Template",
@@ -3076,6 +3084,14 @@
                     "file": "stories/inputs/Button.stories.ts",
                     "type": "",
                     "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "stories/inputs/Button.stories.ts",
+                    "type": "object",
+                    "defaultValue": "{\n  label: '',\n  type: MainColors.default,\n  busy: false,\n  busyText: '',\n  iconClass: '',\n  outline: false,\n  disabled: false,\n}"
                 },
                 {
                     "name": "DefaultButton",
@@ -3929,6 +3945,16 @@
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
                 "name": "BusyButton",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "stories/inputs/Button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "defaultArgs",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"

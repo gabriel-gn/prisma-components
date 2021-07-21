@@ -2,50 +2,50 @@ import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
 import {ButtonComponent} from '../projects/components/src/lib/button/button.component';
 import {moduleMetadata} from "@storybook/angular";
 import {ButtonModule} from "../projects/components/src/lib/button/button.module";
-import {DefaultButton, PrimaryButton} from "./inputs/Button.stories";
+import {defaultArgs, DefaultButton, PrimaryButton} from "./inputs/Button.stories";
 import {MainColors} from "../projects/components/src/models/colors";
 
 export const argTypes = {
   type: {
     // description: 'CRIAR A DESCRIÇÃO COMO COMENTÁRIO MULTILINHA ACIMA DOS INPUTS NO COMPONENTE',
     table: {
-      defaultValue: { summary: MainColors.default },
+      defaultValue: { summary: defaultArgs.type},
     },
     control: {type: 'select'}, options: Object.values(MainColors),
   },
   busy: {
     table: {
-      defaultValue: { summary: false },
+      defaultValue: { summary: defaultArgs.busy},
     },
     control: { type: 'boolean'},
   },
   busyText: {
     table: {
-      defaultValue: { summary: ''},
+      defaultValue: { summary: defaultArgs.busyText},
     },
     control: { type: 'text'},
   },
   iconClass: {
     table: {
-      defaultValue: { summary: ''},
+      defaultValue: { summary: defaultArgs.iconClass},
     },
     control: { type: 'text'},
   },
   outline: {
     table: {
-      defaultValue: { summary: false },
+      defaultValue: { summary: defaultArgs.outline},
     },
     control: { type: 'boolean'},
   },
   disabled: {
     table: {
-      defaultValue: { summary: false },
+      defaultValue: { summary: defaultArgs.disabled},
     },
     control: { type: 'boolean'},
   },
   label: {
     table: {
-      defaultValue: { summary: 'storybook only' },
+      defaultValue: { summary: defaultArgs.label},
       disable: true
     },
     control: { type: 'text'},
