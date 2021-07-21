@@ -2690,17 +2690,17 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/GridList.stories.ts",
-                "type": "Story<GridListComponent>",
-                "defaultValue": "(args: GridListComponent) => ({\n  component: GridListComponent,\n  props: args,\n  template: `\n    <pm-grid-list\n        [items]=\"items\"\n        [displayStyle]=\"displayStyle\"\n        [gridHeaderReverse]=\"gridHeaderReverse\"\n        [bodyBackgroundColor]=\"bodyBackgroundColor\"\n        [actionTemplate]=\"undefined\"\n        [overflowGallery]=\"overflowGallery\"\n    >\n      conteudo\n    </pm-grid-list>`\n})"
+                "file": "stories/DraggableList.stories.ts",
+                "type": "Story<DraggableListComponent>",
+                "defaultValue": "(args: DraggableListComponent) => ({\n  component: DraggableListComponent,\n  props: args,\n  template: `\n    <pm-draggable-list\n        [showIndex]=\"showIndex\"\n        [itemActionLabel]=\"itemActionLabel\"\n        [itemMainLabel]=\"itemMainLabel\"\n        [itemSubLabel]=\"itemSubLabel\"\n        [actions]=\"actions\"\n        [itemList]=\"itemList\"\n        [roundedBorders]=\"roundedBorders\"\n        [enableDragging]=\"enableDragging\"\n        [enableSelection]=\"enableSelection\"\n    >\n      conteudo\n    </pm-draggable-list>`\n})"
             },
             {
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/DraggableList.stories.ts",
-                "type": "Story<DraggableListComponent>",
-                "defaultValue": "(args: DraggableListComponent) => ({\n  component: DraggableListComponent,\n  props: args,\n  template: `\n    <pm-draggable-list\n        [showIndex]=\"showIndex\"\n        [itemActionLabel]=\"itemActionLabel\"\n        [itemMainLabel]=\"itemMainLabel\"\n        [itemSubLabel]=\"itemSubLabel\"\n        [actions]=\"actions\"\n        [itemList]=\"itemList\"\n        [roundedBorders]=\"roundedBorders\"\n        [enableDragging]=\"enableDragging\"\n        [enableSelection]=\"enableSelection\"\n    >\n      conteudo\n    </pm-draggable-list>`\n})"
+                "file": "stories/GridList.stories.ts",
+                "type": "Story<GridListComponent>",
+                "defaultValue": "(args: GridListComponent) => ({\n  component: GridListComponent,\n  props: args,\n  template: `\n    <pm-grid-list\n        [items]=\"items\"\n        [displayStyle]=\"displayStyle\"\n        [gridHeaderReverse]=\"gridHeaderReverse\"\n        [bodyBackgroundColor]=\"bodyBackgroundColor\"\n        [actionTemplate]=\"undefined\"\n        [overflowGallery]=\"overflowGallery\"\n    >\n      conteudo\n    </pm-grid-list>`\n})"
             },
             {
                 "name": "Template",

@@ -1,33 +1,67 @@
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
 import {ButtonComponent} from '../projects/components/src/lib/button/button.component';
-import {MainColors} from "../projects/components/src/models/colors";
 import {moduleMetadata} from "@storybook/angular";
 import {ButtonModule} from "../projects/components/src/lib/button/button.module";
 import {DefaultButton, PrimaryButton} from "./inputs/Button.stories";
+import {MainColors} from "../projects/components/src/models/colors";
+
+export const argTypes = {
+  type: {
+    // description: 'CRIAR A DESCRIÇÃO COMO COMENTÁRIO MULTILINHA ACIMA DOS INPUTS NO COMPONENTE',
+    table: {
+      defaultValue: { summary: MainColors.default },
+    },
+    control: {type: 'select'}, options: Object.values(MainColors),
+  },
+  busy: {
+    table: {
+      defaultValue: { summary: false },
+    },
+    control: { type: 'boolean'},
+  },
+  busyText: {
+    table: {
+      defaultValue: { summary: ''},
+    },
+    control: { type: 'text'},
+  },
+  iconClass: {
+    table: {
+      defaultValue: { summary: ''},
+    },
+    control: { type: 'text'},
+  },
+  outline: {
+    table: {
+      defaultValue: { summary: false },
+    },
+    control: { type: 'boolean'},
+  },
+  disabled: {
+    table: {
+      defaultValue: { summary: false },
+    },
+    control: { type: 'boolean'},
+  },
+  label: {
+    table: {
+      defaultValue: { summary: 'storybook only' },
+      disable: true
+    },
+    control: { type: 'text'},
+  },
+}
 
 <Meta
   title='Prisma/Inputs/Buttons'
   component={ButtonComponent}
+  argTypes={argTypes}
   decorators={[
     moduleMetadata({
       declarations: [ButtonModule]
     })
   ]}
 />
-
-export const defaultArgs = {
-  type: MainColors.default,
-  label: 'Button',
-};
-
-export const defaultControls = {
-  label: {control: 'text'},
-  type: {control: 'select', options: Object.values(MainColors),},
-  busy: {control: 'boolean'},
-  busyText: {control: 'text'},
-  iconClass: {control: 'text'},
-  outline: {control: 'boolean'},
-};
 
 export const Template = (args) => <ButtonComponent {...args} />
 
@@ -41,4 +75,4 @@ Some **markdown** description, or whatever you want.
 
 ## Args Table
 
-<ArgsTable of={ButtonComponent}/>
+<ArgsTable story='Default'/>
