@@ -56,6 +56,18 @@ ngscriptoutput=$(eval "$ngscript")
 echo "$ngscriptoutput"
 
 # Copia os stories para as pastas que precisa
-cp ./stories/default.mdx "./projects/components/src/lib/${componentDir}/${componentKebabName}.stories.mdx"
-cp ./stories/default.mdx "./projects/components/src/lib/${componentDir}/${componentKebabName}.stories.mdx"
+storiesFilenamePath=${PWD}/projects/components/src/lib/${componentDir}/${componentKebabName}
+cp ./stories/default.mdx "${storiesFilenamePath}.stories.mdx"
+cp ./stories/default.ts "${storiesFilenamePath}.stories.ts"
 echo "Stories created"
+
+# altera os stories default com os valores novos de acordo com o componente criado
+filesToEdit=("${storiesFilenamePath}.stories.ts" "${storiesFilenamePath}.stories.mdx")
+for i in "${!filesToEdit[@]}"; do
+  sed -i '' -e "s/XXXTitle/$component/g" "${filesToEdit[$i]}"
+  sed -i '' -e "s/XXXComponent/${component}Component/g" "${filesToEdit[$i]}"
+  sed -i '' -e "s/XXXModule/${component}Module/g" "${filesToEdit[$i]}"
+  sed -i '' -e "s/XXXName/${componentKebabName}/g" "${filesToEdit[$i]}"
+  sed -i '' -e '1d' "${filesToEdit[$i]}"  # remove a primeira linha que é um ts-ignore
+done
+echo "ts stories edited"
