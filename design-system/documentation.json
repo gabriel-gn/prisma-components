@@ -249,6 +249,112 @@
             "templateData": "<div class=\"pm-button\">\n  <button [className]=\"getClassName()\" [disabled]=\"busy || disabled\">\n    <ng-container *ngIf=\"busy; else buttonContent\">\n      <span class=\"spinner-border spinner-border-sm mx-2\" role=\"status\" aria-hidden=\"true\"></span>\n      {{busyText ? busyText : ''}}\n    </ng-container>\n  </button>\n</div>\n\n<ng-template #buttonContent>\n  <i *ngIf=\"iconClass && busy === false\" class=\"{{iconClass}}\"></i>\n  <ng-container *ngIf=\"label; else noLabel\">\n    {{label}}\n  </ng-container>\n</ng-template>\n\n<ng-template #noLabel>\n  <ng-content></ng-content>\n</ng-template>\n\n"
         },
         {
+            "name": "ButtonComponent",
+            "id": "component-ButtonComponent-8f80c7c4d491a0c7b21d3cb70e67b470-1",
+            "file": "projects/components/src/lib/inputs/button/button.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "pm-button",
+            "styleUrls": [
+                "./button.component.scss"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./button.component.html"
+            ],
+            "viewProviders": [],
+            "inputsClass": [
+                {
+                    "name": "busy",
+                    "defaultValue": "false",
+                    "description": "<p>Exibe botão de &quot;carregamento&quot; e desabilita o botão.\nPara alterar o texto, utilizar a propriedade <code>busyText</code></p>\n",
+                    "line": 20,
+                    "type": "boolean"
+                },
+                {
+                    "name": "busyText",
+                    "description": "<p>Texto exibido junto ao botão de &quot;carregando&quot; quando a propriedade <code>busy</code> está como <code>true</code></p>\n",
+                    "line": 24,
+                    "type": "string"
+                },
+                {
+                    "name": "disabled",
+                    "defaultValue": "false",
+                    "description": "<p>Propriedade de habilitado ou desabilitado</p>\n",
+                    "line": 36,
+                    "type": "boolean"
+                },
+                {
+                    "name": "iconClass",
+                    "description": "<p>Ícone que será exibido no botão junto ao texto. Ex: <code>uil uil-md uil-tabs</code></p>\n",
+                    "line": 28,
+                    "type": "string"
+                },
+                {
+                    "name": "label",
+                    "defaultValue": "''",
+                    "line": 10,
+                    "type": "string | null"
+                },
+                {
+                    "name": "outline",
+                    "defaultValue": "false",
+                    "description": "<p>Se o botão será cheio ou apenas contornado pela borda</p>\n",
+                    "line": 32,
+                    "type": "boolean"
+                },
+                {
+                    "name": "type",
+                    "defaultValue": "`${MainColors.default}`",
+                    "description": "<p>Cor do botão que será exibido.\nUtilizar as propriedades do tipo &quot;MainColors&quot;</p>\n",
+                    "line": 15,
+                    "type": "MainColors | string"
+                }
+            ],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [
+                {
+                    "name": "getClassName",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "string",
+                    "typeParameters": [],
+                    "line": 40,
+                    "modifierKind": [
+                        114
+                    ]
+                }
+            ],
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "",
+            "type": "component",
+            "sourceCode": "import {Component, Input} from '@angular/core';\nimport {MainColors} from '../../../models/colors';\n\n@Component({\n  selector: 'pm-button',\n  templateUrl: './button.component.html',\n  styleUrls: ['./button.component.scss']\n})\nexport class ButtonComponent {\n  @Input('label') label: string | null = '';  // Usada só pra aparecer no storybook\n  /**\n   * Cor do botão que será exibido.\n   * Utilizar as propriedades do tipo \"MainColors\"\n   */\n  @Input('type') type: MainColors | string = `${MainColors.default}`;\n  /**\n   * Exibe botão de \"carregamento\" e desabilita o botão.\n   * Para alterar o texto, utilizar a propriedade `busyText`\n   */\n  @Input('busy') busy: boolean = false;\n  /**\n   * Texto exibido junto ao botão de \"carregando\" quando a propriedade `busy` está como `true`\n   */\n  @Input('busyText') busyText: string;\n  /**\n   * Ícone que será exibido no botão junto ao texto. Ex: `uil uil-md uil-tabs`\n   */\n  @Input('iconClass') iconClass: string;\n  /**\n   * Se o botão será cheio ou apenas contornado pela borda\n   */\n  @Input('outline') outline: boolean = false;\n  /**\n   * Propriedade de habilitado ou desabilitado\n   */\n  @Input('disabled') disabled: boolean = false;\n\n  constructor() { }\n\n  public getClassName(): string {\n    let name = 'btn';\n    if (this.type) {\n      if (this.outline) {\n        name += ` btn-outline-${this.type}`;\n      } else {\n        name += ` btn-${this.type}`;\n      }\n    }\n    return name;\n  }\n\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": ".pm-button {\n  button {\n    &:disabled {\n      cursor: not-allowed;\n      pointer-events: none;\n    }\n  }\n}\n",
+                    "styleUrl": "./button.component.scss"
+                }
+            ],
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "args": [],
+                "line": 36
+            },
+            "isDuplicate": true,
+            "duplicateId": 1,
+            "duplicateName": "ButtonComponent-1",
+            "templateData": "<div class=\"pm-button\">\n  <button [className]=\"getClassName()\" [disabled]=\"busy || disabled\">\n    <ng-container *ngIf=\"busy; else buttonContent\">\n      <span class=\"spinner-border spinner-border-sm mx-2\" role=\"status\" aria-hidden=\"true\"></span>\n      {{busyText ? busyText : ''}}\n    </ng-container>\n  </button>\n</div>\n\n<ng-template #buttonContent>\n  <i *ngIf=\"iconClass && busy === false\" class=\"{{iconClass}}\"></i>\n  <ng-container *ngIf=\"label; else noLabel\">\n    {{label}}\n  </ng-container>\n</ng-template>\n\n<ng-template #noLabel>\n  <ng-content></ng-content>\n</ng-template>\n\n"
+        },
+        {
             "name": "CardComponent",
             "id": "component-CardComponent-258e5bd4c61dec0aac573bae3c72d714",
             "file": "projects/components/src/lib/card/card.component.ts",
@@ -1084,62 +1190,6 @@
                 ]
             },
             "templateData": "<div class=\"d-flex w-100\">\n  <div *ngIf=\"showIndex\"\n       class=\"draggable-item-index-container\"\n       [ngClass]=\"{rounded: roundedBorders && !showIndex, 'rounded-left': roundedBorders && showIndex}\"\n  >\n    <div *ngFor=\"let item of itemList, let i = index;\" class=\"draggable-item-index\">\n      <p>{{ i + 1 }}</p>\n    </div>\n  </div>\n  <div (cdkDropListDropped)=\"drop($event)\" cdkDropList\n       class=\"table-item-container w-100\"\n       [ngClass]=\"{rounded: roundedBorders && !showIndex, 'rounded-right': roundedBorders && showIndex}\">\n    <div *ngFor=\"let item of itemList, let i = index;\" cdkDrag cdkDragBoundary=\".table-item-container\" [cdkDragDisabled]=\"enableDragging === false\"\n         class=\"draggable-item\" (contextmenu)=\"openContextMenu($event, {$implicit: item}); $event.preventDefault();\"\n         [ngClass]=\"{'draggable-item-selected': isSelectedItem(item)}\"\n         (click)=\"setSelectedItem(item)\"\n         [ngStyle]=\"{'cursor': enableDragging ? 'move' : (enableSelection ? 'pointer' : null)}\">\n      <div *cdkDragPlaceholder class=\"draggable-placeholder\"></div>\n      <div class=\"d-flex w-100\">\n        <!-- if IsMobile -> para poder reordenar os perfis apenas pelo ícone -->\n        <div *ngIf=\"false\" cdkDragHandle class=\"move-icon-container\">\n          <i class=\"uil uil-lg uil-draggabledots\"></i>\n        </div>\n        <div *ngIf=\"enableDragging\" class=\"move-icon-container\">\n          <i class=\"uil uil-lg uil-draggabledots\"></i>\n        </div>\n        <div class=\"w-100 align-self-center text-overflow\">\n          <p class=\"m-0\">{{ formatItemStringParameters(itemMainLabel, item) }}</p>\n          <p class=\"m-0 sub-p\">{{ formatItemStringParameters(itemSubLabel, item) }}</p>\n        </div>\n        <div class=\"d-flex ms-2\">\n          <button (click)=\"actionsSelect.toggle()\" class=\"btn btn-light btn-icon btn-sm ms-2\">\n            <i class=\"uil uil-md uil-ellipsis-h\"></i>\n          </button>\n          <mat-select #actionsSelect class=\"mat-select-btn-sm\">\n            <mat-option [hidden]=\"true\"></mat-option>\n            <ng-container *ngTemplateOutlet=\"contextActions; context: {$implicit: item}\"></ng-container>\n          </mat-select>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n\n<ng-template #contextActions let-item>\n  <mat-option *ngFor=\"let action of actions\" (click)=\"action.method(item)\">{{formatItemStringParameters(action.name, item)}}</mat-option>\n</ng-template>\n\n<ng-template #contextMenu let-item>\n  <div class=\"mat-menu-panel\">\n    <mat-optgroup [label]=\"formatItemStringParameters(itemActionLabel, item)\">\n      <ng-container *ngTemplateOutlet=\"contextActions; context: {$implicit: item}\"></ng-container>\n    </mat-optgroup>\n  </div>\n</ng-template>\n"
-        },
-        {
-            "name": "FofongaComponent",
-            "id": "component-FofongaComponent-9d0aed5a0aee1f46f6d5c0a41f1a705c",
-            "file": "projects/components/src/lib/abluble/fofonga/fofonga.component.ts",
-            "encapsulation": [],
-            "entryComponents": [],
-            "inputs": [],
-            "outputs": [],
-            "providers": [],
-            "selector": "pm-fofonga",
-            "styleUrls": [
-                "./fofonga.component.scss"
-            ],
-            "styles": [],
-            "templateUrl": [
-                "./fofonga.component.html"
-            ],
-            "viewProviders": [],
-            "inputsClass": [],
-            "outputsClass": [],
-            "propertiesClass": [],
-            "methodsClass": [
-                {
-                    "name": "ngOnInit",
-                    "args": [],
-                    "optional": false,
-                    "returnType": "void",
-                    "typeParameters": [],
-                    "line": 12
-                }
-            ],
-            "hostBindings": [],
-            "hostListeners": [],
-            "description": "",
-            "rawdescription": "",
-            "type": "component",
-            "sourceCode": "import { Component, OnInit } from '@angular/core';\n\n@Component({\n  selector: 'pm-fofonga',\n  templateUrl: './fofonga.component.html',\n  styleUrls: ['./fofonga.component.scss']\n})\nexport class FofongaComponent implements OnInit {\n\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n\n}\n",
-            "assetsDirs": [],
-            "styleUrlsData": [
-                {
-                    "data": "",
-                    "styleUrl": "./fofonga.component.scss"
-                }
-            ],
-            "stylesData": "",
-            "constructorObj": {
-                "name": "constructor",
-                "description": "",
-                "args": [],
-                "line": 8
-            },
-            "implements": [
-                "OnInit"
-            ],
-            "templateData": "<p>fofonga works!</p>\n"
         },
         {
             "name": "GridListComponent",
@@ -2074,6 +2124,39 @@
             ]
         },
         {
+            "name": "ButtonModule",
+            "children": [
+                {
+                    "type": "providers",
+                    "elements": []
+                },
+                {
+                    "type": "declarations",
+                    "elements": [
+                        {
+                            "name": "ButtonComponent"
+                        }
+                    ]
+                },
+                {
+                    "type": "imports",
+                    "elements": []
+                },
+                {
+                    "type": "exports",
+                    "elements": []
+                },
+                {
+                    "type": "bootstrap",
+                    "elements": []
+                },
+                {
+                    "type": "classes",
+                    "elements": []
+                }
+            ]
+        },
+        {
             "name": "CardModule",
             "children": [
                 {
@@ -2247,39 +2330,6 @@
                             "name": "DraggableListComponent"
                         }
                     ]
-                },
-                {
-                    "type": "bootstrap",
-                    "elements": []
-                },
-                {
-                    "type": "classes",
-                    "elements": []
-                }
-            ]
-        },
-        {
-            "name": "FofongaModule",
-            "children": [
-                {
-                    "type": "providers",
-                    "elements": []
-                },
-                {
-                    "type": "declarations",
-                    "elements": [
-                        {
-                            "name": "FofongaComponent"
-                        }
-                    ]
-                },
-                {
-                    "type": "imports",
-                    "elements": []
-                },
-                {
-                    "type": "exports",
-                    "elements": []
                 },
                 {
                     "type": "bootstrap",
@@ -2569,7 +2619,7 @@
                 "name": "BusyButton",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/inputs/button.stories.ts",
+                "file": "projects/components/src/lib/inputs/button/button.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             },
@@ -2593,7 +2643,7 @@
                 "name": "DangerButton",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/inputs/button.stories.ts",
+                "file": "projects/components/src/lib/inputs/button/button.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             },
@@ -2609,23 +2659,15 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/inputs/button.stories.ts",
+                "file": "projects/components/src/lib/inputs/button/button.stories.ts",
                 "type": "object",
                 "defaultValue": "{\n  label: '',\n  type: MainColors.default,\n  busy: false,\n  busyText: '',\n  iconClass: '',\n  outline: false,\n  disabled: false,\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/components/src/lib/abluble/fofonga/fofonga.stories.ts",
-                "type": "object",
-                "defaultValue": "{\n}"
             },
             {
                 "name": "DefaultButton",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/inputs/button.stories.ts",
+                "file": "projects/components/src/lib/inputs/button/button.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             },
@@ -2650,14 +2692,6 @@
                 "ctype": "miscellaneous",
                 "subtype": "variable",
                 "file": "stories/inputs/ComboBox.stories.ts",
-                "type": "",
-                "defaultValue": "Template.bind({})"
-            },
-            {
-                "name": "DefaultFofonga",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/components/src/lib/abluble/fofonga/fofonga.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             },
@@ -2713,7 +2747,7 @@
                 "name": "DisabledButton",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/inputs/button.stories.ts",
+                "file": "projects/components/src/lib/inputs/button/button.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             },
@@ -2777,7 +2811,7 @@
                 "name": "IconButton",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/inputs/button.stories.ts",
+                "file": "projects/components/src/lib/inputs/button/button.stories.ts",
                 "type": "",
                 "defaultValue": "IconButtonTemplate.bind({})"
             },
@@ -2785,7 +2819,7 @@
                 "name": "IconButtonTemplate",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/inputs/button.stories.ts",
+                "file": "projects/components/src/lib/inputs/button/button.stories.ts",
                 "type": "",
                 "defaultValue": "(args: ButtonComponent) => ({\n  component: ButtonComponent,\n  props: args,\n  template: `\n    <pm-button\n        [label]=\"label\"\n        [type]=\"type\"\n        [busy]=\"busy\"\n        [busyText]=\"busyText\"\n        [iconClass]=\"iconClass\"\n        [outline]=\"outline\"\n    >\n        Download\n    </pm-button>`\n})"
             },
@@ -2793,7 +2827,7 @@
                 "name": "InfoButton",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/inputs/button.stories.ts",
+                "file": "projects/components/src/lib/inputs/button/button.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             },
@@ -2801,7 +2835,7 @@
                 "name": "LightButton",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/inputs/button.stories.ts",
+                "file": "projects/components/src/lib/inputs/button/button.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             },
@@ -2825,7 +2859,7 @@
                 "name": "PrimaryButton",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/inputs/button.stories.ts",
+                "file": "projects/components/src/lib/inputs/button/button.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             },
@@ -2840,7 +2874,7 @@
                 "name": "SecondaryButton",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/inputs/button.stories.ts",
+                "file": "projects/components/src/lib/inputs/button/button.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             },
@@ -2864,14 +2898,6 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/GridList.stories.ts",
-                "type": "Story<GridListComponent>",
-                "defaultValue": "(args: GridListComponent) => ({\n  component: GridListComponent,\n  props: args,\n  template: `\n    <pm-grid-list\n        [items]=\"items\"\n        [displayStyle]=\"displayStyle\"\n        [gridHeaderReverse]=\"gridHeaderReverse\"\n        [bodyBackgroundColor]=\"bodyBackgroundColor\"\n        [actionTemplate]=\"undefined\"\n        [overflowGallery]=\"overflowGallery\"\n    >\n      conteudo\n    </pm-grid-list>`\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "stories/Stepper.stories.ts",
                 "type": "Story<StepperComponent>",
                 "defaultValue": "(args: StepperComponent) => ({\n  component: StepperComponent,\n  props: args,\n  template: `\n    <pm-stepper>\n      <cdk-step> <p>This is any content of \"Step 1\"</p> </cdk-step>\n      <cdk-step> <p>This is any content of \"Step 2\"</p> </cdk-step>\n    </pm-stepper>`\n})"
@@ -2883,6 +2909,14 @@
                 "file": "stories/Table.stories.ts",
                 "type": "Story<TableComponent>",
                 "defaultValue": "(args: TableComponent) => ({\n  component: TableComponent,\n  props: args,\n  template: `\n    <pm-table\n      [columns]=\"columns\"\n      [columnNames]=\"columnNames\"\n      [imageColumns]=\"imageColumns\"\n      [imageHeight]=\"imageHeight\"\n      [showHeader]=\"showHeader\"\n      [numberFormat]=\"numberFormat\"\n      [numberPrefix]=\"numberPrefix\"\n      [itemList]=\"itemList\"\n      [borderRadius]=\"borderRadius\"\n      [backgroundColor]=\"backgroundColor\"\n      [expandedDetailTemplate]=\"expandedDetailTemplate\"\n      [disableExpandedOnDisabledRow]=\"disableExpandedOnDisabledRow\"\n    ></pm-table>`\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "stories/GridList.stories.ts",
+                "type": "Story<GridListComponent>",
+                "defaultValue": "(args: GridListComponent) => ({\n  component: GridListComponent,\n  props: args,\n  template: `\n    <pm-grid-list\n        [items]=\"items\"\n        [displayStyle]=\"displayStyle\"\n        [gridHeaderReverse]=\"gridHeaderReverse\"\n        [bodyBackgroundColor]=\"bodyBackgroundColor\"\n        [actionTemplate]=\"undefined\"\n        [overflowGallery]=\"overflowGallery\"\n    >\n      conteudo\n    </pm-grid-list>`\n})"
             },
             {
                 "name": "Template",
@@ -2928,14 +2962,6 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/inputs/button.stories.ts",
-                "type": "Story<ButtonComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-button\n        [label]=\"label\"\n        [type]=\"type\"\n        [busy]=\"busy\"\n        [busyText]=\"busyText\"\n        [iconClass]=\"iconClass\"\n        [outline]=\"outline\"\n        [disabled]=\"disabled\"\n    >\n        Button Content\n    </pm-button>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "stories/inputs/checkbox.stories.ts",
                 "type": "Story<CheckboxComponent>",
                 "defaultValue": "(args: CheckboxComponent) => ({\n  component: CheckboxComponent,\n  props: args,\n  template: `\n    <pm-checkbox\n      [checked]=\"checked\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>`\n})"
@@ -2944,9 +2970,9 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/abluble/fofonga/fofonga.stories.ts",
-                "type": "Story<FofongaComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-fofonga\n    >\n    </pm-fofonga>\n  `\n})"
+                "file": "projects/components/src/lib/inputs/button/button.stories.ts",
+                "type": "Story<ButtonComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-button\n        [label]=\"label\"\n        [type]=\"type\"\n        [busy]=\"busy\"\n        [busyText]=\"busyText\"\n        [iconClass]=\"iconClass\"\n        [outline]=\"outline\"\n        [disabled]=\"disabled\"\n    >\n        Button Content\n    </pm-button>\n  `\n})"
             },
             {
                 "name": "ThumbnailTable",
@@ -2960,7 +2986,7 @@
                 "name": "WarningButton",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/inputs/button.stories.ts",
+                "file": "projects/components/src/lib/inputs/button/button.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             }
@@ -3258,12 +3284,12 @@
                     "defaultValue": "Template.bind({})"
                 }
             ],
-            "stories/inputs/button.stories.ts": [
+            "projects/components/src/lib/inputs/button/button.stories.ts": [
                 {
                     "name": "BusyButton",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "stories/inputs/button.stories.ts",
+                    "file": "projects/components/src/lib/inputs/button/button.stories.ts",
                     "type": "",
                     "defaultValue": "Template.bind({})"
                 },
@@ -3271,7 +3297,7 @@
                     "name": "DangerButton",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "stories/inputs/button.stories.ts",
+                    "file": "projects/components/src/lib/inputs/button/button.stories.ts",
                     "type": "",
                     "defaultValue": "Template.bind({})"
                 },
@@ -3279,7 +3305,7 @@
                     "name": "defaultArgs",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "stories/inputs/button.stories.ts",
+                    "file": "projects/components/src/lib/inputs/button/button.stories.ts",
                     "type": "object",
                     "defaultValue": "{\n  label: '',\n  type: MainColors.default,\n  busy: false,\n  busyText: '',\n  iconClass: '',\n  outline: false,\n  disabled: false,\n}"
                 },
@@ -3287,7 +3313,7 @@
                     "name": "DefaultButton",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "stories/inputs/button.stories.ts",
+                    "file": "projects/components/src/lib/inputs/button/button.stories.ts",
                     "type": "",
                     "defaultValue": "Template.bind({})"
                 },
@@ -3295,7 +3321,7 @@
                     "name": "DisabledButton",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "stories/inputs/button.stories.ts",
+                    "file": "projects/components/src/lib/inputs/button/button.stories.ts",
                     "type": "",
                     "defaultValue": "Template.bind({})"
                 },
@@ -3303,7 +3329,7 @@
                     "name": "IconButton",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "stories/inputs/button.stories.ts",
+                    "file": "projects/components/src/lib/inputs/button/button.stories.ts",
                     "type": "",
                     "defaultValue": "IconButtonTemplate.bind({})"
                 },
@@ -3311,7 +3337,7 @@
                     "name": "IconButtonTemplate",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "stories/inputs/button.stories.ts",
+                    "file": "projects/components/src/lib/inputs/button/button.stories.ts",
                     "type": "",
                     "defaultValue": "(args: ButtonComponent) => ({\n  component: ButtonComponent,\n  props: args,\n  template: `\n    <pm-button\n        [label]=\"label\"\n        [type]=\"type\"\n        [busy]=\"busy\"\n        [busyText]=\"busyText\"\n        [iconClass]=\"iconClass\"\n        [outline]=\"outline\"\n    >\n        Download\n    </pm-button>`\n})"
                 },
@@ -3319,7 +3345,7 @@
                     "name": "InfoButton",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "stories/inputs/button.stories.ts",
+                    "file": "projects/components/src/lib/inputs/button/button.stories.ts",
                     "type": "",
                     "defaultValue": "Template.bind({})"
                 },
@@ -3327,7 +3353,7 @@
                     "name": "LightButton",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "stories/inputs/button.stories.ts",
+                    "file": "projects/components/src/lib/inputs/button/button.stories.ts",
                     "type": "",
                     "defaultValue": "Template.bind({})"
                 },
@@ -3335,7 +3361,7 @@
                     "name": "PrimaryButton",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "stories/inputs/button.stories.ts",
+                    "file": "projects/components/src/lib/inputs/button/button.stories.ts",
                     "type": "",
                     "defaultValue": "Template.bind({})"
                 },
@@ -3343,7 +3369,7 @@
                     "name": "SecondaryButton",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "stories/inputs/button.stories.ts",
+                    "file": "projects/components/src/lib/inputs/button/button.stories.ts",
                     "type": "",
                     "defaultValue": "Template.bind({})"
                 },
@@ -3351,7 +3377,7 @@
                     "name": "Template",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "stories/inputs/button.stories.ts",
+                    "file": "projects/components/src/lib/inputs/button/button.stories.ts",
                     "type": "Story<ButtonComponent>",
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-button\n        [label]=\"label\"\n        [type]=\"type\"\n        [busy]=\"busy\"\n        [busyText]=\"busyText\"\n        [iconClass]=\"iconClass\"\n        [outline]=\"outline\"\n        [disabled]=\"disabled\"\n    >\n        Button Content\n    </pm-button>\n  `\n})"
                 },
@@ -3359,7 +3385,7 @@
                     "name": "WarningButton",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "stories/inputs/button.stories.ts",
+                    "file": "projects/components/src/lib/inputs/button/button.stories.ts",
                     "type": "",
                     "defaultValue": "Template.bind({})"
                 }
@@ -3405,32 +3431,6 @@
                     "file": "stories/default.ts",
                     "type": "Story<XXXComponent>",
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-XXXName\n    >\n    </pm-XXXName>\n  `\n})"
-                }
-            ],
-            "projects/components/src/lib/abluble/fofonga/fofonga.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/components/src/lib/abluble/fofonga/fofonga.stories.ts",
-                    "type": "object",
-                    "defaultValue": "{\n}"
-                },
-                {
-                    "name": "DefaultFofonga",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/components/src/lib/abluble/fofonga/fofonga.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/components/src/lib/abluble/fofonga/fofonga.stories.ts",
-                    "type": "Story<FofongaComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-fofonga\n    >\n    </pm-fofonga>\n  `\n})"
                 }
             ],
             "stories/Card.stories.ts": [
@@ -3855,48 +3855,9 @@
     },
     "routes": [],
     "coverage": {
-        "count": 1,
+        "count": 2,
         "status": "low",
         "files": [
-            {
-                "filePath": "projects/components/src/lib/abluble/fofonga/fofonga.component.ts",
-                "type": "component",
-                "linktype": "component",
-                "name": "FofongaComponent",
-                "coveragePercent": 0,
-                "coverageCount": "0/3",
-                "status": "low"
-            },
-            {
-                "filePath": "projects/components/src/lib/abluble/fofonga/fofonga.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "defaultArgs",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "projects/components/src/lib/abluble/fofonga/fofonga.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "DefaultFofonga",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "projects/components/src/lib/abluble/fofonga/fofonga.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "Template",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
             {
                 "filePath": "projects/components/src/lib/button/button.component.ts",
                 "type": "component",
@@ -3994,6 +3955,145 @@
                 "name": "GridListItem",
                 "coveragePercent": 0,
                 "coverageCount": "0/13",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/components/src/lib/inputs/button/button.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "ButtonComponent",
+                "coveragePercent": 60,
+                "coverageCount": "6/10",
+                "status": "good"
+            },
+            {
+                "filePath": "projects/components/src/lib/inputs/button/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "BusyButton",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/components/src/lib/inputs/button/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "DangerButton",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/components/src/lib/inputs/button/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "defaultArgs",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/components/src/lib/inputs/button/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "DefaultButton",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/components/src/lib/inputs/button/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "DisabledButton",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/components/src/lib/inputs/button/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "IconButton",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/components/src/lib/inputs/button/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "IconButtonTemplate",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/components/src/lib/inputs/button/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "InfoButton",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/components/src/lib/inputs/button/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "LightButton",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/components/src/lib/inputs/button/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "PrimaryButton",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/components/src/lib/inputs/button/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "SecondaryButton",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/components/src/lib/inputs/button/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/components/src/lib/inputs/button/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "WarningButton",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
                 "status": "low"
             },
             {
@@ -4338,136 +4438,6 @@
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
                 "name": "Template",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "stories/inputs/button.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "BusyButton",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "stories/inputs/button.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "DangerButton",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "stories/inputs/button.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "defaultArgs",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "stories/inputs/button.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "DefaultButton",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "stories/inputs/button.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "DisabledButton",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "stories/inputs/button.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "IconButton",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "stories/inputs/button.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "IconButtonTemplate",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "stories/inputs/button.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "InfoButton",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "stories/inputs/button.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "LightButton",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "stories/inputs/button.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "PrimaryButton",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "stories/inputs/button.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "SecondaryButton",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "stories/inputs/button.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "Template",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "stories/inputs/button.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "WarningButton",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
