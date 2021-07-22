@@ -31,7 +31,7 @@ else
     exit 1;
 fi
 
-# Junta o path name novamente
+# Junta o path name novamente e cria um path dir
 componentPath=""
 componentDir=""
 for i in "${!pathArray[@]}"; do
@@ -44,6 +44,7 @@ for i in "${!pathArray[@]}"; do
     fi
 done
 
+# Executa os comandos de criação de módulo e componente do angular
 ngscript="ng generate module $componentPath --project=components"
 echo "$ngscript"
 ngscriptoutput=$(eval "$ngscript")
@@ -54,6 +55,7 @@ echo "$ngscript"
 ngscriptoutput=$(eval "$ngscript")
 echo "$ngscriptoutput"
 
-echo "Criando stories"
+# Copia os stories para as pastas que precisa
 cp ./stories/default.mdx "./projects/components/src/lib/${componentDir}/${componentKebabName}.stories.mdx"
 cp ./stories/default.mdx "./projects/components/src/lib/${componentDir}/${componentKebabName}.stories.mdx"
+echo "Stories created"
