@@ -15,6 +15,9 @@ done
 pathArray=(${componentPath//\// })
 pathArrayLen=$((${#pathArray[@]}-1))
 componentName=${pathArray[$pathArrayLen]}
+componentKebabName=$(echo $componentName \
+     | sed 's/\(.\)\([A-Z]\)/\1-\2/g' \
+     | tr '[:upper:]' '[:lower:]')
 component="$(tr '[:lower:]' '[:upper:]' <<< ${componentName:0:1})${componentName:1}"
 
 # Caso a primeira letra não seja maiúscula dá erro
@@ -30,11 +33,14 @@ fi
 
 # Junta o path name novamente
 componentPath=""
+componentDir=""
 for i in "${!pathArray[@]}"; do
     if [[ $i != $pathArrayLen ]]; then
       componentPath+="${pathArray[$i]}/"
+      componentDir+="${pathArray[$i]}/"
     else
       componentPath+="${component}"
+      componentDir+="${componentKebabName}"
     fi
 done
 
@@ -47,3 +53,7 @@ ngscript="ng generate component $componentPath --project=components"
 echo "$ngscript"
 ngscriptoutput=$(eval "$ngscript")
 echo "$ngscriptoutput"
+
+echo "Criando stories"
+cp ./stories/default.mdx "./projects/components/src/lib/${componentDir}/${componentKebabName}.stories.mdx"
+cp ./stories/default.mdx "./projects/components/src/lib/${componentDir}/${componentKebabName}.stories.mdx"
