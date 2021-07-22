@@ -1086,6 +1086,62 @@
             "templateData": "<div class=\"d-flex w-100\">\n  <div *ngIf=\"showIndex\"\n       class=\"draggable-item-index-container\"\n       [ngClass]=\"{rounded: roundedBorders && !showIndex, 'rounded-left': roundedBorders && showIndex}\"\n  >\n    <div *ngFor=\"let item of itemList, let i = index;\" class=\"draggable-item-index\">\n      <p>{{ i + 1 }}</p>\n    </div>\n  </div>\n  <div (cdkDropListDropped)=\"drop($event)\" cdkDropList\n       class=\"table-item-container w-100\"\n       [ngClass]=\"{rounded: roundedBorders && !showIndex, 'rounded-right': roundedBorders && showIndex}\">\n    <div *ngFor=\"let item of itemList, let i = index;\" cdkDrag cdkDragBoundary=\".table-item-container\" [cdkDragDisabled]=\"enableDragging === false\"\n         class=\"draggable-item\" (contextmenu)=\"openContextMenu($event, {$implicit: item}); $event.preventDefault();\"\n         [ngClass]=\"{'draggable-item-selected': isSelectedItem(item)}\"\n         (click)=\"setSelectedItem(item)\"\n         [ngStyle]=\"{'cursor': enableDragging ? 'move' : (enableSelection ? 'pointer' : null)}\">\n      <div *cdkDragPlaceholder class=\"draggable-placeholder\"></div>\n      <div class=\"d-flex w-100\">\n        <!-- if IsMobile -> para poder reordenar os perfis apenas pelo ícone -->\n        <div *ngIf=\"false\" cdkDragHandle class=\"move-icon-container\">\n          <i class=\"uil uil-lg uil-draggabledots\"></i>\n        </div>\n        <div *ngIf=\"enableDragging\" class=\"move-icon-container\">\n          <i class=\"uil uil-lg uil-draggabledots\"></i>\n        </div>\n        <div class=\"w-100 align-self-center text-overflow\">\n          <p class=\"m-0\">{{ formatItemStringParameters(itemMainLabel, item) }}</p>\n          <p class=\"m-0 sub-p\">{{ formatItemStringParameters(itemSubLabel, item) }}</p>\n        </div>\n        <div class=\"d-flex ms-2\">\n          <button (click)=\"actionsSelect.toggle()\" class=\"btn btn-light btn-icon btn-sm ms-2\">\n            <i class=\"uil uil-md uil-ellipsis-h\"></i>\n          </button>\n          <mat-select #actionsSelect class=\"mat-select-btn-sm\">\n            <mat-option [hidden]=\"true\"></mat-option>\n            <ng-container *ngTemplateOutlet=\"contextActions; context: {$implicit: item}\"></ng-container>\n          </mat-select>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n\n<ng-template #contextActions let-item>\n  <mat-option *ngFor=\"let action of actions\" (click)=\"action.method(item)\">{{formatItemStringParameters(action.name, item)}}</mat-option>\n</ng-template>\n\n<ng-template #contextMenu let-item>\n  <div class=\"mat-menu-panel\">\n    <mat-optgroup [label]=\"formatItemStringParameters(itemActionLabel, item)\">\n      <ng-container *ngTemplateOutlet=\"contextActions; context: {$implicit: item}\"></ng-container>\n    </mat-optgroup>\n  </div>\n</ng-template>\n"
         },
         {
+            "name": "FofongaComponent",
+            "id": "component-FofongaComponent-9d0aed5a0aee1f46f6d5c0a41f1a705c",
+            "file": "projects/components/src/lib/abluble/fofonga/fofonga.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "pm-fofonga",
+            "styleUrls": [
+                "./fofonga.component.scss"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./fofonga.component.html"
+            ],
+            "viewProviders": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [
+                {
+                    "name": "ngOnInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 12
+                }
+            ],
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "",
+            "type": "component",
+            "sourceCode": "import { Component, OnInit } from '@angular/core';\n\n@Component({\n  selector: 'pm-fofonga',\n  templateUrl: './fofonga.component.html',\n  styleUrls: ['./fofonga.component.scss']\n})\nexport class FofongaComponent implements OnInit {\n\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": "",
+                    "styleUrl": "./fofonga.component.scss"
+                }
+            ],
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "args": [],
+                "line": 8
+            },
+            "implements": [
+                "OnInit"
+            ],
+            "templateData": "<p>fofonga works!</p>\n"
+        },
+        {
             "name": "GridListComponent",
             "id": "component-GridListComponent-796e93fd8c33fa425fdeebddb952d7ac",
             "file": "projects/components/src/lib/grid-list/grid-list.component.ts",
@@ -2203,6 +2259,39 @@
             ]
         },
         {
+            "name": "FofongaModule",
+            "children": [
+                {
+                    "type": "providers",
+                    "elements": []
+                },
+                {
+                    "type": "declarations",
+                    "elements": [
+                        {
+                            "name": "FofongaComponent"
+                        }
+                    ]
+                },
+                {
+                    "type": "imports",
+                    "elements": []
+                },
+                {
+                    "type": "exports",
+                    "elements": []
+                },
+                {
+                    "type": "bootstrap",
+                    "elements": []
+                },
+                {
+                    "type": "classes",
+                    "elements": []
+                }
+            ]
+        },
+        {
             "name": "GridListModule",
             "children": [
                 {
@@ -2512,9 +2601,25 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
+                "file": "stories/default.ts",
+                "type": "object",
+                "defaultValue": "{\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
                 "file": "stories/inputs/button.stories.ts",
                 "type": "object",
                 "defaultValue": "{\n  label: '',\n  type: MainColors.default,\n  busy: false,\n  busyText: '',\n  iconClass: '',\n  outline: false,\n  disabled: false,\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/components/src/lib/abluble/fofonga/fofonga.stories.ts",
+                "type": "object",
+                "defaultValue": "{\n}"
             },
             {
                 "name": "DefaultButton",
@@ -2536,7 +2641,7 @@
                 "name": "DefaultCheckbox",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/inputs/Checkbox.stories.ts",
+                "file": "stories/inputs/checkbox.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             },
@@ -2545,6 +2650,14 @@
                 "ctype": "miscellaneous",
                 "subtype": "variable",
                 "file": "stories/inputs/ComboBox.stories.ts",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "DefaultFofonga",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/components/src/lib/abluble/fofonga/fofonga.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             },
@@ -2589,6 +2702,14 @@
                 "defaultValue": "Template.bind({})"
             },
             {
+                "name": "DefaultXXXTitle",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "stories/default.ts",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
                 "name": "DisabledButton",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -2600,7 +2721,7 @@
                 "name": "DisabledCheckbox",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/inputs/Checkbox.stories.ts",
+                "file": "stories/inputs/checkbox.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             },
@@ -2767,17 +2888,17 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/multi-level-dropdown-menu.stories.ts",
-                "type": "Story<MultiLevelDropdownMenuComponent>",
-                "defaultValue": "(args: MultiLevelDropdownMenuComponent) => ({\n  component: MultiLevelDropdownMenuComponent,\n  props: args,\n  template: `\n    <pm-multi-level-dropdown-menu>\n    </pm-multi-level-dropdown-menu>`\n})"
+                "file": "stories/default.ts",
+                "type": "Story<XXXComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-XXXName\n    >\n    </pm-XXXName>\n  `\n})"
             },
             {
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/inputs/Checkbox.stories.ts",
-                "type": "Story<CheckboxComponent>",
-                "defaultValue": "(args: CheckboxComponent) => ({\n  component: CheckboxComponent,\n  props: args,\n  template: `\n    <pm-checkbox\n      [checked]=\"checked\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>`\n})"
+                "file": "stories/multi-level-dropdown-menu.stories.ts",
+                "type": "Story<MultiLevelDropdownMenuComponent>",
+                "defaultValue": "(args: MultiLevelDropdownMenuComponent) => ({\n  component: MultiLevelDropdownMenuComponent,\n  props: args,\n  template: `\n    <pm-multi-level-dropdown-menu>\n    </pm-multi-level-dropdown-menu>`\n})"
             },
             {
                 "name": "Template",
@@ -2810,6 +2931,22 @@
                 "file": "stories/inputs/button.stories.ts",
                 "type": "Story<ButtonComponent>",
                 "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-button\n        [label]=\"label\"\n        [type]=\"type\"\n        [busy]=\"busy\"\n        [busyText]=\"busyText\"\n        [iconClass]=\"iconClass\"\n        [outline]=\"outline\"\n        [disabled]=\"disabled\"\n    >\n        Button Content\n    </pm-button>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "stories/inputs/checkbox.stories.ts",
+                "type": "Story<CheckboxComponent>",
+                "defaultValue": "(args: CheckboxComponent) => ({\n  component: CheckboxComponent,\n  props: args,\n  template: `\n    <pm-checkbox\n      [checked]=\"checked\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>`\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/components/src/lib/abluble/fofonga/fofonga.stories.ts",
+                "type": "Story<FofongaComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-fofonga\n    >\n    </pm-fofonga>\n  `\n})"
             },
             {
                 "name": "ThumbnailTable",
@@ -3244,6 +3381,58 @@
                     "type": "literal type"
                 }
             ],
+            "stories/default.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "stories/default.ts",
+                    "type": "object",
+                    "defaultValue": "{\n}"
+                },
+                {
+                    "name": "DefaultXXXTitle",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "stories/default.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "stories/default.ts",
+                    "type": "Story<XXXComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-XXXName\n    >\n    </pm-XXXName>\n  `\n})"
+                }
+            ],
+            "projects/components/src/lib/abluble/fofonga/fofonga.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/lib/abluble/fofonga/fofonga.stories.ts",
+                    "type": "object",
+                    "defaultValue": "{\n}"
+                },
+                {
+                    "name": "DefaultFofonga",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/lib/abluble/fofonga/fofonga.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/lib/abluble/fofonga/fofonga.stories.ts",
+                    "type": "Story<FofongaComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-fofonga\n    >\n    </pm-fofonga>\n  `\n})"
+                }
+            ],
             "stories/Card.stories.ts": [
                 {
                     "name": "DefaultCard",
@@ -3262,12 +3451,12 @@
                     "defaultValue": "(args: CardComponent) => ({\n  component: CardComponent,\n  props: args,\n  template: `\n    <pm-card\n        [hoverable]=\"hoverable\"\n        [borderRadius]=\"borderRadius\"\n    >\n      conteudo\n    </pm-card>`\n})"
                 }
             ],
-            "stories/inputs/Checkbox.stories.ts": [
+            "stories/inputs/checkbox.stories.ts": [
                 {
                     "name": "DefaultCheckbox",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "stories/inputs/Checkbox.stories.ts",
+                    "file": "stories/inputs/checkbox.stories.ts",
                     "type": "",
                     "defaultValue": "Template.bind({})"
                 },
@@ -3275,7 +3464,7 @@
                     "name": "DisabledCheckbox",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "stories/inputs/Checkbox.stories.ts",
+                    "file": "stories/inputs/checkbox.stories.ts",
                     "type": "",
                     "defaultValue": "Template.bind({})"
                 },
@@ -3283,7 +3472,7 @@
                     "name": "Template",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "stories/inputs/Checkbox.stories.ts",
+                    "file": "stories/inputs/checkbox.stories.ts",
                     "type": "Story<CheckboxComponent>",
                     "defaultValue": "(args: CheckboxComponent) => ({\n  component: CheckboxComponent,\n  props: args,\n  template: `\n    <pm-checkbox\n      [checked]=\"checked\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>`\n})"
                 }
@@ -3670,6 +3859,45 @@
         "status": "low",
         "files": [
             {
+                "filePath": "projects/components/src/lib/abluble/fofonga/fofonga.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "FofongaComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/components/src/lib/abluble/fofonga/fofonga.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "defaultArgs",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/components/src/lib/abluble/fofonga/fofonga.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "DefaultFofonga",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/components/src/lib/abluble/fofonga/fofonga.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
                 "filePath": "projects/components/src/lib/button/button.component.ts",
                 "type": "component",
                 "linktype": "component",
@@ -4025,27 +4253,27 @@
                 "status": "low"
             },
             {
-                "filePath": "stories/inputs/Checkbox.stories.ts",
+                "filePath": "stories/default.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
-                "name": "DefaultCheckbox",
+                "name": "defaultArgs",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
             },
             {
-                "filePath": "stories/inputs/Checkbox.stories.ts",
+                "filePath": "stories/default.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
-                "name": "DisabledCheckbox",
+                "name": "DefaultXXXTitle",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
             },
             {
-                "filePath": "stories/inputs/Checkbox.stories.ts",
+                "filePath": "stories/default.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -4240,6 +4468,36 @@
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
                 "name": "WarningButton",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "stories/inputs/checkbox.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "DefaultCheckbox",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "stories/inputs/checkbox.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "DisabledCheckbox",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "stories/inputs/checkbox.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"

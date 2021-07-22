@@ -1,0 +1,72 @@
+[comment]: <> (Linha inicial que é apagada automaticamente)
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
+import {XXXComponent} from './XXXName.component';
+import {moduleMetadata} from "@storybook/angular";
+import {XXXModule} from "./XXXName.module";
+import {
+  DefaultXXXTitle,
+} from "./XXXName.stories";
+
+export const argTypes = {
+  // XXXArg1: {
+  //   // description: 'CRIAR A DESCRIÇÃO COMO COMENTÁRIO MULTILINHA ACIMA DOS INPUTS NO COMPONENTE',
+  //   table: {
+  //     defaultValue: { summary: defaultArgs.XXXArg1},
+  //   },
+  //   control: {type: 'select'}, options: [],
+  // },
+}
+
+<Meta
+  title='Components/XXXTitle'
+  component={XXXComponent}
+  argTypes={argTypes}
+  parameters={{ badges: [ 'beta' ] }}
+  decorators={[
+    moduleMetadata({
+      declarations: [XXXModule]
+    })
+  ]}
+/>
+
+export const Template = (args) => <XXXComponent {...args} />
+
+# XXXTitle
+
+#### Descrição do componente XXXTitle
+
+<br/>
+<br/>
+
+## XXXTitle padrão
+
+Descrição do componente XXXTitle padrão
+
+Deve ser usado da seguinte forma:
+
+```
+<pm-XXXName>
+</pm-XXXName>
+```
+
+<Canvas>
+  <Story name='Default' story={DefaultXXXTitle} />
+</Canvas>
+
+## Module Config
+
+```
+import {XXXModule} from '@mprisma/components';
+
+@NgModule({
+  imports: [
+    ...,
+    XXXModule,
+    ...,
+  ]
+})
+```
+
+## Args Table
+
+<ArgsTable story='Default'/>
