@@ -1,13 +1,14 @@
 import {Component, Input, TemplateRef} from '@angular/core';
 import {MatSelect} from '@angular/material/select';
 import {MainColors} from '../../../models/colors';
+import {ButtonComponent} from '../button/button.component';
 
 @Component({
   selector: 'pm-dropdown-actions',
   templateUrl: './dropdown-actions.component.html',
   styleUrls: ['./dropdown-actions.component.scss']
 })
-export class DropdownActionsComponent {
+export class DropdownActionsComponent extends ButtonComponent {
 
   @Input('actions') actions: {label: string, method: any}[] = [];
   @Input() closeOnClick = true;
@@ -15,13 +16,11 @@ export class DropdownActionsComponent {
 
   // buttons input
   @Input('type') type: MainColors | string = MainColors.light;
-  @Input('busy') busy = false;
-  @Input('busyText') busyText = '';
   @Input('iconClass') iconClass = 'uil uil-md uil-ellipsis-h';
-  @Input('outline') outline = false;
-  @Input('disabled') disabled = false;
 
-  constructor() { }
+  constructor() {
+    super();
+  }
 
   public callMethod(action: any, actionsSelect: MatSelect): void {
     action.method();
