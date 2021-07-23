@@ -511,6 +511,113 @@
             "templateData": "<div class=\"form-check\" [ngClass]=\"{'disabled': disabled}\" (click)=\"$event.stopPropagation();\">\n  <label class=\"form-check-label\">\n    <input (change)=\"setValue($event.target['checked'])\"\n           [(ngModel)]=\"checked\"\n           [ngModelOptions]=\"{standalone: true}\"\n           [disabled]=\"disabled\"\n           class=\"form-check-input\" type=\"checkbox\">\n    <span class=\"form-check-sign\"></span>\n    <ng-content></ng-content>\n  </label>\n</div>\n"
         },
         {
+            "name": "CheckboxComponent",
+            "id": "component-CheckboxComponent-7b9d2f038d0b18115daec3bf979b7190-1",
+            "file": "projects/components/src/lib/inputs/checkbox/checkbox.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "pm-checkbox",
+            "styleUrls": [
+                "./checkbox.component.scss"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./checkbox.component.html"
+            ],
+            "viewProviders": [],
+            "inputsClass": [
+                {
+                    "name": "checked",
+                    "defaultValue": "false",
+                    "description": "<p>Habilita ou desabilita a marcação da checkbox</p>\n",
+                    "line": 13,
+                    "type": "boolean"
+                },
+                {
+                    "name": "disabled",
+                    "defaultValue": "false",
+                    "description": "<p>Não permite alterar a marcação da checkbox</p>\n",
+                    "line": 17,
+                    "type": "boolean"
+                }
+            ],
+            "outputsClass": [
+                {
+                    "name": "checkedChange",
+                    "defaultValue": "new EventEmitter<boolean>()",
+                    "line": 18,
+                    "type": "EventEmitter<boolean>"
+                },
+                {
+                    "name": "disabledChange",
+                    "defaultValue": "new EventEmitter<boolean>()",
+                    "line": 20,
+                    "type": "EventEmitter<boolean>"
+                },
+                {
+                    "name": "onCheckedChange",
+                    "defaultValue": "new EventEmitter()",
+                    "line": 19,
+                    "type": "EventEmitter"
+                }
+            ],
+            "propertiesClass": [],
+            "methodsClass": [
+                {
+                    "name": "setValue",
+                    "args": [
+                        {
+                            "name": "value",
+                            "type": "boolean"
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 25,
+                    "modifierKind": [
+                        114
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "value",
+                            "type": "boolean",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "",
+            "type": "component",
+            "sourceCode": "import {Component, EventEmitter, Input, Output} from '@angular/core';\n\n@Component({\n  selector: 'pm-checkbox',\n  templateUrl: './checkbox.component.html',\n  styleUrls: ['./checkbox.component.scss']\n})\nexport class CheckboxComponent {\n\n  /**\n   * Habilita ou desabilita a marcação da checkbox\n   */\n  @Input() checked: boolean = false;\n  /**\n   * Não permite alterar a marcação da checkbox\n   */\n  @Input() disabled: boolean = false;\n  @Output() checkedChange: EventEmitter<boolean> = new EventEmitter<boolean>();\n  @Output() onCheckedChange = new EventEmitter();\n  @Output() disabledChange: EventEmitter<boolean> = new EventEmitter<boolean>();\n\n  constructor() {\n  }\n\n  public setValue(value: boolean): void {\n    this.checked = value;\n    this.checkedChange.emit(this.checked);\n    this.onCheckedChange.emit(this.checked);\n  }\n\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": "",
+                    "styleUrl": "./checkbox.component.scss"
+                }
+            ],
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "args": [],
+                "line": 20
+            },
+            "isDuplicate": true,
+            "duplicateId": 1,
+            "duplicateName": "CheckboxComponent-1",
+            "templateData": "<div class=\"form-check\" [ngClass]=\"{'disabled': disabled}\" (click)=\"$event.stopPropagation();\">\n  <label class=\"form-check-label\">\n    <input (change)=\"setValue($event.target['checked'])\"\n           [(ngModel)]=\"checked\"\n           [ngModelOptions]=\"{standalone: true}\"\n           [disabled]=\"disabled\"\n           class=\"form-check-input\" type=\"checkbox\">\n    <span class=\"form-check-sign\"></span>\n    <ng-content></ng-content>\n  </label>\n</div>\n"
+        },
+        {
             "name": "ComboBoxComponent",
             "id": "component-ComboBoxComponent-4559a9e381398bce2d9780a95355daee",
             "file": "projects/components/src/lib/combo-box/combo-box.component.ts",
@@ -2231,6 +2338,39 @@
             ]
         },
         {
+            "name": "CheckboxModule",
+            "children": [
+                {
+                    "type": "providers",
+                    "elements": []
+                },
+                {
+                    "type": "declarations",
+                    "elements": [
+                        {
+                            "name": "CheckboxComponent"
+                        }
+                    ]
+                },
+                {
+                    "type": "imports",
+                    "elements": []
+                },
+                {
+                    "type": "exports",
+                    "elements": []
+                },
+                {
+                    "type": "bootstrap",
+                    "elements": []
+                },
+                {
+                    "type": "classes",
+                    "elements": []
+                }
+            ]
+        },
+        {
             "name": "ComboBoxModule",
             "children": [
                 {
@@ -2664,6 +2804,14 @@
                 "defaultValue": "{\n  label: '',\n  type: MainColors.default,\n  busy: false,\n  busyText: '',\n  iconClass: '',\n  outline: false,\n  disabled: false,\n}"
             },
             {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/components/src/lib/inputs/checkbox/checkbox.stories.ts",
+                "type": "object",
+                "defaultValue": "{\n  checked: false,\n  disabled: false\n}"
+            },
+            {
                 "name": "DefaultButton",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -2684,6 +2832,14 @@
                 "ctype": "miscellaneous",
                 "subtype": "variable",
                 "file": "stories/inputs/checkbox.stories.ts",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "DefaultCheckbox",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/components/src/lib/inputs/checkbox/checkbox.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             },
@@ -2756,6 +2912,14 @@
                 "ctype": "miscellaneous",
                 "subtype": "variable",
                 "file": "stories/inputs/checkbox.stories.ts",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "DisabledCheckbox",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/components/src/lib/inputs/checkbox/checkbox.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             },
@@ -2898,6 +3062,14 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
+                "file": "stories/GridList.stories.ts",
+                "type": "Story<GridListComponent>",
+                "defaultValue": "(args: GridListComponent) => ({\n  component: GridListComponent,\n  props: args,\n  template: `\n    <pm-grid-list\n        [items]=\"items\"\n        [displayStyle]=\"displayStyle\"\n        [gridHeaderReverse]=\"gridHeaderReverse\"\n        [bodyBackgroundColor]=\"bodyBackgroundColor\"\n        [actionTemplate]=\"undefined\"\n        [overflowGallery]=\"overflowGallery\"\n    >\n      conteudo\n    </pm-grid-list>`\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
                 "file": "stories/Stepper.stories.ts",
                 "type": "Story<StepperComponent>",
                 "defaultValue": "(args: StepperComponent) => ({\n  component: StepperComponent,\n  props: args,\n  template: `\n    <pm-stepper>\n      <cdk-step> <p>This is any content of \"Step 1\"</p> </cdk-step>\n      <cdk-step> <p>This is any content of \"Step 2\"</p> </cdk-step>\n    </pm-stepper>`\n})"
@@ -2909,14 +3081,6 @@
                 "file": "stories/Table.stories.ts",
                 "type": "Story<TableComponent>",
                 "defaultValue": "(args: TableComponent) => ({\n  component: TableComponent,\n  props: args,\n  template: `\n    <pm-table\n      [columns]=\"columns\"\n      [columnNames]=\"columnNames\"\n      [imageColumns]=\"imageColumns\"\n      [imageHeight]=\"imageHeight\"\n      [showHeader]=\"showHeader\"\n      [numberFormat]=\"numberFormat\"\n      [numberPrefix]=\"numberPrefix\"\n      [itemList]=\"itemList\"\n      [borderRadius]=\"borderRadius\"\n      [backgroundColor]=\"backgroundColor\"\n      [expandedDetailTemplate]=\"expandedDetailTemplate\"\n      [disableExpandedOnDisabledRow]=\"disableExpandedOnDisabledRow\"\n    ></pm-table>`\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "stories/GridList.stories.ts",
-                "type": "Story<GridListComponent>",
-                "defaultValue": "(args: GridListComponent) => ({\n  component: GridListComponent,\n  props: args,\n  template: `\n    <pm-grid-list\n        [items]=\"items\"\n        [displayStyle]=\"displayStyle\"\n        [gridHeaderReverse]=\"gridHeaderReverse\"\n        [bodyBackgroundColor]=\"bodyBackgroundColor\"\n        [actionTemplate]=\"undefined\"\n        [overflowGallery]=\"overflowGallery\"\n    >\n      conteudo\n    </pm-grid-list>`\n})"
             },
             {
                 "name": "Template",
@@ -2973,6 +3137,14 @@
                 "file": "projects/components/src/lib/inputs/button/button.stories.ts",
                 "type": "Story<ButtonComponent>",
                 "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-button\n        [label]=\"label\"\n        [type]=\"type\"\n        [busy]=\"busy\"\n        [busyText]=\"busyText\"\n        [iconClass]=\"iconClass\"\n        [outline]=\"outline\"\n        [disabled]=\"disabled\"\n    >\n        Button Content\n    </pm-button>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/components/src/lib/inputs/checkbox/checkbox.stories.ts",
+                "type": "Story<CheckboxComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-checkbox\n      [checked]=\"checked\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>\n  `\n})"
             },
             {
                 "name": "ThumbnailTable",
@@ -3431,6 +3603,40 @@
                     "file": "stories/default.ts",
                     "type": "Story<XXXComponent>",
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-XXXName\n    >\n    </pm-XXXName>\n  `\n})"
+                }
+            ],
+            "projects/components/src/lib/inputs/checkbox/checkbox.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/lib/inputs/checkbox/checkbox.stories.ts",
+                    "type": "object",
+                    "defaultValue": "{\n  checked: false,\n  disabled: false\n}"
+                },
+                {
+                    "name": "DefaultCheckbox",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/lib/inputs/checkbox/checkbox.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "DisabledCheckbox",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/lib/inputs/checkbox/checkbox.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/lib/inputs/checkbox/checkbox.stories.ts",
+                    "type": "Story<CheckboxComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-checkbox\n      [checked]=\"checked\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>\n  `\n})"
                 }
             ],
             "stories/Card.stories.ts": [
@@ -4092,6 +4298,55 @@
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
                 "name": "WarningButton",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/components/src/lib/inputs/checkbox/checkbox.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "CheckboxComponent",
+                "coveragePercent": 25,
+                "coverageCount": "2/8",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/components/src/lib/inputs/checkbox/checkbox.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "defaultArgs",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/components/src/lib/inputs/checkbox/checkbox.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "DefaultCheckbox",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/components/src/lib/inputs/checkbox/checkbox.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "DisabledCheckbox",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/components/src/lib/inputs/checkbox/checkbox.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"

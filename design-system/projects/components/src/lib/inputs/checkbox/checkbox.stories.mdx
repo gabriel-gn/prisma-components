@@ -1,0 +1,86 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
+import {CheckboxComponent} from './checkbox.component';
+import {moduleMetadata} from "@storybook/angular";
+import {CheckboxModule} from "./checkbox.module";
+import {
+  defaultArgs,
+  DefaultCheckbox,
+  DisabledCheckbox
+} from "./checkbox.stories";
+
+export const argTypes = {
+  checked: {
+    // description: 'CRIAR A DESCRIÇÃO COMO COMENTÁRIO MULTILINHA ACIMA DOS INPUTS NO COMPONENTE',
+    table: {
+      defaultValue: { summary: defaultArgs.checked},
+    },
+    control: { type: 'inline-radio'}, options: [true, false],
+  },
+  disabled: {
+    table: {
+      defaultValue: { summary: defaultArgs.disabled},
+    },
+    control: { type: 'inline-radio'}, options: [true, false],
+  },
+}
+
+<Meta
+  title='Components/Checkbox'
+  component={CheckboxComponent}
+  argTypes={argTypes}
+  parameters={{ badges: [ 'beta' ] }}
+  decorators={[
+    moduleMetadata({
+      imports: [
+        CheckboxModule
+      ],
+    })
+  ]}
+/>
+
+export const Template = (args) => <CheckboxComponent {...args} />
+
+# Checkbox
+
+#### Descrição do componente Checkbox
+
+<br/>
+<br/>
+
+## Checkbox padrão
+
+Descrição do componente Checkbox padrão
+
+Deve ser usado da seguinte forma:
+
+```
+<pm-checkbox
+  [checked]="checked"
+  [disabled]="disabled"
+>
+  Checkbox
+</pm-checkbox>
+```
+
+<Canvas>
+  <Story name='Default' story={DefaultCheckbox} />
+  <Story name='Disabled' story={DisabledCheckbox} />
+</Canvas>
+
+## Module Config
+
+```
+import {CheckboxModule} from '@mprisma/components';
+
+@NgModule({
+  imports: [
+    ...,
+    CheckboxModule,
+    ...,
+  ]
+})
+```
+
+## Args Table
+
+<ArgsTable story='Default'/>

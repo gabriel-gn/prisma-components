@@ -4,6 +4,7 @@ import {XXXComponent} from './XXXName.component';
 import {moduleMetadata} from "@storybook/angular";
 import {XXXModule} from "./XXXName.module";
 import {
+  defaultArgs,
   DefaultXXXTitle,
 } from "./XXXName.stories";
 
@@ -13,7 +14,7 @@ export const argTypes = {
   //   table: {
   //     defaultValue: { summary: defaultArgs.XXXArg1},
   //   },
-  //   control: {type: 'select'}, options: [],
+  //   control: { type: 'inline-radio'}, options: [true, false],
   // },
 }
 
@@ -24,7 +25,7 @@ export const argTypes = {
   parameters={{ badges: [ 'beta' ] }}
   decorators={[
     moduleMetadata({
-      declarations: [XXXModule]
+      imports: [XXXModule]
     })
   ]}
 />
