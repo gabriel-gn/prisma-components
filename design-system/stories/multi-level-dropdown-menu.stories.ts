@@ -30,7 +30,6 @@ const Template: Story<MultiLevelDropdownMenuComponent> = (args: MultiLevelDropdo
 export const DefaultMultiLevelDropdownMenu = Template.bind({});
 DefaultMultiLevelDropdownMenu.args = {
   actions: [
-
     {
       label: 'Log 1',
       method: () => console.log('1')

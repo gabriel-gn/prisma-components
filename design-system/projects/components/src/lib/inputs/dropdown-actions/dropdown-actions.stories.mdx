@@ -1,0 +1,75 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
+import {DropdownActionsComponent} from './dropdown-actions.component';
+import {moduleMetadata} from "@storybook/angular";
+import {DropdownActionsModule} from "./dropdown-actions.module";
+import {
+  defaultArgs,
+  DefaultDropdownActions,
+} from "./dropdown-actions.stories";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations"; import {ButtonModule} from "../button/button.module";
+
+export const argTypes = {
+  actions: {
+    // description: 'CRIAR A DESCRIÇÃO COMO COMENTÁRIO MULTILINHA ACIMA DOS INPUTS NO COMPONENTE',
+    table: {
+      defaultValue: { summary: defaultArgs.actions},
+    },
+    //control: { type: 'inline-radio'}, options: [true, false],
+  },
+}
+
+<Meta
+  title='Components/Inputs/Dropdown Actions'
+  component={DropdownActionsComponent}
+  argTypes={argTypes}
+  parameters={{ badges: [ 'beta' ] }}
+  decorators={[
+    moduleMetadata({
+      imports: [DropdownActionsModule, BrowserAnimationsModule]
+    })
+  ]}
+/>
+
+export const Template = (args) => <DropdownActionsComponent {...args} />
+
+# Dropdown Actions
+
+#### Descrição do componente Dropdown Actions
+
+<br/>
+<br/>
+
+## Dropdown Actions padrão
+
+Descrição do componente Dropdown Actions padrão
+
+Deve ser usado da seguinte forma:
+
+```
+<pm-dropdown-actions
+  [actions]="actions"
+>
+</pm-dropdown-actions>
+```
+
+<Canvas>
+  <Story name='Default' story={DefaultDropdownActions} />
+</Canvas>
+
+## Module Config
+
+```
+import {DropdownActionsModule} from '@mprisma/components';
+
+@NgModule({
+  imports: [
+    ...,
+    DropdownActionsModule,
+    ...,
+  ]
+})
+```
+
+## Args Table
+
+<ArgsTable story='Default'/>

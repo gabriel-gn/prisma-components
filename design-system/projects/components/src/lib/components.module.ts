@@ -10,11 +10,13 @@ import {CardModule} from './card/card.module';
 import {StepperModule} from './stepper/stepper.module';
 import {MultiLevelDropdownMenuModule} from './multi-level-dropdown-menu/multi-level-dropdown-menu.module';
 import {ComboBoxModule} from './inputs/combo-box/combo-box.module';
+import { DropdownActionsComponent } from './inputs/dropdown-actions/dropdown-actions.component';
 
 
 @NgModule({
   declarations: [
-    ComponentsComponent
+    ComponentsComponent,
+    DropdownActionsComponent
   ],
   imports: [
     CommonModule,
