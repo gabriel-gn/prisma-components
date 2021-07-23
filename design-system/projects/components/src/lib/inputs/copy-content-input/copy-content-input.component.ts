@@ -7,7 +7,13 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class CopyContentInputComponent implements OnInit {
 
+  /**
+   * texto a ser exibido como conteúdo
+   */
   @Input() text = '';
+  /**
+   * Desabilita a interação o input.
+   */
   @Input() disabled = true;
   // public readonly notifier: SnotifyService;
 

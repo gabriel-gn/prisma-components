@@ -21,7 +21,8 @@ export const Template: Story<CheckboxComponent> = (args) => ({
 
 export const defaultArgs = {
   checked: false,
-  disabled: false
+  disabled: false,
+  selectedItem: undefined,
 };
 
 export const DefaultCheckbox = Template.bind({});

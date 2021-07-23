@@ -1,0 +1,85 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
+import {ComboBoxComponent} from './combo-box.component';
+import {moduleMetadata} from "@storybook/angular";
+import {ComboBoxModule} from "./combo-box.module";
+import {
+  defaultArgs,
+  DefaultComboBox,
+} from "./combo-box.stories";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+
+export const argTypes = {
+  items: {
+    // description: 'CRIAR A DESCRIÇÃO COMO COMENTÁRIO MULTILINHA ACIMA DOS INPUTS NO COMPONENTE',
+    table: {
+      defaultValue: { summary: defaultArgs.items},
+    },
+  },
+  disabled: {
+    table: {
+      defaultValue: { summary: defaultArgs.disabled},
+    },
+    control: { type: 'inline-radio'}, options: [true, false],
+  },
+}
+
+<Meta
+  title='Components/Inputs/ComboBox'
+  component={ComboBoxComponent}
+  argTypes={argTypes}
+  parameters={{ badges: [ 'beta' ] }}
+  decorators={[
+    moduleMetadata({
+      imports: [
+        ComboBoxModule,
+        BrowserAnimationsModule
+      ]
+    })
+  ]}
+/>
+
+export const Template = (args) => <ComboBoxComponent {...args} />
+
+# ComboBox
+
+#### Descrição do componente ComboBox
+
+<br/>
+<br/>
+
+## ComboBox padrão
+
+Descrição do componente ComboBox padrão
+
+Deve ser usado da seguinte forma:
+
+```
+<pm-combo-box
+  [items]="items"
+  [disabled]="disabled"
+  [selectedItem]="selectedItem"
+>
+</pm-combo-box>
+```
+
+<Canvas>
+  <Story name='Default' story={DefaultComboBox} />
+</Canvas>
+
+## Module Config
+
+```
+import {ComboBoxModule} from '@mprisma/components';
+
+@NgModule({
+  imports: [
+    ...,
+    ComboBoxModule,
+    ...,
+  ]
+})
+```
+
+## Args Table
+
+<ArgsTable story='Default'/>

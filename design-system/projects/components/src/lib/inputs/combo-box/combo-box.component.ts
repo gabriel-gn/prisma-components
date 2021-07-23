@@ -12,25 +12,39 @@ export interface ComboItem {
 })
 export class ComboBoxComponent implements OnInit {
 
+  /**
+   * Itens que serão exibidos na combo box.
+   * Devem ser obrigatoriamente do tipo `ComboItem[]`
+   */
   @Input() items: ComboItem[] = [];
+  /**
+   * Item selecionado da combobox. Pode ser carregado previamente
+   */
   @Input() selectedItem: any;
-  @Input() disabled = false;
+  /**
+   * Desabilita a interação com os valores da combo box.
+   */
+  @Input() disabled: boolean = false;
+  /**
+   * Emite um valor booleano com o novo valor do item selecionado na combo box.
+   */
   @Output() selectionChange: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor(private ref: ChangeDetectorRef) { }
-
-  ngOnInit(): void {
-    this.ref.detectChanges();
+  constructor(private ref: ChangeDetectorRef) {
   }
 
-  private selectionChanged(event: any): void {
-    this.selectionChange.emit(event.value);
+  ngOnInit(): void {
     this.ref.detectChanges();
   }
 
   public setSelected(item: any): void {
     this.selectedItem = item;
     this.selectionChange.emit(item);
+  }
+
+  private selectionChanged(event: any): void {
+    this.selectionChange.emit(event.value);
+    this.ref.detectChanges();
   }
 
 }

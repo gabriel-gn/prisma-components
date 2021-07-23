@@ -1,0 +1,83 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
+import {CopyContentInputComponent} from './copy-content-input.component';
+import {moduleMetadata} from "@storybook/angular";
+import {CopyContentInputModule} from "./copy-content-input.module";
+import {
+  defaultTemplate,
+  defaultArgs,
+  DefaultCopyContentInput,
+} from "./copy-content-input.stories";
+
+export const argTypes = {
+  disabled: {
+    // description: 'CRIAR A DESCRIÇÃO COMO COMENTÁRIO MULTILINHA ACIMA DOS INPUTS NO COMPONENTE',
+    table: {
+      defaultValue: { summary: defaultArgs.disabled},
+    },
+    control: { type: 'inline-radio'}, options: [true, false],
+  },
+  text: {
+    table: {
+      defaultValue: { summary: defaultArgs.text},
+    },
+    control: { type: 'text'}
+  },
+}
+
+<Meta
+  title='Components/Inputs/Copy Content Input'
+  component={CopyContentInputComponent}
+  argTypes={argTypes}
+  parameters={{ badges: [ 'beta' ] }}
+  decorators={[
+    moduleMetadata({
+      imports: [CopyContentInputModule]
+    })
+  ]}
+/>
+
+export const Template = (args) => <CopyContentInputComponent {...args} />
+
+# CopyContentInput
+
+#### Descrição do componente CopyContentInput
+
+<br/>
+<br/>
+
+## CopyContentInput padrão
+
+Descrição do componente CopyContentInput padrão
+
+Deve ser usado da seguinte forma:
+
+```
+<pm-copy-content-input
+  [text]="text"
+  [disabled]="disabled"
+>
+  Conteúdo
+</pm-copy-content-input>
+```
+
+<Canvas>
+  <Story name='Default' story={DefaultCopyContentInput} />
+</Canvas>
+
+## Module Config
+
+```
+import {CopyContentInputModule} from '@mprisma/components';
+
+@NgModule({
+  imports: [
+    ...,
+    CopyContentInputModule,
+    ...,
+  ]
+})
+```
+
+## Args Table
+
+<ArgsTable story='Default'/>

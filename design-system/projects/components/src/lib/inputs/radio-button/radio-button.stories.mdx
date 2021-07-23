@@ -1,0 +1,96 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
+import {OrientationEnum, RadioButtonComponent} from './radio-button.component';
+import {moduleMetadata} from "@storybook/angular";
+import {RadioButtonModule} from "./radio-button.module";
+import {
+  defaultArgs,
+  DefaultRadioButton,
+} from "./radio-button.stories";
+
+export const argTypes = {
+  orientation: {
+    // description: 'CRIAR A DESCRIÇÃO COMO COMENTÁRIO MULTILINHA ACIMA DOS INPUTS NO COMPONENTE',
+    table: {
+      defaultValue: { summary: defaultArgs.orientation},
+    },
+    control: { type: 'select'}, options: Object.values(OrientationEnum),
+  },
+  values: {
+    // description: 'CRIAR A DESCRIÇÃO COMO COMENTÁRIO MULTILINHA ACIMA DOS INPUTS NO COMPONENTE',
+    table: {
+      defaultValue: { summary: defaultArgs.values},
+    },
+  },
+  disabled: {
+    // description: 'CRIAR A DESCRIÇÃO COMO COMENTÁRIO MULTILINHA ACIMA DOS INPUTS NO COMPONENTE',
+    table: {
+      defaultValue: { summary: defaultArgs.disabled},
+    },
+    control: { type: 'inline-radio'}, options: [true, false],
+  },
+  selectedValue: {
+    // description: 'CRIAR A DESCRIÇÃO COMO COMENTÁRIO MULTILINHA ACIMA DOS INPUTS NO COMPONENTE',
+    table: {
+      defaultValue: { summary: defaultArgs.selectedValue},
+    },
+    control: { type: 'text'},
+  },
+}
+
+<Meta
+  title='Components/Inputs/Radio Button'
+  component={RadioButtonComponent}
+  argTypes={argTypes}
+  parameters={{ badges: [ 'beta' ] }}
+  decorators={[
+    moduleMetadata({
+      imports: [RadioButtonModule]
+    })
+  ]}
+/>
+
+export const Template = (args) => <RadioButtonComponent {...args} />
+
+# RadioButton
+
+#### Descrição do componente RadioButton
+
+<br/>
+<br/>
+
+## RadioButton padrão
+
+Descrição do componente RadioButton padrão
+
+Deve ser usado da seguinte forma:
+
+```
+<pm-radio-button
+  [values]="values"
+  [selectedValue]="selectedValue"
+  [disabled]="disabled"
+>
+</pm-radio-button>
+```
+
+<Canvas>
+  <Story name='Default' story={DefaultRadioButton} />
+</Canvas>
+
+## Module Config
+
+```
+import {RadioButtonModule} from '@mprisma/components';
+
+@NgModule({
+  imports: [
+    ...,
+    RadioButtonModule,
+    ...,
+  ]
+})
+```
+
+## Args Table
+
+<ArgsTable story='Default'/>

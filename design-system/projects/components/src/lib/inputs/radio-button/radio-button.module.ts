@@ -14,4 +14,5 @@ import {MatRadioModule} from '@angular/material/radio';
     MatRadioModule
   ]
 })
-export class RadioButtonModule { }
+export class RadioButtonModule {
+}

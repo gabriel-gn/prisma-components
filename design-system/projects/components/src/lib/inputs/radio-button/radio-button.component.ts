@@ -12,13 +12,27 @@ export const enum OrientationEnum {
 })
 export class RadioButtonComponent {
 
+  /**
+   * Orientação horizontal ou vertical do componente.
+   * Aceita `horizontal` | `vertical`
+   */
   @Input() orientation: OrientationEnum = OrientationEnum.Y;
+  /**
+   * Desabilita a interação com os valores do radio button.
+   */
   @Input() disabled = false;
+  /**
+   * Array de strings que serão exibidos no radio button
+   */
   @Input() values: string[] = [];
+  /**
+   * Valor selecionado
+   */
   @Input() selectedValue: string;
+  /**
+   * Ao trocar o valor selecionado, emite este evento com o novo valor
+   */
   @Output() selectedChange: EventEmitter<string> = new EventEmitter<string>();
-
-  public favoriteSeason: string;
 
   constructor() {
   }

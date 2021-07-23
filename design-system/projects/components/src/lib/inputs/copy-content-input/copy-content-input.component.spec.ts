@@ -1,16 +1,14 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { CopyContentInputComponent } from './copy-content-input.component';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {CopyContentInputComponent} from './copy-content-input.component';
 
 describe('CopyContentInputComponent', () => {
   let component: CopyContentInputComponent;
   let fixture: ComponentFixture<CopyContentInputComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ CopyContentInputComponent ]
-    })
-    .compileComponents();
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      declarations: [CopyContentInputComponent]
+    }).compileComponents();
   });
 
   beforeEach(() => {

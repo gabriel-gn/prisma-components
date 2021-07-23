@@ -3,10 +3,10 @@
     "interfaces": [
         {
             "name": "ComboItem",
-            "id": "interface-ComboItem-4559a9e381398bce2d9780a95355daee",
-            "file": "projects/components/src/lib/combo-box/combo-box.component.ts",
+            "id": "interface-ComboItem-d3c0ca16bedc410222d778929fb9d94e",
+            "file": "projects/components/src/lib/inputs/combo-box/combo-box.component.ts",
             "type": "interface",
-            "sourceCode": "import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';\n\nexport interface ComboItem {\n  label: string;\n  value: any;\n}\n\n@Component({\n  selector: 'pm-combo-box',\n  templateUrl: './combo-box.component.html',\n  styleUrls: ['./combo-box.component.scss']\n})\nexport class ComboBoxComponent implements OnInit {\n\n  @Input() items: ComboItem[] = [];\n  @Input() selectedItem: any;\n  @Input() disabled = false;\n  @Output() selectionChange: EventEmitter<any> = new EventEmitter<any>();\n\n  constructor(private ref: ChangeDetectorRef) { }\n\n  ngOnInit(): void {\n    this.ref.detectChanges();\n  }\n\n  private selectionChanged(event: any): void {\n    this.selectionChange.emit(event.value);\n    this.ref.detectChanges();\n  }\n\n  public setSelected(item: any): void {\n    this.selectedItem = item;\n    this.selectionChange.emit(item);\n  }\n\n}\n",
+            "sourceCode": "import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';\n\nexport interface ComboItem {\n  label: string;\n  value: any;\n}\n\n@Component({\n  selector: 'pm-combo-box',\n  templateUrl: './combo-box.component.html',\n  styleUrls: ['./combo-box.component.scss']\n})\nexport class ComboBoxComponent implements OnInit {\n\n  /**\n   * Itens que serão exibidos na combo box.\n   * Devem ser obrigatoriamente do tipo `ComboItem[]`\n   */\n  @Input() items: ComboItem[] = [];\n  /**\n   * Item selecionado da combobox. Pode ser carregado previamente\n   */\n  @Input() selectedItem: any;\n  /**\n   * Desabilita a interação com os valores da combo box.\n   */\n  @Input() disabled: boolean = false;\n  /**\n   * Emite um valor booleano com o novo valor do item selecionado na combo box.\n   */\n  @Output() selectionChange: EventEmitter<any> = new EventEmitter<any>();\n\n  constructor(private ref: ChangeDetectorRef) {\n  }\n\n  ngOnInit(): void {\n    this.ref.detectChanges();\n  }\n\n  public setSelected(item: any): void {\n    this.selectedItem = item;\n    this.selectionChange.emit(item);\n  }\n\n  private selectionChanged(event: any): void {\n    this.selectionChange.emit(event.value);\n    this.ref.detectChanges();\n  }\n\n}\n",
             "properties": [
                 {
                     "name": "label",
@@ -147,110 +147,7 @@
     "components": [
         {
             "name": "ButtonComponent",
-            "id": "component-ButtonComponent-c1d58fe813f03b0aad2b098042ac73d7",
-            "file": "projects/components/src/lib/button/button.component.ts",
-            "encapsulation": [],
-            "entryComponents": [],
-            "inputs": [],
-            "outputs": [],
-            "providers": [],
-            "selector": "pm-button",
-            "styleUrls": [
-                "./button.component.scss"
-            ],
-            "styles": [],
-            "templateUrl": [
-                "./button.component.html"
-            ],
-            "viewProviders": [],
-            "inputsClass": [
-                {
-                    "name": "busy",
-                    "defaultValue": "false",
-                    "description": "<p>Exibe botão de &quot;carregamento&quot; e desabilita o botão.\nPara alterar o texto, utilizar a propriedade <code>busyText</code></p>\n",
-                    "line": 20,
-                    "type": "boolean"
-                },
-                {
-                    "name": "busyText",
-                    "description": "<p>Texto exibido junto ao botão de &quot;carregando&quot; quando a propriedade <code>busy</code> está como <code>true</code></p>\n",
-                    "line": 24,
-                    "type": "string"
-                },
-                {
-                    "name": "disabled",
-                    "defaultValue": "false",
-                    "description": "<p>Propriedade de habilitado ou desabilitado</p>\n",
-                    "line": 36,
-                    "type": "boolean"
-                },
-                {
-                    "name": "iconClass",
-                    "description": "<p>Ícone que será exibido no botão junto ao texto. Ex: <code>uil uil-md uil-tabs</code></p>\n",
-                    "line": 28,
-                    "type": "string"
-                },
-                {
-                    "name": "label",
-                    "defaultValue": "''",
-                    "line": 10,
-                    "type": "string | null"
-                },
-                {
-                    "name": "outline",
-                    "defaultValue": "false",
-                    "description": "<p>Se o botão será cheio ou apenas contornado pela borda</p>\n",
-                    "line": 32,
-                    "type": "boolean"
-                },
-                {
-                    "name": "type",
-                    "defaultValue": "`${MainColors.default}`",
-                    "description": "<p>Cor do botão que será exibido.\nUtilizar as propriedades do tipo &quot;MainColors&quot;</p>\n",
-                    "line": 15,
-                    "type": "MainColors | string"
-                }
-            ],
-            "outputsClass": [],
-            "propertiesClass": [],
-            "methodsClass": [
-                {
-                    "name": "getClassName",
-                    "args": [],
-                    "optional": false,
-                    "returnType": "string",
-                    "typeParameters": [],
-                    "line": 40,
-                    "modifierKind": [
-                        114
-                    ]
-                }
-            ],
-            "hostBindings": [],
-            "hostListeners": [],
-            "description": "",
-            "rawdescription": "",
-            "type": "component",
-            "sourceCode": "import {Component, Input} from '@angular/core';\nimport {MainColors} from '../../models/colors';\n\n@Component({\n  selector: 'pm-button',\n  templateUrl: './button.component.html',\n  styleUrls: ['./button.component.scss']\n})\nexport class ButtonComponent {\n  @Input('label') label: string | null = '';  // Usada só pra aparecer no storybook\n  /**\n   * Cor do botão que será exibido.\n   * Utilizar as propriedades do tipo \"MainColors\"\n   */\n  @Input('type') type: MainColors | string = `${MainColors.default}`;\n  /**\n   * Exibe botão de \"carregamento\" e desabilita o botão.\n   * Para alterar o texto, utilizar a propriedade `busyText`\n   */\n  @Input('busy') busy: boolean = false;\n  /**\n   * Texto exibido junto ao botão de \"carregando\" quando a propriedade `busy` está como `true`\n   */\n  @Input('busyText') busyText: string;\n  /**\n   * Ícone que será exibido no botão junto ao texto. Ex: `uil uil-md uil-tabs`\n   */\n  @Input('iconClass') iconClass: string;\n  /**\n   * Se o botão será cheio ou apenas contornado pela borda\n   */\n  @Input('outline') outline: boolean = false;\n  /**\n   * Propriedade de habilitado ou desabilitado\n   */\n  @Input('disabled') disabled: boolean = false;\n\n  constructor() { }\n\n  public getClassName(): string {\n    let name = 'btn';\n    if (this.type) {\n      if (this.outline) {\n        name += ` btn-outline-${this.type}`;\n      } else {\n        name += ` btn-${this.type}`;\n      }\n    }\n    return name;\n  }\n\n}\n",
-            "assetsDirs": [],
-            "styleUrlsData": [
-                {
-                    "data": ".pm-button {\n  button {\n    &:disabled {\n      cursor: not-allowed;\n      pointer-events: none;\n    }\n  }\n}\n",
-                    "styleUrl": "./button.component.scss"
-                }
-            ],
-            "stylesData": "",
-            "constructorObj": {
-                "name": "constructor",
-                "description": "",
-                "args": [],
-                "line": 36
-            },
-            "templateData": "<div class=\"pm-button\">\n  <button [className]=\"getClassName()\" [disabled]=\"busy || disabled\">\n    <ng-container *ngIf=\"busy; else buttonContent\">\n      <span class=\"spinner-border spinner-border-sm mx-2\" role=\"status\" aria-hidden=\"true\"></span>\n      {{busyText ? busyText : ''}}\n    </ng-container>\n  </button>\n</div>\n\n<ng-template #buttonContent>\n  <i *ngIf=\"iconClass && busy === false\" class=\"{{iconClass}}\"></i>\n  <ng-container *ngIf=\"label; else noLabel\">\n    {{label}}\n  </ng-container>\n</ng-template>\n\n<ng-template #noLabel>\n  <ng-content></ng-content>\n</ng-template>\n\n"
-        },
-        {
-            "name": "ButtonComponent",
-            "id": "component-ButtonComponent-8f80c7c4d491a0c7b21d3cb70e67b470-1",
+            "id": "component-ButtonComponent-8f80c7c4d491a0c7b21d3cb70e67b470",
             "file": "projects/components/src/lib/inputs/button/button.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -349,9 +246,6 @@
                 "args": [],
                 "line": 36
             },
-            "isDuplicate": true,
-            "duplicateId": 1,
-            "duplicateName": "ButtonComponent-1",
             "templateData": "<div class=\"pm-button\">\n  <button [className]=\"getClassName()\" [disabled]=\"busy || disabled\">\n    <ng-container *ngIf=\"busy; else buttonContent\">\n      <span class=\"spinner-border spinner-border-sm mx-2\" role=\"status\" aria-hidden=\"true\"></span>\n      {{busyText ? busyText : ''}}\n    </ng-container>\n  </button>\n</div>\n\n<ng-template #buttonContent>\n  <i *ngIf=\"iconClass && busy === false\" class=\"{{iconClass}}\"></i>\n  <ng-container *ngIf=\"label; else noLabel\">\n    {{label}}\n  </ng-container>\n</ng-template>\n\n<ng-template #noLabel>\n  <ng-content></ng-content>\n</ng-template>\n\n"
         },
         {
@@ -412,107 +306,7 @@
         },
         {
             "name": "CheckboxComponent",
-            "id": "component-CheckboxComponent-51774af61e4b842886e893ae3df7b183",
-            "file": "projects/components/src/lib/checkbox/checkbox.component.ts",
-            "encapsulation": [],
-            "entryComponents": [],
-            "inputs": [],
-            "outputs": [],
-            "providers": [],
-            "selector": "pm-checkbox",
-            "styleUrls": [
-                "./checkbox.component.scss"
-            ],
-            "styles": [],
-            "templateUrl": [
-                "./checkbox.component.html"
-            ],
-            "viewProviders": [],
-            "inputsClass": [
-                {
-                    "name": "checked",
-                    "defaultValue": "false",
-                    "line": 10
-                },
-                {
-                    "name": "disabled",
-                    "defaultValue": "false",
-                    "line": 13
-                }
-            ],
-            "outputsClass": [
-                {
-                    "name": "checkedChange",
-                    "defaultValue": "new EventEmitter<boolean>()",
-                    "line": 11,
-                    "type": "EventEmitter<boolean>"
-                },
-                {
-                    "name": "disabledChange",
-                    "defaultValue": "new EventEmitter<boolean>()",
-                    "line": 14,
-                    "type": "EventEmitter<boolean>"
-                },
-                {
-                    "name": "onCheckedChange",
-                    "defaultValue": "new EventEmitter()",
-                    "line": 12,
-                    "type": "EventEmitter"
-                }
-            ],
-            "propertiesClass": [],
-            "methodsClass": [
-                {
-                    "name": "setValue",
-                    "args": [
-                        {
-                            "name": "value",
-                            "type": "boolean"
-                        }
-                    ],
-                    "optional": false,
-                    "returnType": "void",
-                    "typeParameters": [],
-                    "line": 19,
-                    "modifierKind": [
-                        114
-                    ],
-                    "jsdoctags": [
-                        {
-                            "name": "value",
-                            "type": "boolean",
-                            "tagName": {
-                                "text": "param"
-                            }
-                        }
-                    ]
-                }
-            ],
-            "hostBindings": [],
-            "hostListeners": [],
-            "description": "",
-            "rawdescription": "",
-            "type": "component",
-            "sourceCode": "import {Component, EventEmitter, Input, Output} from '@angular/core';\n\n@Component({\n  selector: 'pm-checkbox',\n  templateUrl: './checkbox.component.html',\n  styleUrls: ['./checkbox.component.scss']\n})\nexport class CheckboxComponent {\n\n  @Input() checked = false;\n  @Output() checkedChange: EventEmitter<boolean> = new EventEmitter<boolean>();\n  @Output() onCheckedChange = new EventEmitter();\n  @Input() disabled = false;\n  @Output() disabledChange: EventEmitter<boolean> = new EventEmitter<boolean>();\n\n  constructor() {\n  }\n\n  public setValue(value: boolean): void {\n    this.checked = value;\n    this.checkedChange.emit(this.checked);\n    this.onCheckedChange.emit(this.checked);\n  }\n\n}\n",
-            "assetsDirs": [],
-            "styleUrlsData": [
-                {
-                    "data": "",
-                    "styleUrl": "./checkbox.component.scss"
-                }
-            ],
-            "stylesData": "",
-            "constructorObj": {
-                "name": "constructor",
-                "description": "",
-                "args": [],
-                "line": 14
-            },
-            "templateData": "<div class=\"form-check\" [ngClass]=\"{'disabled': disabled}\" (click)=\"$event.stopPropagation();\">\n  <label class=\"form-check-label\">\n    <input (change)=\"setValue($event.target['checked'])\"\n           [(ngModel)]=\"checked\"\n           [ngModelOptions]=\"{standalone: true}\"\n           [disabled]=\"disabled\"\n           class=\"form-check-input\" type=\"checkbox\">\n    <span class=\"form-check-sign\"></span>\n    <ng-content></ng-content>\n  </label>\n</div>\n"
-        },
-        {
-            "name": "CheckboxComponent",
-            "id": "component-CheckboxComponent-7b9d2f038d0b18115daec3bf979b7190-1",
+            "id": "component-CheckboxComponent-d18577b21928d161d857ae62825b0086",
             "file": "projects/components/src/lib/inputs/checkbox/checkbox.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -547,21 +341,21 @@
             "outputsClass": [
                 {
                     "name": "checkedChange",
-                    "defaultValue": "new EventEmitter<boolean>()",
+                    "defaultValue": "new EventEmitter<boolean>(this.checked)",
                     "line": 18,
                     "type": "EventEmitter<boolean>"
                 },
                 {
                     "name": "disabledChange",
-                    "defaultValue": "new EventEmitter<boolean>()",
+                    "defaultValue": "new EventEmitter<boolean>(this.disabled)",
                     "line": 20,
                     "type": "EventEmitter<boolean>"
                 },
                 {
                     "name": "onCheckedChange",
-                    "defaultValue": "new EventEmitter()",
+                    "defaultValue": "new EventEmitter<boolean>(this.checked)",
                     "line": 19,
-                    "type": "EventEmitter"
+                    "type": "EventEmitter<boolean>"
                 }
             ],
             "propertiesClass": [],
@@ -597,7 +391,7 @@
             "description": "",
             "rawdescription": "",
             "type": "component",
-            "sourceCode": "import {Component, EventEmitter, Input, Output} from '@angular/core';\n\n@Component({\n  selector: 'pm-checkbox',\n  templateUrl: './checkbox.component.html',\n  styleUrls: ['./checkbox.component.scss']\n})\nexport class CheckboxComponent {\n\n  /**\n   * Habilita ou desabilita a marcação da checkbox\n   */\n  @Input() checked: boolean = false;\n  /**\n   * Não permite alterar a marcação da checkbox\n   */\n  @Input() disabled: boolean = false;\n  @Output() checkedChange: EventEmitter<boolean> = new EventEmitter<boolean>();\n  @Output() onCheckedChange = new EventEmitter();\n  @Output() disabledChange: EventEmitter<boolean> = new EventEmitter<boolean>();\n\n  constructor() {\n  }\n\n  public setValue(value: boolean): void {\n    this.checked = value;\n    this.checkedChange.emit(this.checked);\n    this.onCheckedChange.emit(this.checked);\n  }\n\n}\n",
+            "sourceCode": "import {Component, EventEmitter, Input, Output} from '@angular/core';\n\n@Component({\n  selector: 'pm-checkbox',\n  templateUrl: './checkbox.component.html',\n  styleUrls: ['./checkbox.component.scss']\n})\nexport class CheckboxComponent {\n\n  /**\n   * Habilita ou desabilita a marcação da checkbox\n   */\n  @Input() checked: boolean = false;\n  /**\n   * Não permite alterar a marcação da checkbox\n   */\n  @Input() disabled: boolean = false;\n  @Output() checkedChange: EventEmitter<boolean> = new EventEmitter<boolean>(this.checked);\n  @Output() onCheckedChange: EventEmitter<boolean> = new EventEmitter<boolean>(this.checked);\n  @Output() disabledChange: EventEmitter<boolean> = new EventEmitter<boolean>(this.disabled);\n\n  constructor() {\n  }\n\n  public setValue(value: boolean): void {\n    this.checked = value;\n    this.checkedChange.emit(this.checked);\n    this.onCheckedChange.emit(this.checked);\n  }\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -612,15 +406,12 @@
                 "args": [],
                 "line": 20
             },
-            "isDuplicate": true,
-            "duplicateId": 1,
-            "duplicateName": "CheckboxComponent-1",
             "templateData": "<div class=\"form-check\" [ngClass]=\"{'disabled': disabled}\" (click)=\"$event.stopPropagation();\">\n  <label class=\"form-check-label\">\n    <input (change)=\"setValue($event.target['checked'])\"\n           [(ngModel)]=\"checked\"\n           [ngModelOptions]=\"{standalone: true}\"\n           [disabled]=\"disabled\"\n           class=\"form-check-input\" type=\"checkbox\">\n    <span class=\"form-check-sign\"></span>\n    <ng-content></ng-content>\n  </label>\n</div>\n"
         },
         {
             "name": "ComboBoxComponent",
-            "id": "component-ComboBoxComponent-4559a9e381398bce2d9780a95355daee",
-            "file": "projects/components/src/lib/combo-box/combo-box.component.ts",
+            "id": "component-ComboBoxComponent-d3c0ca16bedc410222d778929fb9d94e",
+            "file": "projects/components/src/lib/inputs/combo-box/combo-box.component.ts",
             "encapsulation": [],
             "entryComponents": [],
             "inputs": [],
@@ -639,17 +430,21 @@
                 {
                     "name": "disabled",
                     "defaultValue": "false",
-                    "line": 17
+                    "description": "<p>Desabilita a interação com os valores da combo box.</p>\n",
+                    "line": 27,
+                    "type": "boolean"
                 },
                 {
                     "name": "items",
                     "defaultValue": "[]",
-                    "line": 15,
+                    "description": "<p>Itens que serão exibidos na combo box.\nDevem ser obrigatoriamente do tipo <code>ComboItem[]</code></p>\n",
+                    "line": 19,
                     "type": "ComboItem[]"
                 },
                 {
                     "name": "selectedItem",
-                    "line": 16,
+                    "description": "<p>Item selecionado da combobox. Pode ser carregado previamente</p>\n",
+                    "line": 23,
                     "type": "any"
                 }
             ],
@@ -657,7 +452,8 @@
                 {
                     "name": "selectionChange",
                     "defaultValue": "new EventEmitter<any>()",
-                    "line": 18,
+                    "description": "<p>Emite um valor booleano com o novo valor do item selecionado na combo box.</p>\n",
+                    "line": 31,
                     "type": "EventEmitter<any>"
                 }
             ],
@@ -669,7 +465,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 22
+                    "line": 36
                 },
                 {
                     "name": "selectionChanged",
@@ -682,7 +478,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 26,
+                    "line": 45,
                     "modifierKind": [
                         112
                     ],
@@ -707,7 +503,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 31,
+                    "line": 40,
                     "modifierKind": [
                         114
                     ],
@@ -727,7 +523,7 @@
             "description": "",
             "rawdescription": "",
             "type": "component",
-            "sourceCode": "import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';\n\nexport interface ComboItem {\n  label: string;\n  value: any;\n}\n\n@Component({\n  selector: 'pm-combo-box',\n  templateUrl: './combo-box.component.html',\n  styleUrls: ['./combo-box.component.scss']\n})\nexport class ComboBoxComponent implements OnInit {\n\n  @Input() items: ComboItem[] = [];\n  @Input() selectedItem: any;\n  @Input() disabled = false;\n  @Output() selectionChange: EventEmitter<any> = new EventEmitter<any>();\n\n  constructor(private ref: ChangeDetectorRef) { }\n\n  ngOnInit(): void {\n    this.ref.detectChanges();\n  }\n\n  private selectionChanged(event: any): void {\n    this.selectionChange.emit(event.value);\n    this.ref.detectChanges();\n  }\n\n  public setSelected(item: any): void {\n    this.selectedItem = item;\n    this.selectionChange.emit(item);\n  }\n\n}\n",
+            "sourceCode": "import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';\n\nexport interface ComboItem {\n  label: string;\n  value: any;\n}\n\n@Component({\n  selector: 'pm-combo-box',\n  templateUrl: './combo-box.component.html',\n  styleUrls: ['./combo-box.component.scss']\n})\nexport class ComboBoxComponent implements OnInit {\n\n  /**\n   * Itens que serão exibidos na combo box.\n   * Devem ser obrigatoriamente do tipo `ComboItem[]`\n   */\n  @Input() items: ComboItem[] = [];\n  /**\n   * Item selecionado da combobox. Pode ser carregado previamente\n   */\n  @Input() selectedItem: any;\n  /**\n   * Desabilita a interação com os valores da combo box.\n   */\n  @Input() disabled: boolean = false;\n  /**\n   * Emite um valor booleano com o novo valor do item selecionado na combo box.\n   */\n  @Output() selectionChange: EventEmitter<any> = new EventEmitter<any>();\n\n  constructor(private ref: ChangeDetectorRef) {\n  }\n\n  ngOnInit(): void {\n    this.ref.detectChanges();\n  }\n\n  public setSelected(item: any): void {\n    this.selectedItem = item;\n    this.selectionChange.emit(item);\n  }\n\n  private selectionChanged(event: any): void {\n    this.selectionChange.emit(event.value);\n    this.ref.detectChanges();\n  }\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -745,7 +541,7 @@
                         "type": "ChangeDetectorRef"
                     }
                 ],
-                "line": 18,
+                "line": 31,
                 "jsdoctags": [
                     {
                         "name": "ref",
@@ -810,8 +606,8 @@
         },
         {
             "name": "CopyContentInputComponent",
-            "id": "component-CopyContentInputComponent-9ec1f2377b49b96cc969f1a6c41dfd48",
-            "file": "projects/components/src/lib/copy-content-input/copy-content-input.component.ts",
+            "id": "component-CopyContentInputComponent-bfa6a3c1d58c743a61a528776134b1ac",
+            "file": "projects/components/src/lib/inputs/copy-content-input/copy-content-input.component.ts",
             "encapsulation": [],
             "entryComponents": [],
             "inputs": [],
@@ -830,12 +626,14 @@
                 {
                     "name": "disabled",
                     "defaultValue": "true",
-                    "line": 11
+                    "description": "<p>Desabilita a interação o input.</p>\n",
+                    "line": 17
                 },
                 {
                     "name": "text",
                     "defaultValue": "''",
-                    "line": 10
+                    "description": "<p>texto a ser exibido como conteúdo</p>\n",
+                    "line": 13
                 }
             ],
             "outputsClass": [],
@@ -847,7 +645,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 20
+                    "line": 26
                 }
             ],
             "hostBindings": [],
@@ -855,7 +653,7 @@
             "description": "",
             "rawdescription": "",
             "type": "component",
-            "sourceCode": "import {Component, Input, OnInit} from '@angular/core';\n\n@Component({\n  selector: 'pm-copy-content-input',\n  templateUrl: './copy-content-input.component.html',\n  styleUrls: ['./copy-content-input.component.scss']\n})\nexport class CopyContentInputComponent implements OnInit {\n\n  @Input() text = '';\n  @Input() disabled = true;\n  // public readonly notifier: SnotifyService;\n\n  constructor(\n    // private notifierService: SnotifyService\n  ) {\n    // this.notifier = notifierService;\n  }\n\n  ngOnInit(): void {\n  }\n\n  // /**\n  //  * Notifica que o valor foi copiado para a clipboard.\n  //  * O que copia mesmo é a diretiva [cdkCopyToClipboard]=\"texto\"\n  //  * @param inputElement: uma tag input\n  //  */\n  // copyInputMessage(inputElement) {\n  //   this.notifier.info('Link copiado para a área de transferência')\n  // }\n\n}\n",
+            "sourceCode": "import {Component, Input, OnInit} from '@angular/core';\n\n@Component({\n  selector: 'pm-copy-content-input',\n  templateUrl: './copy-content-input.component.html',\n  styleUrls: ['./copy-content-input.component.scss']\n})\nexport class CopyContentInputComponent implements OnInit {\n\n  /**\n   * texto a ser exibido como conteúdo\n   */\n  @Input() text = '';\n  /**\n   * Desabilita a interação o input.\n   */\n  @Input() disabled = true;\n  // public readonly notifier: SnotifyService;\n\n  constructor(\n    // private notifierService: SnotifyService\n  ) {\n    // this.notifier = notifierService;\n  }\n\n  ngOnInit(): void {\n  }\n\n  // /**\n  //  * Notifica que o valor foi copiado para a clipboard.\n  //  * O que copia mesmo é a diretiva [cdkCopyToClipboard]=\"texto\"\n  //  * @param inputElement: uma tag input\n  //  */\n  // copyInputMessage(inputElement) {\n  //   this.notifier.info('Link copiado para a área de transferência')\n  // }\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -868,7 +666,7 @@
                 "name": "constructor",
                 "description": "",
                 "args": [],
-                "line": 11
+                "line": 17
             },
             "implements": [
                 "OnInit"
@@ -1566,8 +1364,8 @@
         },
         {
             "name": "RadioButtonComponent",
-            "id": "component-RadioButtonComponent-649e524d48ab6ea267d839228e2b98d5",
-            "file": "projects/components/src/lib/radio-button/radio-button.component.ts",
+            "id": "component-RadioButtonComponent-2d1d35dca16ca5cfb0d3e39ee5f5458d",
+            "file": "projects/components/src/lib/inputs/radio-button/radio-button.component.ts",
             "encapsulation": [],
             "entryComponents": [],
             "inputs": [],
@@ -1586,23 +1384,27 @@
                 {
                     "name": "disabled",
                     "defaultValue": "false",
-                    "line": 16
+                    "description": "<p>Desabilita a interação com os valores do radio button.</p>\n",
+                    "line": 23
                 },
                 {
                     "name": "orientation",
                     "defaultValue": "OrientationEnum.Y",
-                    "line": 15,
+                    "description": "<p>Orientação horizontal ou vertical do componente.\nAceita <code>horizontal</code> | <code>vertical</code></p>\n",
+                    "line": 19,
                     "type": "OrientationEnum"
                 },
                 {
                     "name": "selectedValue",
-                    "line": 18,
+                    "description": "<p>Valor selecionado</p>\n",
+                    "line": 31,
                     "type": "string"
                 },
                 {
                     "name": "values",
                     "defaultValue": "[]",
-                    "line": 17,
+                    "description": "<p>Array de strings que serão exibidos no radio button</p>\n",
+                    "line": 27,
                     "type": "string[]"
                 }
             ],
@@ -1610,22 +1412,12 @@
                 {
                     "name": "selectedChange",
                     "defaultValue": "new EventEmitter<string>()",
-                    "line": 19,
+                    "description": "<p>Ao trocar o valor selecionado, emite este evento com o novo valor</p>\n",
+                    "line": 35,
                     "type": "EventEmitter<string>"
                 }
             ],
-            "propertiesClass": [
-                {
-                    "name": "favoriteSeason",
-                    "type": "string",
-                    "optional": false,
-                    "description": "",
-                    "line": 21,
-                    "modifierKind": [
-                        114
-                    ]
-                }
-            ],
+            "propertiesClass": [],
             "methodsClass": [
                 {
                     "name": "setValue",
@@ -1638,7 +1430,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 26,
+                    "line": 40,
                     "modifierKind": [
                         114
                     ],
@@ -1658,7 +1450,7 @@
             "description": "",
             "rawdescription": "",
             "type": "component",
-            "sourceCode": "import {Component, EventEmitter, Input, Output} from '@angular/core';\n\nexport const enum OrientationEnum {\n  X = 'horizontal',\n  Y = 'vertical',\n}\n\n@Component({\n  selector: 'pm-radio-button',\n  templateUrl: './radio-button.component.html',\n  styleUrls: ['./radio-button.component.scss']\n})\nexport class RadioButtonComponent {\n\n  @Input() orientation: OrientationEnum = OrientationEnum.Y;\n  @Input() disabled = false;\n  @Input() values: string[] = [];\n  @Input() selectedValue: string;\n  @Output() selectedChange: EventEmitter<string> = new EventEmitter<string>();\n\n  public favoriteSeason: string;\n\n  constructor() {\n  }\n\n  public setValue(value: string): void {\n    this.selectedValue = value;\n    this.selectedChange.emit(this.selectedValue);\n  }\n\n}\n",
+            "sourceCode": "import {Component, EventEmitter, Input, Output} from '@angular/core';\n\nexport const enum OrientationEnum {\n  X = 'horizontal',\n  Y = 'vertical',\n}\n\n@Component({\n  selector: 'pm-radio-button',\n  templateUrl: './radio-button.component.html',\n  styleUrls: ['./radio-button.component.scss']\n})\nexport class RadioButtonComponent {\n\n  /**\n   * Orientação horizontal ou vertical do componente.\n   * Aceita `horizontal` | `vertical`\n   */\n  @Input() orientation: OrientationEnum = OrientationEnum.Y;\n  /**\n   * Desabilita a interação com os valores do radio button.\n   */\n  @Input() disabled = false;\n  /**\n   * Array de strings que serão exibidos no radio button\n   */\n  @Input() values: string[] = [];\n  /**\n   * Valor selecionado\n   */\n  @Input() selectedValue: string;\n  /**\n   * Ao trocar o valor selecionado, emite este evento com o novo valor\n   */\n  @Output() selectedChange: EventEmitter<string> = new EventEmitter<string>();\n\n  constructor() {\n  }\n\n  public setValue(value: string): void {\n    this.selectedValue = value;\n    this.selectedChange.emit(this.selectedValue);\n  }\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -1671,7 +1463,7 @@
                 "name": "constructor",
                 "description": "",
                 "args": [],
-                "line": 21
+                "line": 35
             },
             "templateData": "<mat-radio-group\n  [(ngModel)]=\"selectedValue\"\n  [disabled]=\"disabled\"\n  (change)=\"setValue($event.value)\"\n  [ngClass]=\"{'d-flex flex-column': orientation === 'vertical'}\">\n  <mat-radio-button *ngFor=\"let value of values\" [value]=\"value\">\n    {{value}}\n  </mat-radio-button>\n</mat-radio-group>\n"
         },
@@ -2231,39 +2023,6 @@
             ]
         },
         {
-            "name": "ButtonModule",
-            "children": [
-                {
-                    "type": "providers",
-                    "elements": []
-                },
-                {
-                    "type": "declarations",
-                    "elements": [
-                        {
-                            "name": "ButtonComponent"
-                        }
-                    ]
-                },
-                {
-                    "type": "imports",
-                    "elements": []
-                },
-                {
-                    "type": "exports",
-                    "elements": []
-                },
-                {
-                    "type": "bootstrap",
-                    "elements": []
-                },
-                {
-                    "type": "classes",
-                    "elements": []
-                }
-            ]
-        },
-        {
             "name": "CardModule",
             "children": [
                 {
@@ -2326,39 +2085,6 @@
                             "name": "CheckboxComponent"
                         }
                     ]
-                },
-                {
-                    "type": "bootstrap",
-                    "elements": []
-                },
-                {
-                    "type": "classes",
-                    "elements": []
-                }
-            ]
-        },
-        {
-            "name": "CheckboxModule",
-            "children": [
-                {
-                    "type": "providers",
-                    "elements": []
-                },
-                {
-                    "type": "declarations",
-                    "elements": [
-                        {
-                            "name": "CheckboxComponent"
-                        }
-                    ]
-                },
-                {
-                    "type": "imports",
-                    "elements": []
-                },
-                {
-                    "type": "exports",
-                    "elements": []
                 },
                 {
                     "type": "bootstrap",
@@ -2809,7 +2535,31 @@
                 "subtype": "variable",
                 "file": "projects/components/src/lib/inputs/checkbox/checkbox.stories.ts",
                 "type": "object",
-                "defaultValue": "{\n  checked: false,\n  disabled: false\n}"
+                "defaultValue": "{\n  checked: false,\n  disabled: false,\n  selectedItem: undefined,\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/components/src/lib/inputs/copy-content-input/copy-content-input.stories.ts",
+                "type": "object",
+                "defaultValue": "{\n  disabled: false,\n  text: ''\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/components/src/lib/inputs/combo-box/combo-box.stories.ts",
+                "type": "object",
+                "defaultValue": "{\n  items: [],\n  disabled: false,\n  selectedItem: undefined\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/components/src/lib/inputs/radio-button/radio-button.stories.ts",
+                "type": "object",
+                "defaultValue": "{\n  values: [],\n  disabled: false,\n  selectedValue: undefined\n}"
             },
             {
                 "name": "DefaultButton",
@@ -2831,14 +2581,6 @@
                 "name": "DefaultCheckbox",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/inputs/checkbox.stories.ts",
-                "type": "",
-                "defaultValue": "Template.bind({})"
-            },
-            {
-                "name": "DefaultCheckbox",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "projects/components/src/lib/inputs/checkbox/checkbox.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
@@ -2847,7 +2589,15 @@
                 "name": "DefaultComboBox",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/inputs/ComboBox.stories.ts",
+                "file": "projects/components/src/lib/inputs/combo-box/combo-box.stories.ts",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "DefaultCopyContentInput",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/components/src/lib/inputs/copy-content-input/copy-content-input.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             },
@@ -2860,12 +2610,12 @@
                 "defaultValue": "Template.bind({})"
             },
             {
-                "name": "DefaultInput",
+                "name": "defaultItems",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/inputs/CopyContentInput.stories.ts",
-                "type": "",
-                "defaultValue": "Template.bind({})"
+                "file": "projects/components/src/lib/inputs/combo-box/combo-box.stories.ts",
+                "type": "[]",
+                "defaultValue": "[\n  {\n    label: 'Value 1',\n    value: 1\n  },\n  {\n    label: 'Value 2',\n    value: 2\n  },\n  {\n    label: 'Value 3',\n    value: 3\n  }\n]"
             },
             {
                 "name": "DefaultMultiLevelDropdownMenu",
@@ -2879,7 +2629,7 @@
                 "name": "DefaultRadioButton",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/inputs/RadioButton.stories.ts",
+                "file": "projects/components/src/lib/inputs/radio-button/radio-button.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             },
@@ -2904,14 +2654,6 @@
                 "ctype": "miscellaneous",
                 "subtype": "variable",
                 "file": "projects/components/src/lib/inputs/button/button.stories.ts",
-                "type": "",
-                "defaultValue": "Template.bind({})"
-            },
-            {
-                "name": "DisabledCheckbox",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "stories/inputs/checkbox.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             },
@@ -3102,38 +2844,6 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/inputs/ComboBox.stories.ts",
-                "type": "Story<ComboBoxComponent>",
-                "defaultValue": "(args: ComboBoxComponent) => ({\n  component: ComboBoxComponent,\n  props: args,\n  template: `\n    <pm-combo-box\n        [items]=\"items\"\n    >\n        Conteúdo\n    </pm-combo-box>`\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "stories/inputs/CopyContentInput.stories.ts",
-                "type": "Story<CopyContentInputComponent>",
-                "defaultValue": "(args: CopyContentInputComponent) => ({\n  component: CopyContentInputComponent,\n  props: args,\n  template: `\n    <pm-copy-content-input\n        [text]=\"text\"\n        [disabled]=\"disabled\"\n    >\n        Conteúdo\n    </pm-copy-content-input>`\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "stories/inputs/RadioButton.stories.ts",
-                "type": "Story<RadioButtonComponent>",
-                "defaultValue": "(args: RadioButtonComponent) => ({\n  component: RadioButtonComponent,\n  props: args,\n  template: `\n    <pm-radio-button\n        [values]=\"values\"\n        [selectedValue]=\"selectedValue\"\n    >\n        Conteúdo\n    </pm-radio-button>`\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "stories/inputs/checkbox.stories.ts",
-                "type": "Story<CheckboxComponent>",
-                "defaultValue": "(args: CheckboxComponent) => ({\n  component: CheckboxComponent,\n  props: args,\n  template: `\n    <pm-checkbox\n      [checked]=\"checked\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>`\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "projects/components/src/lib/inputs/button/button.stories.ts",
                 "type": "Story<ButtonComponent>",
                 "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-button\n        [label]=\"label\"\n        [type]=\"type\"\n        [busy]=\"busy\"\n        [busyText]=\"busyText\"\n        [iconClass]=\"iconClass\"\n        [outline]=\"outline\"\n        [disabled]=\"disabled\"\n    >\n        Button Content\n    </pm-button>\n  `\n})"
@@ -3145,6 +2855,30 @@
                 "file": "projects/components/src/lib/inputs/checkbox/checkbox.stories.ts",
                 "type": "Story<CheckboxComponent>",
                 "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-checkbox\n      [checked]=\"checked\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/components/src/lib/inputs/copy-content-input/copy-content-input.stories.ts",
+                "type": "Story<CopyContentInputComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-copy-content-input\n      [text]=\"text\"\n      [disabled]=\"disabled\"\n    >\n      Conteúdo\n    </pm-copy-content-input>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/components/src/lib/inputs/combo-box/combo-box.stories.ts",
+                "type": "Story<ComboBoxComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-combo-box\n      [items]=\"items\"\n      [disabled]=\"disabled\"\n      [selectedItem]=\"selectedItem\"\n    >\n    </pm-combo-box>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/components/src/lib/inputs/radio-button/radio-button.stories.ts",
+                "type": "Story<RadioButtonComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-radio-button\n      [values]=\"values\"\n      [selectedValue]=\"selectedValue\"\n      [disabled]=\"disabled\"\n    >\n    </pm-radio-button>\n  `\n})"
             },
             {
                 "name": "ThumbnailTable",
@@ -3222,7 +2956,7 @@
                 "ctype": "miscellaneous",
                 "subtype": "enum",
                 "description": "",
-                "file": "projects/components/src/lib/radio-button/radio-button.component.ts"
+                "file": "projects/components/src/lib/inputs/radio-button/radio-button.component.ts"
             },
             {
                 "name": "PaleColors",
@@ -3612,7 +3346,7 @@
                     "subtype": "variable",
                     "file": "projects/components/src/lib/inputs/checkbox/checkbox.stories.ts",
                     "type": "object",
-                    "defaultValue": "{\n  checked: false,\n  disabled: false\n}"
+                    "defaultValue": "{\n  checked: false,\n  disabled: false,\n  selectedItem: undefined,\n}"
                 },
                 {
                     "name": "DefaultCheckbox",
@@ -3639,6 +3373,92 @@
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-checkbox\n      [checked]=\"checked\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>\n  `\n})"
                 }
             ],
+            "projects/components/src/lib/inputs/copy-content-input/copy-content-input.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/lib/inputs/copy-content-input/copy-content-input.stories.ts",
+                    "type": "object",
+                    "defaultValue": "{\n  disabled: false,\n  text: ''\n}"
+                },
+                {
+                    "name": "DefaultCopyContentInput",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/lib/inputs/copy-content-input/copy-content-input.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/lib/inputs/copy-content-input/copy-content-input.stories.ts",
+                    "type": "Story<CopyContentInputComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-copy-content-input\n      [text]=\"text\"\n      [disabled]=\"disabled\"\n    >\n      Conteúdo\n    </pm-copy-content-input>\n  `\n})"
+                }
+            ],
+            "projects/components/src/lib/inputs/combo-box/combo-box.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/lib/inputs/combo-box/combo-box.stories.ts",
+                    "type": "object",
+                    "defaultValue": "{\n  items: [],\n  disabled: false,\n  selectedItem: undefined\n}"
+                },
+                {
+                    "name": "DefaultComboBox",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/lib/inputs/combo-box/combo-box.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "defaultItems",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/lib/inputs/combo-box/combo-box.stories.ts",
+                    "type": "[]",
+                    "defaultValue": "[\n  {\n    label: 'Value 1',\n    value: 1\n  },\n  {\n    label: 'Value 2',\n    value: 2\n  },\n  {\n    label: 'Value 3',\n    value: 3\n  }\n]"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/lib/inputs/combo-box/combo-box.stories.ts",
+                    "type": "Story<ComboBoxComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-combo-box\n      [items]=\"items\"\n      [disabled]=\"disabled\"\n      [selectedItem]=\"selectedItem\"\n    >\n    </pm-combo-box>\n  `\n})"
+                }
+            ],
+            "projects/components/src/lib/inputs/radio-button/radio-button.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/lib/inputs/radio-button/radio-button.stories.ts",
+                    "type": "object",
+                    "defaultValue": "{\n  values: [],\n  disabled: false,\n  selectedValue: undefined\n}"
+                },
+                {
+                    "name": "DefaultRadioButton",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/lib/inputs/radio-button/radio-button.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/lib/inputs/radio-button/radio-button.stories.ts",
+                    "type": "Story<RadioButtonComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-radio-button\n      [values]=\"values\"\n      [selectedValue]=\"selectedValue\"\n      [disabled]=\"disabled\"\n    >\n    </pm-radio-button>\n  `\n})"
+                }
+            ],
             "stories/Card.stories.ts": [
                 {
                     "name": "DefaultCard",
@@ -3655,50 +3475,6 @@
                     "file": "stories/Card.stories.ts",
                     "type": "Story<CardComponent>",
                     "defaultValue": "(args: CardComponent) => ({\n  component: CardComponent,\n  props: args,\n  template: `\n    <pm-card\n        [hoverable]=\"hoverable\"\n        [borderRadius]=\"borderRadius\"\n    >\n      conteudo\n    </pm-card>`\n})"
-                }
-            ],
-            "stories/inputs/checkbox.stories.ts": [
-                {
-                    "name": "DefaultCheckbox",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "stories/inputs/checkbox.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "DisabledCheckbox",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "stories/inputs/checkbox.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "stories/inputs/checkbox.stories.ts",
-                    "type": "Story<CheckboxComponent>",
-                    "defaultValue": "(args: CheckboxComponent) => ({\n  component: CheckboxComponent,\n  props: args,\n  template: `\n    <pm-checkbox\n      [checked]=\"checked\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>`\n})"
-                }
-            ],
-            "stories/inputs/ComboBox.stories.ts": [
-                {
-                    "name": "DefaultComboBox",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "stories/inputs/ComboBox.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "stories/inputs/ComboBox.stories.ts",
-                    "type": "Story<ComboBoxComponent>",
-                    "defaultValue": "(args: ComboBoxComponent) => ({\n  component: ComboBoxComponent,\n  props: args,\n  template: `\n    <pm-combo-box\n        [items]=\"items\"\n    >\n        Conteúdo\n    </pm-combo-box>`\n})"
                 }
             ],
             "stories/GridList.stories.ts": [
@@ -3727,24 +3503,6 @@
                     "defaultValue": "(args: GridListComponent) => ({\n  component: GridListComponent,\n  props: args,\n  template: `\n    <pm-grid-list\n        [items]=\"items\"\n        [displayStyle]=\"displayStyle\"\n        [gridHeaderReverse]=\"gridHeaderReverse\"\n        [bodyBackgroundColor]=\"bodyBackgroundColor\"\n        [actionTemplate]=\"undefined\"\n        [overflowGallery]=\"overflowGallery\"\n    >\n      conteudo\n    </pm-grid-list>`\n})"
                 }
             ],
-            "stories/inputs/CopyContentInput.stories.ts": [
-                {
-                    "name": "DefaultInput",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "stories/inputs/CopyContentInput.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "stories/inputs/CopyContentInput.stories.ts",
-                    "type": "Story<CopyContentInputComponent>",
-                    "defaultValue": "(args: CopyContentInputComponent) => ({\n  component: CopyContentInputComponent,\n  props: args,\n  template: `\n    <pm-copy-content-input\n        [text]=\"text\"\n        [disabled]=\"disabled\"\n    >\n        Conteúdo\n    </pm-copy-content-input>`\n})"
-                }
-            ],
             "stories/multi-level-dropdown-menu.stories.ts": [
                 {
                     "name": "DefaultMultiLevelDropdownMenu",
@@ -3761,24 +3519,6 @@
                     "file": "stories/multi-level-dropdown-menu.stories.ts",
                     "type": "Story<MultiLevelDropdownMenuComponent>",
                     "defaultValue": "(args: MultiLevelDropdownMenuComponent) => ({\n  component: MultiLevelDropdownMenuComponent,\n  props: args,\n  template: `\n    <pm-multi-level-dropdown-menu>\n    </pm-multi-level-dropdown-menu>`\n})"
-                }
-            ],
-            "stories/inputs/RadioButton.stories.ts": [
-                {
-                    "name": "DefaultRadioButton",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "stories/inputs/RadioButton.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "stories/inputs/RadioButton.stories.ts",
-                    "type": "Story<RadioButtonComponent>",
-                    "defaultValue": "(args: RadioButtonComponent) => ({\n  component: RadioButtonComponent,\n  props: args,\n  template: `\n    <pm-radio-button\n        [values]=\"values\"\n        [selectedValue]=\"selectedValue\"\n    >\n        Conteúdo\n    </pm-radio-button>`\n})"
                 }
             ],
             "stories/Stepper.stories.ts": [
@@ -4002,7 +3742,7 @@
                     "file": "projects/components/src/models/colors.ts"
                 }
             ],
-            "projects/components/src/lib/radio-button/radio-button.component.ts": [
+            "projects/components/src/lib/inputs/radio-button/radio-button.component.ts": [
                 {
                     "name": "OrientationEnum",
                     "childs": [
@@ -4018,7 +3758,7 @@
                     "ctype": "miscellaneous",
                     "subtype": "enum",
                     "description": "",
-                    "file": "projects/components/src/lib/radio-button/radio-button.component.ts"
+                    "file": "projects/components/src/lib/inputs/radio-button/radio-button.component.ts"
                 }
             ],
             "projects/components/src/models/sizes.ts": [
@@ -4061,18 +3801,9 @@
     },
     "routes": [],
     "coverage": {
-        "count": 2,
+        "count": 4,
         "status": "low",
         "files": [
-            {
-                "filePath": "projects/components/src/lib/button/button.component.ts",
-                "type": "component",
-                "linktype": "component",
-                "name": "ButtonComponent",
-                "coveragePercent": 60,
-                "coverageCount": "6/10",
-                "status": "good"
-            },
             {
                 "filePath": "projects/components/src/lib/card/card.component.ts",
                 "type": "component",
@@ -4080,33 +3811,6 @@
                 "name": "CardComponent",
                 "coveragePercent": 0,
                 "coverageCount": "0/4",
-                "status": "low"
-            },
-            {
-                "filePath": "projects/components/src/lib/checkbox/checkbox.component.ts",
-                "type": "component",
-                "linktype": "component",
-                "name": "CheckboxComponent",
-                "coveragePercent": 0,
-                "coverageCount": "0/8",
-                "status": "low"
-            },
-            {
-                "filePath": "projects/components/src/lib/combo-box/combo-box.component.ts",
-                "type": "component",
-                "linktype": "component",
-                "name": "ComboBoxComponent",
-                "coveragePercent": 0,
-                "coverageCount": "0/9",
-                "status": "low"
-            },
-            {
-                "filePath": "projects/components/src/lib/combo-box/combo-box.component.ts",
-                "type": "interface",
-                "linktype": "interface",
-                "name": "ComboItem",
-                "coveragePercent": 0,
-                "coverageCount": "0/3",
                 "status": "low"
             },
             {
@@ -4125,15 +3829,6 @@
                 "name": "ComponentsService",
                 "coveragePercent": 0,
                 "coverageCount": "0/2",
-                "status": "low"
-            },
-            {
-                "filePath": "projects/components/src/lib/copy-content-input/copy-content-input.component.ts",
-                "type": "component",
-                "linktype": "component",
-                "name": "CopyContentInputComponent",
-                "coveragePercent": 0,
-                "coverageCount": "0/5",
                 "status": "low"
             },
             {
@@ -4352,21 +4047,148 @@
                 "status": "low"
             },
             {
+                "filePath": "projects/components/src/lib/inputs/combo-box/combo-box.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "ComboBoxComponent",
+                "coveragePercent": 44,
+                "coverageCount": "4/9",
+                "status": "medium"
+            },
+            {
+                "filePath": "projects/components/src/lib/inputs/combo-box/combo-box.component.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "ComboItem",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/components/src/lib/inputs/combo-box/combo-box.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "defaultArgs",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/components/src/lib/inputs/combo-box/combo-box.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "DefaultComboBox",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/components/src/lib/inputs/combo-box/combo-box.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "defaultItems",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/components/src/lib/inputs/combo-box/combo-box.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/components/src/lib/inputs/copy-content-input/copy-content-input.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "CopyContentInputComponent",
+                "coveragePercent": 40,
+                "coverageCount": "2/5",
+                "status": "medium"
+            },
+            {
+                "filePath": "projects/components/src/lib/inputs/copy-content-input/copy-content-input.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "defaultArgs",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/components/src/lib/inputs/copy-content-input/copy-content-input.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "DefaultCopyContentInput",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/components/src/lib/inputs/copy-content-input/copy-content-input.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/components/src/lib/inputs/radio-button/radio-button.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "RadioButtonComponent",
+                "coveragePercent": 62,
+                "coverageCount": "5/8",
+                "status": "good"
+            },
+            {
+                "filePath": "projects/components/src/lib/inputs/radio-button/radio-button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "defaultArgs",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/components/src/lib/inputs/radio-button/radio-button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "DefaultRadioButton",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/components/src/lib/inputs/radio-button/radio-button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
                 "filePath": "projects/components/src/lib/multi-level-dropdown-menu/multi-level-dropdown-menu.component.ts",
                 "type": "component",
                 "linktype": "component",
                 "name": "MultiLevelDropdownMenuComponent",
                 "coveragePercent": 0,
                 "coverageCount": "0/13",
-                "status": "low"
-            },
-            {
-                "filePath": "projects/components/src/lib/radio-button/radio-button.component.ts",
-                "type": "component",
-                "linktype": "component",
-                "name": "RadioButtonComponent",
-                "coveragePercent": 0,
-                "coverageCount": "0/9",
                 "status": "low"
             },
             {
@@ -4629,96 +4451,6 @@
             },
             {
                 "filePath": "stories/default.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "Template",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "stories/inputs/ComboBox.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "DefaultComboBox",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "stories/inputs/ComboBox.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "Template",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "stories/inputs/CopyContentInput.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "DefaultInput",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "stories/inputs/CopyContentInput.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "Template",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "stories/inputs/RadioButton.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "DefaultRadioButton",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "stories/inputs/RadioButton.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "Template",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "stories/inputs/checkbox.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "DefaultCheckbox",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "stories/inputs/checkbox.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "DisabledCheckbox",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "stories/inputs/checkbox.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",

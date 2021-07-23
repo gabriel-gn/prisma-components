@@ -22,10 +22,15 @@ export const argTypes = {
     },
     control: { type: 'inline-radio'}, options: [true, false],
   },
+  selectedItem: {
+    table: {
+      defaultValue: { summary: defaultArgs.selectedItem},
+    },
+  },
 }
 
 <Meta
-  title='Components/Checkbox'
+  title='Components/Inputs/Checkbox'
   component={CheckboxComponent}
   argTypes={argTypes}
   parameters={{ badges: [ 'beta' ] }}
