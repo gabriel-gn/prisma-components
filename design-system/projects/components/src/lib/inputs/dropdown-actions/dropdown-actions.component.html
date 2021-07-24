@@ -6,7 +6,7 @@
 </mat-select>
 
 <ng-template #defaultButtonTemplate let-select>
-  <pm-button (click)="select.toggle()"
+  <pm-button (click)="(disabled || busy) === false ? select.toggle() : null"
              [type]="type"
              [busy]="busy"
              [busyText]="busyText"

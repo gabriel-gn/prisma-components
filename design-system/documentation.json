@@ -1098,7 +1098,7 @@
         },
         {
             "name": "DropdownActionsComponent",
-            "id": "component-DropdownActionsComponent-3da3e45cd178a39e84d13718ca9b9ac2",
+            "id": "component-DropdownActionsComponent-1c3607c0cbd61c280a4da30f4f688404",
             "file": "projects/components/src/lib/inputs/dropdown-actions/dropdown-actions.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -1118,49 +1118,96 @@
                 {
                     "name": "actions",
                     "defaultValue": "[]",
-                    "line": 12,
+                    "line": 13,
                     "type": "literal type[]"
                 },
                 {
-                    "name": "busy",
-                    "defaultValue": "false",
-                    "line": 18
-                },
-                {
-                    "name": "busyText",
-                    "defaultValue": "''",
-                    "line": 19
-                },
-                {
                     "name": "buttonTemplate",
-                    "line": 14,
+                    "line": 15,
                     "type": "TemplateRef<any>"
                 },
                 {
                     "name": "closeOnClick",
                     "defaultValue": "true",
-                    "line": 13
-                },
-                {
-                    "name": "disabled",
-                    "defaultValue": "false",
-                    "line": 22
+                    "line": 14
                 },
                 {
                     "name": "iconClass",
                     "defaultValue": "'uil uil-md uil-ellipsis-h'",
-                    "line": 20
-                },
-                {
-                    "name": "outline",
-                    "defaultValue": "false",
-                    "line": 21
+                    "line": 19
                 },
                 {
                     "name": "type",
                     "defaultValue": "MainColors.light",
-                    "line": 17,
+                    "line": 18,
                     "type": "MainColors | string"
+                },
+                {
+                    "name": "busy",
+                    "defaultValue": "false",
+                    "description": "<p>Exibe botão de &quot;carregamento&quot; e desabilita o botão.\nPara alterar o texto, utilizar a propriedade <code>busyText</code></p>\n",
+                    "line": 20,
+                    "type": "boolean",
+                    "inheritance": {
+                        "file": "ButtonComponent"
+                    }
+                },
+                {
+                    "name": "busyText",
+                    "description": "<p>Texto exibido junto ao botão de &quot;carregando&quot; quando a propriedade <code>busy</code> está como <code>true</code></p>\n",
+                    "line": 24,
+                    "type": "string",
+                    "inheritance": {
+                        "file": "ButtonComponent"
+                    }
+                },
+                {
+                    "name": "disabled",
+                    "defaultValue": "false",
+                    "description": "<p>Propriedade de habilitado ou desabilitado</p>\n",
+                    "line": 36,
+                    "type": "boolean",
+                    "inheritance": {
+                        "file": "ButtonComponent"
+                    }
+                },
+                {
+                    "name": "iconClass",
+                    "description": "<p>Ícone que será exibido no botão junto ao texto. Ex: <code>uil uil-md uil-tabs</code></p>\n",
+                    "line": 28,
+                    "type": "string",
+                    "inheritance": {
+                        "file": "ButtonComponent"
+                    }
+                },
+                {
+                    "name": "label",
+                    "defaultValue": "''",
+                    "line": 10,
+                    "type": "string | null",
+                    "inheritance": {
+                        "file": "ButtonComponent"
+                    }
+                },
+                {
+                    "name": "outline",
+                    "defaultValue": "false",
+                    "description": "<p>Se o botão será cheio ou apenas contornado pela borda</p>\n",
+                    "line": 32,
+                    "type": "boolean",
+                    "inheritance": {
+                        "file": "ButtonComponent"
+                    }
+                },
+                {
+                    "name": "type",
+                    "defaultValue": "`${MainColors.default}`",
+                    "description": "<p>Cor do botão que será exibido.\nUtilizar as propriedades do tipo &quot;MainColors&quot;</p>\n",
+                    "line": 15,
+                    "type": "MainColors | string",
+                    "inheritance": {
+                        "file": "ButtonComponent"
+                    }
                 }
             ],
             "outputsClass": [],
@@ -1181,7 +1228,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 26,
+                    "line": 25,
                     "modifierKind": [
                         114
                     ],
@@ -1201,6 +1248,20 @@
                             }
                         }
                     ]
+                },
+                {
+                    "name": "getClassName",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "string",
+                    "typeParameters": [],
+                    "line": 40,
+                    "modifierKind": [
+                        114
+                    ],
+                    "inheritance": {
+                        "file": "ButtonComponent"
+                    }
                 }
             ],
             "hostBindings": [],
@@ -1208,7 +1269,7 @@
             "description": "",
             "rawdescription": "",
             "type": "component",
-            "sourceCode": "import {Component, Input, TemplateRef} from '@angular/core';\nimport {MatSelect} from '@angular/material/select';\nimport {MainColors} from '../../../models/colors';\n\n@Component({\n  selector: 'pm-dropdown-actions',\n  templateUrl: './dropdown-actions.component.html',\n  styleUrls: ['./dropdown-actions.component.scss']\n})\nexport class DropdownActionsComponent {\n\n  @Input('actions') actions: {label: string, method: any}[] = [];\n  @Input() closeOnClick = true;\n  @Input() buttonTemplate: TemplateRef<any>;\n\n  // buttons input\n  @Input('type') type: MainColors | string = MainColors.light;\n  @Input('busy') busy = false;\n  @Input('busyText') busyText = '';\n  @Input('iconClass') iconClass = 'uil uil-md uil-ellipsis-h';\n  @Input('outline') outline = false;\n  @Input('disabled') disabled = false;\n\n  constructor() { }\n\n  public callMethod(action: any, actionsSelect: MatSelect): void {\n    action.method();\n    if (this.closeOnClick) {\n      actionsSelect.close();\n    }\n  }\n}\n",
+            "sourceCode": "import {Component, Input, TemplateRef} from '@angular/core';\nimport {MatSelect} from '@angular/material/select';\nimport {MainColors} from '../../../models/colors';\nimport {ButtonComponent} from '../button/button.component';\n\n@Component({\n  selector: 'pm-dropdown-actions',\n  templateUrl: './dropdown-actions.component.html',\n  styleUrls: ['./dropdown-actions.component.scss']\n})\nexport class DropdownActionsComponent extends ButtonComponent {\n\n  @Input('actions') actions: {label: string, method: any}[] = [];\n  @Input() closeOnClick = true;\n  @Input() buttonTemplate: TemplateRef<any>;\n\n  // buttons input\n  @Input('type') type: MainColors | string = MainColors.light;\n  @Input('iconClass') iconClass = 'uil uil-md uil-ellipsis-h';\n\n  constructor() {\n    super();\n  }\n\n  public callMethod(action: any, actionsSelect: MatSelect): void {\n    action.method();\n    if (this.closeOnClick) {\n      actionsSelect.close();\n    }\n  }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -1221,9 +1282,10 @@
                 "name": "constructor",
                 "description": "",
                 "args": [],
-                "line": 22
+                "line": 19
             },
-            "templateData": "<ng-container *ngTemplateOutlet=\"buttonTemplate ? buttonTemplate : defaultButtonTemplate; context: {$implicit: actionsSelect}\"></ng-container>\n\n<mat-select #actionsSelect class=\"mat-select-btn-sm\">\n  <mat-option [hidden]=\"true\"></mat-option>\n  <mat-option *ngFor=\"let action of actions\" (click)=\"callMethod(action, actionsSelect)\">{{action.label}}</mat-option>\n</mat-select>\n\n<ng-template #defaultButtonTemplate let-select>\n  <pm-button (click)=\"select.toggle()\"\n             [type]=\"type\"\n             [busy]=\"busy\"\n             [busyText]=\"busyText\"\n             [iconClass]=\"iconClass\"\n             [outline]=\"outline\"\n             [disabled]=\"disabled\"\n  >\n  </pm-button>\n</ng-template>\n"
+            "extends": "ButtonComponent",
+            "templateData": "<ng-container *ngTemplateOutlet=\"buttonTemplate ? buttonTemplate : defaultButtonTemplate; context: {$implicit: actionsSelect}\"></ng-container>\n\n<mat-select #actionsSelect class=\"mat-select-btn-sm\">\n  <mat-option [hidden]=\"true\"></mat-option>\n  <mat-option *ngFor=\"let action of actions\" (click)=\"callMethod(action, actionsSelect)\">{{action.label}}</mat-option>\n</mat-select>\n\n<ng-template #defaultButtonTemplate let-select>\n  <pm-button (click)=\"(disabled || busy) === false ? select.toggle() : null\"\n             [type]=\"type\"\n             [busy]=\"busy\"\n             [busyText]=\"busyText\"\n             [iconClass]=\"iconClass\"\n             [outline]=\"outline\"\n             [disabled]=\"disabled\"\n  >\n  </pm-button>\n</ng-template>\n"
         },
         {
             "name": "GridListComponent",
@@ -2345,7 +2407,11 @@
                 },
                 {
                     "type": "declarations",
-                    "elements": []
+                    "elements": [
+                        {
+                            "name": "DropdownActionsComponent"
+                        }
+                    ]
                 },
                 {
                     "type": "imports",
@@ -2357,7 +2423,11 @@
                 },
                 {
                     "type": "exports",
-                    "elements": []
+                    "elements": [
+                        {
+                            "name": "DropdownActionsComponent"
+                        }
+                    ]
                 },
                 {
                     "type": "bootstrap",
@@ -2459,9 +2529,6 @@
                     "elements": [
                         {
                             "name": "ComponentsComponent"
-                        },
-                        {
-                            "name": "DropdownActionsComponent"
                         }
                     ]
                 },
@@ -2479,6 +2546,9 @@
                         },
                         {
                             "name": "DraggableListModule"
+                        },
+                        {
+                            "name": "DropdownActionsModule"
                         },
                         {
                             "name": "GridListModule"
@@ -2714,14 +2784,6 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/inputs/copy-content-input/copy-content-input.stories.ts",
-                "type": "object",
-                "defaultValue": "{\n  disabled: false,\n  text: ''\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "projects/components/src/lib/inputs/dropdown-actions/dropdown-actions.stories.ts",
                 "type": "object",
                 "defaultValue": "{\n  actions: []\n}"
@@ -2733,6 +2795,14 @@
                 "file": "projects/components/src/lib/inputs/radio-button/radio-button.stories.ts",
                 "type": "object",
                 "defaultValue": "{\n  orientation: OrientationEnum.Y,\n  values: [],\n  disabled: false,\n  selectedValue: undefined\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/components/src/lib/inputs/copy-content-input/copy-content-input.stories.ts",
+                "type": "object",
+                "defaultValue": "{\n  disabled: false,\n  text: ''\n}"
             },
             {
                 "name": "DefaultButton",
@@ -3049,14 +3119,6 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/inputs/copy-content-input/copy-content-input.stories.ts",
-                "type": "Story<CopyContentInputComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-copy-content-input\n      [text]=\"text\"\n      [disabled]=\"disabled\"\n    >\n      Conteúdo\n    </pm-copy-content-input>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "projects/components/src/lib/inputs/dropdown-actions/dropdown-actions.stories.ts",
                 "type": "Story<DropdownActionsComponent>",
                 "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-dropdown-actions\n      [actions]=\"actions\"\n    >\n    </pm-dropdown-actions>\n  `\n})"
@@ -3068,6 +3130,14 @@
                 "file": "projects/components/src/lib/inputs/radio-button/radio-button.stories.ts",
                 "type": "Story<RadioButtonComponent>",
                 "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-radio-button\n      [values]=\"values\"\n      [selectedValue]=\"selectedValue\"\n      [disabled]=\"disabled\"\n    >\n    </pm-radio-button>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/components/src/lib/inputs/copy-content-input/copy-content-input.stories.ts",
+                "type": "Story<CopyContentInputComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-copy-content-input\n      [text]=\"text\"\n      [disabled]=\"disabled\"\n    >\n      Conteúdo\n    </pm-copy-content-input>\n  `\n})"
             },
             {
                 "name": "ThumbnailTable",
@@ -3596,32 +3666,6 @@
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-combo-box\n      [items]=\"items\"\n      [disabled]=\"disabled\"\n      [selectedItem]=\"selectedItem\"\n    >\n    </pm-combo-box>\n  `\n})"
                 }
             ],
-            "projects/components/src/lib/inputs/copy-content-input/copy-content-input.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/components/src/lib/inputs/copy-content-input/copy-content-input.stories.ts",
-                    "type": "object",
-                    "defaultValue": "{\n  disabled: false,\n  text: ''\n}"
-                },
-                {
-                    "name": "DefaultCopyContentInput",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/components/src/lib/inputs/copy-content-input/copy-content-input.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/components/src/lib/inputs/copy-content-input/copy-content-input.stories.ts",
-                    "type": "Story<CopyContentInputComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-copy-content-input\n      [text]=\"text\"\n      [disabled]=\"disabled\"\n    >\n      Conteúdo\n    </pm-copy-content-input>\n  `\n})"
-                }
-            ],
             "projects/components/src/lib/inputs/dropdown-actions/dropdown-actions.stories.ts": [
                 {
                     "name": "defaultArgs",
@@ -3672,6 +3716,32 @@
                     "file": "projects/components/src/lib/inputs/radio-button/radio-button.stories.ts",
                     "type": "Story<RadioButtonComponent>",
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-radio-button\n      [values]=\"values\"\n      [selectedValue]=\"selectedValue\"\n      [disabled]=\"disabled\"\n    >\n    </pm-radio-button>\n  `\n})"
+                }
+            ],
+            "projects/components/src/lib/inputs/copy-content-input/copy-content-input.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/lib/inputs/copy-content-input/copy-content-input.stories.ts",
+                    "type": "object",
+                    "defaultValue": "{\n  disabled: false,\n  text: ''\n}"
+                },
+                {
+                    "name": "DefaultCopyContentInput",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/lib/inputs/copy-content-input/copy-content-input.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/lib/inputs/copy-content-input/copy-content-input.stories.ts",
+                    "type": "Story<CopyContentInputComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-copy-content-input\n      [text]=\"text\"\n      [disabled]=\"disabled\"\n    >\n      Conteúdo\n    </pm-copy-content-input>\n  `\n})"
                 }
             ],
             "stories/Card.stories.ts": [
@@ -4016,7 +4086,7 @@
     },
     "routes": [],
     "coverage": {
-        "count": 3,
+        "count": 4,
         "status": "low",
         "files": [
             {
@@ -4363,9 +4433,9 @@
                 "type": "component",
                 "linktype": "component",
                 "name": "DropdownActionsComponent",
-                "coveragePercent": 0,
-                "coverageCount": "0/12",
-                "status": "low"
+                "coveragePercent": 37,
+                "coverageCount": "6/16",
+                "status": "medium"
             },
             {
                 "filePath": "projects/components/src/lib/inputs/dropdown-actions/dropdown-actions.stories.ts",
