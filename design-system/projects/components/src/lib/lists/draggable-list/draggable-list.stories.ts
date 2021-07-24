@@ -1,51 +1,45 @@
-import {Meta, moduleMetadata, Story} from '@storybook/angular';
-import {DraggableListComponent} from '../projects/components/src/lib/draggable-list/draggable-list.component';
-import {DraggableListModule} from '../projects/components/src/lib/draggable-list/draggable-list.module';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {DraggableListComponent} from './draggable-list.component';
+import {Meta} from '@storybook/angular/types-6-0';
+import {Story} from '@storybook/angular';
 
 export default {
-  title: 'Prisma/Draggable List',
+  title: 'Prisma/Stories/DraggableList',
   component: DraggableListComponent,
-  decorators: [
-    moduleMetadata({
-      imports: [
-        DraggableListModule,
-        BrowserAnimationsModule
-      ],
-    }),
-  ],
-  argTypes: {
-    showIndex: {control: 'boolean'},
-    itemActionLabel: {control: 'text'},
-    itemMainLabel: {control: 'text'},
-    itemSubLabel: {control: 'text'},
-    // actions: {control: 'text'},
-    itemList: {control: 'array'},
-    roundedBorders: {control: 'boolean'},
-  }
 } as Meta;
 
-const Template: Story<DraggableListComponent> = (args: DraggableListComponent) => ({
-  component: DraggableListComponent,
+export const Template: Story<DraggableListComponent> = (args) => ({
   props: args,
   template: `
     <pm-draggable-list
-        [showIndex]="showIndex"
-        [itemActionLabel]="itemActionLabel"
-        [itemMainLabel]="itemMainLabel"
-        [itemSubLabel]="itemSubLabel"
-        [actions]="actions"
-        [itemList]="itemList"
-        [roundedBorders]="roundedBorders"
-        [enableDragging]="enableDragging"
-        [enableSelection]="enableSelection"
+      [showIndex]="showIndex"
+      [itemActionLabel]="itemActionLabel"
+      [itemMainLabel]="itemMainLabel"
+      [itemSubLabel]="itemSubLabel"
+      [actions]="actions"
+      [itemList]="itemList"
+      [roundedBorders]="roundedBorders"
+      [enableDragging]="enableDragging"
+      [enableSelection]="enableSelection"
     >
-      conteudo
-    </pm-draggable-list>`
+    </pm-draggable-list>
+  `
 });
 
-export const ExampleList = Template.bind({});
-ExampleList.args = {
+export const defaultArgs = {
+  showIndex: true,
+  itemActionLabel: undefined,
+  itemMainLabel: undefined,
+  itemSubLabel: undefined,
+  actions: undefined,
+  itemList: undefined,
+  roundedBorders: true,
+  enableDragging: true,
+  enableSelection: true,
+};
+
+export const DefaultDraggableList = Template.bind({});
+DefaultDraggableList.args = {
+  ...defaultArgs,
   showIndex: true,
   itemActionLabel: 'Ações {name}',
   itemMainLabel: '{name} - {value} (nome - valor)',
@@ -79,6 +73,7 @@ ExampleList.args = {
 
 export const NoIndexStringList = Template.bind({});
 NoIndexStringList.args = {
+  ...defaultArgs,
   showIndex: false,
   itemActionLabel: 'Ações {this}',
   itemMainLabel: '{this} (string)',
@@ -95,8 +90,9 @@ NoIndexStringList.args = {
   enableSelection: true,
 };
 
-export const disabledDragging = Template.bind({});
-disabledDragging.args = {
+export const DisabledDragging = Template.bind({});
+DisabledDragging.args = {
+  ...defaultArgs,
   showIndex: true,
   itemActionLabel: 'Ações {this}',
   itemMainLabel: '{this} (string)',

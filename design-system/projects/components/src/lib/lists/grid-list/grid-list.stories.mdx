@@ -1,0 +1,72 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
+import {GridListComponent} from './grid-list.component';
+import {moduleMetadata} from "@storybook/angular";
+import {GridListModule} from "./grid-list.module";
+import {
+  defaultArgs,
+  DefaultGridList,
+} from "./grid-list.stories";
+
+export const argTypes = {
+  // XXXArg1: {
+  //   // description: 'CRIAR A DESCRIÇÃO COMO COMENTÁRIO MULTILINHA ACIMA DOS INPUTS NO COMPONENTE',
+  //   table: {
+  //     defaultValue: { summary: defaultArgs.XXXArg1},
+  //   },
+  //   control: { type: 'inline-radio'}, options: [true, false],
+  // },
+}
+
+<Meta
+  title='Components/Lists/Grid List'
+  component={GridListComponent}
+  argTypes={argTypes}
+  parameters={{ badges: [ 'beta' ] }}
+  decorators={[
+    moduleMetadata({
+      imports: [GridListModule]
+    })
+  ]}
+/>
+
+export const Template = (args) => <GridListComponent {...args} />
+
+# GridList
+
+#### Descrição do componente GridList
+
+<br/>
+<br/>
+
+## GridList padrão
+
+Descrição do componente GridList padrão
+
+Deve ser usado da seguinte forma:
+
+```
+<pm-grid-list>
+</pm-grid-list>
+```
+
+<Canvas>
+  <Story name='Default' story={DefaultGridList} />
+</Canvas>
+
+## Module Config
+
+```
+import {GridListModule} from '@mprisma/components';
+
+@NgModule({
+  imports: [
+    ...,
+    GridListModule,
+    ...,
+  ]
+})
+```
+
+## Args Table
+
+<ArgsTable story='Default'/>

@@ -1,0 +1,72 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
+import {TableListComponent} from './table-list.component';
+import {moduleMetadata} from "@storybook/angular";
+import {TableListModule} from "./table-list.module";
+import {
+  defaultArgs,
+  DefaultTableList,
+} from "./table-list.stories";
+
+export const argTypes = {
+  // XXXArg1: {
+  //   // description: 'CRIAR A DESCRIÇÃO COMO COMENTÁRIO MULTILINHA ACIMA DOS INPUTS NO COMPONENTE',
+  //   table: {
+  //     defaultValue: { summary: defaultArgs.XXXArg1},
+  //   },
+  //   control: { type: 'inline-radio'}, options: [true, false],
+  // },
+}
+
+<Meta
+  title='Components/Lists/Table List'
+  component={TableListComponent}
+  argTypes={argTypes}
+  parameters={{ badges: [ 'beta' ] }}
+  decorators={[
+    moduleMetadata({
+      imports: [TableListModule]
+    })
+  ]}
+/>
+
+export const Template = (args) => <TableListComponent {...args} />
+
+# TableList
+
+#### Descrição do componente TableList
+
+<br/>
+<br/>
+
+## TableList padrão
+
+Descrição do componente TableList padrão
+
+Deve ser usado da seguinte forma:
+
+```
+<pm-table-list>
+</pm-table-list>
+```
+
+<Canvas>
+  <Story name='Default' story={DefaultTableList} />
+</Canvas>
+
+## Module Config
+
+```
+import {TableListModule} from '@mprisma/components';
+
+@NgModule({
+  imports: [
+    ...,
+    TableListModule,
+    ...,
+  ]
+})
+```
+
+## Args Table
+
+<ArgsTable story='Default'/>

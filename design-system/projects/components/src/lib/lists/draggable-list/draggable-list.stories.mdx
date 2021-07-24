@@ -1,0 +1,131 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
+import {DraggableListComponent} from './draggable-list.component';
+import {moduleMetadata} from "@storybook/angular";
+import {DraggableListModule} from "./draggable-list.module";
+import {
+  defaultArgs,
+  DefaultDraggableList,
+  NoIndexStringList,
+  DisabledDragging
+} from "./draggable-list.stories"; import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+
+export const argTypes = {
+  /////// actions
+  /////// itemList
+  showIndex: {
+    // description: 'CRIAR A DESCRIÇÃO COMO COMENTÁRIO MULTILINHA ACIMA DOS INPUTS NO COMPONENTE',
+    table: {
+      defaultValue: { summary: defaultArgs.showIndex},
+    },
+    control: { type: 'inline-radio'}, options: [true, false],
+  },
+  enableDragging: {
+    table: {
+      defaultValue: { summary: defaultArgs.enableDragging},
+    },
+    control: { type: 'inline-radio'}, options: [true, false],
+  },
+  enableSelection: {
+    table: {
+      defaultValue: { summary: defaultArgs.enableSelection},
+    },
+    control: { type: 'inline-radio'}, options: [true, false],
+  },
+  roundedBorders: {
+    table: {
+      defaultValue: { summary: defaultArgs.roundedBorders},
+    },
+    control: { type: 'inline-radio'}, options: [true, false],
+  },
+  itemActionLabel: {
+    table: {
+      defaultValue: { summary: defaultArgs.itemActionLabel},
+    },
+    control: { type: 'text'}
+  },
+  itemSubLabel: {
+    table: {
+      defaultValue: { summary: defaultArgs.itemSubLabel},
+    },
+    control: { type: 'text'}
+  },
+  itemMainLabel: {
+    table: {
+      defaultValue: { summary: defaultArgs.itemMainLabel},
+    },
+    control: { type: 'text'}
+  },
+}
+
+<Meta
+  title='Components/Lists/Draggable List'
+  component={DraggableListComponent}
+  argTypes={argTypes}
+  parameters={{ badges: [ 'beta' ] }}
+  decorators={[
+    moduleMetadata({
+      imports: [DraggableListModule, BrowserAnimationsModule]
+    })
+  ]}
+/>
+
+export const Template = (args) => <DraggableListComponent {...args} />
+
+# DraggableList
+
+#### Descrição do componente DraggableList
+
+<br/>
+<br/>
+
+## DraggableList padrão
+
+Descrição do componente DraggableList padrão
+
+Deve ser usado da seguinte forma:
+
+```
+<pm-draggable-list
+  [showIndex]="showIndex"
+  [itemActionLabel]="itemActionLabel"
+  [itemMainLabel]="itemMainLabel"
+  [itemSubLabel]="itemSubLabel"
+  [actions]="actions"
+  [itemList]="itemList"
+  [roundedBorders]="roundedBorders"
+  [enableDragging]="enableDragging"
+  [enableSelection]="enableSelection"
+>
+  conteudo
+</pm-draggable-list>
+```
+
+<Canvas>
+  <Story name='Default' story={DefaultDraggableList} />
+</Canvas>
+
+<Canvas>
+  <Story name='Disabled Dragging' story={DisabledDragging} />
+</Canvas>
+
+<Canvas>
+  <Story name='No Index String' story={NoIndexStringList} />
+</Canvas>
+
+## Module Config
+
+```
+import {DraggableListModule} from '@mprisma/components';
+
+@NgModule({
+  imports: [
+    ...,
+    DraggableListModule,
+    ...,
+  ]
+})
+```
+
+## Args Table
+
+<ArgsTable story='Default'/>
