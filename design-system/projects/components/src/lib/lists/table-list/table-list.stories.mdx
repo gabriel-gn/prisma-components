@@ -5,7 +5,13 @@ import {TableListModule} from "./table-list.module";
 import {
   defaultArgs,
   DefaultTableList,
+  NoHeader,
+  ThumbnailTable,
+  ColorTable,
+  ActionsTable,
+  ExpandedDetailsTable
 } from "./table-list.stories";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations"; import {CommonModule} from "@angular/common";
 
 export const argTypes = {
   // XXXArg1: {
@@ -24,33 +30,65 @@ export const argTypes = {
   parameters={{ badges: [ 'beta' ] }}
   decorators={[
     moduleMetadata({
-      imports: [TableListModule]
+      imports: [CommonModule, TableListModule, BrowserAnimationsModule]
     })
   ]}
 />
 
 export const Template = (args) => <TableListComponent {...args} />
 
-# TableList
+# Table List
 
-#### Descrição do componente TableList
+#### Descrição do componente Table List
 
 <br/>
 <br/>
 
-## TableList padrão
+## Table List padrão
 
-Descrição do componente TableList padrão
+Descrição do componente Table List padrão
 
 Deve ser usado da seguinte forma:
 
 ```
-<pm-table-list>
-</pm-table-list>
+<pm-table-list
+  [columns]="columns"
+  [columnNames]="columnNames"
+  [imageColumns]="imageColumns"
+  [imageHeight]="imageHeight"
+  [showHeader]="showHeader"
+  [numberFormat]="numberFormat"
+  [numberPrefix]="numberPrefix"
+  [itemList]="itemList"
+  [borderRadius]="borderRadius"
+  [backgroundColor]="backgroundColor"
+  [expandedDetailTemplate]="expandedDetailTemplate"
+  [disableExpandedOnDisabledRow]="disableExpandedOnDisabledRow"
+></pm-table-list>
 ```
 
 <Canvas>
   <Story name='Default' story={DefaultTableList} />
+</Canvas>
+
+<Canvas>
+  <Story name='No Header' story={NoHeader} />
+</Canvas>
+
+<Canvas>
+  <Story name='Thumbnail Table' story={ThumbnailTable} />
+</Canvas>
+
+<Canvas>
+  <Story name='Color Table' story={ColorTable} />
+</Canvas>
+
+<Canvas>
+  <Story name='Actions Table' story={ActionsTable} />
+</Canvas>
+
+<Canvas>
+  <Story name='Expanded Details Table' story={ExpandedDetailsTable} />
 </Canvas>
 
 ## Module Config

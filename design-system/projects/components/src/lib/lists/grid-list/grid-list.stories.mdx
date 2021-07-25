@@ -6,6 +6,7 @@ import {
   defaultArgs,
   DefaultGridList,
 } from "./grid-list.stories";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 export const argTypes = {
   // XXXArg1: {
@@ -21,31 +22,38 @@ export const argTypes = {
   title='Components/Lists/Grid List'
   component={GridListComponent}
   argTypes={argTypes}
-  parameters={{ badges: [ 'beta' ] }}
+  parameters={{ badges: [ 'stable' ] }}
   decorators={[
     moduleMetadata({
-      imports: [GridListModule]
+      imports: [GridListModule, BrowserAnimationsModule]
     })
   ]}
 />
 
 export const Template = (args) => <GridListComponent {...args} />
 
-# GridList
+# Grid List
 
-#### Descrição do componente GridList
+#### Descrição do componente Grid List
 
 <br/>
 <br/>
 
-## GridList padrão
+## Grid List padrão
 
-Descrição do componente GridList padrão
+Descrição do componente Grid List padrão
 
 Deve ser usado da seguinte forma:
 
 ```
-<pm-grid-list>
+<pm-grid-list
+  [items]="items"
+  [displayStyle]="displayStyle"
+  [gridHeaderReverse]="gridHeaderReverse"
+  [bodyBackgroundColor]="bodyBackgroundColor"
+  [actionTemplate]="undefined"
+  [overflowGallery]="overflowGallery"
+>
 </pm-grid-list>
 ```
 

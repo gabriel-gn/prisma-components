@@ -13,19 +13,19 @@ import {Overlay, OverlayRef} from '@angular/cdk/overlay';
 })
 export class DraggableListComponent {
 
-  @Input('enableDragging') enableDragging = true;
-  @Input('enableSelection') enableSelection = true;
+  @Input('enableDragging') enableDragging: boolean = true;
+  @Input('enableSelection') enableSelection: boolean = true;
   @Output() onSelectedChange = new EventEmitter();
   private selectedItem: any;
 
-  @Input('showIndex') showIndex = true;
+  @Input('showIndex') showIndex: boolean = true;
   @Input('itemList') itemList: any[];
   @Input('itemActionLabel') itemActionLabel;
   @Input('itemMainLabel') itemMainLabel;
   @Input('itemSubLabel') itemSubLabel;
   @Input('actions') actions: any[];
 
-  @Input('roundedBorders') roundedBorders = true;
+  @Input('roundedBorders') roundedBorders: boolean = true;
 
   sub: Subscription;
   overlayRef: OverlayRef | null;

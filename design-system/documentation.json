@@ -29,10 +29,10 @@
         },
         {
             "name": "GridListItem",
-            "id": "interface-GridListItem-796e93fd8c33fa425fdeebddb952d7ac",
-            "file": "projects/components/src/lib/grid-list/grid-list.component.ts",
+            "id": "interface-GridListItem-5cb4593f16dbd542aaf26bdce3745f28",
+            "file": "projects/components/src/lib/lists/grid-list/grid-list.component.ts",
             "type": "interface",
-            "sourceCode": "import {Component, Input, TemplateRef, ViewChild} from '@angular/core';\nimport {MainColors} from '../../models/colors';\n\nexport interface GridListItem {\n  title: string;\n  subtitle?: string;\n  context?: any;\n  iconClass?: string;\n  iconColor?: MainColors | string;\n  iconOutline?: boolean;\n  thumbnailPicture?: string;\n  bodyPicture: string;\n  iconCallback?: void;\n  titleCallback?: void;\n  subtitleCallback?: void;\n  bodyCallback?: void;\n}\n\n@Component({\n  selector: 'pm-grid-list',\n  templateUrl: './grid-list.component.html',\n  styleUrls: ['./grid-list.component.scss']\n})\nexport class GridListComponent {\n\n  @ViewChild('gridTemplate', {static: true}) gridTemplateRef: TemplateRef<any>;\n  @ViewChild('listTemplate', {static: true}) listTemplateRef: TemplateRef<any>;\n  @ViewChild('galleryTemplate', {static: true}) galleryTemplateRef: TemplateRef<any>;\n  @Input() displayStyle: 'list' | 'grid' | 'gallery' = 'grid';\n  @Input() overflowGallery = true;\n  @Input() items: GridListItem[];\n  @Input() gridHeaderReverse = false;\n  @Input() bodyBackgroundColor;\n  @Input() actionTemplate: TemplateRef<any>;\n\n  constructor() { }\n\n  public getTemplate(): TemplateRef<any> {\n    switch (this.displayStyle) {\n      case 'grid':\n        return this.gridTemplateRef;\n      case 'gallery':\n        return this.galleryTemplateRef;\n      case 'list':\n        return this.listTemplateRef;\n      default:\n        return this.gridTemplateRef;\n    }\n  }\n\n}\n",
+            "sourceCode": "import {Component, Input, TemplateRef, ViewChild} from '@angular/core';\nimport {MainColors} from '../../../models/colors';\n\nexport interface GridListItem {\n  title: string;\n  subtitle?: string;\n  context?: any;\n  iconClass?: string;\n  iconColor?: MainColors | string;\n  iconOutline?: boolean;\n  thumbnailPicture?: string;\n  bodyPicture: string;\n  iconCallback?: void;\n  titleCallback?: void;\n  subtitleCallback?: void;\n  bodyCallback?: void;\n}\n\n@Component({\n  selector: 'pm-grid-list',\n  templateUrl: './grid-list.component.html',\n  styleUrls: ['./grid-list.component.scss']\n})\nexport class GridListComponent {\n\n  @ViewChild('gridTemplate', {static: true}) gridTemplateRef: TemplateRef<any>;\n  @ViewChild('listTemplate', {static: true}) listTemplateRef: TemplateRef<any>;\n  @ViewChild('galleryTemplate', {static: true}) galleryTemplateRef: TemplateRef<any>;\n  @Input() displayStyle: 'list' | 'grid' | 'gallery' = 'grid';\n  @Input() overflowGallery: boolean = true;\n  @Input() items: GridListItem[];\n  @Input() gridHeaderReverse: boolean = false;\n  @Input() bodyBackgroundColor: string;\n  @Input() actionTemplate: TemplateRef<any>;\n\n  constructor() { }\n\n  public getTemplate(): TemplateRef<any> {\n    switch (this.displayStyle) {\n      case 'grid':\n        return this.gridTemplateRef;\n      case 'gallery':\n        return this.galleryTemplateRef;\n      case 'list':\n        return this.listTemplateRef;\n      default:\n        return this.gridTemplateRef;\n    }\n  }\n\n}\n",
             "properties": [
                 {
                     "name": "bodyCallback",
@@ -675,7 +675,7 @@
         },
         {
             "name": "DraggableListComponent",
-            "id": "component-DraggableListComponent-7f67272b7828fde27164e5bba92460c2",
+            "id": "component-DraggableListComponent-6404631ada48877fac72d1931ac83517",
             "file": "projects/components/src/lib/lists/draggable-list/draggable-list.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -700,12 +700,14 @@
                 {
                     "name": "enableDragging",
                     "defaultValue": "true",
-                    "line": 16
+                    "line": 16,
+                    "type": "boolean"
                 },
                 {
                     "name": "enableSelection",
                     "defaultValue": "true",
-                    "line": 17
+                    "line": 17,
+                    "type": "boolean"
                 },
                 {
                     "name": "itemActionLabel",
@@ -727,12 +729,14 @@
                 {
                     "name": "roundedBorders",
                     "defaultValue": "true",
-                    "line": 28
+                    "line": 28,
+                    "type": "boolean"
                 },
                 {
                     "name": "showIndex",
                     "defaultValue": "true",
-                    "line": 21
+                    "line": 21,
+                    "type": "boolean"
                 }
             ],
             "outputsClass": [
@@ -834,15 +838,15 @@
                     "jsdoctags": [
                         {
                             "name": {
-                                "pos": 1775,
-                                "end": 1780,
+                                "pos": 1811,
+                                "end": 1816,
                                 "flags": 0,
                                 "escapedText": "event"
                             },
                             "type": "CdkDragDrop<string[]>",
                             "tagName": {
-                                "pos": 1769,
-                                "end": 1774,
+                                "pos": 1805,
+                                "end": 1810,
                                 "flags": 0,
                                 "escapedText": "param"
                             },
@@ -928,15 +932,15 @@
                     "jsdoctags": [
                         {
                             "name": {
-                                "pos": 4243,
-                                "end": 4247,
+                                "pos": 4279,
+                                "end": 4283,
                                 "flags": 0,
                                 "escapedText": "item"
                             },
                             "type": "any",
                             "tagName": {
-                                "pos": 4237,
-                                "end": 4242,
+                                "pos": 4273,
+                                "end": 4278,
                                 "flags": 0,
                                 "escapedText": "param"
                             },
@@ -972,15 +976,15 @@
                         },
                         {
                             "name": {
-                                "pos": 2132,
-                                "end": 2139,
+                                "pos": 2168,
+                                "end": 2175,
                                 "flags": 0,
                                 "escapedText": "context"
                             },
                             "type": "",
                             "tagName": {
-                                "pos": 2126,
-                                "end": 2131,
+                                "pos": 2162,
+                                "end": 2167,
                                 "flags": 0,
                                 "escapedText": "param"
                             },
@@ -1032,15 +1036,15 @@
                     "jsdoctags": [
                         {
                             "name": {
-                                "pos": 1532,
-                                "end": 1536,
+                                "pos": 1568,
+                                "end": 1572,
                                 "flags": 0,
                                 "escapedText": "item"
                             },
                             "type": "any",
                             "tagName": {
-                                "pos": 1526,
-                                "end": 1531,
+                                "pos": 1562,
+                                "end": 1567,
                                 "flags": 0,
                                 "escapedText": "param"
                             },
@@ -1054,7 +1058,7 @@
             "description": "",
             "rawdescription": "",
             "type": "component",
-            "sourceCode": "import {Component, EventEmitter, Input, Output, TemplateRef, ViewChild, ViewContainerRef} from '@angular/core';\nimport {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';\n\nimport {TemplatePortal} from '@angular/cdk/portal';\nimport {fromEvent, Subscription} from 'rxjs';\nimport {filter, take} from 'rxjs/operators';\nimport {Overlay, OverlayRef} from '@angular/cdk/overlay';\n\n@Component({\n  selector: 'pm-draggable-list',\n  templateUrl: './draggable-list.component.html',\n  styleUrls: ['./draggable-list.component.scss']\n})\nexport class DraggableListComponent {\n\n  @Input('enableDragging') enableDragging = true;\n  @Input('enableSelection') enableSelection = true;\n  @Output() onSelectedChange = new EventEmitter();\n  private selectedItem: any;\n\n  @Input('showIndex') showIndex = true;\n  @Input('itemList') itemList: any[];\n  @Input('itemActionLabel') itemActionLabel;\n  @Input('itemMainLabel') itemMainLabel;\n  @Input('itemSubLabel') itemSubLabel;\n  @Input('actions') actions: any[];\n\n  @Input('roundedBorders') roundedBorders = true;\n\n  sub: Subscription;\n  overlayRef: OverlayRef | null;\n  @ViewChild('contextMenu') contextMenu: TemplateRef<any>;\n\n  constructor(\n    public overlay: Overlay,\n    public viewContainerRef: ViewContainerRef,\n  ) {\n  }\n\n  public getItemList(): any[] {\n    return this.itemList;\n  }\n\n  public setItemList(itemList: any[]): void {\n    this.itemList = itemList;\n  }\n\n  public getSelectedItem(): any {\n    return this.selectedItem;\n  }\n\n  /**\n   * Setta o novo item como selecionado\n   * @param item: item novo\n   */\n  public setSelectedItem(item: any): void {\n    if (this.enableSelection === true) {\n      this.selectedItem = item;\n      this.onSelectedChange.emit(item);\n    }\n  }\n\n  /**\n   * Evento de drop do cdkDragDrop\n   * @param event: evento de drop\n   * @param profileList: lista a ser dropado\n   */\n  public drop(event: CdkDragDrop<string[]>): void {\n    if (this.enableDragging) {\n      moveItemInArray(this.itemList, event.previousIndex, event.currentIndex);\n    }\n  }\n\n  /**\n   * Abre o context Menu\n   * @param x: posição x do mouse\n   * @param y: posição y do mouse\n   * @param context: valores que serão passados para o context menu\n   */\n  public openContextMenu({x, y}: MouseEvent, context): void {\n    this.closeContextMenu();\n    const positionStrategy = this.overlay.position()\n      .flexibleConnectedTo({x, y})\n      .withPositions([\n        {\n          originX: 'end',\n          originY: 'bottom',\n          overlayX: 'end',\n          overlayY: 'top',\n        }\n      ]);\n\n    this.overlayRef = this.overlay.create({\n      positionStrategy,\n      scrollStrategy: this.overlay.scrollStrategies.close()\n    });\n\n    this.overlayRef.attach(new TemplatePortal(this.contextMenu, this.viewContainerRef, context));\n\n    this.sub = fromEvent<MouseEvent>(document, 'click')\n      .pipe(\n        filter(event => {\n          const clickTarget = event.target as HTMLElement;\n          return !!this.overlayRef && !this.overlayRef.overlayElement.contains(clickTarget);\n        }),\n        take(1)\n      ).subscribe(() => this.closeContextMenu());\n  }\n\n  /**\n   * Fecha o context menu\n   */\n  public closeContextMenu(): void {\n    // tslint:disable-next-line:no-unused-expression\n    this.sub && this.sub.unsubscribe();\n    if (this.overlayRef) {\n      this.overlayRef.dispose();\n      this.overlayRef = null;\n    }\n  }\n\n  /**\n   * Caso o originalString tenha {algumacoisa}, é substituído por ${item[algumacoisa]}\n   * Fazendo assim ser possível strings dinânimcas de acordo com o objeto\n   * Caso o item seja string, é possível ele ser dinâmico usando {this}\n   */\n  public formatItemStringParameters(originalString: string, item: any): string {\n    if (typeof item !== 'string' && originalString.indexOf('{') !== -1) {\n      let result = '';\n      for (const str of originalString.split('{')) {\n        if (str.indexOf('}') !== -1) {\n          result += `${item[str.substring(0, str.indexOf('}'))]}`;\n          result += str.substring(str.indexOf('}') + 1, str.length);\n        } else {\n          result += str;\n        }\n      }\n      return result;\n    } else {\n      return originalString.replace('{this}', item);\n    }\n  }\n\n  /**\n   * Verifica se o item é o atual selecionado\n   * @param item: item a ser comparado com o atual selecionado\n   */\n  public isSelectedItem(item: any): boolean {\n    if (typeof item !== 'undefined') {\n      return this.selectedItem === item;\n    } else {\n      return false;\n    }\n  }\n\n\n}\n",
+            "sourceCode": "import {Component, EventEmitter, Input, Output, TemplateRef, ViewChild, ViewContainerRef} from '@angular/core';\nimport {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';\n\nimport {TemplatePortal} from '@angular/cdk/portal';\nimport {fromEvent, Subscription} from 'rxjs';\nimport {filter, take} from 'rxjs/operators';\nimport {Overlay, OverlayRef} from '@angular/cdk/overlay';\n\n@Component({\n  selector: 'pm-draggable-list',\n  templateUrl: './draggable-list.component.html',\n  styleUrls: ['./draggable-list.component.scss']\n})\nexport class DraggableListComponent {\n\n  @Input('enableDragging') enableDragging: boolean = true;\n  @Input('enableSelection') enableSelection: boolean = true;\n  @Output() onSelectedChange = new EventEmitter();\n  private selectedItem: any;\n\n  @Input('showIndex') showIndex: boolean = true;\n  @Input('itemList') itemList: any[];\n  @Input('itemActionLabel') itemActionLabel;\n  @Input('itemMainLabel') itemMainLabel;\n  @Input('itemSubLabel') itemSubLabel;\n  @Input('actions') actions: any[];\n\n  @Input('roundedBorders') roundedBorders: boolean = true;\n\n  sub: Subscription;\n  overlayRef: OverlayRef | null;\n  @ViewChild('contextMenu') contextMenu: TemplateRef<any>;\n\n  constructor(\n    public overlay: Overlay,\n    public viewContainerRef: ViewContainerRef,\n  ) {\n  }\n\n  public getItemList(): any[] {\n    return this.itemList;\n  }\n\n  public setItemList(itemList: any[]): void {\n    this.itemList = itemList;\n  }\n\n  public getSelectedItem(): any {\n    return this.selectedItem;\n  }\n\n  /**\n   * Setta o novo item como selecionado\n   * @param item: item novo\n   */\n  public setSelectedItem(item: any): void {\n    if (this.enableSelection === true) {\n      this.selectedItem = item;\n      this.onSelectedChange.emit(item);\n    }\n  }\n\n  /**\n   * Evento de drop do cdkDragDrop\n   * @param event: evento de drop\n   * @param profileList: lista a ser dropado\n   */\n  public drop(event: CdkDragDrop<string[]>): void {\n    if (this.enableDragging) {\n      moveItemInArray(this.itemList, event.previousIndex, event.currentIndex);\n    }\n  }\n\n  /**\n   * Abre o context Menu\n   * @param x: posição x do mouse\n   * @param y: posição y do mouse\n   * @param context: valores que serão passados para o context menu\n   */\n  public openContextMenu({x, y}: MouseEvent, context): void {\n    this.closeContextMenu();\n    const positionStrategy = this.overlay.position()\n      .flexibleConnectedTo({x, y})\n      .withPositions([\n        {\n          originX: 'end',\n          originY: 'bottom',\n          overlayX: 'end',\n          overlayY: 'top',\n        }\n      ]);\n\n    this.overlayRef = this.overlay.create({\n      positionStrategy,\n      scrollStrategy: this.overlay.scrollStrategies.close()\n    });\n\n    this.overlayRef.attach(new TemplatePortal(this.contextMenu, this.viewContainerRef, context));\n\n    this.sub = fromEvent<MouseEvent>(document, 'click')\n      .pipe(\n        filter(event => {\n          const clickTarget = event.target as HTMLElement;\n          return !!this.overlayRef && !this.overlayRef.overlayElement.contains(clickTarget);\n        }),\n        take(1)\n      ).subscribe(() => this.closeContextMenu());\n  }\n\n  /**\n   * Fecha o context menu\n   */\n  public closeContextMenu(): void {\n    // tslint:disable-next-line:no-unused-expression\n    this.sub && this.sub.unsubscribe();\n    if (this.overlayRef) {\n      this.overlayRef.dispose();\n      this.overlayRef = null;\n    }\n  }\n\n  /**\n   * Caso o originalString tenha {algumacoisa}, é substituído por ${item[algumacoisa]}\n   * Fazendo assim ser possível strings dinânimcas de acordo com o objeto\n   * Caso o item seja string, é possível ele ser dinâmico usando {this}\n   */\n  public formatItemStringParameters(originalString: string, item: any): string {\n    if (typeof item !== 'string' && originalString.indexOf('{') !== -1) {\n      let result = '';\n      for (const str of originalString.split('{')) {\n        if (str.indexOf('}') !== -1) {\n          result += `${item[str.substring(0, str.indexOf('}'))]}`;\n          result += str.substring(str.indexOf('}') + 1, str.length);\n        } else {\n          result += str;\n        }\n      }\n      return result;\n    } else {\n      return originalString.replace('{this}', item);\n    }\n  }\n\n  /**\n   * Verifica se o item é o atual selecionado\n   * @param item: item a ser comparado com o atual selecionado\n   */\n  public isSelectedItem(item: any): boolean {\n    if (typeof item !== 'undefined') {\n      return this.selectedItem === item;\n    } else {\n      return false;\n    }\n  }\n\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -1289,8 +1293,8 @@
         },
         {
             "name": "GridListComponent",
-            "id": "component-GridListComponent-796e93fd8c33fa425fdeebddb952d7ac",
-            "file": "projects/components/src/lib/grid-list/grid-list.component.ts",
+            "id": "component-GridListComponent-5cb4593f16dbd542aaf26bdce3745f28",
+            "file": "projects/components/src/lib/lists/grid-list/grid-list.component.ts",
             "encapsulation": [],
             "entryComponents": [],
             "inputs": [],
@@ -1313,7 +1317,8 @@
                 },
                 {
                     "name": "bodyBackgroundColor",
-                    "line": 33
+                    "line": 33,
+                    "type": "string"
                 },
                 {
                     "name": "displayStyle",
@@ -1324,7 +1329,8 @@
                 {
                     "name": "gridHeaderReverse",
                     "defaultValue": "false",
-                    "line": 32
+                    "line": 32,
+                    "type": "boolean"
                 },
                 {
                     "name": "items",
@@ -1334,7 +1340,8 @@
                 {
                     "name": "overflowGallery",
                     "defaultValue": "true",
-                    "line": 30
+                    "line": 30,
+                    "type": "boolean"
                 }
             ],
             "outputsClass": [],
@@ -1397,7 +1404,7 @@
             "description": "",
             "rawdescription": "",
             "type": "component",
-            "sourceCode": "import {Component, Input, TemplateRef, ViewChild} from '@angular/core';\nimport {MainColors} from '../../models/colors';\n\nexport interface GridListItem {\n  title: string;\n  subtitle?: string;\n  context?: any;\n  iconClass?: string;\n  iconColor?: MainColors | string;\n  iconOutline?: boolean;\n  thumbnailPicture?: string;\n  bodyPicture: string;\n  iconCallback?: void;\n  titleCallback?: void;\n  subtitleCallback?: void;\n  bodyCallback?: void;\n}\n\n@Component({\n  selector: 'pm-grid-list',\n  templateUrl: './grid-list.component.html',\n  styleUrls: ['./grid-list.component.scss']\n})\nexport class GridListComponent {\n\n  @ViewChild('gridTemplate', {static: true}) gridTemplateRef: TemplateRef<any>;\n  @ViewChild('listTemplate', {static: true}) listTemplateRef: TemplateRef<any>;\n  @ViewChild('galleryTemplate', {static: true}) galleryTemplateRef: TemplateRef<any>;\n  @Input() displayStyle: 'list' | 'grid' | 'gallery' = 'grid';\n  @Input() overflowGallery = true;\n  @Input() items: GridListItem[];\n  @Input() gridHeaderReverse = false;\n  @Input() bodyBackgroundColor;\n  @Input() actionTemplate: TemplateRef<any>;\n\n  constructor() { }\n\n  public getTemplate(): TemplateRef<any> {\n    switch (this.displayStyle) {\n      case 'grid':\n        return this.gridTemplateRef;\n      case 'gallery':\n        return this.galleryTemplateRef;\n      case 'list':\n        return this.listTemplateRef;\n      default:\n        return this.gridTemplateRef;\n    }\n  }\n\n}\n",
+            "sourceCode": "import {Component, Input, TemplateRef, ViewChild} from '@angular/core';\nimport {MainColors} from '../../../models/colors';\n\nexport interface GridListItem {\n  title: string;\n  subtitle?: string;\n  context?: any;\n  iconClass?: string;\n  iconColor?: MainColors | string;\n  iconOutline?: boolean;\n  thumbnailPicture?: string;\n  bodyPicture: string;\n  iconCallback?: void;\n  titleCallback?: void;\n  subtitleCallback?: void;\n  bodyCallback?: void;\n}\n\n@Component({\n  selector: 'pm-grid-list',\n  templateUrl: './grid-list.component.html',\n  styleUrls: ['./grid-list.component.scss']\n})\nexport class GridListComponent {\n\n  @ViewChild('gridTemplate', {static: true}) gridTemplateRef: TemplateRef<any>;\n  @ViewChild('listTemplate', {static: true}) listTemplateRef: TemplateRef<any>;\n  @ViewChild('galleryTemplate', {static: true}) galleryTemplateRef: TemplateRef<any>;\n  @Input() displayStyle: 'list' | 'grid' | 'gallery' = 'grid';\n  @Input() overflowGallery: boolean = true;\n  @Input() items: GridListItem[];\n  @Input() gridHeaderReverse: boolean = false;\n  @Input() bodyBackgroundColor: string;\n  @Input() actionTemplate: TemplateRef<any>;\n\n  constructor() { }\n\n  public getTemplate(): TemplateRef<any> {\n    switch (this.displayStyle) {\n      case 'grid':\n        return this.gridTemplateRef;\n      case 'gallery':\n        return this.galleryTemplateRef;\n      case 'list':\n        return this.listTemplateRef;\n      default:\n        return this.gridTemplateRef;\n    }\n  }\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -1413,65 +1420,6 @@
                 "line": 34
             },
             "templateData": "<div class=\"pm-grid-list\">\n\n  <div class=\"d-flex justify-content-end\">\n    <button (click)=\"displayStyle = 'gallery'\" class=\"btn btn-icon-action color-primary\">\n      <i class=\"uil uil-md uil-table\"></i>\n    </button>\n    <button (click)=\"displayStyle = 'grid'\" class=\"btn btn-icon-action color-primary\">\n      <i class=\"uil uil-md uil-apps\"></i>\n    </button>\n    <button (click)=\"displayStyle = 'list'\" class=\"btn btn-icon-action color-primary\">\n      <i class=\"uil uil-md uil-grids rotate-90\"></i>\n    </button>\n  </div>\n\n  <div class=\"row g-0 d-flex justify-content-center\" [ngClass]=\"{'card-basic': displayStyle === 'list'}\">\n    <ng-container *ngFor=\"let item of items\">\n      <ng-container *ngTemplateOutlet=\"getTemplate(); context: {$implicit: item}\"></ng-container>\n    </ng-container>\n  </div>\n\n</div>\n\n<ng-template #actionButton let-item>\n  <button *ngIf=\"item.iconCallback && item.iconClass\"\n          (click)=\"item.iconCallback(item)\"\n          [className]=\"'btn btn-icon-action px-2 py-0 color-' + (item.iconColor ? item.iconColor : 'primary') + (item.iconOutline ? ' btn-outline-' + item.iconColor : '')\"\n          style=\"height: fit-content; align-self: center;\"\n  >\n    <i [className]=\"item.iconClass\"></i>\n  </button>\n</ng-template>\n\n<ng-template #gridTemplate let-item>\n  <div class=\"card-basic model-collection-card hoverable rad-md col-auto m-3\"\n       [ngClass]=\"{'reverse': gridHeaderReverse}\"\n       style=\"height: auto;\"\n  >\n    <div class=\"model-collection-card-header\">\n      <ng-container *ngIf=\"item.thumbnailPicture\">\n        <div [ngStyle]=\"{'background-image': 'url(' + item.thumbnailPicture + ')'}\" class=\"img-thumbnail align-self-center\"></div>\n      </ng-container>\n      <div class=\"d-flex flex-column justify-content-center flex-fill text-overflow ms-2\">\n        <ng-container *ngTemplateOutlet=\"titleSubtitle; context: {$implicit: item}\"></ng-container>\n      </div>\n      <ng-container *ngTemplateOutlet=\"actionTemplate ? actionTemplate : actionButton; context: {$implicit: item}\"></ng-container>\n    </div>\n    <div\n      (click)=\"item.bodyCallback ? item.bodyCallback(item) : null\"\n      [ngClass]=\"{'cursor-pointer': item.bodyCallback, 'rad-md-top': gridHeaderReverse, 'rad-md-bottom': !gridHeaderReverse}\"\n      class=\"model-collection-card-body fixed-height image-fluid-container\"\n      [ngStyle]=\"{'background-color': bodyBackgroundColor ? bodyBackgroundColor : null}\"\n    >\n      <img [attr.alt]=\"item.bodyPicture\" [attr.src]=\"item.bodyPicture\">\n    </div>\n  </div>\n</ng-template>\n\n<ng-template #listTemplate let-item>\n  <div class=\"list-item d-flex py-3 pe-3 pe-lg-5\">\n    <div (click)=\"item.bodyCallback ? item.bodyCallback(item) : null\" class=\"image-fluid-container mx-3 mx-lg-4\">\n      <img [attr.alt]=\"item.bodyPicture\" [attr.src]=\"item.bodyPicture\">\n    </div>\n    <div class=\"d-block flex-fill text-overflow\">\n      <ng-container *ngTemplateOutlet=\"titleSubtitle; context: {$implicit: item}\"></ng-container>\n    </div>\n    <ng-container *ngTemplateOutlet=\"actionTemplate ? actionTemplate : actionButton; context: {$implicit: item}\"></ng-container>\n  </div>\n</ng-template>\n\n<ng-template #galleryTemplate let-item>\n  <div class=\"card-basic model-collection-card square-sm col-auto m-0 position-relative\" style=\"height: auto;\">\n    <div\n      (click)=\"item.bodyCallback ? item.bodyCallback(item) : null\"\n      [ngClass]=\"{'cursor-pointer': item.bodyCallback, 'image-fluid-container': !overflowGallery, 'overflow-hidden d-flex justify-content-center': overflowGallery}\"\n      class=\"model-collection-card-body square-sm\"\n      [ngStyle]=\"{'background-color': bodyBackgroundColor ? bodyBackgroundColor : null}\"\n    >\n      <img [attr.alt]=\"item.bodyPicture\" [attr.src]=\"item.bodyPicture\">\n    </div>\n    <div class=\"position-absolute\" style=\"bottom: 5px; right: 5px;\">\n      <ng-container *ngTemplateOutlet=\"actionTemplate ? actionTemplate : actionButton; context: {$implicit: item}\"></ng-container>\n    </div>\n  </div>\n</ng-template>\n\n<ng-template #titleSubtitle let-item>\n  <p (click)=\"item.titleCallback ? item.titleCallback(item) : null\"\n     [ngClass]=\"{\n            'title-link': !!item.titleCallback === true,\n            'title': !!item.titleCallback === false,\n            'bigger': !!item.thumbnailPicture === false\n           }\"\n     class=\"align-self-start\">{{item.title}}\n  </p>\n  <p *ngIf=\"item.subtitle\"\n     (click)=\"item.subtitleCallback ? item.subtitleCallback(item) : null\"\n     class=\"secondary-link align-self-start\"\n     [ngClass]=\"{\n            'secondary-link': !!item.subtitleCallback === true,\n            'secondary': !!item.subtitleCallback === false\n           }\"\n  >\n    {{item.subtitle}}\n  </p>\n</ng-template>\n"
-        },
-        {
-            "name": "GridListComponent",
-            "id": "component-GridListComponent-e7a0e4649ded9ae01c35d1dd877c5359-1",
-            "file": "projects/components/src/lib/lists/grid-list/grid-list.component.ts",
-            "encapsulation": [],
-            "entryComponents": [],
-            "inputs": [],
-            "outputs": [],
-            "providers": [],
-            "selector": "pm-grid-list",
-            "styleUrls": [
-                "./grid-list.component.scss"
-            ],
-            "styles": [],
-            "templateUrl": [
-                "./grid-list.component.html"
-            ],
-            "viewProviders": [],
-            "inputsClass": [],
-            "outputsClass": [],
-            "propertiesClass": [],
-            "methodsClass": [
-                {
-                    "name": "ngOnInit",
-                    "args": [],
-                    "optional": false,
-                    "returnType": "void",
-                    "typeParameters": [],
-                    "line": 12
-                }
-            ],
-            "hostBindings": [],
-            "hostListeners": [],
-            "description": "",
-            "rawdescription": "",
-            "type": "component",
-            "sourceCode": "import { Component, OnInit } from '@angular/core';\n\n@Component({\n  selector: 'pm-grid-list',\n  templateUrl: './grid-list.component.html',\n  styleUrls: ['./grid-list.component.scss']\n})\nexport class GridListComponent implements OnInit {\n\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n\n}\n",
-            "assetsDirs": [],
-            "styleUrlsData": [
-                {
-                    "data": "",
-                    "styleUrl": "./grid-list.component.scss"
-                }
-            ],
-            "stylesData": "",
-            "constructorObj": {
-                "name": "constructor",
-                "description": "",
-                "args": [],
-                "line": 8
-            },
-            "implements": [
-                "OnInit"
-            ],
-            "isDuplicate": true,
-            "duplicateId": 1,
-            "duplicateName": "GridListComponent-1",
-            "templateData": "<p>grid-list works!</p>\n"
         },
         {
             "name": "MultiLevelDropdownMenuComponent",
@@ -2203,7 +2151,7 @@
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": ".prisma-table {\n  width: 100%;\n  border-collapse: collapse;\n  overflow:hidden !important;\n\n  &.mat-table {\n    background-color: transparent;\n  }\n\n  mat-header-cell {\n    font-size: 16px;\n    font-weight: 600;\n  }\n\n  mat-cell {\n    &.disabled {\n      background-color: var(--color-gray-light);\n\n      * {\n        color: var(--color-gray-dark) !important;\n      }\n    }\n  }\n\n  .main-label {\n    margin: 0px;\n    color: rgba(0, 0, 0, 0.87);\n    font-size: 14px;\n  }\n\n  .sub-label {\n    margin: 0px;\n    color: #c0c0c0;\n  }\n\n  .element-row {\n    position: relative;\n  }\n\n  .element-row:not(.expanded) {\n    cursor: pointer;\n  }\n\n  .element-row.expanded {\n    border-bottom-color: transparent;\n  }\n}\n",
+                    "data": ".pm-table-list {\n  width: 100%;\n  border-collapse: collapse;\n  overflow:hidden !important;\n\n  &.mat-table {\n    background-color: transparent;\n  }\n\n  mat-header-cell {\n    font-size: 16px;\n    font-weight: 600;\n  }\n\n  mat-cell {\n    &.disabled {\n      background-color: var(--color-gray-light);\n\n      * {\n        color: var(--color-gray-dark) !important;\n      }\n    }\n  }\n\n  .main-label {\n    margin: 0px;\n    color: rgba(0, 0, 0, 0.87);\n    font-size: 14px;\n  }\n\n  .sub-label {\n    margin: 0px;\n    color: #c0c0c0;\n  }\n\n  .element-row {\n    position: relative;\n  }\n\n  .element-row:not(.expanded) {\n    cursor: pointer;\n  }\n\n  .element-row.expanded {\n    border-bottom-color: transparent;\n  }\n}\n",
                     "styleUrl": "./table.component.scss"
                 }
             ],
@@ -2235,7 +2183,7 @@
         },
         {
             "name": "TableListComponent",
-            "id": "component-TableListComponent-3f0fb7152fadb79165fce9be7fe1afb6",
+            "id": "component-TableListComponent-8d464ad295201e72de27d5e1f4c6c56b",
             "file": "projects/components/src/lib/lists/table-list/table-list.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -2251,17 +2199,398 @@
                 "./table-list.component.html"
             ],
             "viewProviders": [],
-            "inputsClass": [],
-            "outputsClass": [],
-            "propertiesClass": [],
+            "inputsClass": [
+                {
+                    "name": "actionsTemplate",
+                    "line": 38,
+                    "type": "TemplateRef<any>"
+                },
+                {
+                    "name": "backgroundColor",
+                    "line": 41,
+                    "type": "string"
+                },
+                {
+                    "name": "borderRadius",
+                    "line": 40,
+                    "type": "Sizes"
+                },
+                {
+                    "name": "columnNames",
+                    "defaultValue": "[]",
+                    "line": 32,
+                    "type": "string[]"
+                },
+                {
+                    "name": "columns",
+                    "defaultValue": "[]",
+                    "line": 31,
+                    "type": "string[]"
+                },
+                {
+                    "name": "disableExpandedOnDisabledRow",
+                    "defaultValue": "true",
+                    "line": 44,
+                    "type": "boolean"
+                },
+                {
+                    "name": "expandedDetailTemplate",
+                    "line": 43,
+                    "type": "TemplateRef<any>"
+                },
+                {
+                    "name": "imageColumns",
+                    "defaultValue": "[]",
+                    "line": 33,
+                    "type": "string[]"
+                },
+                {
+                    "name": "imageHeight",
+                    "line": 34,
+                    "type": ""
+                },
+                {
+                    "name": "itemList",
+                    "defaultValue": "[]",
+                    "line": 39,
+                    "type": "any"
+                },
+                {
+                    "name": "numberFormat",
+                    "defaultValue": "'1.2-2'",
+                    "line": 36
+                },
+                {
+                    "name": "numberPrefix",
+                    "defaultValue": "''",
+                    "line": 37
+                },
+                {
+                    "name": "showHeader",
+                    "defaultValue": "true",
+                    "line": 35,
+                    "type": "boolean"
+                }
+            ],
+            "outputsClass": [
+                {
+                    "name": "onItemListChange",
+                    "defaultValue": "new EventEmitter()",
+                    "line": 30,
+                    "type": "EventEmitter"
+                }
+            ],
+            "propertiesClass": [
+                {
+                    "name": "doubleLabelCell",
+                    "type": "TemplateRef<any>",
+                    "optional": false,
+                    "description": "",
+                    "line": 48,
+                    "decorators": [
+                        {
+                            "name": "ViewChild",
+                            "stringifiedArguments": "'doubleLabelCell', {static: true}"
+                        }
+                    ]
+                },
+                {
+                    "name": "expandedRow",
+                    "type": "any",
+                    "optional": false,
+                    "description": "",
+                    "line": 52,
+                    "modifierKind": [
+                        114
+                    ]
+                },
+                {
+                    "name": "formattedNumberCell",
+                    "type": "TemplateRef<any>",
+                    "optional": false,
+                    "description": "",
+                    "line": 50,
+                    "decorators": [
+                        {
+                            "name": "ViewChild",
+                            "stringifiedArguments": "'formattedNumberCell', {static: true}"
+                        }
+                    ]
+                },
+                {
+                    "name": "imageCell",
+                    "type": "TemplateRef<any>",
+                    "optional": false,
+                    "description": "",
+                    "line": 49,
+                    "decorators": [
+                        {
+                            "name": "ViewChild",
+                            "stringifiedArguments": "'imageCell', {static: true}"
+                        }
+                    ]
+                },
+                {
+                    "name": "isExpansionDetailRow",
+                    "defaultValue": "() => {...}",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 54
+                },
+                {
+                    "name": "isNormalRow",
+                    "defaultValue": "() => {...}",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 56
+                },
+                {
+                    "name": "singleLabelCell",
+                    "type": "TemplateRef<any>",
+                    "optional": false,
+                    "description": "",
+                    "line": 47,
+                    "decorators": [
+                        {
+                            "name": "ViewChild",
+                            "stringifiedArguments": "'singleLabelCell', {static: true}"
+                        }
+                    ]
+                },
+                {
+                    "name": "table",
+                    "type": "MatTable<any>",
+                    "optional": false,
+                    "description": "",
+                    "line": 46,
+                    "decorators": [
+                        {
+                            "name": "ViewChild",
+                            "stringifiedArguments": "'table', {static: true}"
+                        }
+                    ]
+                }
+            ],
             "methodsClass": [
                 {
-                    "name": "ngOnInit",
+                    "name": "disableHeader",
                     "args": [],
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 12
+                    "line": 137,
+                    "description": "<p>Some com a linha de header</p>\n",
+                    "modifierKind": [
+                        114
+                    ]
+                },
+                {
+                    "name": "enableHeader",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 130,
+                    "description": "<p>Mostra a linha de header</p>\n",
+                    "modifierKind": [
+                        114
+                    ]
+                },
+                {
+                    "name": "getCellTemplate",
+                    "args": [
+                        {
+                            "name": "item",
+                            "type": "any"
+                        },
+                        {
+                            "name": "column",
+                            "type": "string"
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "TemplateRef<any>",
+                    "typeParameters": [],
+                    "line": 146,
+                    "description": "<p>Retorna o template que será renderizada a celula de acordo com o input de item e coluna</p>\n",
+                    "modifierKind": [
+                        114
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": {
+                                "pos": 4133,
+                                "end": 4137,
+                                "flags": 0,
+                                "escapedText": "item"
+                            },
+                            "type": "any",
+                            "tagName": {
+                                "pos": 4127,
+                                "end": 4132,
+                                "flags": 0,
+                                "escapedText": "param"
+                            },
+                            "comment": "<p>: item da lista de itens</p>\n"
+                        },
+                        {
+                            "name": {
+                                "pos": 4174,
+                                "end": 4180,
+                                "flags": 0,
+                                "escapedText": "column"
+                            },
+                            "type": "string",
+                            "tagName": {
+                                "pos": 4168,
+                                "end": 4173,
+                                "flags": 0,
+                                "escapedText": "param"
+                            },
+                            "comment": "<p>: propriedade do item</p>\n"
+                        }
+                    ]
+                },
+                {
+                    "name": "getItemList",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "any[]",
+                    "typeParameters": [],
+                    "line": 114,
+                    "description": "<p>Retorna a lista atual de itens na tabela</p>\n",
+                    "modifierKind": [
+                        114
+                    ]
+                },
+                {
+                    "name": "isSelectedRow",
+                    "args": [
+                        {
+                            "name": "row",
+                            "type": "any"
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "boolean",
+                    "typeParameters": [],
+                    "line": 96,
+                    "description": "<p>Verifica se a row é igual à selecionada</p>\n",
+                    "modifierKind": [
+                        114
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": {
+                                "pos": 2990,
+                                "end": 2993,
+                                "flags": 0,
+                                "escapedText": "row"
+                            },
+                            "type": "any",
+                            "tagName": {
+                                "pos": 2984,
+                                "end": 2989,
+                                "flags": 0,
+                                "escapedText": "param"
+                            },
+                            "comment": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "ngAfterViewInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 63
+                },
+                {
+                    "name": "reloadExpandedDetail",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 104,
+                    "description": "<p>Reconstroi os elementos da tabela para incluir o &quot;detail row&quot; e deixar ela expansível</p>\n",
+                    "modifierKind": [
+                        112
+                    ],
+                    "jsdoctags": [
+                        {
+                            "tagName": {
+                                "pos": 3197,
+                                "end": 3204,
+                                "flags": 0,
+                                "escapedText": "private"
+                            },
+                            "comment": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "setItemList",
+                    "args": [
+                        {
+                            "name": "itemList",
+                            "type": "any[]"
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 121,
+                    "description": "<p>Troca a lista de itens da tabela</p>\n",
+                    "modifierKind": [
+                        114
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "itemList",
+                            "type": "any[]",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "setSelectedRow",
+                    "args": [
+                        {
+                            "name": "row",
+                            "type": "any"
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 77,
+                    "description": "<p>dá como selecionada a row atual CASO exista um template de expandedDetailTemplate</p>\n",
+                    "modifierKind": [
+                        114
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": {
+                                "pos": 2510,
+                                "end": 2513,
+                                "flags": 0,
+                                "escapedText": "row"
+                            },
+                            "type": "any",
+                            "tagName": {
+                                "pos": 2504,
+                                "end": 2509,
+                                "flags": 0,
+                                "escapedText": "param"
+                            },
+                            "comment": ""
+                        }
+                    ]
                 }
             ],
             "hostBindings": [],
@@ -2269,11 +2598,11 @@
             "description": "",
             "rawdescription": "",
             "type": "component",
-            "sourceCode": "import { Component, OnInit } from '@angular/core';\n\n@Component({\n  selector: 'pm-table-list',\n  templateUrl: './table-list.component.html',\n  styleUrls: ['./table-list.component.scss']\n})\nexport class TableListComponent implements OnInit {\n\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n\n}\n",
+            "sourceCode": "import {\n  AfterViewInit,\n  ChangeDetectorRef,\n  Component,\n  EventEmitter,\n  Input,\n  Output,\n  TemplateRef,\n  ViewChild\n} from '@angular/core';\nimport {Sizes} from '../../../models/sizes';\nimport {animate, state, style, transition, trigger} from '@angular/animations';\nimport {MatTable, MatTableDataSource} from '@angular/material/table';\nimport _ from 'lodash';\n\n@Component({\n  selector: 'pm-table-list',\n  templateUrl: './table-list.component.html',\n  styleUrls: ['./table-list.component.scss'],\n  animations: [\n    trigger('detailExpand', [\n      state('collapsed', style({height: '0px', minHeight: '0px', visibility: 'hidden'})),\n      state('expanded', style({height: '*', visibility: 'visible'})),\n      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),\n    ]),\n  ],\n})\nexport class TableListComponent implements AfterViewInit {\n\n  @Output() onItemListChange = new EventEmitter();\n  @Input() columns: string[] = [];\n  @Input() columnNames: string[] = [];\n  @Input() imageColumns: string[] = [];\n  @Input() imageHeight: '50px';\n  @Input() showHeader: boolean = true;\n  @Input() numberFormat = '1.2-2';\n  @Input() numberPrefix = '';\n  @Input() actionsTemplate: TemplateRef<any>;\n  @Input() itemList: any = [];\n  @Input() borderRadius: Sizes;\n  @Input() backgroundColor: string;\n\n  @Input() expandedDetailTemplate: TemplateRef<any>;\n  @Input() disableExpandedOnDisabledRow: boolean = true;\n\n  @ViewChild('table', {static: true}) table: MatTable<any>;\n  @ViewChild('singleLabelCell', {static: true}) singleLabelCell: TemplateRef<any>;\n  @ViewChild('doubleLabelCell', {static: true}) doubleLabelCell: TemplateRef<any>;\n  @ViewChild('imageCell', {static: true}) imageCell: TemplateRef<any>;\n  @ViewChild('formattedNumberCell', {static: true}) formattedNumberCell: TemplateRef<any>;\n\n  public expandedRow: any;\n  // tslint:disable-next-line:ban-types\n  isExpansionDetailRow = (i: number, row: Object) => row.hasOwnProperty('detailRow');\n  // tslint:disable-next-line:ban-types\n  isNormalRow = (i: number, row: Object) => true;\n\n  constructor(\n    private changeDetectorRef: ChangeDetectorRef\n  ) {\n  }\n\n  ngAfterViewInit(): void {\n    if (typeof this.actionsTemplate !== 'undefined') {\n      if (this.columns.includes('ACTIONS') === false) {\n        this.columns.push('ACTIONS');\n        this.columnNames.push('');\n      }\n    }\n    this.reloadExpandedDetail();\n  }\n\n  /**\n   * dá como selecionada a row atual CASO exista um template de expandedDetailTemplate\n   * @param row\n   */\n  public setSelectedRow(row: any): void {\n    if (!_.isNil(this.expandedDetailTemplate)) {\n      if (row.hasOwnProperty('detailRow') === false) {\n        row = { detailRow: true, element: row };\n      }\n      if (row.element?.disabled) {\n        if (this.disableExpandedOnDisabledRow === false) {\n          this.expandedRow = row;\n        }\n      } else {\n        this.expandedRow = row;\n      }\n    }\n  }\n\n  /**\n   * Verifica se a row é igual à selecionada\n   * @param row\n   */\n  public isSelectedRow(row: any): boolean {\n    return _.isEqual(row, this.expandedRow);\n  }\n\n  /**\n   * Reconstroi os elementos da tabela para incluir o \"detail row\" e deixar ela expansível\n   * @private\n   */\n  private reloadExpandedDetail(): void {\n    const newItems = [];\n    this.itemList.forEach(element => newItems.push(element, { detailRow: true, element }));\n    this.itemList = new MatTableDataSource(newItems);\n    this.changeDetectorRef.detectChanges();\n  }\n\n  /**\n   * Retorna a lista atual de itens na tabela\n   */\n  public getItemList(): any[] {\n    return this.itemList;\n  }\n\n  /**\n   * Troca a lista de itens da tabela\n   */\n  public setItemList(itemList: any[]): void {\n    this.itemList = itemList;\n    this.reloadExpandedDetail();\n    this.onItemListChange.emit(this.itemList);\n  }\n\n  /**\n   * Mostra a linha de header\n   */\n  public enableHeader(): void {\n    this.showHeader = true;\n  }\n\n  /**\n   * Some com a linha de header\n   */\n  public disableHeader(): void {\n    this.showHeader = false;\n  }\n\n  /**\n   * Retorna o template que será renderizada a celula de acordo com o input de item e coluna\n   * @param item: item da lista de itens\n   * @param column: propriedade do item\n   */\n  public getCellTemplate(item: any, column: string): TemplateRef<any> {\n    if (column === 'ACTIONS') {\n      return this.actionsTemplate;\n    } else if (Array.isArray(item[column])) {\n      return this.doubleLabelCell;\n    } else {\n      if (this.imageColumns.includes(column)) {\n        return this.imageCell;\n      } else {\n        if (typeof item[column] === 'number') {\n          return this.formattedNumberCell;\n        } else {\n          return this.singleLabelCell;\n        }\n      }\n    }\n  }\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": "",
+                    "data": ".pm-table-list {\n  width: 100%;\n  border-collapse: collapse;\n  overflow:hidden !important;\n\n  &.mat-table {\n    background-color: transparent;\n  }\n\n  mat-header-cell {\n    font-size: 16px;\n    font-weight: 600;\n  }\n\n  mat-cell {\n    &.disabled {\n      background-color: var(--color-gray-light);\n\n      * {\n        color: var(--color-gray-dark) !important;\n      }\n    }\n  }\n\n  .main-label {\n    margin: 0px;\n    color: rgba(0, 0, 0, 0.87);\n    font-size: 14px;\n  }\n\n  .sub-label {\n    margin: 0px;\n    color: #c0c0c0;\n  }\n\n  .element-row {\n    position: relative;\n  }\n\n  .element-row:not(.expanded) {\n    cursor: pointer;\n  }\n\n  .element-row.expanded {\n    border-bottom-color: transparent;\n  }\n}\n",
                     "styleUrl": "./table-list.component.scss"
                 }
             ],
@@ -2281,13 +2610,27 @@
             "constructorObj": {
                 "name": "constructor",
                 "description": "",
-                "args": [],
-                "line": 8
+                "args": [
+                    {
+                        "name": "changeDetectorRef",
+                        "type": "ChangeDetectorRef"
+                    }
+                ],
+                "line": 56,
+                "jsdoctags": [
+                    {
+                        "name": "changeDetectorRef",
+                        "type": "ChangeDetectorRef",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
             },
             "implements": [
-                "OnInit"
+                "AfterViewInit"
             ],
-            "templateData": "<p>table-list works!</p>\n"
+            "templateData": "<mat-table #table [dataSource]=\"itemList\" class=\"pm-table-list\"\n           [ngStyle]=\"{'border-radius': borderRadius ? 'var(--border-radius-' + borderRadius + ')' : null, 'background-color': backgroundColor ? backgroundColor : null}\"\n>\n\n  <ng-container *ngFor=\"let column of columns; let i = index;\">\n    <ng-container matColumnDef=\"{{column}}\">\n      <mat-header-cell *matHeaderCellDef>{{columnNames ? columnNames[i] : column}}</mat-header-cell>\n      <mat-cell *matCellDef=\"let item\" [ngClass]=\"{'disabled': item?.disabled === true}\">\n        <ng-container\n          *ngTemplateOutlet=\"getCellTemplate(item, column);\n          context: {$implicit: item, column: column}\">\n        </ng-container>\n      </mat-cell>\n    </ng-container>\n  </ng-container>\n\n  <ng-container matColumnDef=\"expandedDetail\">\n    <mat-cell *matCellDef=\"let item\" [ngClass]=\"{'disabled': item?.disabled === true}\">\n      <ng-container *ngTemplateOutlet=\"expandedDetailTemplate; context: {$implicit: item.element}\"></ng-container>\n    </mat-cell>\n  </ng-container>\n\n  <mat-header-row *matHeaderRowDef=\"columns\" [ngClass]=\"{'d-none': !showHeader}\"></mat-header-row>\n  <mat-row *matRowDef=\"let row; columns: columns\"\n           [ngClass]=\"{'element-row': expandedDetailTemplate}\"\n           [class.expanded]=\"expandedRow == row\"\n           (click)=\"setSelectedRow(row)\"\n  ></mat-row>\n  <mat-row *matRowDef=\"let row; columns: ['expandedDetail']; when: isExpansionDetailRow\"\n           [@detailExpand]=\"isSelectedRow(row) ? 'expanded' : 'collapsed'\"\n           (click)=\"setSelectedRow(row)\"\n           style=\"overflow: hidden\"\n  >\n  </mat-row>\n</mat-table>\n\n<ng-template #imageCell let-item let-column=\"column\">\n  <img [attr.src]=\"item[column]\" [attr.alt]=\"item[column]\"\n       class=\"img-fluid my-2\" [ngStyle]=\"{'height': imageHeight ? imageHeight : '50px', 'max-height': imageHeight ? imageHeight : '50px'}\">\n</ng-template>\n\n<ng-template #singleLabelCell let-item let-column=\"column\">\n  <p class=\"main-label\">{{item[column]}}</p>\n</ng-template>\n\n<ng-template #doubleLabelCell let-item let-column=\"column\">\n  <div class=\"d-block\">\n    <p class=\"main-label\">{{item[column][0]}}</p>\n    <p class=\"sub-label\">{{item[column][1]}}</p>\n  </div>\n</ng-template>\n\n<ng-template #formattedNumberCell let-item let-column=\"column\">\n  <p class=\"main-label\">{{numberPrefix}}{{item[column] | number: numberFormat}}</p>\n</ng-template>\n"
         }
     ],
     "modules": [
@@ -2592,35 +2935,6 @@
             ]
         },
         {
-            "name": "GridListModule",
-            "children": [
-                {
-                    "type": "providers",
-                    "elements": []
-                },
-                {
-                    "type": "declarations",
-                    "elements": []
-                },
-                {
-                    "type": "imports",
-                    "elements": []
-                },
-                {
-                    "type": "exports",
-                    "elements": []
-                },
-                {
-                    "type": "bootstrap",
-                    "elements": []
-                },
-                {
-                    "type": "classes",
-                    "elements": []
-                }
-            ]
-        },
-        {
             "name": "MultiLevelDropdownMenuModule",
             "children": [
                 {
@@ -2813,7 +3127,11 @@
                 },
                 {
                     "type": "declarations",
-                    "elements": []
+                    "elements": [
+                        {
+                            "name": "TableListComponent"
+                        }
+                    ]
                 },
                 {
                     "type": "imports",
@@ -2821,7 +3139,11 @@
                 },
                 {
                     "type": "exports",
-                    "elements": []
+                    "elements": [
+                        {
+                            "name": "TableListComponent"
+                        }
+                    ]
                 },
                 {
                     "type": "bootstrap",
@@ -2877,7 +3199,7 @@
                 "name": "ActionsTable",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/Table.stories.ts",
+                "file": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
                 "type": "",
                 "defaultValue": "ActionsTableTemplate.bind({})"
             },
@@ -2885,9 +3207,9 @@
                 "name": "ActionsTableTemplate",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/Table.stories.ts",
-                "type": "Story<TableComponent>",
-                "defaultValue": "(args: TableComponent) => ({\n  component: TableComponent,\n  props: args,\n  template: `\n    <ng-template #actionsTemplate let-item let-column=\"column\">\n      <div [ngClass]=\"{'disabled': item?.disabled === true}\">\n        <button class=\"btn btn-primary\" [disabled]=\"item?.disabled\">Actions (id: {{item.id}})</button>\n      </div>\n    </ng-template>\n\n    <pm-table\n      [columns]=\"columns\"\n      [columnNames]=\"columnNames\"\n      [imageColumns]=\"imageColumns\"\n      [imageHeight]=\"imageHeight\"\n      [showHeader]=\"showHeader\"\n      [numberFormat]=\"numberFormat\"\n      [numberPrefix]=\"numberPrefix\"\n      [itemList]=\"itemList\"\n      [borderRadius]=\"borderRadius\"\n      [backgroundColor]=\"backgroundColor\"\n      [actionsTemplate]=\"actionsTemplate\"\n    ></pm-table>\n`\n})"
+                "file": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
+                "type": "Story<TableListComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-table-list\n      [columns]=\"columns\"\n      [columnNames]=\"columnNames\"\n      [imageColumns]=\"imageColumns\"\n      [imageHeight]=\"imageHeight\"\n      [showHeader]=\"showHeader\"\n      [numberFormat]=\"numberFormat\"\n      [numberPrefix]=\"numberPrefix\"\n      [itemList]=\"itemList\"\n      [borderRadius]=\"borderRadius\"\n      [backgroundColor]=\"backgroundColor\"\n      [expandedDetailTemplate]=\"expandedDetailTemplate\"\n      [disableExpandedOnDisabledRow]=\"disableExpandedOnDisabledRow\"\n      [actionsTemplate]=\"actionsTemplate\"\n    ></pm-table-list>\n\n    <ng-template #actionsTemplate let-item let-column=\"column\">\n      <div [ngClass]=\"{'disabled': item?.disabled === true}\">\n        <button class=\"btn btn-primary\" [disabled]=\"item?.disabled\">Actions (id: {{item.id}})</button>\n      </div>\n    </ng-template>\n  `\n})"
             },
             {
                 "name": "BusyButton",
@@ -2901,7 +3223,7 @@
                 "name": "ColorTable",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/Table.stories.ts",
+                "file": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             },
@@ -2933,30 +3255,6 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/lists/draggable-list/draggable-list.stories.ts",
-                "type": "object",
-                "defaultValue": "{\n  showIndex: true,\n  itemActionLabel: undefined,\n  itemMainLabel: undefined,\n  itemSubLabel: undefined,\n  actions: undefined,\n  itemList: undefined,\n  roundedBorders: true,\n  enableDragging: true,\n  enableSelection: true,\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/components/src/lib/lists/grid-list/grid-list.stories.ts",
-                "type": "object",
-                "defaultValue": "{\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
-                "type": "object",
-                "defaultValue": "{\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "projects/components/src/lib/inputs/button/button.stories.ts",
                 "type": "object",
                 "defaultValue": "{\n  label: '',\n  type: MainColors.default,\n  busy: false,\n  busyText: '',\n  iconClass: '',\n  outline: false,\n  disabled: false,\n}"
@@ -2973,17 +3271,17 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/inputs/combo-box/combo-box.stories.ts",
+                "file": "projects/components/src/lib/inputs/copy-content-input/copy-content-input.stories.ts",
                 "type": "object",
-                "defaultValue": "{\n  items: [],\n  disabled: false,\n  selectedItem: undefined\n}"
+                "defaultValue": "{\n  disabled: false,\n  text: ''\n}"
             },
             {
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/inputs/copy-content-input/copy-content-input.stories.ts",
+                "file": "projects/components/src/lib/inputs/combo-box/combo-box.stories.ts",
                 "type": "object",
-                "defaultValue": "{\n  disabled: false,\n  text: ''\n}"
+                "defaultValue": "{\n  items: [],\n  disabled: false,\n  selectedItem: undefined\n}"
             },
             {
                 "name": "defaultArgs",
@@ -2997,9 +3295,33 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
+                "file": "projects/components/src/lib/lists/draggable-list/draggable-list.stories.ts",
+                "type": "object",
+                "defaultValue": "{\n  showIndex: true,\n  itemActionLabel: undefined,\n  itemMainLabel: undefined,\n  itemSubLabel: undefined,\n  actions: undefined,\n  itemList: undefined,\n  roundedBorders: true,\n  enableDragging: true,\n  enableSelection: true,\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
                 "file": "projects/components/src/lib/inputs/radio-button/radio-button.stories.ts",
                 "type": "object",
                 "defaultValue": "{\n  orientation: OrientationEnum.Y,\n  values: [],\n  disabled: false,\n  selectedValue: undefined\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/components/src/lib/lists/grid-list/grid-list.stories.ts",
+                "type": "object",
+                "defaultValue": "{\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
+                "type": "object",
+                "defaultValue": "{\n  columns: [],\n  columnNames: [],\n  imageColumns: [],\n  imageHeight: '50px',\n  showHeader: true,\n  numberFormat: '1.2-2',\n  numberPrefix: '',\n  actionsTemplate: undefined,\n  itemList: undefined,\n  borderRadius: undefined,\n  backgroundColor: undefined,\n  expandedDetailTemplate: undefined,\n  disableExpandedOnDisabledRow: true,\n  expandedRow: undefined\n}"
             },
             {
                 "name": "DefaultButton",
@@ -3061,14 +3383,6 @@
                 "name": "DefaultGridList",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/GridList.stories.ts",
-                "type": "",
-                "defaultValue": "Template.bind({})"
-            },
-            {
-                "name": "DefaultGridList",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "projects/components/src/lib/lists/grid-list/grid-list.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
@@ -3080,14 +3394,6 @@
                 "file": "projects/components/src/lib/inputs/combo-box/combo-box.stories.ts",
                 "type": "[]",
                 "defaultValue": "[\n  {\n    label: 'Value 1',\n    value: 1\n  },\n  {\n    label: 'Value 2',\n    value: 2\n  },\n  {\n    label: 'Value 3',\n    value: 3\n  }\n]"
-            },
-            {
-                "name": "DefaultMultiLevelDropdownMenu",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "stories/multi-level-dropdown-menu.stories.ts",
-                "type": "",
-                "defaultValue": "Template.bind({})"
             },
             {
                 "name": "DefaultRadioButton",
@@ -3146,18 +3452,10 @@
                 "defaultValue": "Template.bind({})"
             },
             {
-                "name": "ExampleTable",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "stories/Table.stories.ts",
-                "type": "",
-                "defaultValue": "Template.bind({})"
-            },
-            {
                 "name": "ExpandedDetailsTable",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/Table.stories.ts",
+                "file": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
                 "type": "",
                 "defaultValue": "ExpandedDetailsTableTemplate.bind({})"
             },
@@ -3165,15 +3463,15 @@
                 "name": "ExpandedDetailsTableTemplate",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/Table.stories.ts",
-                "type": "Story<TableComponent>",
-                "defaultValue": "(args: TableComponent) => ({\n  component: TableComponent,\n  props: args,\n  template: `\n    <ng-template #dummyExpandedItem let-item>\n      <div class=\"d-block\">\n        <p>{{item.name}} - {{item.price}}</p>\n        <p>Here is an example item</p>\n        <p>Here is an example item</p>\n      </div>\n    </ng-template>\n\n    <pm-table\n      [columns]=\"columns\"\n      [columnNames]=\"columnNames\"\n      [imageColumns]=\"imageColumns\"\n      [imageHeight]=\"imageHeight\"\n      [showHeader]=\"showHeader\"\n      [numberFormat]=\"numberFormat\"\n      [numberPrefix]=\"numberPrefix\"\n      [itemList]=\"itemList\"\n      [borderRadius]=\"borderRadius\"\n      [backgroundColor]=\"backgroundColor\"\n      [expandedDetailTemplate]=\"dummyExpandedItem\"\n      [disableExpandedOnDisabledRow]=\"disableExpandedOnDisabledRow\"\n    ></pm-table>\n`\n})"
+                "file": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
+                "type": "Story<TableListComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-table-list\n      [columns]=\"columns\"\n      [columnNames]=\"columnNames\"\n      [imageColumns]=\"imageColumns\"\n      [imageHeight]=\"imageHeight\"\n      [showHeader]=\"showHeader\"\n      [numberFormat]=\"numberFormat\"\n      [numberPrefix]=\"numberPrefix\"\n      [itemList]=\"itemList\"\n      [borderRadius]=\"borderRadius\"\n      [backgroundColor]=\"backgroundColor\"\n      [expandedDetailTemplate]=\"dummyExpandedItem\"\n      [disableExpandedOnDisabledRow]=\"disableExpandedOnDisabledRow\"\n    ></pm-table-list>\n\n    <ng-template #dummyExpandedItem let-item>\n      <div class=\"d-block\">\n        <p>{{item.name}} - {{item.price}}</p>\n        <p>Here is an example item</p>\n        <p>Here is an example item</p>\n      </div>\n    </ng-template>\n  `\n})"
             },
             {
                 "name": "getColor",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/GridList.stories.ts",
+                "file": "projects/components/src/lib/lists/grid-list/grid-list.stories.ts",
                 "type": "",
                 "defaultValue": "() => MainColors.primary"
             },
@@ -3213,7 +3511,7 @@
                 "name": "NoHeader",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/Table.stories.ts",
+                "file": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             },
@@ -3260,14 +3558,6 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/GridList.stories.ts",
-                "type": "Story<GridListComponent>",
-                "defaultValue": "(args: GridListComponent) => ({\n  component: GridListComponent,\n  props: args,\n  template: `\n    <pm-grid-list\n        [items]=\"items\"\n        [displayStyle]=\"displayStyle\"\n        [gridHeaderReverse]=\"gridHeaderReverse\"\n        [bodyBackgroundColor]=\"bodyBackgroundColor\"\n        [actionTemplate]=\"undefined\"\n        [overflowGallery]=\"overflowGallery\"\n    >\n      conteudo\n    </pm-grid-list>`\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "stories/Stepper.stories.ts",
                 "type": "Story<StepperComponent>",
                 "defaultValue": "(args: StepperComponent) => ({\n  component: StepperComponent,\n  props: args,\n  template: `\n    <pm-stepper>\n      <cdk-step> <p>This is any content of \"Step 1\"</p> </cdk-step>\n      <cdk-step> <p>This is any content of \"Step 2\"</p> </cdk-step>\n    </pm-stepper>`\n})"
@@ -3276,49 +3566,9 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/Table.stories.ts",
-                "type": "Story<TableComponent>",
-                "defaultValue": "(args: TableComponent) => ({\n  component: TableComponent,\n  props: args,\n  template: `\n    <pm-table\n      [columns]=\"columns\"\n      [columnNames]=\"columnNames\"\n      [imageColumns]=\"imageColumns\"\n      [imageHeight]=\"imageHeight\"\n      [showHeader]=\"showHeader\"\n      [numberFormat]=\"numberFormat\"\n      [numberPrefix]=\"numberPrefix\"\n      [itemList]=\"itemList\"\n      [borderRadius]=\"borderRadius\"\n      [backgroundColor]=\"backgroundColor\"\n      [expandedDetailTemplate]=\"expandedDetailTemplate\"\n      [disableExpandedOnDisabledRow]=\"disableExpandedOnDisabledRow\"\n    ></pm-table>`\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "stories/default.ts",
                 "type": "Story<XXXComponent>",
                 "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-XXXName\n    >\n    </pm-XXXName>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "stories/multi-level-dropdown-menu.stories.ts",
-                "type": "Story<MultiLevelDropdownMenuComponent>",
-                "defaultValue": "(args: MultiLevelDropdownMenuComponent) => ({\n  component: MultiLevelDropdownMenuComponent,\n  props: args,\n  template: `\n    <pm-multi-level-dropdown-menu>\n    </pm-multi-level-dropdown-menu>`\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/components/src/lib/lists/draggable-list/draggable-list.stories.ts",
-                "type": "Story<DraggableListComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-draggable-list\n      [showIndex]=\"showIndex\"\n      [itemActionLabel]=\"itemActionLabel\"\n      [itemMainLabel]=\"itemMainLabel\"\n      [itemSubLabel]=\"itemSubLabel\"\n      [actions]=\"actions\"\n      [itemList]=\"itemList\"\n      [roundedBorders]=\"roundedBorders\"\n      [enableDragging]=\"enableDragging\"\n      [enableSelection]=\"enableSelection\"\n    >\n    </pm-draggable-list>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/components/src/lib/lists/grid-list/grid-list.stories.ts",
-                "type": "Story<GridListComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-grid-list\n    >\n    </pm-grid-list>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
-                "type": "Story<TableListComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-table-list\n    >\n    </pm-table-list>\n  `\n})"
             },
             {
                 "name": "Template",
@@ -3340,17 +3590,17 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/inputs/combo-box/combo-box.stories.ts",
-                "type": "Story<ComboBoxComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-combo-box\n      [items]=\"items\"\n      [disabled]=\"disabled\"\n      [selectedItem]=\"selectedItem\"\n    >\n    </pm-combo-box>\n  `\n})"
+                "file": "projects/components/src/lib/inputs/copy-content-input/copy-content-input.stories.ts",
+                "type": "Story<CopyContentInputComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-copy-content-input\n      [text]=\"text\"\n      [disabled]=\"disabled\"\n    >\n      Conteúdo\n    </pm-copy-content-input>\n  `\n})"
             },
             {
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/inputs/copy-content-input/copy-content-input.stories.ts",
-                "type": "Story<CopyContentInputComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-copy-content-input\n      [text]=\"text\"\n      [disabled]=\"disabled\"\n    >\n      Conteúdo\n    </pm-copy-content-input>\n  `\n})"
+                "file": "projects/components/src/lib/inputs/combo-box/combo-box.stories.ts",
+                "type": "Story<ComboBoxComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-combo-box\n      [items]=\"items\"\n      [disabled]=\"disabled\"\n      [selectedItem]=\"selectedItem\"\n    >\n    </pm-combo-box>\n  `\n})"
             },
             {
                 "name": "Template",
@@ -3364,15 +3614,39 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
+                "file": "projects/components/src/lib/lists/draggable-list/draggable-list.stories.ts",
+                "type": "Story<DraggableListComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-draggable-list\n      [showIndex]=\"showIndex\"\n      [itemActionLabel]=\"itemActionLabel\"\n      [itemMainLabel]=\"itemMainLabel\"\n      [itemSubLabel]=\"itemSubLabel\"\n      [actions]=\"actions\"\n      [itemList]=\"itemList\"\n      [roundedBorders]=\"roundedBorders\"\n      [enableDragging]=\"enableDragging\"\n      [enableSelection]=\"enableSelection\"\n    >\n    </pm-draggable-list>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
                 "file": "projects/components/src/lib/inputs/radio-button/radio-button.stories.ts",
                 "type": "Story<RadioButtonComponent>",
                 "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-radio-button\n      [values]=\"values\"\n      [selectedValue]=\"selectedValue\"\n      [disabled]=\"disabled\"\n    >\n    </pm-radio-button>\n  `\n})"
             },
             {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/components/src/lib/lists/grid-list/grid-list.stories.ts",
+                "type": "Story<GridListComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-grid-list\n      [items]=\"items\"\n      [displayStyle]=\"displayStyle\"\n      [gridHeaderReverse]=\"gridHeaderReverse\"\n      [bodyBackgroundColor]=\"bodyBackgroundColor\"\n      [actionTemplate]=\"undefined\"\n      [overflowGallery]=\"overflowGallery\"\n    >\n    </pm-grid-list>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
+                "type": "Story<TableListComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `<pm-table-list\n    [columns]=\"columns\"\n    [columnNames]=\"columnNames\"\n    [imageColumns]=\"imageColumns\"\n    [imageHeight]=\"imageHeight\"\n    [showHeader]=\"showHeader\"\n    [numberFormat]=\"numberFormat\"\n    [numberPrefix]=\"numberPrefix\"\n    [itemList]=\"itemList\"\n    [borderRadius]=\"borderRadius\"\n    [backgroundColor]=\"backgroundColor\"\n    [expandedDetailTemplate]=\"expandedDetailTemplate\"\n    [disableExpandedOnDisabledRow]=\"disableExpandedOnDisabledRow\"\n  ></pm-table-list>`\n})"
+            },
+            {
                 "name": "ThumbnailTable",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "stories/Table.stories.ts",
+                "file": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             },
@@ -3604,12 +3878,12 @@
             }
         ],
         "groupedVariables": {
-            "stories/Table.stories.ts": [
+            "projects/components/src/lib/lists/table-list/table-list.stories.ts": [
                 {
                     "name": "ActionsTable",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "stories/Table.stories.ts",
+                    "file": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
                     "type": "",
                     "defaultValue": "ActionsTableTemplate.bind({})"
                 },
@@ -3617,23 +3891,31 @@
                     "name": "ActionsTableTemplate",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "stories/Table.stories.ts",
-                    "type": "Story<TableComponent>",
-                    "defaultValue": "(args: TableComponent) => ({\n  component: TableComponent,\n  props: args,\n  template: `\n    <ng-template #actionsTemplate let-item let-column=\"column\">\n      <div [ngClass]=\"{'disabled': item?.disabled === true}\">\n        <button class=\"btn btn-primary\" [disabled]=\"item?.disabled\">Actions (id: {{item.id}})</button>\n      </div>\n    </ng-template>\n\n    <pm-table\n      [columns]=\"columns\"\n      [columnNames]=\"columnNames\"\n      [imageColumns]=\"imageColumns\"\n      [imageHeight]=\"imageHeight\"\n      [showHeader]=\"showHeader\"\n      [numberFormat]=\"numberFormat\"\n      [numberPrefix]=\"numberPrefix\"\n      [itemList]=\"itemList\"\n      [borderRadius]=\"borderRadius\"\n      [backgroundColor]=\"backgroundColor\"\n      [actionsTemplate]=\"actionsTemplate\"\n    ></pm-table>\n`\n})"
+                    "file": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
+                    "type": "Story<TableListComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-table-list\n      [columns]=\"columns\"\n      [columnNames]=\"columnNames\"\n      [imageColumns]=\"imageColumns\"\n      [imageHeight]=\"imageHeight\"\n      [showHeader]=\"showHeader\"\n      [numberFormat]=\"numberFormat\"\n      [numberPrefix]=\"numberPrefix\"\n      [itemList]=\"itemList\"\n      [borderRadius]=\"borderRadius\"\n      [backgroundColor]=\"backgroundColor\"\n      [expandedDetailTemplate]=\"expandedDetailTemplate\"\n      [disableExpandedOnDisabledRow]=\"disableExpandedOnDisabledRow\"\n      [actionsTemplate]=\"actionsTemplate\"\n    ></pm-table-list>\n\n    <ng-template #actionsTemplate let-item let-column=\"column\">\n      <div [ngClass]=\"{'disabled': item?.disabled === true}\">\n        <button class=\"btn btn-primary\" [disabled]=\"item?.disabled\">Actions (id: {{item.id}})</button>\n      </div>\n    </ng-template>\n  `\n})"
                 },
                 {
                     "name": "ColorTable",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "stories/Table.stories.ts",
+                    "file": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
                     "type": "",
                     "defaultValue": "Template.bind({})"
                 },
                 {
-                    "name": "ExampleTable",
+                    "name": "defaultArgs",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "stories/Table.stories.ts",
+                    "file": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
+                    "type": "object",
+                    "defaultValue": "{\n  columns: [],\n  columnNames: [],\n  imageColumns: [],\n  imageHeight: '50px',\n  showHeader: true,\n  numberFormat: '1.2-2',\n  numberPrefix: '',\n  actionsTemplate: undefined,\n  itemList: undefined,\n  borderRadius: undefined,\n  backgroundColor: undefined,\n  expandedDetailTemplate: undefined,\n  disableExpandedOnDisabledRow: true,\n  expandedRow: undefined\n}"
+                },
+                {
+                    "name": "DefaultTableList",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
                     "type": "",
                     "defaultValue": "Template.bind({})"
                 },
@@ -3641,7 +3923,7 @@
                     "name": "ExpandedDetailsTable",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "stories/Table.stories.ts",
+                    "file": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
                     "type": "",
                     "defaultValue": "ExpandedDetailsTableTemplate.bind({})"
                 },
@@ -3649,15 +3931,15 @@
                     "name": "ExpandedDetailsTableTemplate",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "stories/Table.stories.ts",
-                    "type": "Story<TableComponent>",
-                    "defaultValue": "(args: TableComponent) => ({\n  component: TableComponent,\n  props: args,\n  template: `\n    <ng-template #dummyExpandedItem let-item>\n      <div class=\"d-block\">\n        <p>{{item.name}} - {{item.price}}</p>\n        <p>Here is an example item</p>\n        <p>Here is an example item</p>\n      </div>\n    </ng-template>\n\n    <pm-table\n      [columns]=\"columns\"\n      [columnNames]=\"columnNames\"\n      [imageColumns]=\"imageColumns\"\n      [imageHeight]=\"imageHeight\"\n      [showHeader]=\"showHeader\"\n      [numberFormat]=\"numberFormat\"\n      [numberPrefix]=\"numberPrefix\"\n      [itemList]=\"itemList\"\n      [borderRadius]=\"borderRadius\"\n      [backgroundColor]=\"backgroundColor\"\n      [expandedDetailTemplate]=\"dummyExpandedItem\"\n      [disableExpandedOnDisabledRow]=\"disableExpandedOnDisabledRow\"\n    ></pm-table>\n`\n})"
+                    "file": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
+                    "type": "Story<TableListComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-table-list\n      [columns]=\"columns\"\n      [columnNames]=\"columnNames\"\n      [imageColumns]=\"imageColumns\"\n      [imageHeight]=\"imageHeight\"\n      [showHeader]=\"showHeader\"\n      [numberFormat]=\"numberFormat\"\n      [numberPrefix]=\"numberPrefix\"\n      [itemList]=\"itemList\"\n      [borderRadius]=\"borderRadius\"\n      [backgroundColor]=\"backgroundColor\"\n      [expandedDetailTemplate]=\"dummyExpandedItem\"\n      [disableExpandedOnDisabledRow]=\"disableExpandedOnDisabledRow\"\n    ></pm-table-list>\n\n    <ng-template #dummyExpandedItem let-item>\n      <div class=\"d-block\">\n        <p>{{item.name}} - {{item.price}}</p>\n        <p>Here is an example item</p>\n        <p>Here is an example item</p>\n      </div>\n    </ng-template>\n  `\n})"
                 },
                 {
                     "name": "NoHeader",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "stories/Table.stories.ts",
+                    "file": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
                     "type": "",
                     "defaultValue": "Template.bind({})"
                 },
@@ -3665,15 +3947,15 @@
                     "name": "Template",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "stories/Table.stories.ts",
-                    "type": "Story<TableComponent>",
-                    "defaultValue": "(args: TableComponent) => ({\n  component: TableComponent,\n  props: args,\n  template: `\n    <pm-table\n      [columns]=\"columns\"\n      [columnNames]=\"columnNames\"\n      [imageColumns]=\"imageColumns\"\n      [imageHeight]=\"imageHeight\"\n      [showHeader]=\"showHeader\"\n      [numberFormat]=\"numberFormat\"\n      [numberPrefix]=\"numberPrefix\"\n      [itemList]=\"itemList\"\n      [borderRadius]=\"borderRadius\"\n      [backgroundColor]=\"backgroundColor\"\n      [expandedDetailTemplate]=\"expandedDetailTemplate\"\n      [disableExpandedOnDisabledRow]=\"disableExpandedOnDisabledRow\"\n    ></pm-table>`\n})"
+                    "file": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
+                    "type": "Story<TableListComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `<pm-table-list\n    [columns]=\"columns\"\n    [columnNames]=\"columnNames\"\n    [imageColumns]=\"imageColumns\"\n    [imageHeight]=\"imageHeight\"\n    [showHeader]=\"showHeader\"\n    [numberFormat]=\"numberFormat\"\n    [numberPrefix]=\"numberPrefix\"\n    [itemList]=\"itemList\"\n    [borderRadius]=\"borderRadius\"\n    [backgroundColor]=\"backgroundColor\"\n    [expandedDetailTemplate]=\"expandedDetailTemplate\"\n    [disableExpandedOnDisabledRow]=\"disableExpandedOnDisabledRow\"\n  ></pm-table-list>`\n})"
                 },
                 {
                     "name": "ThumbnailTable",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "stories/Table.stories.ts",
+                    "file": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
                     "type": "",
                     "defaultValue": "Template.bind({})"
                 }
@@ -3827,6 +4109,126 @@
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-XXXName\n    >\n    </pm-XXXName>\n  `\n})"
                 }
             ],
+            "projects/components/src/lib/inputs/checkbox/checkbox.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/lib/inputs/checkbox/checkbox.stories.ts",
+                    "type": "object",
+                    "defaultValue": "{\n  checked: false,\n  disabled: false,\n  selectedItem: undefined,\n}"
+                },
+                {
+                    "name": "DefaultCheckbox",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/lib/inputs/checkbox/checkbox.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "DisabledCheckbox",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/lib/inputs/checkbox/checkbox.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/lib/inputs/checkbox/checkbox.stories.ts",
+                    "type": "Story<CheckboxComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-checkbox\n      [checked]=\"checked\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>\n  `\n})"
+                }
+            ],
+            "projects/components/src/lib/inputs/copy-content-input/copy-content-input.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/lib/inputs/copy-content-input/copy-content-input.stories.ts",
+                    "type": "object",
+                    "defaultValue": "{\n  disabled: false,\n  text: ''\n}"
+                },
+                {
+                    "name": "DefaultCopyContentInput",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/lib/inputs/copy-content-input/copy-content-input.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/lib/inputs/copy-content-input/copy-content-input.stories.ts",
+                    "type": "Story<CopyContentInputComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-copy-content-input\n      [text]=\"text\"\n      [disabled]=\"disabled\"\n    >\n      Conteúdo\n    </pm-copy-content-input>\n  `\n})"
+                }
+            ],
+            "projects/components/src/lib/inputs/combo-box/combo-box.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/lib/inputs/combo-box/combo-box.stories.ts",
+                    "type": "object",
+                    "defaultValue": "{\n  items: [],\n  disabled: false,\n  selectedItem: undefined\n}"
+                },
+                {
+                    "name": "DefaultComboBox",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/lib/inputs/combo-box/combo-box.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "defaultItems",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/lib/inputs/combo-box/combo-box.stories.ts",
+                    "type": "[]",
+                    "defaultValue": "[\n  {\n    label: 'Value 1',\n    value: 1\n  },\n  {\n    label: 'Value 2',\n    value: 2\n  },\n  {\n    label: 'Value 3',\n    value: 3\n  }\n]"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/lib/inputs/combo-box/combo-box.stories.ts",
+                    "type": "Story<ComboBoxComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-combo-box\n      [items]=\"items\"\n      [disabled]=\"disabled\"\n      [selectedItem]=\"selectedItem\"\n    >\n    </pm-combo-box>\n  `\n})"
+                }
+            ],
+            "projects/components/src/lib/inputs/dropdown-actions/dropdown-actions.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/lib/inputs/dropdown-actions/dropdown-actions.stories.ts",
+                    "type": "object",
+                    "defaultValue": "{\n  actions: []\n}"
+                },
+                {
+                    "name": "DefaultDropdownActions",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/lib/inputs/dropdown-actions/dropdown-actions.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/lib/inputs/dropdown-actions/dropdown-actions.stories.ts",
+                    "type": "Story<DropdownActionsComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-dropdown-actions\n      [actions]=\"actions\"\n    >\n    </pm-dropdown-actions>\n  `\n})"
+                }
+            ],
             "projects/components/src/lib/lists/draggable-list/draggable-list.stories.ts": [
                 {
                     "name": "defaultArgs",
@@ -3869,178 +4271,6 @@
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-draggable-list\n      [showIndex]=\"showIndex\"\n      [itemActionLabel]=\"itemActionLabel\"\n      [itemMainLabel]=\"itemMainLabel\"\n      [itemSubLabel]=\"itemSubLabel\"\n      [actions]=\"actions\"\n      [itemList]=\"itemList\"\n      [roundedBorders]=\"roundedBorders\"\n      [enableDragging]=\"enableDragging\"\n      [enableSelection]=\"enableSelection\"\n    >\n    </pm-draggable-list>\n  `\n})"
                 }
             ],
-            "projects/components/src/lib/lists/grid-list/grid-list.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/components/src/lib/lists/grid-list/grid-list.stories.ts",
-                    "type": "object",
-                    "defaultValue": "{\n}"
-                },
-                {
-                    "name": "DefaultGridList",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/components/src/lib/lists/grid-list/grid-list.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/components/src/lib/lists/grid-list/grid-list.stories.ts",
-                    "type": "Story<GridListComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-grid-list\n    >\n    </pm-grid-list>\n  `\n})"
-                }
-            ],
-            "projects/components/src/lib/lists/table-list/table-list.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
-                    "type": "object",
-                    "defaultValue": "{\n}"
-                },
-                {
-                    "name": "DefaultTableList",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
-                    "type": "Story<TableListComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-table-list\n    >\n    </pm-table-list>\n  `\n})"
-                }
-            ],
-            "projects/components/src/lib/inputs/checkbox/checkbox.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/components/src/lib/inputs/checkbox/checkbox.stories.ts",
-                    "type": "object",
-                    "defaultValue": "{\n  checked: false,\n  disabled: false,\n  selectedItem: undefined,\n}"
-                },
-                {
-                    "name": "DefaultCheckbox",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/components/src/lib/inputs/checkbox/checkbox.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "DisabledCheckbox",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/components/src/lib/inputs/checkbox/checkbox.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/components/src/lib/inputs/checkbox/checkbox.stories.ts",
-                    "type": "Story<CheckboxComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-checkbox\n      [checked]=\"checked\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>\n  `\n})"
-                }
-            ],
-            "projects/components/src/lib/inputs/combo-box/combo-box.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/components/src/lib/inputs/combo-box/combo-box.stories.ts",
-                    "type": "object",
-                    "defaultValue": "{\n  items: [],\n  disabled: false,\n  selectedItem: undefined\n}"
-                },
-                {
-                    "name": "DefaultComboBox",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/components/src/lib/inputs/combo-box/combo-box.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "defaultItems",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/components/src/lib/inputs/combo-box/combo-box.stories.ts",
-                    "type": "[]",
-                    "defaultValue": "[\n  {\n    label: 'Value 1',\n    value: 1\n  },\n  {\n    label: 'Value 2',\n    value: 2\n  },\n  {\n    label: 'Value 3',\n    value: 3\n  }\n]"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/components/src/lib/inputs/combo-box/combo-box.stories.ts",
-                    "type": "Story<ComboBoxComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-combo-box\n      [items]=\"items\"\n      [disabled]=\"disabled\"\n      [selectedItem]=\"selectedItem\"\n    >\n    </pm-combo-box>\n  `\n})"
-                }
-            ],
-            "projects/components/src/lib/inputs/copy-content-input/copy-content-input.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/components/src/lib/inputs/copy-content-input/copy-content-input.stories.ts",
-                    "type": "object",
-                    "defaultValue": "{\n  disabled: false,\n  text: ''\n}"
-                },
-                {
-                    "name": "DefaultCopyContentInput",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/components/src/lib/inputs/copy-content-input/copy-content-input.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/components/src/lib/inputs/copy-content-input/copy-content-input.stories.ts",
-                    "type": "Story<CopyContentInputComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-copy-content-input\n      [text]=\"text\"\n      [disabled]=\"disabled\"\n    >\n      Conteúdo\n    </pm-copy-content-input>\n  `\n})"
-                }
-            ],
-            "projects/components/src/lib/inputs/dropdown-actions/dropdown-actions.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/components/src/lib/inputs/dropdown-actions/dropdown-actions.stories.ts",
-                    "type": "object",
-                    "defaultValue": "{\n  actions: []\n}"
-                },
-                {
-                    "name": "DefaultDropdownActions",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/components/src/lib/inputs/dropdown-actions/dropdown-actions.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/components/src/lib/inputs/dropdown-actions/dropdown-actions.stories.ts",
-                    "type": "Story<DropdownActionsComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-dropdown-actions\n      [actions]=\"actions\"\n    >\n    </pm-dropdown-actions>\n  `\n})"
-                }
-            ],
             "projects/components/src/lib/inputs/radio-button/radio-button.stories.ts": [
                 {
                     "name": "defaultArgs",
@@ -4067,6 +4297,40 @@
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-radio-button\n      [values]=\"values\"\n      [selectedValue]=\"selectedValue\"\n      [disabled]=\"disabled\"\n    >\n    </pm-radio-button>\n  `\n})"
                 }
             ],
+            "projects/components/src/lib/lists/grid-list/grid-list.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/lib/lists/grid-list/grid-list.stories.ts",
+                    "type": "object",
+                    "defaultValue": "{\n}"
+                },
+                {
+                    "name": "DefaultGridList",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/lib/lists/grid-list/grid-list.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "getColor",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/lib/lists/grid-list/grid-list.stories.ts",
+                    "type": "",
+                    "defaultValue": "() => MainColors.primary"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/lib/lists/grid-list/grid-list.stories.ts",
+                    "type": "Story<GridListComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-grid-list\n      [items]=\"items\"\n      [displayStyle]=\"displayStyle\"\n      [gridHeaderReverse]=\"gridHeaderReverse\"\n      [bodyBackgroundColor]=\"bodyBackgroundColor\"\n      [actionTemplate]=\"undefined\"\n      [overflowGallery]=\"overflowGallery\"\n    >\n    </pm-grid-list>\n  `\n})"
+                }
+            ],
             "stories/Card.stories.ts": [
                 {
                     "name": "DefaultCard",
@@ -4083,50 +4347,6 @@
                     "file": "stories/Card.stories.ts",
                     "type": "Story<CardComponent>",
                     "defaultValue": "(args: CardComponent) => ({\n  component: CardComponent,\n  props: args,\n  template: `\n    <pm-card\n        [hoverable]=\"hoverable\"\n        [borderRadius]=\"borderRadius\"\n    >\n      conteudo\n    </pm-card>`\n})"
-                }
-            ],
-            "stories/GridList.stories.ts": [
-                {
-                    "name": "DefaultGridList",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "stories/GridList.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "getColor",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "stories/GridList.stories.ts",
-                    "type": "",
-                    "defaultValue": "() => MainColors.primary"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "stories/GridList.stories.ts",
-                    "type": "Story<GridListComponent>",
-                    "defaultValue": "(args: GridListComponent) => ({\n  component: GridListComponent,\n  props: args,\n  template: `\n    <pm-grid-list\n        [items]=\"items\"\n        [displayStyle]=\"displayStyle\"\n        [gridHeaderReverse]=\"gridHeaderReverse\"\n        [bodyBackgroundColor]=\"bodyBackgroundColor\"\n        [actionTemplate]=\"undefined\"\n        [overflowGallery]=\"overflowGallery\"\n    >\n      conteudo\n    </pm-grid-list>`\n})"
-                }
-            ],
-            "stories/multi-level-dropdown-menu.stories.ts": [
-                {
-                    "name": "DefaultMultiLevelDropdownMenu",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "stories/multi-level-dropdown-menu.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "stories/multi-level-dropdown-menu.stories.ts",
-                    "type": "Story<MultiLevelDropdownMenuComponent>",
-                    "defaultValue": "(args: MultiLevelDropdownMenuComponent) => ({\n  component: MultiLevelDropdownMenuComponent,\n  props: args,\n  template: `\n    <pm-multi-level-dropdown-menu>\n    </pm-multi-level-dropdown-menu>`\n})"
                 }
             ],
             "stories/Stepper.stories.ts": [
@@ -4375,7 +4595,7 @@
     },
     "routes": [],
     "coverage": {
-        "count": 3,
+        "count": 4,
         "status": "low",
         "files": [
             {
@@ -4403,24 +4623,6 @@
                 "name": "ComponentsService",
                 "coveragePercent": 0,
                 "coverageCount": "0/2",
-                "status": "low"
-            },
-            {
-                "filePath": "projects/components/src/lib/grid-list/grid-list.component.ts",
-                "type": "component",
-                "linktype": "component",
-                "name": "GridListComponent",
-                "coveragePercent": 0,
-                "coverageCount": "0/12",
-                "status": "low"
-            },
-            {
-                "filePath": "projects/components/src/lib/grid-list/grid-list.component.ts",
-                "type": "interface",
-                "linktype": "interface",
-                "name": "GridListItem",
-                "coveragePercent": 0,
-                "coverageCount": "0/13",
                 "status": "low"
             },
             {
@@ -4851,7 +5053,16 @@
                 "linktype": "component",
                 "name": "GridListComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/3",
+                "coverageCount": "0/12",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/components/src/lib/lists/grid-list/grid-list.component.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "GridListItem",
+                "coveragePercent": 0,
+                "coverageCount": "0/13",
                 "status": "low"
             },
             {
@@ -4879,6 +5090,16 @@
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
+                "name": "getColor",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/components/src/lib/lists/grid-list/grid-list.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
                 "name": "Template",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
@@ -4889,8 +5110,38 @@
                 "type": "component",
                 "linktype": "component",
                 "name": "TableListComponent",
+                "coveragePercent": 24,
+                "coverageCount": "8/33",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "ActionsTable",
                 "coveragePercent": 0,
-                "coverageCount": "0/3",
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "ActionsTableTemplate",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "ColorTable",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
                 "status": "low"
             },
             {
@@ -4918,7 +5169,47 @@
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
+                "name": "ExpandedDetailsTable",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "ExpandedDetailsTableTemplate",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "NoHeader",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
                 "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "ThumbnailTable",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
@@ -4991,36 +5282,6 @@
                 "status": "low"
             },
             {
-                "filePath": "stories/GridList.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "DefaultGridList",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "stories/GridList.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "getColor",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "stories/GridList.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "Template",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
                 "filePath": "stories/Stepper.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
@@ -5036,96 +5297,6 @@
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
                 "name": "Template",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "stories/Table.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "ActionsTable",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "stories/Table.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "ActionsTableTemplate",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "stories/Table.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "ColorTable",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "stories/Table.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "ExampleTable",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "stories/Table.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "ExpandedDetailsTable",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "stories/Table.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "ExpandedDetailsTableTemplate",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "stories/Table.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "NoHeader",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "stories/Table.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "Template",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "stories/Table.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "ThumbnailTable",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
@@ -5152,26 +5323,6 @@
             },
             {
                 "filePath": "stories/default.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "Template",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "stories/multi-level-dropdown-menu.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "DefaultMultiLevelDropdownMenu",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "stories/multi-level-dropdown-menu.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
