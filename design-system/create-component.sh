@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # checa os argumentos passados para o script
-(( "$#" )) || { echo "Erro: Necessário fornecer o argumento '-c'" >&2; exit 1; }
+(( "$#" )) || { echo "Error: Need to provide '-c' flag" >&2; exit 1; }
 
 # Atribui os argumentos passados ao script para variáveis
 while getopts c: flag
@@ -22,12 +22,12 @@ component="$(tr '[:lower:]' '[:upper:]' <<< ${componentName:0:1})${componentName
 
 # Caso a primeira letra não seja maiúscula dá erro
 if [[ "${component:0:1}" == [A-Z] ]]; then
-    echo "Nome de componente válido: $component"
+    echo "Valid component name: $component"
 elif [[ ${component:0:1} == [a-z] ]]; then
-    echo "Nome de componente inválido: $component. Utilize letra maiúscula como primeiro caractere";
+    echo "Invalid component name: $component. Please use Uppercase as first character";
     exit 1;
 else
-    echo "Utilize um nome de componente válido!";
+    echo "Please use a valid component name";
     exit 1;
 fi
 
@@ -70,4 +70,18 @@ for i in "${!filesToEdit[@]}"; do
   sed -i '' -e "s/XXXName/${componentKebabName}/g" "${filesToEdit[$i]}"
   sed -i '' -e '1d' "${filesToEdit[$i]}"  # remove a primeira linha que é um ts-ignore
 done
-echo "ts stories edited"
+echo "Stories edited"
+
+# adiciona os exports no public.api para uso do módulo em outros projetos
+echo -e "\n" >> projects/components/src/public-api.ts
+echo -e "export * from './lib/$componentDir/${componentKebabName}.component';" >> projects/components/src/public-api.ts
+echo -e "export * from './lib/$componentDir/${componentKebabName}.module';" >> projects/components/src/public-api.ts
+echo "Module and Component exported on 'public-api.ts'"
+
+# altera o arquivo html e scss para conter uma classe com o nome do novo componente
+sed -i '' -e '1d' "${storiesFilenamePath}.component.html"  # remove a primeira do html
+# adiciona o texto que vai no html com a classe
+echo -e "<div class=\"pm-${componentKebabName}\">\n  ${component} component created successfully!\n</div>" >> "${storiesFilenamePath}.component.html"
+# adiciona uma nova classe no scss do componente com o mesmo nome dele
+echo -e ".pm-${componentKebabName} {\n\n}" >> "${storiesFilenamePath}.component.scss"
+echo "Html and Scss files edited"
