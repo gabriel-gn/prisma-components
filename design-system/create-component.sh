@@ -36,11 +36,11 @@ componentPath=""
 componentDir=""
 for i in "${!pathArray[@]}"; do
     if [[ $i != $pathArrayLen ]]; then
-      componentPath+="${pathArray[$i]}/"
-      componentDir+="${pathArray[$i]}/"
+        componentPath+="${pathArray[$i]}/"
+        componentDir+="${pathArray[$i]}/"
     else
-      componentPath+="${component}"
-      componentDir+="${componentKebabName}"
+        componentPath+="${component}"
+        componentDir+="${componentKebabName}"
     fi
 done
 
@@ -64,11 +64,11 @@ echo "Stories created"
 # altera os stories default com os valores novos de acordo com o componente criado
 filesToEdit=("${storiesFilenamePath}.stories.ts" "${storiesFilenamePath}.stories.mdx")
 for i in "${!filesToEdit[@]}"; do
-  sed -i '' -e "s/XXXTitle/$component/g" "${filesToEdit[$i]}"
-  sed -i '' -e "s/XXXComponent/${component}Component/g" "${filesToEdit[$i]}"
-  sed -i '' -e "s/XXXModule/${component}Module/g" "${filesToEdit[$i]}"
-  sed -i '' -e "s/XXXName/${componentKebabName}/g" "${filesToEdit[$i]}"
-  sed -i '' -e '1d' "${filesToEdit[$i]}"  # remove a primeira linha que é um ts-ignore
+    sed -i '' -e "s/XXXTitle/$component/g" "${filesToEdit[$i]}"
+    sed -i '' -e "s/XXXComponent/${component}Component/g" "${filesToEdit[$i]}"
+    sed -i '' -e "s/XXXModule/${component}Module/g" "${filesToEdit[$i]}"
+    sed -i '' -e "s/XXXName/${componentKebabName}/g" "${filesToEdit[$i]}"
+    sed -i '' -e '1d' "${filesToEdit[$i]}"  # remove a primeira linha que é um ts-ignore
 done
 echo "Stories edited"
 
