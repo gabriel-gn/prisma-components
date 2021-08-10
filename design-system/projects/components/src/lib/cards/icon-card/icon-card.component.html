@@ -1,26 +1,43 @@
-<div class="pm-icon-card">
-  <pm-basic-card
-    [className]="' text-' + textPosition"
-    [hoverable]="hoverable"
-    [paddingClass]="paddingClass"
-  >
-    <ng-container *ngTemplateOutlet="orientation === 'vertical' ? verticalTemplate : horizontalTemplate"></ng-container>
-  </pm-basic-card>
-</div>
+<ng-container *ngTemplateOutlet="!!iconCardArray ? cardArray : baseIconCard"></ng-container>
 
-<ng-template #verticalTemplate>
-  <i aria-hidden="true" [className]="iconClass"></i>
-  <h4>{{title}}</h4>
-  <p>{{subtitle}}</p>
-</ng-template>
-
-<ng-template #horizontalTemplate>
-  <div class="d-flex">
-    <i aria-hidden="true" [className]="'d-flex h-100 align-self-start' + iconClass"></i>
-    <div class="text-start ms-3">
-      <h4>{{title}}</h4>
-      <p>{{subtitle}}</p>
+<ng-template #cardArray>
+  <div class="row">
+    <div *ngFor="let card of iconCardArray; let first = first;"
+         class="col-12 col-md-{{12/iconCardArray.length}}"
+         [ngClass]="{'mt-3 mt-sm-0': !first}"
+    >
+      <ng-container *ngTemplateOutlet="baseIconCard; context: {$implicit: card}"></ng-container>
     </div>
   </div>
+</ng-template>
 
+<ng-template #baseIconCard let-card>
+  <div class="pm-icon-card">
+    <pm-basic-card
+      [className]="' text-' + textPosition"
+      [hoverable]="hoverable"
+      [paddingClass]="paddingClass"
+    >
+      <ng-container
+        *ngTemplateOutlet="orientation === 'vertical' ? verticalTemplate : horizontalTemplate;
+        context: {$implicit: card}"
+      ></ng-container>
+    </pm-basic-card>
+  </div>
+</ng-template>
+
+<ng-template #verticalTemplate let-card>
+  <i aria-hidden="true" [className]="card ? card.iconClass : iconClass"></i>
+  <h4>{{card ? card.title : title}}</h4>
+  <p>{{card ? card.subtitle : subtitle}}</p>
+</ng-template>
+
+<ng-template #horizontalTemplate let-card>
+  <div class="d-flex">
+    <i aria-hidden="true" [className]="'d-flex h-100 align-self-start' + card ? card.iconClass : iconClass"></i>
+    <div class="text-start ms-3">
+      <h4>{{card ? card.title : title}}</h4>
+      <p>{{card ? card.subtitle : subtitle}}</p>
+    </div>
+  </div>
 </ng-template>

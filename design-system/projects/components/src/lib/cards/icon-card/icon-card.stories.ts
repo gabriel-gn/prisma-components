@@ -19,6 +19,7 @@ export const Template: Story<IconCardComponent> = (args) => ({
       [iconClass]="iconClass"
       [title]="title"
       [subtitle]="subtitle"
+      [iconCardArray]="iconCardArray"
     >
     </pm-icon-card>
   `
@@ -32,6 +33,7 @@ export const defaultArgs = {
   iconClass: 'uil uil-star',
   title: '',
   subtitle: '',
+  iconCardArray: undefined,
 };
 
 export const DefaultIconCard = Template.bind({});
@@ -39,4 +41,21 @@ DefaultIconCard.args = {
   ...defaultArgs,
   title: 'Amazing Title!',
   subtitle: 'Amazing subtitle!',
+};
+
+export const ArrayIconCard = Template.bind({});
+ArrayIconCard.args = {
+  ...defaultArgs,
+  iconCardArray: [
+    {
+      title: 'Amazing Title!',
+      subtitle: 'Amazing subtitle!',
+      iconClass: 'uil uil-star'
+    },
+    {
+      title: 'Amazing Title!',
+      subtitle: 'Amazing subtitle!',
+      iconClass: 'uil uil-table'
+    }
+  ],
 };
