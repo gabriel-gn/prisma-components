@@ -146,6 +146,68 @@
     "directives": [],
     "components": [
         {
+            "name": "BasicCardComponent",
+            "id": "component-BasicCardComponent-643901b204ca40dfb990fe61a0492cd4",
+            "file": "projects/components/src/lib/cards/basic-card/basic-card.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "pm-basic-card",
+            "styleUrls": [
+                "./basic-card.component.scss"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./basic-card.component.html"
+            ],
+            "viewProviders": [],
+            "inputsClass": [
+                {
+                    "name": "borderRadius",
+                    "defaultValue": "Sizes.md",
+                    "line": 12,
+                    "type": "Sizes"
+                },
+                {
+                    "name": "hoverable",
+                    "defaultValue": "false",
+                    "line": 11
+                },
+                {
+                    "name": "paddingClass",
+                    "defaultValue": "'p-3'",
+                    "line": 13,
+                    "type": "string"
+                }
+            ],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [],
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "",
+            "type": "component",
+            "sourceCode": "import {Component, Input} from '@angular/core';\nimport {Sizes} from '../../../models/sizes';\n\n@Component({\n  selector: 'pm-basic-card',\n  templateUrl: './basic-card.component.html',\n  styleUrls: ['./basic-card.component.scss']\n})\nexport class BasicCardComponent {\n\n  @Input('hoverable') hoverable = false;\n  @Input('borderRadius') borderRadius: Sizes = Sizes.md;\n  @Input('paddingClass') paddingClass: string = 'p-3';\n\n  constructor() {\n  }\n\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": ".pm-basic-card {\n\n}\n",
+                    "styleUrl": "./basic-card.component.scss"
+                }
+            ],
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "args": [],
+                "line": 13
+            },
+            "templateData": "<div class=\"pm-basic-card\">\n  <div\n    [ngClass]=\"{'hoverable': hoverable}\"\n    class=\"card-basic {{paddingClass}} {{borderRadius ? 'rad-' + borderRadius : ''}} w-100 p-3\"\n    style=\"height: auto;\">\n    <ng-content></ng-content>\n  </div>\n</div>\n"
+        },
+        {
             "name": "ButtonComponent",
             "id": "component-ButtonComponent-8f80c7c4d491a0c7b21d3cb70e67b470",
             "file": "projects/components/src/lib/inputs/button/button.component.ts",
@@ -1422,6 +1484,93 @@
             "templateData": "<div class=\"pm-grid-list\">\n\n  <div class=\"d-flex justify-content-end\">\n    <button (click)=\"displayStyle = 'gallery'\" class=\"btn btn-icon-action color-primary\">\n      <i class=\"uil uil-md uil-table\"></i>\n    </button>\n    <button (click)=\"displayStyle = 'grid'\" class=\"btn btn-icon-action color-primary\">\n      <i class=\"uil uil-md uil-apps\"></i>\n    </button>\n    <button (click)=\"displayStyle = 'list'\" class=\"btn btn-icon-action color-primary\">\n      <i class=\"uil uil-md uil-grids rotate-90\"></i>\n    </button>\n  </div>\n\n  <div class=\"row g-0 d-flex justify-content-center\" [ngClass]=\"{'card-basic': displayStyle === 'list'}\">\n    <ng-container *ngFor=\"let item of items\">\n      <ng-container *ngTemplateOutlet=\"getTemplate(); context: {$implicit: item}\"></ng-container>\n    </ng-container>\n  </div>\n\n</div>\n\n<ng-template #actionButton let-item>\n  <button *ngIf=\"item.iconCallback && item.iconClass\"\n          (click)=\"item.iconCallback(item)\"\n          [className]=\"'btn btn-icon-action px-2 py-0 color-' + (item.iconColor ? item.iconColor : 'primary') + (item.iconOutline ? ' btn-outline-' + item.iconColor : '')\"\n          style=\"height: fit-content; align-self: center;\"\n  >\n    <i [className]=\"item.iconClass\"></i>\n  </button>\n</ng-template>\n\n<ng-template #gridTemplate let-item>\n  <div class=\"card-basic model-collection-card hoverable rad-md col-auto m-3\"\n       [ngClass]=\"{'reverse': gridHeaderReverse}\"\n       style=\"height: auto;\"\n  >\n    <div class=\"model-collection-card-header\">\n      <ng-container *ngIf=\"item.thumbnailPicture\">\n        <div [ngStyle]=\"{'background-image': 'url(' + item.thumbnailPicture + ')'}\" class=\"img-thumbnail align-self-center\"></div>\n      </ng-container>\n      <div class=\"d-flex flex-column justify-content-center flex-fill text-overflow ms-2\">\n        <ng-container *ngTemplateOutlet=\"titleSubtitle; context: {$implicit: item}\"></ng-container>\n      </div>\n      <ng-container *ngTemplateOutlet=\"actionTemplate ? actionTemplate : actionButton; context: {$implicit: item}\"></ng-container>\n    </div>\n    <div\n      (click)=\"item.bodyCallback ? item.bodyCallback(item) : null\"\n      [ngClass]=\"{'cursor-pointer': item.bodyCallback, 'rad-md-top': gridHeaderReverse, 'rad-md-bottom': !gridHeaderReverse}\"\n      class=\"model-collection-card-body fixed-height image-fluid-container\"\n      [ngStyle]=\"{'background-color': bodyBackgroundColor ? bodyBackgroundColor : null}\"\n    >\n      <img [attr.alt]=\"item.bodyPicture\" [attr.src]=\"item.bodyPicture\">\n    </div>\n  </div>\n</ng-template>\n\n<ng-template #listTemplate let-item>\n  <div class=\"list-item d-flex py-3 pe-3 pe-lg-5\">\n    <div (click)=\"item.bodyCallback ? item.bodyCallback(item) : null\" class=\"image-fluid-container mx-3 mx-lg-4\">\n      <img [attr.alt]=\"item.bodyPicture\" [attr.src]=\"item.bodyPicture\">\n    </div>\n    <div class=\"d-block flex-fill text-overflow\">\n      <ng-container *ngTemplateOutlet=\"titleSubtitle; context: {$implicit: item}\"></ng-container>\n    </div>\n    <ng-container *ngTemplateOutlet=\"actionTemplate ? actionTemplate : actionButton; context: {$implicit: item}\"></ng-container>\n  </div>\n</ng-template>\n\n<ng-template #galleryTemplate let-item>\n  <div class=\"card-basic model-collection-card square-sm col-auto m-0 position-relative\" style=\"height: auto;\">\n    <div\n      (click)=\"item.bodyCallback ? item.bodyCallback(item) : null\"\n      [ngClass]=\"{'cursor-pointer': item.bodyCallback, 'image-fluid-container': !overflowGallery, 'overflow-hidden d-flex justify-content-center': overflowGallery}\"\n      class=\"model-collection-card-body square-sm\"\n      [ngStyle]=\"{'background-color': bodyBackgroundColor ? bodyBackgroundColor : null}\"\n    >\n      <img [attr.alt]=\"item.bodyPicture\" [attr.src]=\"item.bodyPicture\">\n    </div>\n    <div class=\"position-absolute\" style=\"bottom: 5px; right: 5px;\">\n      <ng-container *ngTemplateOutlet=\"actionTemplate ? actionTemplate : actionButton; context: {$implicit: item}\"></ng-container>\n    </div>\n  </div>\n</ng-template>\n\n<ng-template #titleSubtitle let-item>\n  <p (click)=\"item.titleCallback ? item.titleCallback(item) : null\"\n     [ngClass]=\"{\n            'title-link': !!item.titleCallback === true,\n            'title': !!item.titleCallback === false,\n            'bigger': !!item.thumbnailPicture === false\n           }\"\n     class=\"align-self-start\">{{item.title}}\n  </p>\n  <p *ngIf=\"item.subtitle\"\n     (click)=\"item.subtitleCallback ? item.subtitleCallback(item) : null\"\n     class=\"secondary-link align-self-start\"\n     [ngClass]=\"{\n            'secondary-link': !!item.subtitleCallback === true,\n            'secondary': !!item.subtitleCallback === false\n           }\"\n  >\n    {{item.subtitle}}\n  </p>\n</ng-template>\n"
         },
         {
+            "name": "IconCardComponent",
+            "id": "component-IconCardComponent-1109d356cf33c3607dfca8e139f38a00",
+            "file": "projects/components/src/lib/cards/icon-card/icon-card.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "pm-icon-card",
+            "styleUrls": [
+                "./icon-card.component.scss"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./icon-card.component.html"
+            ],
+            "viewProviders": [],
+            "inputsClass": [
+                {
+                    "name": "hoverable",
+                    "defaultValue": "true",
+                    "line": 13,
+                    "type": "boolean"
+                },
+                {
+                    "name": "iconClass",
+                    "defaultValue": "'uil uil-star'",
+                    "line": 15,
+                    "type": "string"
+                },
+                {
+                    "name": "orientation",
+                    "defaultValue": "OrientationEnum.Y",
+                    "line": 14,
+                    "type": "OrientationEnum"
+                },
+                {
+                    "name": "paddingClass",
+                    "defaultValue": "'p-3'",
+                    "line": 12,
+                    "type": "string"
+                },
+                {
+                    "name": "subtitle",
+                    "defaultValue": "''",
+                    "line": 17,
+                    "type": "string"
+                },
+                {
+                    "name": "textPosition",
+                    "defaultValue": "'center'",
+                    "line": 11,
+                    "type": "\"start\" | \"end\" | \"center\""
+                },
+                {
+                    "name": "title",
+                    "defaultValue": "''",
+                    "line": 16,
+                    "type": "string"
+                }
+            ],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [],
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "",
+            "type": "component",
+            "sourceCode": "import {Component, Input} from '@angular/core';\nimport {OrientationEnum} from '../../../models/orientation';\n\n@Component({\n  selector: 'pm-icon-card',\n  templateUrl: './icon-card.component.html',\n  styleUrls: ['./icon-card.component.scss']\n})\nexport class IconCardComponent {\n\n  @Input('textPosition') textPosition: 'start' | 'end' | 'center' = 'center';\n  @Input('paddingClass') paddingClass: string = 'p-3';\n  @Input('hoverable') hoverable: boolean = true;\n  @Input('orientation') orientation: OrientationEnum = OrientationEnum.Y;\n  @Input('iconClass') iconClass: string = 'uil uil-star';\n  @Input('title') title: string = '';\n  @Input('subtitle') subtitle: string = '';\n\n  constructor() { }\n\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": ".pm-icon-card {\n  height: 100%;\n  background-color: rgba(255, 255, 255, 0.35);\n\n  h4 {\n    font-size: 1.5rem;\n    color: var(--color-default);\n    margin-bottom: 15px;\n  }\n\n  p {\n    font-size: 1.1rem;\n    margin-bottom: 0;\n    color: var(--color-gray-darker);\n  }\n\n  i {\n    font-size: 36px;\n    color: var(--color-primary);\n    margin-bottom: 1rem;\n  }\n\n}\n",
+                    "styleUrl": "./icon-card.component.scss"
+                }
+            ],
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "args": [],
+                "line": 17
+            },
+            "templateData": "<div class=\"pm-icon-card\">\n  <pm-basic-card\n    [className]=\"' text-' + textPosition\"\n    [hoverable]=\"hoverable\"\n    [paddingClass]=\"paddingClass\"\n  >\n    <ng-container *ngTemplateOutlet=\"orientation === 'vertical' ? verticalTemplate : horizontalTemplate\"></ng-container>\n  </pm-basic-card>\n</div>\n\n<ng-template #verticalTemplate>\n  <i aria-hidden=\"true\" [className]=\"iconClass\"></i>\n  <h4>{{title}}</h4>\n  <p>{{subtitle}}</p>\n</ng-template>\n\n<ng-template #horizontalTemplate>\n  <div class=\"d-flex\">\n    <i aria-hidden=\"true\" [className]=\"'d-flex h-100 align-self-start' + iconClass\"></i>\n    <div class=\"text-start ms-3\">\n      <h4>{{title}}</h4>\n      <p>{{subtitle}}</p>\n    </div>\n  </div>\n\n</ng-template>\n"
+        },
+        {
             "name": "MultiLevelDropdownMenuComponent",
             "id": "component-MultiLevelDropdownMenuComponent-2b9b9b0243b413be470996a51d629c6f",
             "file": "projects/components/src/lib/multi-level-dropdown-menu/multi-level-dropdown-menu.component.ts",
@@ -1562,7 +1711,7 @@
         },
         {
             "name": "RadioButtonComponent",
-            "id": "component-RadioButtonComponent-2d1d35dca16ca5cfb0d3e39ee5f5458d",
+            "id": "component-RadioButtonComponent-e083ccd549e2c400eb8f30c1102c4f5d",
             "file": "projects/components/src/lib/inputs/radio-button/radio-button.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -1583,26 +1732,26 @@
                     "name": "disabled",
                     "defaultValue": "false",
                     "description": "<p>Desabilita a interação com os valores do radio button.</p>\n",
-                    "line": 23
+                    "line": 19
                 },
                 {
                     "name": "orientation",
                     "defaultValue": "OrientationEnum.Y",
                     "description": "<p>Orientação horizontal ou vertical do componente.\nAceita <code>horizontal</code> | <code>vertical</code></p>\n",
-                    "line": 19,
+                    "line": 15,
                     "type": "OrientationEnum"
                 },
                 {
                     "name": "selectedValue",
                     "description": "<p>Valor selecionado</p>\n",
-                    "line": 31,
+                    "line": 27,
                     "type": "string"
                 },
                 {
                     "name": "values",
                     "defaultValue": "[]",
                     "description": "<p>Array de strings que serão exibidos no radio button</p>\n",
-                    "line": 27,
+                    "line": 23,
                     "type": "string[]"
                 }
             ],
@@ -1611,7 +1760,7 @@
                     "name": "selectedChange",
                     "defaultValue": "new EventEmitter<string>()",
                     "description": "<p>Ao trocar o valor selecionado, emite este evento com o novo valor</p>\n",
-                    "line": 35,
+                    "line": 31,
                     "type": "EventEmitter<string>"
                 }
             ],
@@ -1628,7 +1777,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 40,
+                    "line": 36,
                     "modifierKind": [
                         114
                     ],
@@ -1648,7 +1797,7 @@
             "description": "",
             "rawdescription": "",
             "type": "component",
-            "sourceCode": "import {Component, EventEmitter, Input, Output} from '@angular/core';\n\nexport const enum OrientationEnum {\n  X = 'horizontal',\n  Y = 'vertical',\n}\n\n@Component({\n  selector: 'pm-radio-button',\n  templateUrl: './radio-button.component.html',\n  styleUrls: ['./radio-button.component.scss']\n})\nexport class RadioButtonComponent {\n\n  /**\n   * Orientação horizontal ou vertical do componente.\n   * Aceita `horizontal` | `vertical`\n   */\n  @Input() orientation: OrientationEnum = OrientationEnum.Y;\n  /**\n   * Desabilita a interação com os valores do radio button.\n   */\n  @Input() disabled = false;\n  /**\n   * Array de strings que serão exibidos no radio button\n   */\n  @Input() values: string[] = [];\n  /**\n   * Valor selecionado\n   */\n  @Input() selectedValue: string;\n  /**\n   * Ao trocar o valor selecionado, emite este evento com o novo valor\n   */\n  @Output() selectedChange: EventEmitter<string> = new EventEmitter<string>();\n\n  constructor() {\n  }\n\n  public setValue(value: string): void {\n    this.selectedValue = value;\n    this.selectedChange.emit(this.selectedValue);\n  }\n\n}\n",
+            "sourceCode": "import {Component, EventEmitter, Input, Output} from '@angular/core';\nimport {OrientationEnum} from '../../../models/orientation';\n\n@Component({\n  selector: 'pm-radio-button',\n  templateUrl: './radio-button.component.html',\n  styleUrls: ['./radio-button.component.scss']\n})\nexport class RadioButtonComponent {\n\n  /**\n   * Orientação horizontal ou vertical do componente.\n   * Aceita `horizontal` | `vertical`\n   */\n  @Input() orientation: OrientationEnum = OrientationEnum.Y;\n  /**\n   * Desabilita a interação com os valores do radio button.\n   */\n  @Input() disabled = false;\n  /**\n   * Array de strings que serão exibidos no radio button\n   */\n  @Input() values: string[] = [];\n  /**\n   * Valor selecionado\n   */\n  @Input() selectedValue: string;\n  /**\n   * Ao trocar o valor selecionado, emite este evento com o novo valor\n   */\n  @Output() selectedChange: EventEmitter<string> = new EventEmitter<string>();\n\n  constructor() {\n  }\n\n  public setValue(value: string): void {\n    this.selectedValue = value;\n    this.selectedChange.emit(this.selectedValue);\n  }\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -1661,7 +1810,7 @@
                 "name": "constructor",
                 "description": "",
                 "args": [],
-                "line": 35
+                "line": 31
             },
             "templateData": "<mat-radio-group\n  [(ngModel)]=\"selectedValue\"\n  [disabled]=\"disabled\"\n  (change)=\"setValue($event.value)\"\n  [ngClass]=\"{'d-flex flex-column': orientation === 'vertical'}\">\n  <mat-radio-button *ngFor=\"let value of values\" [value]=\"value\">\n    {{value}}\n  </mat-radio-button>\n</mat-radio-group>\n"
         },
@@ -2635,6 +2784,43 @@
     ],
     "modules": [
         {
+            "name": "BasicCardModule",
+            "children": [
+                {
+                    "type": "providers",
+                    "elements": []
+                },
+                {
+                    "type": "declarations",
+                    "elements": [
+                        {
+                            "name": "BasicCardComponent"
+                        }
+                    ]
+                },
+                {
+                    "type": "imports",
+                    "elements": []
+                },
+                {
+                    "type": "exports",
+                    "elements": [
+                        {
+                            "name": "BasicCardComponent"
+                        }
+                    ]
+                },
+                {
+                    "type": "bootstrap",
+                    "elements": []
+                },
+                {
+                    "type": "classes",
+                    "elements": []
+                }
+            ]
+        },
+        {
             "name": "ButtonModule",
             "children": [
                 {
@@ -2921,6 +3107,47 @@
                     "elements": [
                         {
                             "name": "GridListComponent"
+                        }
+                    ]
+                },
+                {
+                    "type": "bootstrap",
+                    "elements": []
+                },
+                {
+                    "type": "classes",
+                    "elements": []
+                }
+            ]
+        },
+        {
+            "name": "IconCardModule",
+            "children": [
+                {
+                    "type": "providers",
+                    "elements": []
+                },
+                {
+                    "type": "declarations",
+                    "elements": [
+                        {
+                            "name": "IconCardComponent"
+                        }
+                    ]
+                },
+                {
+                    "type": "imports",
+                    "elements": [
+                        {
+                            "name": "BasicCardModule"
+                        }
+                    ]
+                },
+                {
+                    "type": "exports",
+                    "elements": [
+                        {
+                            "name": "IconCardComponent"
                         }
                     ]
                 },
@@ -3255,6 +3482,22 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
+                "file": "projects/components/src/lib/cards/basic-card/basic-card.stories.ts",
+                "type": "object",
+                "defaultValue": "{\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/components/src/lib/cards/icon-card/icon-card.stories.ts",
+                "type": "object",
+                "defaultValue": "{\n  textPosition: 'center',\n  paddingClass: 'p-3',\n  hoverable: true,\n  orientation: OrientationEnum.Y,\n  iconClass: 'uil uil-star',\n  title: '',\n  subtitle: '',\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
                 "file": "projects/components/src/lib/inputs/button/button.stories.ts",
                 "type": "object",
                 "defaultValue": "{\n  label: '',\n  type: MainColors.default,\n  busy: false,\n  busyText: '',\n  iconClass: '',\n  outline: false,\n  disabled: false,\n}"
@@ -3271,6 +3514,14 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
+                "file": "projects/components/src/lib/inputs/combo-box/combo-box.stories.ts",
+                "type": "object",
+                "defaultValue": "{\n  items: [],\n  disabled: false,\n  selectedItem: undefined\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
                 "file": "projects/components/src/lib/inputs/copy-content-input/copy-content-input.stories.ts",
                 "type": "object",
                 "defaultValue": "{\n  disabled: false,\n  text: ''\n}"
@@ -3279,9 +3530,9 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/inputs/combo-box/combo-box.stories.ts",
+                "file": "projects/components/src/lib/inputs/radio-button/radio-button.stories.ts",
                 "type": "object",
-                "defaultValue": "{\n  items: [],\n  disabled: false,\n  selectedItem: undefined\n}"
+                "defaultValue": "{\n  orientation: OrientationEnum.Y,\n  values: [],\n  disabled: false,\n  selectedValue: undefined\n}"
             },
             {
                 "name": "defaultArgs",
@@ -3303,14 +3554,6 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/inputs/radio-button/radio-button.stories.ts",
-                "type": "object",
-                "defaultValue": "{\n  orientation: OrientationEnum.Y,\n  values: [],\n  disabled: false,\n  selectedValue: undefined\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "projects/components/src/lib/lists/grid-list/grid-list.stories.ts",
                 "type": "object",
                 "defaultValue": "{\n}"
@@ -3322,6 +3565,14 @@
                 "file": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
                 "type": "object",
                 "defaultValue": "{\n  columns: [],\n  columnNames: [],\n  imageColumns: [],\n  imageHeight: '50px',\n  showHeader: true,\n  numberFormat: '1.2-2',\n  numberPrefix: '',\n  actionsTemplate: undefined,\n  itemList: undefined,\n  borderRadius: undefined,\n  backgroundColor: undefined,\n  expandedDetailTemplate: undefined,\n  disableExpandedOnDisabledRow: true,\n  expandedRow: undefined\n}"
+            },
+            {
+                "name": "DefaultBasicCard",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/components/src/lib/cards/basic-card/basic-card.stories.ts",
+                "type": "",
+                "defaultValue": "Template.bind({})"
             },
             {
                 "name": "DefaultButton",
@@ -3384,6 +3635,14 @@
                 "ctype": "miscellaneous",
                 "subtype": "variable",
                 "file": "projects/components/src/lib/lists/grid-list/grid-list.stories.ts",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "DefaultIconCard",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/components/src/lib/cards/icon-card/icon-card.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             },
@@ -3574,6 +3833,22 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
+                "file": "projects/components/src/lib/cards/basic-card/basic-card.stories.ts",
+                "type": "Story<BasicCardComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-basic-card\n    >\n    </pm-basic-card>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/components/src/lib/cards/icon-card/icon-card.stories.ts",
+                "type": "Story<IconCardComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-icon-card\n      [textPosition]=\"textPosition\"\n      [paddingClass]=\"paddingClass\"\n      [hoverable]=\"hoverable\"\n      [orientation]=\"orientation\"\n      [iconClass]=\"iconClass\"\n      [title]=\"title\"\n      [subtitle]=\"subtitle\"\n    >\n    </pm-icon-card>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
                 "file": "projects/components/src/lib/inputs/button/button.stories.ts",
                 "type": "Story<ButtonComponent>",
                 "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-button\n        [label]=\"label\"\n        [type]=\"type\"\n        [busy]=\"busy\"\n        [busyText]=\"busyText\"\n        [iconClass]=\"iconClass\"\n        [outline]=\"outline\"\n        [disabled]=\"disabled\"\n    >\n        Button Content\n    </pm-button>\n  `\n})"
@@ -3590,6 +3865,14 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
+                "file": "projects/components/src/lib/inputs/combo-box/combo-box.stories.ts",
+                "type": "Story<ComboBoxComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-combo-box\n      [items]=\"items\"\n      [disabled]=\"disabled\"\n      [selectedItem]=\"selectedItem\"\n    >\n    </pm-combo-box>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
                 "file": "projects/components/src/lib/inputs/copy-content-input/copy-content-input.stories.ts",
                 "type": "Story<CopyContentInputComponent>",
                 "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-copy-content-input\n      [text]=\"text\"\n      [disabled]=\"disabled\"\n    >\n      Conteúdo\n    </pm-copy-content-input>\n  `\n})"
@@ -3598,9 +3881,9 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/inputs/combo-box/combo-box.stories.ts",
-                "type": "Story<ComboBoxComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-combo-box\n      [items]=\"items\"\n      [disabled]=\"disabled\"\n      [selectedItem]=\"selectedItem\"\n    >\n    </pm-combo-box>\n  `\n})"
+                "file": "projects/components/src/lib/inputs/radio-button/radio-button.stories.ts",
+                "type": "Story<RadioButtonComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-radio-button\n      [values]=\"values\"\n      [selectedValue]=\"selectedValue\"\n      [disabled]=\"disabled\"\n    >\n    </pm-radio-button>\n  `\n})"
             },
             {
                 "name": "Template",
@@ -3617,14 +3900,6 @@
                 "file": "projects/components/src/lib/lists/draggable-list/draggable-list.stories.ts",
                 "type": "Story<DraggableListComponent>",
                 "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-draggable-list\n      [showIndex]=\"showIndex\"\n      [itemActionLabel]=\"itemActionLabel\"\n      [itemMainLabel]=\"itemMainLabel\"\n      [itemSubLabel]=\"itemSubLabel\"\n      [actions]=\"actions\"\n      [itemList]=\"itemList\"\n      [roundedBorders]=\"roundedBorders\"\n      [enableDragging]=\"enableDragging\"\n      [enableSelection]=\"enableSelection\"\n    >\n    </pm-draggable-list>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/components/src/lib/inputs/radio-button/radio-button.stories.ts",
-                "type": "Story<RadioButtonComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-radio-button\n      [values]=\"values\"\n      [selectedValue]=\"selectedValue\"\n      [disabled]=\"disabled\"\n    >\n    </pm-radio-button>\n  `\n})"
             },
             {
                 "name": "Template",
@@ -3718,7 +3993,7 @@
                 "ctype": "miscellaneous",
                 "subtype": "enum",
                 "description": "",
-                "file": "projects/components/src/lib/inputs/radio-button/radio-button.component.ts"
+                "file": "projects/components/src/models/orientation.ts"
             },
             {
                 "name": "PaleColors",
@@ -4109,6 +4384,58 @@
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-XXXName\n    >\n    </pm-XXXName>\n  `\n})"
                 }
             ],
+            "projects/components/src/lib/cards/basic-card/basic-card.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/lib/cards/basic-card/basic-card.stories.ts",
+                    "type": "object",
+                    "defaultValue": "{\n}"
+                },
+                {
+                    "name": "DefaultBasicCard",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/lib/cards/basic-card/basic-card.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/lib/cards/basic-card/basic-card.stories.ts",
+                    "type": "Story<BasicCardComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-basic-card\n    >\n    </pm-basic-card>\n  `\n})"
+                }
+            ],
+            "projects/components/src/lib/cards/icon-card/icon-card.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/lib/cards/icon-card/icon-card.stories.ts",
+                    "type": "object",
+                    "defaultValue": "{\n  textPosition: 'center',\n  paddingClass: 'p-3',\n  hoverable: true,\n  orientation: OrientationEnum.Y,\n  iconClass: 'uil uil-star',\n  title: '',\n  subtitle: '',\n}"
+                },
+                {
+                    "name": "DefaultIconCard",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/lib/cards/icon-card/icon-card.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/lib/cards/icon-card/icon-card.stories.ts",
+                    "type": "Story<IconCardComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-icon-card\n      [textPosition]=\"textPosition\"\n      [paddingClass]=\"paddingClass\"\n      [hoverable]=\"hoverable\"\n      [orientation]=\"orientation\"\n      [iconClass]=\"iconClass\"\n      [title]=\"title\"\n      [subtitle]=\"subtitle\"\n    >\n    </pm-icon-card>\n  `\n})"
+                }
+            ],
             "projects/components/src/lib/inputs/checkbox/checkbox.stories.ts": [
                 {
                     "name": "defaultArgs",
@@ -4143,32 +4470,6 @@
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-checkbox\n      [checked]=\"checked\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>\n  `\n})"
                 }
             ],
-            "projects/components/src/lib/inputs/copy-content-input/copy-content-input.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/components/src/lib/inputs/copy-content-input/copy-content-input.stories.ts",
-                    "type": "object",
-                    "defaultValue": "{\n  disabled: false,\n  text: ''\n}"
-                },
-                {
-                    "name": "DefaultCopyContentInput",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/components/src/lib/inputs/copy-content-input/copy-content-input.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/components/src/lib/inputs/copy-content-input/copy-content-input.stories.ts",
-                    "type": "Story<CopyContentInputComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-copy-content-input\n      [text]=\"text\"\n      [disabled]=\"disabled\"\n    >\n      Conteúdo\n    </pm-copy-content-input>\n  `\n})"
-                }
-            ],
             "projects/components/src/lib/inputs/combo-box/combo-box.stories.ts": [
                 {
                     "name": "defaultArgs",
@@ -4201,6 +4502,58 @@
                     "file": "projects/components/src/lib/inputs/combo-box/combo-box.stories.ts",
                     "type": "Story<ComboBoxComponent>",
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-combo-box\n      [items]=\"items\"\n      [disabled]=\"disabled\"\n      [selectedItem]=\"selectedItem\"\n    >\n    </pm-combo-box>\n  `\n})"
+                }
+            ],
+            "projects/components/src/lib/inputs/copy-content-input/copy-content-input.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/lib/inputs/copy-content-input/copy-content-input.stories.ts",
+                    "type": "object",
+                    "defaultValue": "{\n  disabled: false,\n  text: ''\n}"
+                },
+                {
+                    "name": "DefaultCopyContentInput",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/lib/inputs/copy-content-input/copy-content-input.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/lib/inputs/copy-content-input/copy-content-input.stories.ts",
+                    "type": "Story<CopyContentInputComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-copy-content-input\n      [text]=\"text\"\n      [disabled]=\"disabled\"\n    >\n      Conteúdo\n    </pm-copy-content-input>\n  `\n})"
+                }
+            ],
+            "projects/components/src/lib/inputs/radio-button/radio-button.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/lib/inputs/radio-button/radio-button.stories.ts",
+                    "type": "object",
+                    "defaultValue": "{\n  orientation: OrientationEnum.Y,\n  values: [],\n  disabled: false,\n  selectedValue: undefined\n}"
+                },
+                {
+                    "name": "DefaultRadioButton",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/lib/inputs/radio-button/radio-button.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/lib/inputs/radio-button/radio-button.stories.ts",
+                    "type": "Story<RadioButtonComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-radio-button\n      [values]=\"values\"\n      [selectedValue]=\"selectedValue\"\n      [disabled]=\"disabled\"\n    >\n    </pm-radio-button>\n  `\n})"
                 }
             ],
             "projects/components/src/lib/inputs/dropdown-actions/dropdown-actions.stories.ts": [
@@ -4269,32 +4622,6 @@
                     "file": "projects/components/src/lib/lists/draggable-list/draggable-list.stories.ts",
                     "type": "Story<DraggableListComponent>",
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-draggable-list\n      [showIndex]=\"showIndex\"\n      [itemActionLabel]=\"itemActionLabel\"\n      [itemMainLabel]=\"itemMainLabel\"\n      [itemSubLabel]=\"itemSubLabel\"\n      [actions]=\"actions\"\n      [itemList]=\"itemList\"\n      [roundedBorders]=\"roundedBorders\"\n      [enableDragging]=\"enableDragging\"\n      [enableSelection]=\"enableSelection\"\n    >\n    </pm-draggable-list>\n  `\n})"
-                }
-            ],
-            "projects/components/src/lib/inputs/radio-button/radio-button.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/components/src/lib/inputs/radio-button/radio-button.stories.ts",
-                    "type": "object",
-                    "defaultValue": "{\n  orientation: OrientationEnum.Y,\n  values: [],\n  disabled: false,\n  selectedValue: undefined\n}"
-                },
-                {
-                    "name": "DefaultRadioButton",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/components/src/lib/inputs/radio-button/radio-button.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/components/src/lib/inputs/radio-button/radio-button.stories.ts",
-                    "type": "Story<RadioButtonComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-radio-button\n      [values]=\"values\"\n      [selectedValue]=\"selectedValue\"\n      [disabled]=\"disabled\"\n    >\n    </pm-radio-button>\n  `\n})"
                 }
             ],
             "projects/components/src/lib/lists/grid-list/grid-list.stories.ts": [
@@ -4536,7 +4863,7 @@
                     "file": "projects/components/src/models/colors.ts"
                 }
             ],
-            "projects/components/src/lib/inputs/radio-button/radio-button.component.ts": [
+            "projects/components/src/models/orientation.ts": [
                 {
                     "name": "OrientationEnum",
                     "childs": [
@@ -4552,7 +4879,7 @@
                     "ctype": "miscellaneous",
                     "subtype": "enum",
                     "description": "",
-                    "file": "projects/components/src/lib/inputs/radio-button/radio-button.component.ts"
+                    "file": "projects/components/src/models/orientation.ts"
                 }
             ],
             "projects/components/src/models/sizes.ts": [
@@ -4605,6 +4932,84 @@
                 "name": "CardComponent",
                 "coveragePercent": 0,
                 "coverageCount": "0/4",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/components/src/lib/cards/basic-card/basic-card.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "BasicCardComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/5",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/components/src/lib/cards/basic-card/basic-card.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "defaultArgs",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/components/src/lib/cards/basic-card/basic-card.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "DefaultBasicCard",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/components/src/lib/cards/basic-card/basic-card.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/components/src/lib/cards/icon-card/icon-card.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "IconCardComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/9",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/components/src/lib/cards/icon-card/icon-card.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "defaultArgs",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/components/src/lib/cards/icon-card/icon-card.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "DefaultIconCard",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/components/src/lib/cards/icon-card/icon-card.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
                 "status": "low"
             },
             {

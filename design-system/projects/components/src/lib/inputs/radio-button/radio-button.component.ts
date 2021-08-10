@@ -1,9 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-
-export const enum OrientationEnum {
-  X = 'horizontal',
-  Y = 'vertical',
-}
+import {OrientationEnum} from '../../../models/orientation';
 
 @Component({
   selector: 'pm-radio-button',

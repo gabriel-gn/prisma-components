@@ -1,0 +1,80 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
+import {IconCardComponent} from './icon-card.component';
+import {moduleMetadata} from "@storybook/angular";
+import {IconCardModule} from "./icon-card.module";
+import {
+  defaultArgs,
+  DefaultIconCard,
+} from "./icon-card.stories";
+
+export const argTypes = {
+  // XXXArg1: {
+  //   // description: 'CRIAR A DESCRIÇÃO COMO COMENTÁRIO MULTILINHA ACIMA DOS INPUTS NO COMPONENTE',
+  //   table: {
+  //     defaultValue: { summary: defaultArgs.XXXArg1},
+  //   },
+  //   control: { type: 'inline-radio'}, options: [true, false],
+  // },
+}
+
+<Meta
+  title='Components/Cards/Icon Card'
+  component={IconCardComponent}
+  argTypes={argTypes}
+  parameters={{ badges: [ 'beta' ] }}
+  decorators={[
+    moduleMetadata({
+      imports: [IconCardModule]
+    })
+  ]}
+/>
+
+export const Template = (args) => <IconCardComponent {...args} />
+
+# IconCard
+
+#### Descrição do componente IconCard
+
+<br/>
+<br/>
+
+## IconCard padrão
+
+Descrição do componente IconCard padrão
+
+Deve ser usado da seguinte forma:
+
+```
+<pm-icon-card
+  [textPosition]="textPosition"
+  [paddingClass]="paddingClass"
+  [hoverable]="hoverable"
+  [orientation]="orientation"
+  [iconClass]="iconClass"
+  [title]="title"
+  [subtitle]="subtitle"
+>
+</pm-icon-card>
+```
+
+<Canvas>
+  <Story name='Default' story={DefaultIconCard} />
+</Canvas>
+
+## Module Config
+
+```
+import {IconCardModule} from '@mprisma/components';
+
+@NgModule({
+  imports: [
+    ...,
+    IconCardModule,
+    ...,
+  ]
+})
+```
+
+## Args Table
+
+<ArgsTable story='Default'/>

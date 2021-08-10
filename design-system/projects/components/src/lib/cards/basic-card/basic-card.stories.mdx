@@ -1,0 +1,72 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
+import {BasicCardComponent} from './basic-card.component';
+import {moduleMetadata} from "@storybook/angular";
+import {BasicCardModule} from "./basic-card.module";
+import {
+  defaultArgs,
+  DefaultBasicCard,
+} from "./basic-card.stories";
+
+export const argTypes = {
+  // XXXArg1: {
+  //   // description: 'CRIAR A DESCRIÇÃO COMO COMENTÁRIO MULTILINHA ACIMA DOS INPUTS NO COMPONENTE',
+  //   table: {
+  //     defaultValue: { summary: defaultArgs.XXXArg1},
+  //   },
+  //   control: { type: 'inline-radio'}, options: [true, false],
+  // },
+}
+
+<Meta
+  title='Components/Cards/Basic Card'
+  component={BasicCardComponent}
+  argTypes={argTypes}
+  parameters={{ badges: [ 'beta' ] }}
+  decorators={[
+    moduleMetadata({
+      imports: [BasicCardModule]
+    })
+  ]}
+/>
+
+export const Template = (args) => <BasicCardComponent {...args} />
+
+# BasicCard
+
+#### Descrição do componente BasicCard
+
+<br/>
+<br/>
+
+## BasicCard padrão
+
+Descrição do componente BasicCard padrão
+
+Deve ser usado da seguinte forma:
+
+```
+<pm-basic-card>
+</pm-basic-card>
+```
+
+<Canvas>
+  <Story name='Default' story={DefaultBasicCard} />
+</Canvas>
+
+## Module Config
+
+```
+import {BasicCardModule} from '@mprisma/components';
+
+@NgModule({
+  imports: [
+    ...,
+    BasicCardModule,
+    ...,
+  ]
+})
+```
+
+## Args Table
+
+<ArgsTable story='Default'/>

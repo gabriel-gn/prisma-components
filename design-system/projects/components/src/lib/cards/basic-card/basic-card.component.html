@@ -1,0 +1,8 @@
+<div class="pm-basic-card">
+  <div
+    [ngClass]="{'hoverable': hoverable}"
+    class="card-basic {{paddingClass}} {{borderRadius ? 'rad-' + borderRadius : ''}} w-100 p-3"
+    style="height: auto;">
+    <ng-content></ng-content>
+  </div>
+</div>

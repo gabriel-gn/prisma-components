@@ -9,6 +9,7 @@ export * from './lib/components.module';
 
 export * from './models/colors';
 export * from './models/sizes';
+export * from './models/orientation';
 
 export * from './lib/inputs/button/button.component';
 export * from './lib/inputs/button/button.module';
@@ -42,3 +43,9 @@ export * from './lib/stepper/stepper.module';
 
 export * from './lib/inputs/dropdown-actions/dropdown-actions.component';
 export * from './lib/inputs/dropdown-actions/dropdown-actions.module';
+
+export * from './lib/cards/basic-card/basic-card.component';
+export * from './lib/cards/basic-card/basic-card.module';
+
+export * from './lib/cards/icon-card/icon-card.component';
+export * from './lib/cards/icon-card/icon-card.module';

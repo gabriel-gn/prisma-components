@@ -1,0 +1,26 @@
+<div class="pm-icon-card">
+  <pm-basic-card
+    [className]="' text-' + textPosition"
+    [hoverable]="hoverable"
+    [paddingClass]="paddingClass"
+  >
+    <ng-container *ngTemplateOutlet="orientation === 'vertical' ? verticalTemplate : horizontalTemplate"></ng-container>
+  </pm-basic-card>
+</div>
+
+<ng-template #verticalTemplate>
+  <i aria-hidden="true" [className]="iconClass"></i>
+  <h4>{{title}}</h4>
+  <p>{{subtitle}}</p>
+</ng-template>
+
+<ng-template #horizontalTemplate>
+  <div class="d-flex">
+    <i aria-hidden="true" [className]="'d-flex h-100 align-self-start' + iconClass"></i>
+    <div class="text-start ms-3">
+      <h4>{{title}}</h4>
+      <p>{{subtitle}}</p>
+    </div>
+  </div>
+
+</ng-template>
