@@ -1,4 +1,4 @@
-<ng-container *ngTemplateOutlet="!!iconCardArray ? cardArray : baseIconCard"></ng-container>
+<ng-container *ngTemplateOutlet="iconCardArray.length > 0 ? cardArray : baseIconCard"></ng-container>
 
 <ng-template #cardArray>
   <div class="row">

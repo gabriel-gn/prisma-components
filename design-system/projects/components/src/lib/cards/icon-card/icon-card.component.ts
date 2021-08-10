@@ -21,7 +21,7 @@ export class IconCardComponent {
   @Input('iconClass') iconClass: string = 'uil uil-star';
   @Input('title') title: string = '';
   @Input('subtitle') subtitle: string = '';
-  @Input('iconCardArray') iconCardArray: IconCardArrayItem[];
+  @Input('iconCardArray') iconCardArray: IconCardArrayItem[] = [];
 
   constructor() { }
 
