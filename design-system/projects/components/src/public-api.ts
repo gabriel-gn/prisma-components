@@ -49,3 +49,7 @@ export * from './lib/cards/basic-card/basic-card.module';
 
 export * from './lib/cards/icon-card/icon-card.component';
 export * from './lib/cards/icon-card/icon-card.module';
+
+
+export * from './lib/containers/expansion-panel/expansion-panel.component';
+export * from './lib/containers/expansion-panel/expansion-panel.module';

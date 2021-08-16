@@ -1,0 +1,73 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
+import {ExpansionPanelComponent} from './expansion-panel.component';
+import {moduleMetadata} from "@storybook/angular";
+import {ExpansionPanelModule} from "./expansion-panel.module";
+import {
+  defaultArgs,
+  DefaultExpansionPanel,
+} from "./expansion-panel.stories";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+
+export const argTypes = {
+  // XXXArg1: {
+  //   // description: 'CRIAR A DESCRIÇÃO COMO COMENTÁRIO MULTILINHA ACIMA DOS INPUTS NO COMPONENTE',
+  //   table: {
+  //     defaultValue: { summary: defaultArgs.XXXArg1},
+  //   },
+  //   control: { type: 'inline-radio'}, options: [true, false],
+  // },
+}
+
+<Meta
+  title='Components/Containers/ExpansionPanel'
+  component={ExpansionPanelComponent}
+  argTypes={argTypes}
+  parameters={{ badges: [ 'beta' ] }}
+  decorators={[
+    moduleMetadata({
+      imports: [ExpansionPanelModule, BrowserAnimationsModule]
+    })
+  ]}
+/>
+
+export const Template = (args) => <ExpansionPanelComponent {...args} />
+
+# ExpansionPanel
+
+#### Descrição do componente ExpansionPanel
+
+<br/>
+<br/>
+
+## ExpansionPanel padrão
+
+Descrição do componente ExpansionPanel padrão
+
+Deve ser usado da seguinte forma:
+
+```
+<pm-expansion-panel>
+</pm-expansion-panel>
+```
+
+<Canvas>
+  <Story name='Default' story={DefaultExpansionPanel} />
+</Canvas>
+
+## Module Config
+
+```
+import {ExpansionPanelModule} from '@mprisma/components';
+
+@NgModule({
+  imports: [
+    ...,
+    ExpansionPanelModule,
+    ...,
+  ]
+})
+```
+
+## Args Table
+
+<ArgsTable story='Default'/>
