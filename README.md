@@ -9,14 +9,35 @@ ___
 
 ## Getting Started
 
+Install Prisma Components
+
+```
+npm i bootstrap --save
+npm i popper.js --save
+npm i @angular/material --save
+npm i @mprisma/components --save
+```
+
+add to your `angular.json` file the following:
+
+```
+...
+    "scripts": [
+              "node_modules/popper.js/dist/umd/popper.js",
+              "node_modules/bootstrap/dist/js/bootstrap.js",
+              ...
+            ],
+...
+```
+
 Add to your `base.scss` file the following:
 
 ```
 @import '~@mprisma/components/src/styles/base';
-@import '~@mprisma/components/src/styles/icons/unicons/css/animation.css';
-@import '~@mprisma/components/src/styles/icons/unicons/css/line.css';
-@import '~@mprisma/components/src/styles/icons/unicons/css/before.css';
-@import '~@mprisma/components/src/styles/icons/prisma-cube/webfont.css';
+// @import '~@mprisma/components/src/styles/icons/unicons/css/animation.css';
+// @import '~@mprisma/components/src/styles/icons/unicons/css/line.css';
+// @import '~@mprisma/components/src/styles/icons/unicons/css/before.css';
+// @import '~@mprisma/components/src/styles/icons/prisma-cube/webfont.css';
 ```
 
 ## Creating new components
