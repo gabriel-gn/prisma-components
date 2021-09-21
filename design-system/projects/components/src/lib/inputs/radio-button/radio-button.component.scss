@@ -1,0 +1,11 @@
+.pm-radio-button {
+  mat-radio-group {
+    &:not(.d-flex) {
+      mat-radio-button {
+        &:not(:first-child) {
+          margin-left: 1em;
+        }
+      }
+    }
+  }
+}
