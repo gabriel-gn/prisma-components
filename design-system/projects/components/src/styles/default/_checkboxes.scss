@@ -144,21 +144,39 @@
 }
 
 
-.mat-radio-outer-circle,
-.mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
-  border-width: 3px;
+.mat-radio-container {
+
+  .mat-radio-inner-circle {
+    width: 20px;
+    height: 20px;
+    top: 2px;
+    left: 2px;
+  }
+
+  .mat-radio-outer-circle,
+  .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
+    border-color: var(--color-default);
+    border-width: 3px;
+    width: 24px;
+    height: 24px;
+  }
+}
+
+.mat-radio-label-content {
+  margin-top: 4px;
 }
 
 .mat-radio-disabled:not(.mat-radio-persistent-ripple),
 .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle:not(.mat-radio-persistent-ripple) {
-  border-color: var(--color-default);
+  background: var(--color-default);
+  border: none;
 }
 
 .mat-radio-button.mat-accent .mat-radio-inner-circle,
 .mat-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element:not(.mat-radio-persistent-ripple),
 .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-persistent-ripple,
 .mat-radio-button.mat-accent:active .mat-radio-persistent-ripple {
-  background-color: var(--color-default);
+  background-color: #fff;
 }
 
 .mat-radio-ripple {

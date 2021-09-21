@@ -38,7 +38,7 @@ DefaultRadioButton.args = {
 export const HorizontalRadioButton = Template.bind({});
 HorizontalRadioButton.args = {
   ...defaultArgs,
-  orientation: OrientationEnum.Y,
+  orientation: OrientationEnum.X,
   values: ['Winter', 'Spring', 'Summer', 'Autumn'],
   selectedValue: 'Spring'
 };
