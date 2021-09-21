@@ -1,8 +1,9 @@
 [comment]: <> (Linha inicial que é apagada automaticamente)
-import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
+import {Meta, Story, ArgsTable, Canvas, Source} from '@storybook/addon-docs';
 import {XXXComponent} from './XXXName.component';
 import {moduleMetadata} from "@storybook/angular";
 import {XXXModule} from "./XXXName.module";
+import SourceStory from '!!raw-loader!./XXXName.stories';
 import {
   defaultArgs,
   DefaultXXXTitle,
@@ -71,3 +72,10 @@ import {XXXModule} from '@mprisma/components';
 ## Args Table
 
 <ArgsTable story='Default'/>
+
+## Source
+
+<details>
+  <summary>The source stories on file <code>XXXName.stories.ts</code></summary>
+  <Source code={SourceStory} language='ts' />
+</details>

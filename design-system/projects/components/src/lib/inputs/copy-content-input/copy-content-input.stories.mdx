@@ -1,9 +1,9 @@
-import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
+import {Meta, Story, ArgsTable, Canvas, Source} from '@storybook/addon-docs';
 import {CopyContentInputComponent} from './copy-content-input.component';
 import {moduleMetadata} from "@storybook/angular";
 import {CopyContentInputModule} from "./copy-content-input.module";
+import SourceStory from '!!raw-loader!./copy-content-input.stories';
 import {
-  defaultTemplate,
   defaultArgs,
   DefaultCopyContentInput,
 } from "./copy-content-input.stories";
@@ -81,3 +81,10 @@ import {CopyContentInputModule} from '@mprisma/components';
 ## Args Table
 
 <ArgsTable story='Default'/>
+
+## Source
+
+<details>
+  <summary>The source stories on file <code>copy-content-input.stories.ts</code></summary>
+  <Source code={SourceStory} language='ts' />
+</details>

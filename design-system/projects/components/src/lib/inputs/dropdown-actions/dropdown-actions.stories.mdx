@@ -1,7 +1,8 @@
-import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
+import {Meta, Story, ArgsTable, Canvas, Source} from '@storybook/addon-docs';
 import {DropdownActionsComponent} from './dropdown-actions.component';
 import {moduleMetadata} from "@storybook/angular";
 import {DropdownActionsModule} from "./dropdown-actions.module";
+import SourceStory from '!!raw-loader!./dropdown-actions.stories';
 import {
   defaultArgs,
   DefaultDropdownActions,
@@ -73,3 +74,10 @@ import {DropdownActionsModule} from '@mprisma/components';
 ## Args Table
 
 <ArgsTable story='Default'/>
+
+## Source
+
+<details>
+  <summary>The source stories on file <code>dropdown-actions.stories.ts</code></summary>
+  <Source code={SourceStory} language='ts' />
+</details>

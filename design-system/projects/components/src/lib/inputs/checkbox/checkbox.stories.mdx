@@ -1,7 +1,8 @@
-import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
+import {Meta, Story, ArgsTable, Canvas, Source} from '@storybook/addon-docs';
 import {CheckboxComponent} from './checkbox.component';
 import {moduleMetadata} from "@storybook/angular";
 import {CheckboxModule} from "./checkbox.module";
+import SourceStory from '!!raw-loader!./checkbox.stories';
 import {
   defaultArgs,
   DefaultCheckbox,
@@ -89,3 +90,10 @@ import {CheckboxModule} from '@mprisma/components';
 ## Args Table
 
 <ArgsTable story='Default'/>
+
+## Source
+
+<details>
+  <summary>The source stories on file <code>checkbox.stories.ts</code></summary>
+  <Source code={SourceStory} language='ts' />
+</details>

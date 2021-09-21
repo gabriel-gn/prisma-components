@@ -1,7 +1,8 @@
-import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
+import {Meta, Story, ArgsTable, Canvas, Source} from '@storybook/addon-docs';
 import {ButtonComponent} from './button.component';
 import {moduleMetadata} from "@storybook/angular";
 import {ButtonModule} from "./button.module";
+import SourceStory from '!!raw-loader!./button.stories';
 import {
   DangerButton,
   defaultArgs,
@@ -161,3 +162,10 @@ import {ButtonModule} from '@mprisma/components';
 ## Args Table
 
 <ArgsTable story='Default'/>
+
+## Source
+
+<details>
+  <summary>The source stories on file <code>button.stories.ts</code></summary>
+  <Source code={SourceStory} language='ts' />
+</details>

@@ -1,7 +1,8 @@
-import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
+import {Meta, Story, ArgsTable, Canvas, Source} from '@storybook/addon-docs';
 import {ComboBoxComponent} from './combo-box.component';
 import {moduleMetadata} from "@storybook/angular";
 import {ComboBoxModule} from "./combo-box.module";
+import SourceStory from '!!raw-loader!./combo-box.stories';
 import {
   defaultArgs,
   DefaultComboBox,
@@ -83,3 +84,10 @@ import {ComboBoxModule} from '@mprisma/components';
 ## Args Table
 
 <ArgsTable story='Default'/>
+
+## Source
+
+<details>
+  <summary>The source stories on file <code>combo-box.stories.ts</code></summary>
+  <Source code={SourceStory} language='ts' />
+</details>
