@@ -1,4 +1,4 @@
-import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
+import {Meta, Story, ArgsTable, Canvas, Source} from '@storybook/addon-docs';
 import {RadioButtonComponent} from './radio-button.component';
 import {moduleMetadata} from "@storybook/angular";
 import {RadioButtonModule} from "./radio-button.module";
@@ -8,6 +8,7 @@ import {
   DefaultRadioButton,
   HorizontalRadioButton,
 } from "./radio-button.stories";
+import SourceStory from '!!raw-loader!./radio-button.stories';
 
 export const argTypes = {
   orientation: {
@@ -97,3 +98,10 @@ import {RadioButtonModule} from '@mprisma/components';
 ## Args Table
 
 <ArgsTable story='Default'/>
+
+## Source
+
+<details>
+  <summary>The source stories on file <code>radio-button.stories.ts</code></summary>
+  <Source code={SourceStory} language='ts' />
+</details>
