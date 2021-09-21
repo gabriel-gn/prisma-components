@@ -3,7 +3,7 @@
     [(ngModel)]="selectedValue"
     [disabled]="disabled"
     (change)="setValue($event.value)"
-    [ngClass]="{'d-flex flex-column': orientation === 'vertical'}">
+    [ngClass]="{'d-flex flex-column': orientation === 'vertical', 'horizontal': orientation === 'horizontal'}">
     <mat-radio-button *ngFor="let value of values" [value]="value">
       {{value}}
     </mat-radio-button>

@@ -28,7 +28,6 @@
     "@angular/platform-browser-dynamic": "~11.2.10",
     "@angular/router": "~11.2.10",
     "@geometricpanda/storybook-addon-badges": "0.0.3",
-    "@mprisma/components": "^0.0.3",
     "@storybook/addon-docs": "^6.4.0-alpha.18",
     "@storybook/addon-storysource": "^6.4.0-alpha.18",
     "@storybook/addons": "^6.4.0-alpha.18",

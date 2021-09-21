@@ -11,21 +11,6 @@
 
 
 <div class="container p-3">
-<!--  <button (click)="profileActionsSelect.toggle()" class="btn btn-light btn-icon btn-sm ms-2">-->
-<!--    <i class="uil uil-md uil-ellipsis-h"></i>-->
-<!--  </button>-->
-<!--  <pm-button (click)="setBusy()" [busy]="busy">Hello World</pm-button>-->
-
-<!--  <pm-draggable-list></pm-draggable-list>-->
-
-  <button (click)="setTableData()">Mudar dados tabela</button>
-  <pm-table #prismaTable [columns]="columns" [columnNames]="columnNames" [actionsTemplate]="cartActions"></pm-table>
-
-  <ng-template #cartActions let-item let-column="column">
-    <div>
-      <button class="btn btn-primary">Apagar Item</button>
-    </div>
-  </ng-template>
 </div>
 
 <!-- you only need this if you added a router: -->

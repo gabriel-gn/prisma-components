@@ -1896,7 +1896,7 @@
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": "",
+                    "data": ".pm-radio-button {\n  mat-radio-group {\n    &:not(.d-flex) {\n      mat-radio-button {\n        &:not(:first-child) {\n          margin-left: 1em;\n        }\n      }\n    }\n  }\n}\n",
                     "styleUrl": "./radio-button.component.scss"
                 }
             ],
@@ -1907,7 +1907,7 @@
                 "args": [],
                 "line": 31
             },
-            "templateData": "<mat-radio-group\n  [(ngModel)]=\"selectedValue\"\n  [disabled]=\"disabled\"\n  (change)=\"setValue($event.value)\"\n  [ngClass]=\"{'d-flex flex-column': orientation === 'vertical'}\">\n  <mat-radio-button *ngFor=\"let value of values\" [value]=\"value\">\n    {{value}}\n  </mat-radio-button>\n</mat-radio-group>\n"
+            "templateData": "<div class=\"pm-radio-button\">\n  <mat-radio-group\n    [(ngModel)]=\"selectedValue\"\n    [disabled]=\"disabled\"\n    (change)=\"setValue($event.value)\"\n    [ngClass]=\"{'d-flex flex-column': orientation === 'vertical'}\">\n    <mat-radio-button *ngFor=\"let value of values\" [value]=\"value\">\n      {{value}}\n    </mat-radio-button>\n  </mat-radio-group>\n</div>\n"
         },
         {
             "name": "StepperComponent",
@@ -3646,9 +3646,9 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/inputs/checkbox/checkbox.stories.ts",
+                "file": "projects/components/src/lib/inputs/combo-box/combo-box.stories.ts",
                 "type": "object",
-                "defaultValue": "{\n  checked: false,\n  disabled: false,\n  selectedItem: undefined,\n}"
+                "defaultValue": "{\n  items: [],\n  disabled: false,\n  selectedItem: undefined\n}"
             },
             {
                 "name": "defaultArgs",
@@ -3662,9 +3662,9 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/inputs/dropdown-actions/dropdown-actions.stories.ts",
+                "file": "projects/components/src/lib/inputs/checkbox/checkbox.stories.ts",
                 "type": "object",
-                "defaultValue": "{\n  actions: []\n}"
+                "defaultValue": "{\n  checked: false,\n  disabled: false,\n  selectedItem: undefined,\n}"
             },
             {
                 "name": "defaultArgs",
@@ -3673,6 +3673,14 @@
                 "file": "projects/components/src/lib/inputs/copy-content-input/copy-content-input.stories.ts",
                 "type": "object",
                 "defaultValue": "{\n  disabled: false,\n  text: ''\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/components/src/lib/inputs/dropdown-actions/dropdown-actions.stories.ts",
+                "type": "object",
+                "defaultValue": "{\n  actions: []\n}"
             },
             {
                 "name": "defaultArgs",
@@ -3694,14 +3702,6 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
-                "type": "object",
-                "defaultValue": "{\n  columns: [],\n  columnNames: [],\n  imageColumns: [],\n  imageHeight: '50px',\n  showHeader: true,\n  numberFormat: '1.2-2',\n  numberPrefix: '',\n  actionsTemplate: undefined,\n  itemList: undefined,\n  borderRadius: undefined,\n  backgroundColor: undefined,\n  expandedDetailTemplate: undefined,\n  disableExpandedOnDisabledRow: true,\n  expandedRow: undefined\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "projects/components/src/lib/lists/grid-list/grid-list.stories.ts",
                 "type": "object",
                 "defaultValue": "{\n}"
@@ -3710,9 +3710,9 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/inputs/combo-box/combo-box.stories.ts",
+                "file": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
                 "type": "object",
-                "defaultValue": "{\n  items: [],\n  disabled: false,\n  selectedItem: undefined\n}"
+                "defaultValue": "{\n  columns: [],\n  columnNames: [],\n  imageColumns: [],\n  imageHeight: '50px',\n  showHeader: true,\n  numberFormat: '1.2-2',\n  numberPrefix: '',\n  actionsTemplate: undefined,\n  itemList: undefined,\n  borderRadius: undefined,\n  backgroundColor: undefined,\n  expandedDetailTemplate: undefined,\n  disableExpandedOnDisabledRow: true,\n  expandedRow: undefined\n}"
             },
             {
                 "name": "DefaultBasicCard",
@@ -3891,6 +3891,14 @@
                 "defaultValue": "() => MainColors.primary"
             },
             {
+                "name": "HorizontalRadioButton",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/components/src/lib/inputs/radio-button/radio-button.stories.ts",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
                 "name": "IconButton",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -4013,9 +4021,9 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/inputs/checkbox/checkbox.stories.ts",
-                "type": "Story<CheckboxComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-checkbox\n      [checked]=\"checked\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>\n  `\n})"
+                "file": "projects/components/src/lib/inputs/combo-box/combo-box.stories.ts",
+                "type": "Story<ComboBoxComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-combo-box\n      [items]=\"items\"\n      [disabled]=\"disabled\"\n      [selectedItem]=\"selectedItem\"\n    >\n    </pm-combo-box>\n  `\n})"
             },
             {
                 "name": "Template",
@@ -4029,9 +4037,9 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/inputs/dropdown-actions/dropdown-actions.stories.ts",
-                "type": "Story<DropdownActionsComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-dropdown-actions\n      [actions]=\"actions\"\n    >\n    </pm-dropdown-actions>\n  `\n})"
+                "file": "projects/components/src/lib/inputs/checkbox/checkbox.stories.ts",
+                "type": "Story<CheckboxComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-checkbox\n      [checked]=\"checked\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>\n  `\n})"
             },
             {
                 "name": "Template",
@@ -4040,6 +4048,14 @@
                 "file": "projects/components/src/lib/inputs/copy-content-input/copy-content-input.stories.ts",
                 "type": "Story<CopyContentInputComponent>",
                 "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-copy-content-input\n      [text]=\"text\"\n      [disabled]=\"disabled\"\n    >\n      Conteúdo\n    </pm-copy-content-input>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/components/src/lib/inputs/dropdown-actions/dropdown-actions.stories.ts",
+                "type": "Story<DropdownActionsComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-dropdown-actions\n      [actions]=\"actions\"\n    >\n    </pm-dropdown-actions>\n  `\n})"
             },
             {
                 "name": "Template",
@@ -4061,14 +4077,6 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
-                "type": "Story<TableListComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `<pm-table-list\n    [columns]=\"columns\"\n    [columnNames]=\"columnNames\"\n    [imageColumns]=\"imageColumns\"\n    [imageHeight]=\"imageHeight\"\n    [showHeader]=\"showHeader\"\n    [numberFormat]=\"numberFormat\"\n    [numberPrefix]=\"numberPrefix\"\n    [itemList]=\"itemList\"\n    [borderRadius]=\"borderRadius\"\n    [backgroundColor]=\"backgroundColor\"\n    [expandedDetailTemplate]=\"expandedDetailTemplate\"\n    [disableExpandedOnDisabledRow]=\"disableExpandedOnDisabledRow\"\n  ></pm-table-list>`\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "projects/components/src/lib/lists/grid-list/grid-list.stories.ts",
                 "type": "Story<GridListComponent>",
                 "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-grid-list\n      [items]=\"items\"\n      [displayStyle]=\"displayStyle\"\n      [gridHeaderReverse]=\"gridHeaderReverse\"\n      [bodyBackgroundColor]=\"bodyBackgroundColor\"\n      [actionTemplate]=\"undefined\"\n      [overflowGallery]=\"overflowGallery\"\n    >\n    </pm-grid-list>\n  `\n})"
@@ -4077,9 +4085,9 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/inputs/combo-box/combo-box.stories.ts",
-                "type": "Story<ComboBoxComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-combo-box\n      [items]=\"items\"\n      [disabled]=\"disabled\"\n      [selectedItem]=\"selectedItem\"\n    >\n    </pm-combo-box>\n  `\n})"
+                "file": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
+                "type": "Story<TableListComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `<pm-table-list\n    [columns]=\"columns\"\n    [columnNames]=\"columnNames\"\n    [imageColumns]=\"imageColumns\"\n    [imageHeight]=\"imageHeight\"\n    [showHeader]=\"showHeader\"\n    [numberFormat]=\"numberFormat\"\n    [numberPrefix]=\"numberPrefix\"\n    [itemList]=\"itemList\"\n    [borderRadius]=\"borderRadius\"\n    [backgroundColor]=\"backgroundColor\"\n    [expandedDetailTemplate]=\"expandedDetailTemplate\"\n    [disableExpandedOnDisabledRow]=\"disableExpandedOnDisabledRow\"\n  ></pm-table-list>`\n})"
             },
             {
                 "name": "ThumbnailTable",
@@ -4634,6 +4642,40 @@
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-expansion-panel\n    >\n        Conteúdo aqui\n    </pm-expansion-panel>\n  `\n})"
                 }
             ],
+            "projects/components/src/lib/inputs/combo-box/combo-box.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/lib/inputs/combo-box/combo-box.stories.ts",
+                    "type": "object",
+                    "defaultValue": "{\n  items: [],\n  disabled: false,\n  selectedItem: undefined\n}"
+                },
+                {
+                    "name": "DefaultComboBox",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/lib/inputs/combo-box/combo-box.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "defaultItems",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/lib/inputs/combo-box/combo-box.stories.ts",
+                    "type": "[]",
+                    "defaultValue": "[\n  {\n    label: 'Value 1',\n    value: 1\n  },\n  {\n    label: 'Value 2',\n    value: 2\n  },\n  {\n    label: 'Value 3',\n    value: 3\n  }\n]"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/lib/inputs/combo-box/combo-box.stories.ts",
+                    "type": "Story<ComboBoxComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-combo-box\n      [items]=\"items\"\n      [disabled]=\"disabled\"\n      [selectedItem]=\"selectedItem\"\n    >\n    </pm-combo-box>\n  `\n})"
+                }
+            ],
             "projects/components/src/lib/inputs/checkbox/checkbox.stories.ts": [
                 {
                     "name": "defaultArgs",
@@ -4668,32 +4710,6 @@
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-checkbox\n      [checked]=\"checked\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>\n  `\n})"
                 }
             ],
-            "projects/components/src/lib/inputs/dropdown-actions/dropdown-actions.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/components/src/lib/inputs/dropdown-actions/dropdown-actions.stories.ts",
-                    "type": "object",
-                    "defaultValue": "{\n  actions: []\n}"
-                },
-                {
-                    "name": "DefaultDropdownActions",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/components/src/lib/inputs/dropdown-actions/dropdown-actions.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/components/src/lib/inputs/dropdown-actions/dropdown-actions.stories.ts",
-                    "type": "Story<DropdownActionsComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-dropdown-actions\n      [actions]=\"actions\"\n    >\n    </pm-dropdown-actions>\n  `\n})"
-                }
-            ],
             "projects/components/src/lib/inputs/copy-content-input/copy-content-input.stories.ts": [
                 {
                     "name": "defaultArgs",
@@ -4720,6 +4736,32 @@
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-copy-content-input\n      [text]=\"text\"\n      [disabled]=\"disabled\"\n    >\n      Conteúdo\n    </pm-copy-content-input>\n  `\n})"
                 }
             ],
+            "projects/components/src/lib/inputs/dropdown-actions/dropdown-actions.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/lib/inputs/dropdown-actions/dropdown-actions.stories.ts",
+                    "type": "object",
+                    "defaultValue": "{\n  actions: []\n}"
+                },
+                {
+                    "name": "DefaultDropdownActions",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/lib/inputs/dropdown-actions/dropdown-actions.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/lib/inputs/dropdown-actions/dropdown-actions.stories.ts",
+                    "type": "Story<DropdownActionsComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-dropdown-actions\n      [actions]=\"actions\"\n    >\n    </pm-dropdown-actions>\n  `\n})"
+                }
+            ],
             "projects/components/src/lib/inputs/radio-button/radio-button.stories.ts": [
                 {
                     "name": "defaultArgs",
@@ -4731,6 +4773,14 @@
                 },
                 {
                     "name": "DefaultRadioButton",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/components/src/lib/inputs/radio-button/radio-button.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "HorizontalRadioButton",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
                     "file": "projects/components/src/lib/inputs/radio-button/radio-button.stories.ts",
@@ -4820,40 +4870,6 @@
                     "file": "projects/components/src/lib/lists/grid-list/grid-list.stories.ts",
                     "type": "Story<GridListComponent>",
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-grid-list\n      [items]=\"items\"\n      [displayStyle]=\"displayStyle\"\n      [gridHeaderReverse]=\"gridHeaderReverse\"\n      [bodyBackgroundColor]=\"bodyBackgroundColor\"\n      [actionTemplate]=\"undefined\"\n      [overflowGallery]=\"overflowGallery\"\n    >\n    </pm-grid-list>\n  `\n})"
-                }
-            ],
-            "projects/components/src/lib/inputs/combo-box/combo-box.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/components/src/lib/inputs/combo-box/combo-box.stories.ts",
-                    "type": "object",
-                    "defaultValue": "{\n  items: [],\n  disabled: false,\n  selectedItem: undefined\n}"
-                },
-                {
-                    "name": "DefaultComboBox",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/components/src/lib/inputs/combo-box/combo-box.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "defaultItems",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/components/src/lib/inputs/combo-box/combo-box.stories.ts",
-                    "type": "[]",
-                    "defaultValue": "[\n  {\n    label: 'Value 1',\n    value: 1\n  },\n  {\n    label: 'Value 2',\n    value: 2\n  },\n  {\n    label: 'Value 3',\n    value: 3\n  }\n]"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/components/src/lib/inputs/combo-box/combo-box.stories.ts",
-                    "type": "Story<ComboBoxComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-combo-box\n      [items]=\"items\"\n      [disabled]=\"disabled\"\n      [selectedItem]=\"selectedItem\"\n    >\n    </pm-combo-box>\n  `\n})"
                 }
             ],
             "stories/Card.stories.ts": [
@@ -5635,6 +5651,16 @@
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
                 "name": "DefaultRadioButton",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/components/src/lib/inputs/radio-button/radio-button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "HorizontalRadioButton",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"

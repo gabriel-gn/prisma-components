@@ -12,6 +12,7 @@ export const Template: Story<RadioButtonComponent> = (args) => ({
   props: args,
   template: `
     <pm-radio-button
+      [orientation]="orientation"
       [values]="values"
       [selectedValue]="selectedValue"
       [disabled]="disabled"
@@ -30,6 +31,14 @@ export const defaultArgs = {
 export const DefaultRadioButton = Template.bind({});
 DefaultRadioButton.args = {
   ...defaultArgs,
+  values: ['Winter', 'Spring', 'Summer', 'Autumn'],
+  selectedValue: 'Spring'
+};
+
+export const HorizontalRadioButton = Template.bind({});
+HorizontalRadioButton.args = {
+  ...defaultArgs,
+  orientation: OrientationEnum.Y,
   values: ['Winter', 'Spring', 'Summer', 'Autumn'],
   selectedValue: 'Spring'
 };
