@@ -7,11 +7,16 @@ module.exports = {
     "../projects/**/lib/**/*.stories.@(mdx)"
   ],
   "addons": [
+    "storybook-ng-source-addon",
     "@storybook/addon-links",
-    "@storybook/addon-essentials",
-    "@storybook/addon-storysource",
+    {
+      name: '@storybook/addon-essentials',
+      options: {
+        actions: false,
+      },
+    },
     "@etchteam/storybook-addon-css-variables-theme",
-    "@geometricpanda/storybook-addon-badges"
+    "@geometricpanda/storybook-addon-badges",
   ],
   builder: 'webpack5',
   webpackFinal: async (config, { configType }) => {
