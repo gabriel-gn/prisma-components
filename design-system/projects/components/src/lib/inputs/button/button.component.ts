@@ -50,6 +50,9 @@ export class ButtonComponent {
         name += ` btn-${this.type}`;
       }
     }
+    if (this.iconClass) {
+      name += ` d-flex flex-row`;
+    }
     return name;
   }
 

@@ -1,7 +1,7 @@
 import {ButtonComponent} from './button.component';
 import {Meta} from '@storybook/angular/types-6-0';
 import {Story} from '@storybook/angular';
-import {MainColors} from "../../../models/colors";
+import {MainColors} from '../../../models/colors';
 
 export default {
   title: 'Prisma/Inputs/Buttons/Stories',
@@ -93,22 +93,7 @@ BusyButton.args = {
   busyText: 'Aguarde...'
 };
 
-const IconButtonTemplate = (args: ButtonComponent) => ({
-  component: ButtonComponent,
-  props: args,
-  template: `
-    <pm-button
-        [label]="label"
-        [type]="type"
-        [busy]="busy"
-        [busyText]="busyText"
-        [iconClass]="iconClass"
-        [outline]="outline"
-    >
-        Download
-    </pm-button>`
-});
-export const IconButton = IconButtonTemplate.bind({});
+export const IconButton = Template.bind({});
 IconButton.args = {
   ...defaultArgs,
   type: 'primary',
@@ -116,4 +101,5 @@ IconButton.args = {
   busyText: 'Aguarde...',
   iconClass: 'uil uil-lg uil-arrow-to-bottom',
   outline: true,
+  label: 'Download',
 };
