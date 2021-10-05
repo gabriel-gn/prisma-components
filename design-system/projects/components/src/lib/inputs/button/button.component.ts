@@ -27,6 +27,10 @@ export class ButtonComponent {
    */
   @Input('iconClass') iconClass: string;
   /**
+   * Caso tenha ícone, indica se o ícone estará no começo ou fim do botão
+   */
+  @Input('iconPosition') iconPosition: 'start' | 'end' = 'start';
+  /**
    * Se o botão será cheio ou apenas contornado pela borda
    */
   @Input('outline') outline: boolean = false;

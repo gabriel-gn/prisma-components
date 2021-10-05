@@ -17,6 +17,7 @@ export const Template: Story<ButtonComponent> = (args) => ({
         [busy]="busy"
         [busyText]="busyText"
         [iconClass]="iconClass"
+        [iconPosition]="iconPosition"
         [outline]="outline"
         [disabled]="disabled"
     >
@@ -31,6 +32,7 @@ export const defaultArgs = {
   busy: false,
   busyText: '',
   iconClass: '',
+  iconPosition: 'start',
   outline: false,
   disabled: false,
 };

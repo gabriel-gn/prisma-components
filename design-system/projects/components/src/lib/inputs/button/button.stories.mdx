@@ -43,6 +43,12 @@ export const argTypes = {
     },
     control: { type: 'text'},
   },
+  iconPosition: {
+    table: {
+      defaultValue: { summary: defaultArgs.iconPosition},
+    },
+    control: {type: 'select'}, options: ['start', 'end'],
+  },
   outline: {
     table: {
       defaultValue: { summary: defaultArgs.outline},
