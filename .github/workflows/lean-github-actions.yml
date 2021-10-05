@@ -5,7 +5,12 @@ on:
   pull_request:
     branches:
       - main
-  workflow_dispatch
+  workflow_dispatch:
+    inputs:
+      name:
+        description: 'Person Who Triggered'
+        required: true
+        default: 'gabriel-gn'
 
 jobs:
   check-version:
