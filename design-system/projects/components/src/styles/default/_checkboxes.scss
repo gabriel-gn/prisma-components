@@ -155,6 +155,7 @@
 
   .mat-radio-outer-circle,
   .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
+    background: var(--color-default);
     border-color: var(--color-default);
     border-width: 3px;
     width: 24px;
