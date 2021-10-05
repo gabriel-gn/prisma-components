@@ -4,7 +4,7 @@
 
 [comment]: <> (![alt text]&#40;./design-system/.storybook/public/logo.png&#41;)
 
-# Prisma Components
+# Prisma Components 
 ___
 
 ## Getting Started
