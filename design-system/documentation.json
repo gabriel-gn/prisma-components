@@ -242,7 +242,7 @@
         },
         {
             "name": "ButtonComponent",
-            "id": "component-ButtonComponent-0c041d3d4f2c352579d0347d2f01259e",
+            "id": "component-ButtonComponent-68ecbb15125068cccec0ab3a19f2361a",
             "file": "projects/components/src/lib/inputs/button/button.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -333,7 +333,7 @@
             "description": "",
             "rawdescription": "",
             "type": "component",
-            "sourceCode": "import {Component, Input} from '@angular/core';\nimport {MainColors} from '../../../models/colors';\n\n@Component({\n  selector: 'pm-button',\n  templateUrl: './button.component.html',\n  styleUrls: ['./button.component.scss']\n})\nexport class ButtonComponent {\n  @Input('label') label: string | null = '';  // Usada só pra aparecer no storybook\n  /**\n   * Cor do botão que será exibido.\n   * Utilizar as propriedades do tipo \"MainColors\"\n   */\n  @Input('type') type: MainColors | string = `${MainColors.default}`;\n  /**\n   * Exibe botão de \"carregamento\" e desabilita o botão.\n   * Para alterar o texto, utilizar a propriedade `busyText`\n   */\n  @Input('busy') busy: boolean = false;\n  /**\n   * Texto exibido junto ao botão de \"carregando\" quando a propriedade `busy` está como `true`\n   */\n  @Input('busyText') busyText: string;\n  /**\n   * Ícone que será exibido no botão junto ao texto. Ex: `uil uil-md uil-tabs`\n   */\n  @Input('iconClass') iconClass: string;\n  /**\n   * Caso tenha ícone, indica se o ícone estará no começo ou fim do botão\n   */\n  @Input('iconPosition') iconPosition: 'start' | 'end' = 'start';\n  /**\n   * Se o botão será cheio ou apenas contornado pela borda\n   */\n  @Input('outline') outline: boolean = false;\n  /**\n   * Propriedade de habilitado ou desabilitado\n   */\n  @Input('disabled') disabled: boolean = false;\n\n  constructor() { }\n\n  public getClassName(): string {\n    let name = 'btn';\n    if (this.type) {\n      if (this.outline) {\n        name += ` btn-outline-${this.type}`;\n      } else {\n        name += ` btn-${this.type}`;\n      }\n    }\n    return name;\n  }\n\n}\n",
+            "sourceCode": "import {Component, Input} from '@angular/core';\nimport {MainColors} from '../../../models/colors';\n\n@Component({\n  selector: 'pm-button',\n  templateUrl: './button.component.html',\n  styleUrls: ['./button.component.scss']\n})\nexport class ButtonComponent {\n  @Input('label') label: string | null = '';  // Usada só pra aparecer no storybook\n  /**\n   * Cor do botão que será exibido.\n   * Utilizar as propriedades do tipo \"MainColors\"\n   */\n  @Input('type') type: MainColors | string = `${MainColors.default}`;\n  /**\n   * Exibe botão de \"carregamento\" e desabilita o botão.\n   * Para alterar o texto, utilizar a propriedade `busyText`\n   */\n  @Input('busy') busy: boolean = false;\n  /**\n   * Texto exibido junto ao botão de \"carregando\" quando a propriedade `busy` está como `true`\n   */\n  @Input('busyText') busyText: string;\n  /**\n   * Ícone que será exibido no botão junto ao texto. Ex: `uil uil-md uil-tabs`\n   */\n  @Input('iconClass') iconClass: string;\n  /**\n   * Caso tenha ícone, indica se o ícone estará no começo ou fim do botão\n   */\n  @Input('iconPosition') iconPosition: 'start' | 'end' = 'start';\n  /**\n   * Se o botão será cheio ou apenas contornado pela borda\n   */\n  @Input('outline') outline: boolean = false;\n  /**\n   * Propriedade de habilitado ou desabilitado\n   */\n  @Input('disabled') disabled: boolean = false;\n\n  constructor() { }\n\n  public getClassName(): string {\n    let name = 'btn';\n    if (this.type) {\n      if (this.outline) {\n        name += ` btn-outline-${this.type}`;\n      } else {\n        name += ` btn-${this.type}`;\n      }\n    }\n    if (this.iconClass) {\n      name += ` d-flex flex-row`;\n    }\n    return name;\n  }\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -348,7 +348,7 @@
                 "args": [],
                 "line": 40
             },
-            "templateData": "<div class=\"pm-button\">\n  <button [className]=\"getClassName()\" [disabled]=\"busy || disabled\">\n    <ng-container *ngIf=\"busy; else buttonContent\">\n      <span class=\"spinner-border spinner-border-sm mx-2\" role=\"status\" aria-hidden=\"true\"></span>\n      {{busyText ? busyText : ''}}\n    </ng-container>\n  </button>\n</div>\n\n<ng-template #buttonContent>\n  <i *ngIf=\"iconClass && busy === false\" class=\"{{iconClass}}\"></i>\n  <ng-container *ngIf=\"label; else noLabel\">\n    <span class=\"align-self-center\">{{label}}</span>\n  </ng-container>\n</ng-template>\n\n<ng-template #noLabel>\n  <ng-content></ng-content>\n</ng-template>\n\n"
+            "templateData": "<div class=\"pm-button\">\n  <button [className]=\"getClassName()\" [disabled]=\"busy || disabled\">\n    <ng-container *ngIf=\"busy; else buttonContent\">\n      <span class=\"spinner-border spinner-border-sm mx-2\" role=\"status\" aria-hidden=\"true\"></span>\n      {{busyText ? busyText : ''}}\n    </ng-container>\n  </button>\n</div>\n\n<ng-template #buttonContent>\n  <i *ngIf=\"iconClass && busy === false && iconPosition === 'start'\" class=\"{{iconClass}}\"></i>\n  <ng-container *ngIf=\"label; else noLabel\">\n    <span class=\"align-self-center\" [ngClass]=\"{'ms-2': !!label && iconPosition === 'start', 'me-2': !!label && iconPosition === 'end'}\">\n      {{label}}\n    </span>\n  </ng-container>\n  <i *ngIf=\"iconClass && busy === false && iconPosition === 'end'\" class=\"{{iconClass}}\"></i>\n</ng-template>\n\n<ng-template #noLabel>\n  <ng-content></ng-content>\n</ng-template>\n\n"
         },
         {
             "name": "CardComponent",
@@ -3639,14 +3639,6 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/cards/basic-card/basic-card.stories.ts",
-                "type": "object",
-                "defaultValue": "{\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "projects/components/src/lib/cards/icon-card/icon-card.stories.ts",
                 "type": "object",
                 "defaultValue": "{\n  textPosition: 'center',\n  paddingClass: 'p-3',\n  hoverable: true,\n  orientation: OrientationEnum.Y,\n  iconClass: 'uil uil-star',\n  title: '',\n  subtitle: '',\n  iconCardArray: [],\n}"
@@ -3655,9 +3647,9 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/inputs/button/button.stories.ts",
+                "file": "projects/components/src/lib/cards/basic-card/basic-card.stories.ts",
                 "type": "object",
-                "defaultValue": "{\n  label: '',\n  type: MainColors.default,\n  busy: false,\n  busyText: '',\n  iconClass: '',\n  iconPosition: 'start',\n  outline: false,\n  disabled: false,\n}"
+                "defaultValue": "{\n}"
             },
             {
                 "name": "defaultArgs",
@@ -3666,6 +3658,14 @@
                 "file": "projects/components/src/lib/containers/expansion-panel/expansion-panel.stories.ts",
                 "type": "object",
                 "defaultValue": "{\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/components/src/lib/inputs/button/button.stories.ts",
+                "type": "object",
+                "defaultValue": "{\n  label: '',\n  type: MainColors.default,\n  busy: false,\n  busyText: '',\n  iconClass: '',\n  iconPosition: 'start',\n  outline: false,\n  disabled: false,\n}"
             },
             {
                 "name": "defaultArgs",
@@ -3921,15 +3921,7 @@
                 "subtype": "variable",
                 "file": "projects/components/src/lib/inputs/button/button.stories.ts",
                 "type": "",
-                "defaultValue": "IconButtonTemplate.bind({})"
-            },
-            {
-                "name": "IconButtonTemplate",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/components/src/lib/inputs/button/button.stories.ts",
-                "type": "",
-                "defaultValue": "(args: ButtonComponent) => ({\n  component: ButtonComponent,\n  props: args,\n  template: `\n    <pm-button\n        [label]=\"label\"\n        [type]=\"type\"\n        [busy]=\"busy\"\n        [busyText]=\"busyText\"\n        [iconClass]=\"iconClass\"\n        [outline]=\"outline\"\n    >\n        Download\n    </pm-button>`\n})"
+                "defaultValue": "Template.bind({})"
             },
             {
                 "name": "InfoButton",
@@ -4014,14 +4006,6 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/cards/basic-card/basic-card.stories.ts",
-                "type": "Story<BasicCardComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-basic-card\n    >\n    </pm-basic-card>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "projects/components/src/lib/cards/icon-card/icon-card.stories.ts",
                 "type": "Story<IconCardComponent>",
                 "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-icon-card\n      [textPosition]=\"textPosition\"\n      [paddingClass]=\"paddingClass\"\n      [hoverable]=\"hoverable\"\n      [orientation]=\"orientation\"\n      [iconClass]=\"iconClass\"\n      [title]=\"title\"\n      [subtitle]=\"subtitle\"\n      [iconCardArray]=\"iconCardArray\"\n    >\n    </pm-icon-card>\n  `\n})"
@@ -4030,9 +4014,9 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/inputs/button/button.stories.ts",
-                "type": "Story<ButtonComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-button\n        [label]=\"label\"\n        [type]=\"type\"\n        [busy]=\"busy\"\n        [busyText]=\"busyText\"\n        [iconClass]=\"iconClass\"\n        [iconPosition]=\"iconPosition\"\n        [outline]=\"outline\"\n        [disabled]=\"disabled\"\n    >\n        Button Content\n    </pm-button>\n  `\n})"
+                "file": "projects/components/src/lib/cards/basic-card/basic-card.stories.ts",
+                "type": "Story<BasicCardComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-basic-card\n    >\n    </pm-basic-card>\n  `\n})"
             },
             {
                 "name": "Template",
@@ -4041,6 +4025,14 @@
                 "file": "projects/components/src/lib/containers/expansion-panel/expansion-panel.stories.ts",
                 "type": "Story<ExpansionPanelComponent>",
                 "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-expansion-panel\n    >\n        Conteúdo aqui\n    </pm-expansion-panel>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/components/src/lib/inputs/button/button.stories.ts",
+                "type": "Story<ButtonComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-button\n        [label]=\"label\"\n        [type]=\"type\"\n        [busy]=\"busy\"\n        [busyText]=\"busyText\"\n        [iconClass]=\"iconClass\"\n        [iconPosition]=\"iconPosition\"\n        [outline]=\"outline\"\n        [disabled]=\"disabled\"\n    >\n        Button Content\n    </pm-button>\n  `\n})"
             },
             {
                 "name": "Template",
@@ -4505,15 +4497,7 @@
                     "subtype": "variable",
                     "file": "projects/components/src/lib/inputs/button/button.stories.ts",
                     "type": "",
-                    "defaultValue": "IconButtonTemplate.bind({})"
-                },
-                {
-                    "name": "IconButtonTemplate",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/components/src/lib/inputs/button/button.stories.ts",
-                    "type": "",
-                    "defaultValue": "(args: ButtonComponent) => ({\n  component: ButtonComponent,\n  props: args,\n  template: `\n    <pm-button\n        [label]=\"label\"\n        [type]=\"type\"\n        [busy]=\"busy\"\n        [busyText]=\"busyText\"\n        [iconClass]=\"iconClass\"\n        [outline]=\"outline\"\n    >\n        Download\n    </pm-button>`\n})"
+                    "defaultValue": "Template.bind({})"
                 },
                 {
                     "name": "InfoButton",
@@ -5384,16 +5368,6 @@
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
                 "name": "IconButton",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "projects/components/src/lib/inputs/button/button.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "IconButtonTemplate",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"

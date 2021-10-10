@@ -36,7 +36,7 @@
     "@storybook/core-events": "^6.4.0-alpha.18",
     "react": "^16.14.0",
     "rxjs": "~6.6.0",
-    "storybook-ng-source-addon": "0.0.12",
+    "storybook-ng-source-addon": "0.0.17",
     "tslib": "^2.0.0",
     "zone.js": "~0.11.3"
   },
