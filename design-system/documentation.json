@@ -4,7 +4,7 @@
         {
             "name": "ComboItem",
             "id": "interface-ComboItem-d3c0ca16bedc410222d778929fb9d94e",
-            "file": "projects/components/src/lib/inputs/combo-box/combo-box.component.ts",
+            "file": "projects/lib/src/components/inputs/combo-box/combo-box.component.ts",
             "type": "interface",
             "sourceCode": "import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';\n\nexport interface ComboItem {\n  label: string;\n  value: any;\n}\n\n@Component({\n  selector: 'pm-combo-box',\n  templateUrl: './combo-box.component.html',\n  styleUrls: ['./combo-box.component.scss']\n})\nexport class ComboBoxComponent implements OnInit {\n\n  /**\n   * Itens que serão exibidos na combo box.\n   * Devem ser obrigatoriamente do tipo `ComboItem[]`\n   */\n  @Input() items: ComboItem[] = [];\n  /**\n   * Item selecionado da combobox. Pode ser carregado previamente\n   */\n  @Input() selectedItem: any;\n  /**\n   * Desabilita a interação com os valores da combo box.\n   */\n  @Input() disabled: boolean = false;\n  /**\n   * Emite um valor booleano com o novo valor do item selecionado na combo box.\n   */\n  @Output() selectionChange: EventEmitter<any> = new EventEmitter<any>();\n\n  constructor(private ref: ChangeDetectorRef) {\n  }\n\n  ngOnInit(): void {\n    this.ref.detectChanges();\n  }\n\n  public setSelected(item: any): void {\n    this.selectedItem = item;\n    this.selectionChange.emit(item);\n  }\n\n  private selectionChanged(event: any): void {\n    this.selectionChange.emit(event.value);\n    this.ref.detectChanges();\n  }\n\n}\n",
             "properties": [
@@ -30,7 +30,7 @@
         {
             "name": "GridListItem",
             "id": "interface-GridListItem-5cb4593f16dbd542aaf26bdce3745f28",
-            "file": "projects/components/src/lib/lists/grid-list/grid-list.component.ts",
+            "file": "projects/lib/src/components/lists/grid-list/grid-list.component.ts",
             "type": "interface",
             "sourceCode": "import {Component, Input, TemplateRef, ViewChild} from '@angular/core';\nimport {MainColors} from '../../../models/colors';\n\nexport interface GridListItem {\n  title: string;\n  subtitle?: string;\n  context?: any;\n  iconClass?: string;\n  iconColor?: MainColors | string;\n  iconOutline?: boolean;\n  thumbnailPicture?: string;\n  bodyPicture: string;\n  iconCallback?: void;\n  titleCallback?: void;\n  subtitleCallback?: void;\n  bodyCallback?: void;\n}\n\n@Component({\n  selector: 'pm-grid-list',\n  templateUrl: './grid-list.component.html',\n  styleUrls: ['./grid-list.component.scss']\n})\nexport class GridListComponent {\n\n  @ViewChild('gridTemplate', {static: true}) gridTemplateRef: TemplateRef<any>;\n  @ViewChild('listTemplate', {static: true}) listTemplateRef: TemplateRef<any>;\n  @ViewChild('galleryTemplate', {static: true}) galleryTemplateRef: TemplateRef<any>;\n  @Input() displayStyle: 'list' | 'grid' | 'gallery' = 'grid';\n  @Input() overflowGallery: boolean = true;\n  @Input() items: GridListItem[];\n  @Input() gridHeaderReverse: boolean = false;\n  @Input() bodyBackgroundColor: string;\n  @Input() actionTemplate: TemplateRef<any>;\n\n  constructor() { }\n\n  public getTemplate(): TemplateRef<any> {\n    switch (this.displayStyle) {\n      case 'grid':\n        return this.gridTemplateRef;\n      case 'gallery':\n        return this.galleryTemplateRef;\n      case 'list':\n        return this.listTemplateRef;\n      default:\n        return this.gridTemplateRef;\n    }\n  }\n\n}\n",
             "properties": [
@@ -126,7 +126,7 @@
         {
             "name": "IconCardArrayItem",
             "id": "interface-IconCardArrayItem-ac9b6e4785630df88cd65f1b4aae5a97",
-            "file": "projects/components/src/lib/cards/icon-card/icon-card.component.ts",
+            "file": "projects/lib/src/components/cards/icon-card/icon-card.component.ts",
             "type": "interface",
             "sourceCode": "import {Component, Input} from '@angular/core';\nimport {OrientationEnum} from '../../../models/orientation';\n\nexport interface IconCardArrayItem {\n  title: string;\n  subtitle: string;\n  iconClass: string;\n}\n\n@Component({\n  selector: 'pm-icon-card',\n  templateUrl: './icon-card.component.html',\n  styleUrls: ['./icon-card.component.scss']\n})\nexport class IconCardComponent {\n\n  @Input('textPosition') textPosition: 'start' | 'end' | 'center' = 'center';\n  @Input('paddingClass') paddingClass: string = 'p-3';\n  @Input('hoverable') hoverable: boolean = true;\n  @Input('orientation') orientation: OrientationEnum = OrientationEnum.Y;\n  @Input('iconClass') iconClass: string = 'uil uil-star';\n  @Input('title') title: string = '';\n  @Input('subtitle') subtitle: string = '';\n  @Input('iconCardArray') iconCardArray: IconCardArrayItem[] = [];\n\n  constructor() { }\n\n}\n",
             "properties": [
@@ -161,7 +161,7 @@
         {
             "name": "ComponentsService",
             "id": "injectable-ComponentsService-b7227a2afcbe83ba2f5742aac484e6d1",
-            "file": "projects/components/src/lib/components.service.ts",
+            "file": "projects/lib/src/components/components.service.ts",
             "properties": [],
             "methods": [],
             "description": "",
@@ -181,7 +181,7 @@
         {
             "name": "BasicCardComponent",
             "id": "component-BasicCardComponent-643901b204ca40dfb990fe61a0492cd4",
-            "file": "projects/components/src/lib/cards/basic-card/basic-card.component.ts",
+            "file": "projects/lib/src/components/cards/basic-card/basic-card.component.ts",
             "encapsulation": [],
             "entryComponents": [],
             "inputs": [],
@@ -243,7 +243,7 @@
         {
             "name": "ButtonComponent",
             "id": "component-ButtonComponent-68ecbb15125068cccec0ab3a19f2361a",
-            "file": "projects/components/src/lib/inputs/button/button.component.ts",
+            "file": "projects/lib/src/components/inputs/button/button.component.ts",
             "encapsulation": [],
             "entryComponents": [],
             "inputs": [],
@@ -351,65 +351,9 @@
             "templateData": "<div class=\"pm-button\">\n  <button [className]=\"getClassName()\" [disabled]=\"busy || disabled\">\n    <ng-container *ngIf=\"busy; else buttonContent\">\n      <span class=\"spinner-border spinner-border-sm mx-2\" role=\"status\" aria-hidden=\"true\"></span>\n      {{busyText ? busyText : ''}}\n    </ng-container>\n  </button>\n</div>\n\n<ng-template #buttonContent>\n  <i *ngIf=\"iconClass && busy === false && iconPosition === 'start'\" class=\"{{iconClass}}\"></i>\n  <ng-container *ngIf=\"label; else noLabel\">\n    <span class=\"align-self-center\" [ngClass]=\"{'ms-2': !!label && iconPosition === 'start', 'me-2': !!label && iconPosition === 'end'}\">\n      {{label}}\n    </span>\n  </ng-container>\n  <i *ngIf=\"iconClass && busy === false && iconPosition === 'end'\" class=\"{{iconClass}}\"></i>\n</ng-template>\n\n<ng-template #noLabel>\n  <ng-content></ng-content>\n</ng-template>\n\n"
         },
         {
-            "name": "CardComponent",
-            "id": "component-CardComponent-258e5bd4c61dec0aac573bae3c72d714",
-            "file": "projects/components/src/lib/card/card.component.ts",
-            "encapsulation": [],
-            "entryComponents": [],
-            "inputs": [],
-            "outputs": [],
-            "providers": [],
-            "selector": "pm-card",
-            "styleUrls": [
-                "./card.component.scss"
-            ],
-            "styles": [],
-            "templateUrl": [
-                "./card.component.html"
-            ],
-            "viewProviders": [],
-            "inputsClass": [
-                {
-                    "name": "borderRadius",
-                    "defaultValue": "Sizes.md",
-                    "line": 12,
-                    "type": "Sizes"
-                },
-                {
-                    "name": "hoverable",
-                    "defaultValue": "false",
-                    "line": 11
-                }
-            ],
-            "outputsClass": [],
-            "propertiesClass": [],
-            "methodsClass": [],
-            "hostBindings": [],
-            "hostListeners": [],
-            "description": "",
-            "rawdescription": "",
-            "type": "component",
-            "sourceCode": "import {Component, Input} from '@angular/core';\nimport {Sizes} from '../../models/sizes';\n\n@Component({\n  selector: 'pm-card',\n  templateUrl: './card.component.html',\n  styleUrls: ['./card.component.scss']\n})\nexport class CardComponent {\n\n  @Input() hoverable = false;\n  @Input() borderRadius: Sizes = Sizes.md;\n\n  constructor() { }\n\n}\n",
-            "assetsDirs": [],
-            "styleUrlsData": [
-                {
-                    "data": "",
-                    "styleUrl": "./card.component.scss"
-                }
-            ],
-            "stylesData": "",
-            "constructorObj": {
-                "name": "constructor",
-                "description": "",
-                "args": [],
-                "line": 12
-            },
-            "templateData": "<div\n  [ngClass]=\"{'hoverable': hoverable}\"\n  class=\"card-basic {{borderRadius ? 'rad-' + borderRadius : ''}} w-100 p-3\"\n  style=\"height: auto;\">\n  <ng-content></ng-content>\n</div>\n"
-        },
-        {
             "name": "CheckboxComponent",
             "id": "component-CheckboxComponent-d18577b21928d161d857ae62825b0086",
-            "file": "projects/components/src/lib/inputs/checkbox/checkbox.component.ts",
+            "file": "projects/lib/src/components/inputs/checkbox/checkbox.component.ts",
             "encapsulation": [],
             "entryComponents": [],
             "inputs": [],
@@ -513,7 +457,7 @@
         {
             "name": "ComboBoxComponent",
             "id": "component-ComboBoxComponent-d3c0ca16bedc410222d778929fb9d94e",
-            "file": "projects/components/src/lib/inputs/combo-box/combo-box.component.ts",
+            "file": "projects/lib/src/components/inputs/combo-box/combo-box.component.ts",
             "encapsulation": [],
             "entryComponents": [],
             "inputs": [],
@@ -662,7 +606,7 @@
         {
             "name": "ComponentsComponent",
             "id": "component-ComponentsComponent-b10d994f930dcdc791bfa10ecd8f2428",
-            "file": "projects/components/src/lib/components.component.ts",
+            "file": "projects/lib/src/components/components.component.ts",
             "encapsulation": [],
             "entryComponents": [],
             "inputs": [],
@@ -709,7 +653,7 @@
         {
             "name": "CopyContentInputComponent",
             "id": "component-CopyContentInputComponent-bfa6a3c1d58c743a61a528776134b1ac",
-            "file": "projects/components/src/lib/inputs/copy-content-input/copy-content-input.component.ts",
+            "file": "projects/lib/src/components/inputs/copy-content-input/copy-content-input.component.ts",
             "encapsulation": [],
             "entryComponents": [],
             "inputs": [],
@@ -778,7 +722,7 @@
         {
             "name": "DraggableListComponent",
             "id": "component-DraggableListComponent-6404631ada48877fac72d1931ac83517",
-            "file": "projects/components/src/lib/lists/draggable-list/draggable-list.component.ts",
+            "file": "projects/lib/src/components/lists/draggable-list/draggable-list.component.ts",
             "encapsulation": [],
             "entryComponents": [],
             "inputs": [],
@@ -1205,7 +1149,7 @@
         {
             "name": "DropdownActionsComponent",
             "id": "component-DropdownActionsComponent-1c3607c0cbd61c280a4da30f4f688404",
-            "file": "projects/components/src/lib/inputs/dropdown-actions/dropdown-actions.component.ts",
+            "file": "projects/lib/src/components/inputs/dropdown-actions/dropdown-actions.component.ts",
             "encapsulation": [],
             "entryComponents": [],
             "inputs": [],
@@ -1406,7 +1350,7 @@
         {
             "name": "ExpansionPanelComponent",
             "id": "component-ExpansionPanelComponent-300a4cbd3ae80e3a22c4de453382f90f",
-            "file": "projects/components/src/lib/containers/expansion-panel/expansion-panel.component.ts",
+            "file": "projects/lib/src/components/containers/expansion-panel/expansion-panel.component.ts",
             "encapsulation": [],
             "entryComponents": [],
             "inputs": [],
@@ -1462,7 +1406,7 @@
         {
             "name": "GridListComponent",
             "id": "component-GridListComponent-5cb4593f16dbd542aaf26bdce3745f28",
-            "file": "projects/components/src/lib/lists/grid-list/grid-list.component.ts",
+            "file": "projects/lib/src/components/lists/grid-list/grid-list.component.ts",
             "encapsulation": [],
             "entryComponents": [],
             "inputs": [],
@@ -1592,7 +1536,7 @@
         {
             "name": "IconCardComponent",
             "id": "component-IconCardComponent-ac9b6e4785630df88cd65f1b4aae5a97",
-            "file": "projects/components/src/lib/cards/icon-card/icon-card.component.ts",
+            "file": "projects/lib/src/components/cards/icon-card/icon-card.component.ts",
             "encapsulation": [],
             "entryComponents": [],
             "inputs": [],
@@ -1685,7 +1629,7 @@
         {
             "name": "MultiLevelDropdownMenuComponent",
             "id": "component-MultiLevelDropdownMenuComponent-2b9b9b0243b413be470996a51d629c6f",
-            "file": "projects/components/src/lib/multi-level-dropdown-menu/multi-level-dropdown-menu.component.ts",
+            "file": "projects/lib/src/components/multi-level-dropdown-menu/multi-level-dropdown-menu.component.ts",
             "encapsulation": [],
             "entryComponents": [],
             "inputs": [],
@@ -1824,7 +1768,7 @@
         {
             "name": "RadioButtonComponent",
             "id": "component-RadioButtonComponent-e083ccd549e2c400eb8f30c1102c4f5d",
-            "file": "projects/components/src/lib/inputs/radio-button/radio-button.component.ts",
+            "file": "projects/lib/src/components/inputs/radio-button/radio-button.component.ts",
             "encapsulation": [],
             "entryComponents": [],
             "inputs": [],
@@ -1929,7 +1873,7 @@
         {
             "name": "StepperComponent",
             "id": "component-StepperComponent-3da625f623e2a5940f942c81f06d1447",
-            "file": "projects/components/src/lib/stepper/stepper.component.ts",
+            "file": "projects/lib/src/components/stepper/stepper.component.ts",
             "encapsulation": [],
             "entryComponents": [],
             "inputs": [],
@@ -1994,458 +1938,9 @@
             "templateData": "<section class=\"example-container\">\n  <header>\n    <ng-container *ngTemplateOutlet=\"headerActions\"></ng-container>\n    <h2>Step {{ selectedIndex + 1 }}/{{ steps.length }}</h2>\n  </header>\n\n  <div [ngTemplateOutlet]=\"selected ? selected.content : null\"></div>\n\n  <footer class=\"example-step-navigation-bar\">\n    <ng-container *ngTemplateOutlet=\"footerActions\"></ng-container>\n  </footer>\n</section>\n\n<ng-template #headerActions>\n  <button class=\"example-nav-button\" cdkStepperPrevious>&larr;</button>\n  <button\n    class=\"example-step\"\n    [class.example-active]=\"selectedIndex === i\"\n    *ngFor=\"let step of steps; let i = index\"\n    (click)=\"selectStepByIndex(i)\"\n  >\n    Step {{ i + 1 }}\n  </button>\n  <button class=\"example-nav-button\" cdkStepperNext>&rarr;</button>\n</ng-template>\n\n<ng-template #footerActions>\n  <div class=\"w-100 d-flex justify-content-between\">\n    <pm-button (click)=\"previous()\" [type]=\"'light'\">Retornar</pm-button>\n    <pm-button (click)=\"next()\" [type]=\"'primary'\">Retornar</pm-button>\n  </div>\n</ng-template>\n"
         },
         {
-            "name": "TableComponent",
-            "id": "component-TableComponent-8e8b08ecc80f40d3ab1ba626f509c321",
-            "file": "projects/components/src/lib/table/table.component.ts",
-            "encapsulation": [],
-            "entryComponents": [],
-            "inputs": [],
-            "outputs": [],
-            "providers": [],
-            "selector": "pm-table",
-            "styleUrls": [
-                "./table.component.scss"
-            ],
-            "styles": [],
-            "templateUrl": [
-                "./table.component.html"
-            ],
-            "viewProviders": [],
-            "inputsClass": [
-                {
-                    "name": "actionsTemplate",
-                    "line": 38,
-                    "type": "TemplateRef<any>"
-                },
-                {
-                    "name": "backgroundColor",
-                    "line": 41,
-                    "type": "string"
-                },
-                {
-                    "name": "borderRadius",
-                    "line": 40,
-                    "type": "Sizes"
-                },
-                {
-                    "name": "columnNames",
-                    "defaultValue": "[]",
-                    "line": 32,
-                    "type": "string[]"
-                },
-                {
-                    "name": "columns",
-                    "defaultValue": "[]",
-                    "line": 31,
-                    "type": "string[]"
-                },
-                {
-                    "name": "disableExpandedOnDisabledRow",
-                    "defaultValue": "true",
-                    "line": 44
-                },
-                {
-                    "name": "expandedDetailTemplate",
-                    "line": 43,
-                    "type": "TemplateRef<any>"
-                },
-                {
-                    "name": "imageColumns",
-                    "defaultValue": "[]",
-                    "line": 33,
-                    "type": "string[]"
-                },
-                {
-                    "name": "imageHeight",
-                    "line": 34,
-                    "type": ""
-                },
-                {
-                    "name": "itemList",
-                    "defaultValue": "[]",
-                    "line": 39,
-                    "type": "any"
-                },
-                {
-                    "name": "numberFormat",
-                    "defaultValue": "'1.2-2'",
-                    "line": 36
-                },
-                {
-                    "name": "numberPrefix",
-                    "defaultValue": "''",
-                    "line": 37
-                },
-                {
-                    "name": "showHeader",
-                    "defaultValue": "true",
-                    "line": 35
-                }
-            ],
-            "outputsClass": [
-                {
-                    "name": "onItemListChange",
-                    "defaultValue": "new EventEmitter()",
-                    "line": 30,
-                    "type": "EventEmitter"
-                }
-            ],
-            "propertiesClass": [
-                {
-                    "name": "doubleLabelCell",
-                    "type": "TemplateRef<any>",
-                    "optional": false,
-                    "description": "",
-                    "line": 48,
-                    "decorators": [
-                        {
-                            "name": "ViewChild",
-                            "stringifiedArguments": "'doubleLabelCell', {static: true}"
-                        }
-                    ]
-                },
-                {
-                    "name": "expandedRow",
-                    "type": "any",
-                    "optional": false,
-                    "description": "",
-                    "line": 52,
-                    "modifierKind": [
-                        114
-                    ]
-                },
-                {
-                    "name": "formattedNumberCell",
-                    "type": "TemplateRef<any>",
-                    "optional": false,
-                    "description": "",
-                    "line": 50,
-                    "decorators": [
-                        {
-                            "name": "ViewChild",
-                            "stringifiedArguments": "'formattedNumberCell', {static: true}"
-                        }
-                    ]
-                },
-                {
-                    "name": "imageCell",
-                    "type": "TemplateRef<any>",
-                    "optional": false,
-                    "description": "",
-                    "line": 49,
-                    "decorators": [
-                        {
-                            "name": "ViewChild",
-                            "stringifiedArguments": "'imageCell', {static: true}"
-                        }
-                    ]
-                },
-                {
-                    "name": "isExpansionDetailRow",
-                    "defaultValue": "() => {...}",
-                    "type": "",
-                    "optional": false,
-                    "description": "",
-                    "line": 54
-                },
-                {
-                    "name": "isNormalRow",
-                    "defaultValue": "() => {...}",
-                    "type": "",
-                    "optional": false,
-                    "description": "",
-                    "line": 56
-                },
-                {
-                    "name": "singleLabelCell",
-                    "type": "TemplateRef<any>",
-                    "optional": false,
-                    "description": "",
-                    "line": 47,
-                    "decorators": [
-                        {
-                            "name": "ViewChild",
-                            "stringifiedArguments": "'singleLabelCell', {static: true}"
-                        }
-                    ]
-                },
-                {
-                    "name": "table",
-                    "type": "MatTable<any>",
-                    "optional": false,
-                    "description": "",
-                    "line": 46,
-                    "decorators": [
-                        {
-                            "name": "ViewChild",
-                            "stringifiedArguments": "'table', {static: true}"
-                        }
-                    ]
-                }
-            ],
-            "methodsClass": [
-                {
-                    "name": "disableHeader",
-                    "args": [],
-                    "optional": false,
-                    "returnType": "void",
-                    "typeParameters": [],
-                    "line": 137,
-                    "description": "<p>Some com a linha de header</p>\n",
-                    "modifierKind": [
-                        114
-                    ]
-                },
-                {
-                    "name": "enableHeader",
-                    "args": [],
-                    "optional": false,
-                    "returnType": "void",
-                    "typeParameters": [],
-                    "line": 130,
-                    "description": "<p>Mostra a linha de header</p>\n",
-                    "modifierKind": [
-                        114
-                    ]
-                },
-                {
-                    "name": "getCellTemplate",
-                    "args": [
-                        {
-                            "name": "item",
-                            "type": "any"
-                        },
-                        {
-                            "name": "column",
-                            "type": "string"
-                        }
-                    ],
-                    "optional": false,
-                    "returnType": "TemplateRef<any>",
-                    "typeParameters": [],
-                    "line": 146,
-                    "description": "<p>Retorna o template que será renderizada a celula de acordo com o input de item e coluna</p>\n",
-                    "modifierKind": [
-                        114
-                    ],
-                    "jsdoctags": [
-                        {
-                            "name": {
-                                "pos": 4093,
-                                "end": 4097,
-                                "flags": 0,
-                                "escapedText": "item"
-                            },
-                            "type": "any",
-                            "tagName": {
-                                "pos": 4087,
-                                "end": 4092,
-                                "flags": 0,
-                                "escapedText": "param"
-                            },
-                            "comment": "<p>: item da lista de itens</p>\n"
-                        },
-                        {
-                            "name": {
-                                "pos": 4134,
-                                "end": 4140,
-                                "flags": 0,
-                                "escapedText": "column"
-                            },
-                            "type": "string",
-                            "tagName": {
-                                "pos": 4128,
-                                "end": 4133,
-                                "flags": 0,
-                                "escapedText": "param"
-                            },
-                            "comment": "<p>: propriedade do item</p>\n"
-                        }
-                    ]
-                },
-                {
-                    "name": "getItemList",
-                    "args": [],
-                    "optional": false,
-                    "returnType": "any[]",
-                    "typeParameters": [],
-                    "line": 114,
-                    "description": "<p>Retorna a lista atual de itens na tabela</p>\n",
-                    "modifierKind": [
-                        114
-                    ]
-                },
-                {
-                    "name": "isSelectedRow",
-                    "args": [
-                        {
-                            "name": "row",
-                            "type": "any"
-                        }
-                    ],
-                    "optional": false,
-                    "returnType": "boolean",
-                    "typeParameters": [],
-                    "line": 96,
-                    "description": "<p>Verifica se a row é igual à selecionada</p>\n",
-                    "modifierKind": [
-                        114
-                    ],
-                    "jsdoctags": [
-                        {
-                            "name": {
-                                "pos": 2950,
-                                "end": 2953,
-                                "flags": 0,
-                                "escapedText": "row"
-                            },
-                            "type": "any",
-                            "tagName": {
-                                "pos": 2944,
-                                "end": 2949,
-                                "flags": 0,
-                                "escapedText": "param"
-                            },
-                            "comment": ""
-                        }
-                    ]
-                },
-                {
-                    "name": "ngAfterViewInit",
-                    "args": [],
-                    "optional": false,
-                    "returnType": "void",
-                    "typeParameters": [],
-                    "line": 63
-                },
-                {
-                    "name": "reloadExpandedDetail",
-                    "args": [],
-                    "optional": false,
-                    "returnType": "void",
-                    "typeParameters": [],
-                    "line": 104,
-                    "description": "<p>Reconstroi os elementos da tabela para incluir o &quot;detail row&quot; e deixar ela expansível</p>\n",
-                    "modifierKind": [
-                        112
-                    ],
-                    "jsdoctags": [
-                        {
-                            "tagName": {
-                                "pos": 3157,
-                                "end": 3164,
-                                "flags": 0,
-                                "escapedText": "private"
-                            },
-                            "comment": ""
-                        }
-                    ]
-                },
-                {
-                    "name": "setItemList",
-                    "args": [
-                        {
-                            "name": "itemList",
-                            "type": "any[]"
-                        }
-                    ],
-                    "optional": false,
-                    "returnType": "void",
-                    "typeParameters": [],
-                    "line": 121,
-                    "description": "<p>Troca a lista de itens da tabela</p>\n",
-                    "modifierKind": [
-                        114
-                    ],
-                    "jsdoctags": [
-                        {
-                            "name": "itemList",
-                            "type": "any[]",
-                            "tagName": {
-                                "text": "param"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "name": "setSelectedRow",
-                    "args": [
-                        {
-                            "name": "row",
-                            "type": "any"
-                        }
-                    ],
-                    "optional": false,
-                    "returnType": "void",
-                    "typeParameters": [],
-                    "line": 77,
-                    "description": "<p>dá como selecionada a row atual CASO exista um template de expandedDetailTemplate</p>\n",
-                    "modifierKind": [
-                        114
-                    ],
-                    "jsdoctags": [
-                        {
-                            "name": {
-                                "pos": 2470,
-                                "end": 2473,
-                                "flags": 0,
-                                "escapedText": "row"
-                            },
-                            "type": "any",
-                            "tagName": {
-                                "pos": 2464,
-                                "end": 2469,
-                                "flags": 0,
-                                "escapedText": "param"
-                            },
-                            "comment": ""
-                        }
-                    ]
-                }
-            ],
-            "hostBindings": [],
-            "hostListeners": [],
-            "description": "",
-            "rawdescription": "",
-            "type": "component",
-            "sourceCode": "import {\n  AfterViewInit,\n  ChangeDetectorRef,\n  Component,\n  EventEmitter,\n  Input,\n  Output,\n  TemplateRef,\n  ViewChild\n} from '@angular/core';\nimport {Sizes} from '../../models/sizes';\nimport {animate, state, style, transition, trigger} from '@angular/animations';\nimport {MatTable, MatTableDataSource} from '@angular/material/table';\nimport _ from 'lodash';\n\n@Component({\n  selector: 'pm-table',\n  templateUrl: './table.component.html',\n  styleUrls: ['./table.component.scss'],\n  animations: [\n    trigger('detailExpand', [\n      state('collapsed', style({height: '0px', minHeight: '0px', visibility: 'hidden'})),\n      state('expanded', style({height: '*', visibility: 'visible'})),\n      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),\n    ]),\n  ],\n})\nexport class TableComponent implements AfterViewInit {\n\n  @Output() onItemListChange = new EventEmitter();\n  @Input() columns: string[] = [];\n  @Input() columnNames: string[] = [];\n  @Input() imageColumns: string[] = [];\n  @Input() imageHeight: '50px';\n  @Input() showHeader = true;\n  @Input() numberFormat = '1.2-2';\n  @Input() numberPrefix = '';\n  @Input() actionsTemplate: TemplateRef<any>;\n  @Input() itemList: any = [];\n  @Input() borderRadius: Sizes;\n  @Input() backgroundColor: string;\n\n  @Input() expandedDetailTemplate: TemplateRef<any>;\n  @Input() disableExpandedOnDisabledRow = true;\n\n  @ViewChild('table', {static: true}) table: MatTable<any>;\n  @ViewChild('singleLabelCell', {static: true}) singleLabelCell: TemplateRef<any>;\n  @ViewChild('doubleLabelCell', {static: true}) doubleLabelCell: TemplateRef<any>;\n  @ViewChild('imageCell', {static: true}) imageCell: TemplateRef<any>;\n  @ViewChild('formattedNumberCell', {static: true}) formattedNumberCell: TemplateRef<any>;\n\n  public expandedRow: any;\n  // tslint:disable-next-line:ban-types\n  isExpansionDetailRow = (i: number, row: Object) => row.hasOwnProperty('detailRow');\n  // tslint:disable-next-line:ban-types\n  isNormalRow = (i: number, row: Object) => true;\n\n  constructor(\n    private changeDetectorRef: ChangeDetectorRef\n  ) {\n  }\n\n  ngAfterViewInit(): void {\n    if (typeof this.actionsTemplate !== 'undefined') {\n      if (this.columns.includes('ACTIONS') === false) {\n        this.columns.push('ACTIONS');\n        this.columnNames.push('');\n      }\n    }\n    this.reloadExpandedDetail();\n  }\n\n  /**\n   * dá como selecionada a row atual CASO exista um template de expandedDetailTemplate\n   * @param row\n   */\n  public setSelectedRow(row: any): void {\n    if (!_.isNil(this.expandedDetailTemplate)) {\n      if (row.hasOwnProperty('detailRow') === false) {\n        row = { detailRow: true, element: row };\n      }\n      if (row.element?.disabled) {\n        if (this.disableExpandedOnDisabledRow === false) {\n          this.expandedRow = row;\n        }\n      } else {\n        this.expandedRow = row;\n      }\n    }\n  }\n\n  /**\n   * Verifica se a row é igual à selecionada\n   * @param row\n   */\n  public isSelectedRow(row: any): boolean {\n    return _.isEqual(row, this.expandedRow);\n  }\n\n  /**\n   * Reconstroi os elementos da tabela para incluir o \"detail row\" e deixar ela expansível\n   * @private\n   */\n  private reloadExpandedDetail(): void {\n    const newItems = [];\n    this.itemList.forEach(element => newItems.push(element, { detailRow: true, element }));\n    this.itemList = new MatTableDataSource(newItems);\n    this.changeDetectorRef.detectChanges();\n  }\n\n  /**\n   * Retorna a lista atual de itens na tabela\n   */\n  public getItemList(): any[] {\n    return this.itemList;\n  }\n\n  /**\n   * Troca a lista de itens da tabela\n   */\n  public setItemList(itemList: any[]): void {\n    this.itemList = itemList;\n    this.reloadExpandedDetail();\n    this.onItemListChange.emit(this.itemList);\n  }\n\n  /**\n   * Mostra a linha de header\n   */\n  public enableHeader(): void {\n    this.showHeader = true;\n  }\n\n  /**\n   * Some com a linha de header\n   */\n  public disableHeader(): void {\n    this.showHeader = false;\n  }\n\n  /**\n   * Retorna o template que será renderizada a celula de acordo com o input de item e coluna\n   * @param item: item da lista de itens\n   * @param column: propriedade do item\n   */\n  public getCellTemplate(item: any, column: string): TemplateRef<any> {\n    if (column === 'ACTIONS') {\n      return this.actionsTemplate;\n    } else if (Array.isArray(item[column])) {\n      return this.doubleLabelCell;\n    } else {\n      if (this.imageColumns.includes(column)) {\n        return this.imageCell;\n      } else {\n        if (typeof item[column] === 'number') {\n          return this.formattedNumberCell;\n        } else {\n          return this.singleLabelCell;\n        }\n      }\n    }\n  }\n}\n",
-            "assetsDirs": [],
-            "styleUrlsData": [
-                {
-                    "data": ".pm-table-list {\n  width: 100%;\n  border-collapse: collapse;\n  overflow:hidden !important;\n\n  &.mat-table {\n    background-color: transparent;\n  }\n\n  mat-header-cell {\n    font-size: 16px;\n    font-weight: 600;\n  }\n\n  mat-cell {\n    &.disabled {\n      background-color: var(--color-gray-light);\n\n      * {\n        color: var(--color-gray-dark) !important;\n      }\n    }\n  }\n\n  .main-label {\n    margin: 0px;\n    color: rgba(0, 0, 0, 0.87);\n    font-size: 14px;\n  }\n\n  .sub-label {\n    margin: 0px;\n    color: #c0c0c0;\n  }\n\n  .element-row {\n    position: relative;\n  }\n\n  .element-row:not(.expanded) {\n    cursor: pointer;\n  }\n\n  .element-row.expanded {\n    border-bottom-color: transparent;\n  }\n}\n",
-                    "styleUrl": "./table.component.scss"
-                }
-            ],
-            "stylesData": "",
-            "constructorObj": {
-                "name": "constructor",
-                "description": "",
-                "args": [
-                    {
-                        "name": "changeDetectorRef",
-                        "type": "ChangeDetectorRef"
-                    }
-                ],
-                "line": 56,
-                "jsdoctags": [
-                    {
-                        "name": "changeDetectorRef",
-                        "type": "ChangeDetectorRef",
-                        "tagName": {
-                            "text": "param"
-                        }
-                    }
-                ]
-            },
-            "implements": [
-                "AfterViewInit"
-            ],
-            "templateData": "<mat-table #table [dataSource]=\"itemList\" class=\"prisma-table\"\n       [ngStyle]=\"{'border-radius': borderRadius ? 'var(--border-radius-' + borderRadius + ')' : null, 'background-color': backgroundColor ? backgroundColor : null}\"\n>\n\n  <ng-container *ngFor=\"let column of columns; let i = index;\">\n    <ng-container matColumnDef=\"{{column}}\">\n      <mat-header-cell *matHeaderCellDef>{{columnNames ? columnNames[i] : column}}</mat-header-cell>\n      <mat-cell *matCellDef=\"let item\" [ngClass]=\"{'disabled': item?.disabled === true}\">\n        <ng-container\n          *ngTemplateOutlet=\"getCellTemplate(item, column);\n          context: {$implicit: item, column: column}\">\n        </ng-container>\n      </mat-cell>\n    </ng-container>\n  </ng-container>\n\n  <ng-container matColumnDef=\"expandedDetail\">\n    <mat-cell *matCellDef=\"let item\" [ngClass]=\"{'disabled': item?.disabled === true}\">\n      <ng-container *ngTemplateOutlet=\"expandedDetailTemplate; context: {$implicit: item.element}\"></ng-container>\n    </mat-cell>\n  </ng-container>\n\n  <mat-header-row *matHeaderRowDef=\"columns\" [ngClass]=\"{'d-none': !showHeader}\"></mat-header-row>\n  <mat-row *matRowDef=\"let row; columns: columns\"\n           [ngClass]=\"{'element-row': expandedDetailTemplate}\"\n           [class.expanded]=\"expandedRow == row\"\n           (click)=\"setSelectedRow(row)\"\n  ></mat-row>\n  <mat-row *matRowDef=\"let row; columns: ['expandedDetail']; when: isExpansionDetailRow\"\n           [@detailExpand]=\"isSelectedRow(row) ? 'expanded' : 'collapsed'\"\n           (click)=\"setSelectedRow(row)\"\n           style=\"overflow: hidden\"\n  >\n  </mat-row>\n</mat-table>\n\n<ng-template #imageCell let-item let-column=\"column\">\n  <img [attr.src]=\"item[column]\" [attr.alt]=\"item[column]\"\n  class=\"img-fluid my-2\" [ngStyle]=\"{'height': imageHeight ? imageHeight : '50px', 'max-height': imageHeight ? imageHeight : '50px'}\">\n</ng-template>\n\n<ng-template #singleLabelCell let-item let-column=\"column\">\n  <p class=\"main-label\">{{item[column]}}</p>\n</ng-template>\n\n<ng-template #doubleLabelCell let-item let-column=\"column\">\n  <div class=\"d-block\">\n    <p class=\"main-label\">{{item[column][0]}}</p>\n    <p class=\"sub-label\">{{item[column][1]}}</p>\n  </div>\n</ng-template>\n\n<ng-template #formattedNumberCell let-item let-column=\"column\">\n  <p class=\"main-label\">{{numberPrefix}}{{item[column] | number: numberFormat}}</p>\n</ng-template>\n"
-        },
-        {
             "name": "TableListComponent",
             "id": "component-TableListComponent-8d464ad295201e72de27d5e1f4c6c56b",
-            "file": "projects/components/src/lib/lists/table-list/table-list.component.ts",
+            "file": "projects/lib/src/components/lists/table-list/table-list.component.ts",
             "encapsulation": [],
             "entryComponents": [],
             "inputs": [],
@@ -2970,43 +2465,6 @@
             ]
         },
         {
-            "name": "CardModule",
-            "children": [
-                {
-                    "type": "providers",
-                    "elements": []
-                },
-                {
-                    "type": "declarations",
-                    "elements": [
-                        {
-                            "name": "CardComponent"
-                        }
-                    ]
-                },
-                {
-                    "type": "imports",
-                    "elements": []
-                },
-                {
-                    "type": "exports",
-                    "elements": [
-                        {
-                            "name": "CardComponent"
-                        }
-                    ]
-                },
-                {
-                    "type": "bootstrap",
-                    "elements": []
-                },
-                {
-                    "type": "classes",
-                    "elements": []
-                }
-            ]
-        },
-        {
             "name": "CheckboxModule",
             "children": [
                 {
@@ -3373,9 +2831,6 @@
                             "name": "ButtonModule"
                         },
                         {
-                            "name": "CardModule"
-                        },
-                        {
                             "name": "ComboBoxModule"
                         },
                         {
@@ -3530,43 +2985,6 @@
                     "elements": []
                 }
             ]
-        },
-        {
-            "name": "TableModule",
-            "children": [
-                {
-                    "type": "providers",
-                    "elements": []
-                },
-                {
-                    "type": "declarations",
-                    "elements": [
-                        {
-                            "name": "TableComponent"
-                        }
-                    ]
-                },
-                {
-                    "type": "imports",
-                    "elements": []
-                },
-                {
-                    "type": "exports",
-                    "elements": [
-                        {
-                            "name": "TableComponent"
-                        }
-                    ]
-                },
-                {
-                    "type": "bootstrap",
-                    "elements": []
-                },
-                {
-                    "type": "classes",
-                    "elements": []
-                }
-            ]
         }
     ],
     "miscellaneous": {
@@ -3575,7 +2993,7 @@
                 "name": "ActionsTable",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
+                "file": "projects/lib/src/components/lists/table-list/table-list.stories.ts",
                 "type": "",
                 "defaultValue": "ActionsTableTemplate.bind({})"
             },
@@ -3583,7 +3001,7 @@
                 "name": "ActionsTableTemplate",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
+                "file": "projects/lib/src/components/lists/table-list/table-list.stories.ts",
                 "type": "Story<TableListComponent>",
                 "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-table-list\n      [columns]=\"columns\"\n      [columnNames]=\"columnNames\"\n      [imageColumns]=\"imageColumns\"\n      [imageHeight]=\"imageHeight\"\n      [showHeader]=\"showHeader\"\n      [numberFormat]=\"numberFormat\"\n      [numberPrefix]=\"numberPrefix\"\n      [itemList]=\"itemList\"\n      [borderRadius]=\"borderRadius\"\n      [backgroundColor]=\"backgroundColor\"\n      [expandedDetailTemplate]=\"expandedDetailTemplate\"\n      [disableExpandedOnDisabledRow]=\"disableExpandedOnDisabledRow\"\n      [actionsTemplate]=\"actionsTemplate\"\n    ></pm-table-list>\n\n    <ng-template #actionsTemplate let-item let-column=\"column\">\n      <div [ngClass]=\"{'disabled': item?.disabled === true}\">\n        <button class=\"btn btn-primary\" [disabled]=\"item?.disabled\">Actions (id: {{item.id}})</button>\n      </div>\n    </ng-template>\n  `\n})"
             },
@@ -3591,7 +3009,7 @@
                 "name": "ArrayIconCard",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/cards/icon-card/icon-card.stories.ts",
+                "file": "projects/lib/src/components/cards/icon-card/icon-card.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             },
@@ -3599,7 +3017,7 @@
                 "name": "BusyButton",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/inputs/button/button.stories.ts",
+                "file": "projects/lib/src/components/inputs/button/button.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             },
@@ -3607,7 +3025,7 @@
                 "name": "ColorTable",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
+                "file": "projects/lib/src/components/lists/table-list/table-list.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             },
@@ -3615,7 +3033,7 @@
                 "name": "context",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/test.ts",
+                "file": "projects/lib/src/test.ts",
                 "type": "",
                 "defaultValue": "require.context('./', true, /\\.spec\\.ts$/)"
             },
@@ -3623,7 +3041,7 @@
                 "name": "DangerButton",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/inputs/button/button.stories.ts",
+                "file": "projects/lib/src/components/inputs/button/button.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             },
@@ -3639,7 +3057,15 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/cards/icon-card/icon-card.stories.ts",
+                "file": "projects/lib/src/components/cards/basic-card/basic-card.stories.ts",
+                "type": "object",
+                "defaultValue": "{\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/components/cards/icon-card/icon-card.stories.ts",
                 "type": "object",
                 "defaultValue": "{\n  textPosition: 'center',\n  paddingClass: 'p-3',\n  hoverable: true,\n  orientation: OrientationEnum.Y,\n  iconClass: 'uil uil-star',\n  title: '',\n  subtitle: '',\n  iconCardArray: [],\n}"
             },
@@ -3647,7 +3073,7 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/cards/basic-card/basic-card.stories.ts",
+                "file": "projects/lib/src/components/containers/expansion-panel/expansion-panel.stories.ts",
                 "type": "object",
                 "defaultValue": "{\n}"
             },
@@ -3655,63 +3081,7 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/containers/expansion-panel/expansion-panel.stories.ts",
-                "type": "object",
-                "defaultValue": "{\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/components/src/lib/inputs/button/button.stories.ts",
-                "type": "object",
-                "defaultValue": "{\n  label: '',\n  type: MainColors.default,\n  busy: false,\n  busyText: '',\n  iconClass: '',\n  iconPosition: 'start',\n  outline: false,\n  disabled: false,\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/components/src/lib/inputs/checkbox/checkbox.stories.ts",
-                "type": "object",
-                "defaultValue": "{\n  checked: false,\n  disabled: false,\n  selectedItem: undefined,\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/components/src/lib/inputs/combo-box/combo-box.stories.ts",
-                "type": "object",
-                "defaultValue": "{\n  items: [],\n  disabled: false,\n  selectedItem: undefined\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/components/src/lib/inputs/copy-content-input/copy-content-input.stories.ts",
-                "type": "object",
-                "defaultValue": "{\n  disabled: false,\n  text: ''\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/components/src/lib/inputs/dropdown-actions/dropdown-actions.stories.ts",
-                "type": "object",
-                "defaultValue": "{\n  actions: []\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/components/src/lib/inputs/radio-button/radio-button.stories.ts",
-                "type": "object",
-                "defaultValue": "{\n  orientation: OrientationEnum.Y,\n  values: [],\n  disabled: false,\n  selectedValue: undefined\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/components/src/lib/lists/draggable-list/draggable-list.stories.ts",
+                "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
                 "type": "object",
                 "defaultValue": "{\n  showIndex: true,\n  itemActionLabel: undefined,\n  itemMainLabel: undefined,\n  itemSubLabel: undefined,\n  actions: undefined,\n  itemList: undefined,\n  roundedBorders: true,\n  enableDragging: true,\n  enableSelection: true,\n}"
             },
@@ -3719,7 +3089,7 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/lists/grid-list/grid-list.stories.ts",
+                "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
                 "type": "object",
                 "defaultValue": "{\n}"
             },
@@ -3727,15 +3097,63 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
+                "file": "projects/lib/src/components/lists/table-list/table-list.stories.ts",
                 "type": "object",
                 "defaultValue": "{\n  columns: [],\n  columnNames: [],\n  imageColumns: [],\n  imageHeight: '50px',\n  showHeader: true,\n  numberFormat: '1.2-2',\n  numberPrefix: '',\n  actionsTemplate: undefined,\n  itemList: undefined,\n  borderRadius: undefined,\n  backgroundColor: undefined,\n  expandedDetailTemplate: undefined,\n  disableExpandedOnDisabledRow: true,\n  expandedRow: undefined\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/components/inputs/button/button.stories.ts",
+                "type": "object",
+                "defaultValue": "{\n  label: '',\n  type: MainColors.default,\n  busy: false,\n  busyText: '',\n  iconClass: '',\n  iconPosition: 'start',\n  outline: false,\n  disabled: false,\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts",
+                "type": "object",
+                "defaultValue": "{\n  items: [],\n  disabled: false,\n  selectedItem: undefined\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
+                "type": "object",
+                "defaultValue": "{\n  checked: false,\n  disabled: false,\n  selectedItem: undefined,\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts",
+                "type": "object",
+                "defaultValue": "{\n  disabled: false,\n  text: ''\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/components/inputs/dropdown-actions/dropdown-actions.stories.ts",
+                "type": "object",
+                "defaultValue": "{\n  actions: []\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts",
+                "type": "object",
+                "defaultValue": "{\n  orientation: OrientationEnum.Y,\n  values: [],\n  disabled: false,\n  selectedValue: undefined\n}"
             },
             {
                 "name": "DefaultBasicCard",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/cards/basic-card/basic-card.stories.ts",
+                "file": "projects/lib/src/components/cards/basic-card/basic-card.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             },
@@ -3743,15 +3161,7 @@
                 "name": "DefaultButton",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/inputs/button/button.stories.ts",
-                "type": "",
-                "defaultValue": "Template.bind({})"
-            },
-            {
-                "name": "DefaultCard",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "stories/Card.stories.ts",
+                "file": "projects/lib/src/components/inputs/button/button.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             },
@@ -3759,7 +3169,7 @@
                 "name": "DefaultCheckbox",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/inputs/checkbox/checkbox.stories.ts",
+                "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             },
@@ -3767,7 +3177,7 @@
                 "name": "DefaultComboBox",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/inputs/combo-box/combo-box.stories.ts",
+                "file": "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             },
@@ -3775,7 +3185,7 @@
                 "name": "DefaultCopyContentInput",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/inputs/copy-content-input/copy-content-input.stories.ts",
+                "file": "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             },
@@ -3783,7 +3193,7 @@
                 "name": "DefaultDraggableList",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/lists/draggable-list/draggable-list.stories.ts",
+                "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             },
@@ -3791,7 +3201,7 @@
                 "name": "DefaultDropdownActions",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/inputs/dropdown-actions/dropdown-actions.stories.ts",
+                "file": "projects/lib/src/components/inputs/dropdown-actions/dropdown-actions.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             },
@@ -3799,7 +3209,7 @@
                 "name": "DefaultExpansionPanel",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/containers/expansion-panel/expansion-panel.stories.ts",
+                "file": "projects/lib/src/components/containers/expansion-panel/expansion-panel.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             },
@@ -3807,7 +3217,7 @@
                 "name": "DefaultGridList",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/lists/grid-list/grid-list.stories.ts",
+                "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             },
@@ -3815,7 +3225,7 @@
                 "name": "DefaultIconCard",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/cards/icon-card/icon-card.stories.ts",
+                "file": "projects/lib/src/components/cards/icon-card/icon-card.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             },
@@ -3823,7 +3233,7 @@
                 "name": "defaultItems",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/inputs/combo-box/combo-box.stories.ts",
+                "file": "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts",
                 "type": "[]",
                 "defaultValue": "[\n  {\n    label: 'Value 1',\n    value: 1\n  },\n  {\n    label: 'Value 2',\n    value: 2\n  },\n  {\n    label: 'Value 3',\n    value: 3\n  }\n]"
             },
@@ -3831,7 +3241,7 @@
                 "name": "DefaultRadioButton",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/inputs/radio-button/radio-button.stories.ts",
+                "file": "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             },
@@ -3847,7 +3257,7 @@
                 "name": "DefaultTableList",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
+                "file": "projects/lib/src/components/lists/table-list/table-list.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             },
@@ -3863,7 +3273,7 @@
                 "name": "DisabledButton",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/inputs/button/button.stories.ts",
+                "file": "projects/lib/src/components/inputs/button/button.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             },
@@ -3871,7 +3281,7 @@
                 "name": "DisabledCheckbox",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/inputs/checkbox/checkbox.stories.ts",
+                "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             },
@@ -3879,7 +3289,7 @@
                 "name": "DisabledDragging",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/lists/draggable-list/draggable-list.stories.ts",
+                "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             },
@@ -3887,7 +3297,7 @@
                 "name": "ExpandedDetailsTable",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
+                "file": "projects/lib/src/components/lists/table-list/table-list.stories.ts",
                 "type": "",
                 "defaultValue": "ExpandedDetailsTableTemplate.bind({})"
             },
@@ -3895,7 +3305,7 @@
                 "name": "ExpandedDetailsTableTemplate",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
+                "file": "projects/lib/src/components/lists/table-list/table-list.stories.ts",
                 "type": "Story<TableListComponent>",
                 "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-table-list\n      [columns]=\"columns\"\n      [columnNames]=\"columnNames\"\n      [imageColumns]=\"imageColumns\"\n      [imageHeight]=\"imageHeight\"\n      [showHeader]=\"showHeader\"\n      [numberFormat]=\"numberFormat\"\n      [numberPrefix]=\"numberPrefix\"\n      [itemList]=\"itemList\"\n      [borderRadius]=\"borderRadius\"\n      [backgroundColor]=\"backgroundColor\"\n      [expandedDetailTemplate]=\"dummyExpandedItem\"\n      [disableExpandedOnDisabledRow]=\"disableExpandedOnDisabledRow\"\n    ></pm-table-list>\n\n    <ng-template #dummyExpandedItem let-item>\n      <div class=\"d-block\">\n        <p>{{item.name}} - {{item.price}}</p>\n        <p>Here is an example item</p>\n        <p>Here is an example item</p>\n      </div>\n    </ng-template>\n  `\n})"
             },
@@ -3903,7 +3313,7 @@
                 "name": "getColor",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/lists/grid-list/grid-list.stories.ts",
+                "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
                 "type": "",
                 "defaultValue": "() => MainColors.primary"
             },
@@ -3911,7 +3321,7 @@
                 "name": "HorizontalRadioButton",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/inputs/radio-button/radio-button.stories.ts",
+                "file": "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             },
@@ -3919,7 +3329,7 @@
                 "name": "IconButton",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/inputs/button/button.stories.ts",
+                "file": "projects/lib/src/components/inputs/button/button.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             },
@@ -3927,7 +3337,7 @@
                 "name": "InfoButton",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/inputs/button/button.stories.ts",
+                "file": "projects/lib/src/components/inputs/button/button.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             },
@@ -3935,7 +3345,7 @@
                 "name": "LightButton",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/inputs/button/button.stories.ts",
+                "file": "projects/lib/src/components/inputs/button/button.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             },
@@ -3943,7 +3353,7 @@
                 "name": "NoHeader",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
+                "file": "projects/lib/src/components/lists/table-list/table-list.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             },
@@ -3951,7 +3361,7 @@
                 "name": "NoIndexStringList",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/lists/draggable-list/draggable-list.stories.ts",
+                "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             },
@@ -3959,7 +3369,7 @@
                 "name": "PrimaryButton",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/inputs/button/button.stories.ts",
+                "file": "projects/lib/src/components/inputs/button/button.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             },
@@ -3967,24 +3377,16 @@
                 "name": "require",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/test.ts",
+                "file": "projects/lib/src/test.ts",
                 "type": "literal type"
             },
             {
                 "name": "SecondaryButton",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/inputs/button/button.stories.ts",
+                "file": "projects/lib/src/components/inputs/button/button.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "stories/Card.stories.ts",
-                "type": "Story<CardComponent>",
-                "defaultValue": "(args: CardComponent) => ({\n  component: CardComponent,\n  props: args,\n  template: `\n    <pm-card\n        [hoverable]=\"hoverable\"\n        [borderRadius]=\"borderRadius\"\n    >\n      conteudo\n    </pm-card>`\n})"
             },
             {
                 "name": "Template",
@@ -4006,15 +3408,7 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/cards/icon-card/icon-card.stories.ts",
-                "type": "Story<IconCardComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-icon-card\n      [textPosition]=\"textPosition\"\n      [paddingClass]=\"paddingClass\"\n      [hoverable]=\"hoverable\"\n      [orientation]=\"orientation\"\n      [iconClass]=\"iconClass\"\n      [title]=\"title\"\n      [subtitle]=\"subtitle\"\n      [iconCardArray]=\"iconCardArray\"\n    >\n    </pm-icon-card>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/components/src/lib/cards/basic-card/basic-card.stories.ts",
+                "file": "projects/lib/src/components/cards/basic-card/basic-card.stories.ts",
                 "type": "Story<BasicCardComponent>",
                 "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-basic-card\n    >\n    </pm-basic-card>\n  `\n})"
             },
@@ -4022,7 +3416,15 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/containers/expansion-panel/expansion-panel.stories.ts",
+                "file": "projects/lib/src/components/cards/icon-card/icon-card.stories.ts",
+                "type": "Story<IconCardComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-icon-card\n      [textPosition]=\"textPosition\"\n      [paddingClass]=\"paddingClass\"\n      [hoverable]=\"hoverable\"\n      [orientation]=\"orientation\"\n      [iconClass]=\"iconClass\"\n      [title]=\"title\"\n      [subtitle]=\"subtitle\"\n      [iconCardArray]=\"iconCardArray\"\n    >\n    </pm-icon-card>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/components/containers/expansion-panel/expansion-panel.stories.ts",
                 "type": "Story<ExpansionPanelComponent>",
                 "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-expansion-panel\n    >\n        Conteúdo aqui\n    </pm-expansion-panel>\n  `\n})"
             },
@@ -4030,55 +3432,7 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/inputs/button/button.stories.ts",
-                "type": "Story<ButtonComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-button\n        [label]=\"label\"\n        [type]=\"type\"\n        [busy]=\"busy\"\n        [busyText]=\"busyText\"\n        [iconClass]=\"iconClass\"\n        [iconPosition]=\"iconPosition\"\n        [outline]=\"outline\"\n        [disabled]=\"disabled\"\n    >\n        Button Content\n    </pm-button>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/components/src/lib/inputs/checkbox/checkbox.stories.ts",
-                "type": "Story<CheckboxComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-checkbox\n      [checked]=\"checked\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/components/src/lib/inputs/combo-box/combo-box.stories.ts",
-                "type": "Story<ComboBoxComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-combo-box\n      [items]=\"items\"\n      [disabled]=\"disabled\"\n      [selectedItem]=\"selectedItem\"\n    >\n    </pm-combo-box>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/components/src/lib/inputs/copy-content-input/copy-content-input.stories.ts",
-                "type": "Story<CopyContentInputComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-copy-content-input\n      [text]=\"text\"\n      [disabled]=\"disabled\"\n    >\n      Conteúdo\n    </pm-copy-content-input>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/components/src/lib/inputs/dropdown-actions/dropdown-actions.stories.ts",
-                "type": "Story<DropdownActionsComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-dropdown-actions\n      [actions]=\"actions\"\n    >\n    </pm-dropdown-actions>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/components/src/lib/inputs/radio-button/radio-button.stories.ts",
-                "type": "Story<RadioButtonComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-radio-button\n      [orientation]=\"orientation\"\n      [values]=\"values\"\n      [selectedValue]=\"selectedValue\"\n      [disabled]=\"disabled\"\n    >\n    </pm-radio-button>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/components/src/lib/lists/draggable-list/draggable-list.stories.ts",
+                "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
                 "type": "Story<DraggableListComponent>",
                 "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-draggable-list\n      [showIndex]=\"showIndex\"\n      [itemActionLabel]=\"itemActionLabel\"\n      [itemMainLabel]=\"itemMainLabel\"\n      [itemSubLabel]=\"itemSubLabel\"\n      [actions]=\"actions\"\n      [itemList]=\"itemList\"\n      [roundedBorders]=\"roundedBorders\"\n      [enableDragging]=\"enableDragging\"\n      [enableSelection]=\"enableSelection\"\n    >\n    </pm-draggable-list>\n  `\n})"
             },
@@ -4086,7 +3440,7 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/lists/grid-list/grid-list.stories.ts",
+                "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
                 "type": "Story<GridListComponent>",
                 "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-grid-list\n      [items]=\"items\"\n      [displayStyle]=\"displayStyle\"\n      [gridHeaderReverse]=\"gridHeaderReverse\"\n      [bodyBackgroundColor]=\"bodyBackgroundColor\"\n      [actionTemplate]=\"undefined\"\n      [overflowGallery]=\"overflowGallery\"\n    >\n    </pm-grid-list>\n  `\n})"
             },
@@ -4094,15 +3448,63 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
+                "file": "projects/lib/src/components/lists/table-list/table-list.stories.ts",
                 "type": "Story<TableListComponent>",
                 "defaultValue": "(args) => ({\n  props: args,\n  template: `<pm-table-list\n    [columns]=\"columns\"\n    [columnNames]=\"columnNames\"\n    [imageColumns]=\"imageColumns\"\n    [imageHeight]=\"imageHeight\"\n    [showHeader]=\"showHeader\"\n    [numberFormat]=\"numberFormat\"\n    [numberPrefix]=\"numberPrefix\"\n    [itemList]=\"itemList\"\n    [borderRadius]=\"borderRadius\"\n    [backgroundColor]=\"backgroundColor\"\n    [expandedDetailTemplate]=\"expandedDetailTemplate\"\n    [disableExpandedOnDisabledRow]=\"disableExpandedOnDisabledRow\"\n  ></pm-table-list>`\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/components/inputs/button/button.stories.ts",
+                "type": "Story<ButtonComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-button\n        [label]=\"label\"\n        [type]=\"type\"\n        [busy]=\"busy\"\n        [busyText]=\"busyText\"\n        [iconClass]=\"iconClass\"\n        [iconPosition]=\"iconPosition\"\n        [outline]=\"outline\"\n        [disabled]=\"disabled\"\n    >\n        Button Content\n    </pm-button>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts",
+                "type": "Story<ComboBoxComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-combo-box\n      [items]=\"items\"\n      [disabled]=\"disabled\"\n      [selectedItem]=\"selectedItem\"\n    >\n    </pm-combo-box>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
+                "type": "Story<CheckboxComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-checkbox\n      [checked]=\"checked\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts",
+                "type": "Story<CopyContentInputComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-copy-content-input\n      [text]=\"text\"\n      [disabled]=\"disabled\"\n    >\n      Conteúdo\n    </pm-copy-content-input>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/components/inputs/dropdown-actions/dropdown-actions.stories.ts",
+                "type": "Story<DropdownActionsComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-dropdown-actions\n      [actions]=\"actions\"\n    >\n    </pm-dropdown-actions>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts",
+                "type": "Story<RadioButtonComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-radio-button\n      [orientation]=\"orientation\"\n      [values]=\"values\"\n      [selectedValue]=\"selectedValue\"\n      [disabled]=\"disabled\"\n    >\n    </pm-radio-button>\n  `\n})"
             },
             {
                 "name": "ThumbnailTable",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
+                "file": "projects/lib/src/components/lists/table-list/table-list.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             },
@@ -4110,7 +3512,7 @@
                 "name": "WarningButton",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/components/src/lib/inputs/button/button.stories.ts",
+                "file": "projects/lib/src/components/inputs/button/button.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             }
@@ -4157,7 +3559,7 @@
                 "ctype": "miscellaneous",
                 "subtype": "enum",
                 "description": "",
-                "file": "projects/components/src/models/colors.ts"
+                "file": "projects/lib/src/models/colors.ts"
             },
             {
                 "name": "OrientationEnum",
@@ -4174,7 +3576,7 @@
                 "ctype": "miscellaneous",
                 "subtype": "enum",
                 "description": "",
-                "file": "projects/components/src/models/orientation.ts"
+                "file": "projects/lib/src/models/orientation.ts"
             },
             {
                 "name": "PaleColors",
@@ -4215,7 +3617,7 @@
                 "ctype": "miscellaneous",
                 "subtype": "enum",
                 "description": "",
-                "file": "projects/components/src/models/colors.ts"
+                "file": "projects/lib/src/models/colors.ts"
             },
             {
                 "name": "SaturatedColors",
@@ -4256,7 +3658,7 @@
                 "ctype": "miscellaneous",
                 "subtype": "enum",
                 "description": "",
-                "file": "projects/components/src/models/colors.ts"
+                "file": "projects/lib/src/models/colors.ts"
             },
             {
                 "name": "Sizes",
@@ -4289,7 +3691,7 @@
                 "ctype": "miscellaneous",
                 "subtype": "enum",
                 "description": "",
-                "file": "projects/components/src/models/sizes.ts"
+                "file": "projects/lib/src/models/sizes.ts"
             },
             {
                 "name": "StateColors",
@@ -4330,16 +3732,16 @@
                 "ctype": "miscellaneous",
                 "subtype": "enum",
                 "description": "",
-                "file": "projects/components/src/models/colors.ts"
+                "file": "projects/lib/src/models/colors.ts"
             }
         ],
         "groupedVariables": {
-            "projects/components/src/lib/lists/table-list/table-list.stories.ts": [
+            "projects/lib/src/components/lists/table-list/table-list.stories.ts": [
                 {
                     "name": "ActionsTable",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
+                    "file": "projects/lib/src/components/lists/table-list/table-list.stories.ts",
                     "type": "",
                     "defaultValue": "ActionsTableTemplate.bind({})"
                 },
@@ -4347,7 +3749,7 @@
                     "name": "ActionsTableTemplate",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
+                    "file": "projects/lib/src/components/lists/table-list/table-list.stories.ts",
                     "type": "Story<TableListComponent>",
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-table-list\n      [columns]=\"columns\"\n      [columnNames]=\"columnNames\"\n      [imageColumns]=\"imageColumns\"\n      [imageHeight]=\"imageHeight\"\n      [showHeader]=\"showHeader\"\n      [numberFormat]=\"numberFormat\"\n      [numberPrefix]=\"numberPrefix\"\n      [itemList]=\"itemList\"\n      [borderRadius]=\"borderRadius\"\n      [backgroundColor]=\"backgroundColor\"\n      [expandedDetailTemplate]=\"expandedDetailTemplate\"\n      [disableExpandedOnDisabledRow]=\"disableExpandedOnDisabledRow\"\n      [actionsTemplate]=\"actionsTemplate\"\n    ></pm-table-list>\n\n    <ng-template #actionsTemplate let-item let-column=\"column\">\n      <div [ngClass]=\"{'disabled': item?.disabled === true}\">\n        <button class=\"btn btn-primary\" [disabled]=\"item?.disabled\">Actions (id: {{item.id}})</button>\n      </div>\n    </ng-template>\n  `\n})"
                 },
@@ -4355,7 +3757,7 @@
                     "name": "ColorTable",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
+                    "file": "projects/lib/src/components/lists/table-list/table-list.stories.ts",
                     "type": "",
                     "defaultValue": "Template.bind({})"
                 },
@@ -4363,7 +3765,7 @@
                     "name": "defaultArgs",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
+                    "file": "projects/lib/src/components/lists/table-list/table-list.stories.ts",
                     "type": "object",
                     "defaultValue": "{\n  columns: [],\n  columnNames: [],\n  imageColumns: [],\n  imageHeight: '50px',\n  showHeader: true,\n  numberFormat: '1.2-2',\n  numberPrefix: '',\n  actionsTemplate: undefined,\n  itemList: undefined,\n  borderRadius: undefined,\n  backgroundColor: undefined,\n  expandedDetailTemplate: undefined,\n  disableExpandedOnDisabledRow: true,\n  expandedRow: undefined\n}"
                 },
@@ -4371,7 +3773,7 @@
                     "name": "DefaultTableList",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
+                    "file": "projects/lib/src/components/lists/table-list/table-list.stories.ts",
                     "type": "",
                     "defaultValue": "Template.bind({})"
                 },
@@ -4379,7 +3781,7 @@
                     "name": "ExpandedDetailsTable",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
+                    "file": "projects/lib/src/components/lists/table-list/table-list.stories.ts",
                     "type": "",
                     "defaultValue": "ExpandedDetailsTableTemplate.bind({})"
                 },
@@ -4387,7 +3789,7 @@
                     "name": "ExpandedDetailsTableTemplate",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
+                    "file": "projects/lib/src/components/lists/table-list/table-list.stories.ts",
                     "type": "Story<TableListComponent>",
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-table-list\n      [columns]=\"columns\"\n      [columnNames]=\"columnNames\"\n      [imageColumns]=\"imageColumns\"\n      [imageHeight]=\"imageHeight\"\n      [showHeader]=\"showHeader\"\n      [numberFormat]=\"numberFormat\"\n      [numberPrefix]=\"numberPrefix\"\n      [itemList]=\"itemList\"\n      [borderRadius]=\"borderRadius\"\n      [backgroundColor]=\"backgroundColor\"\n      [expandedDetailTemplate]=\"dummyExpandedItem\"\n      [disableExpandedOnDisabledRow]=\"disableExpandedOnDisabledRow\"\n    ></pm-table-list>\n\n    <ng-template #dummyExpandedItem let-item>\n      <div class=\"d-block\">\n        <p>{{item.name}} - {{item.price}}</p>\n        <p>Here is an example item</p>\n        <p>Here is an example item</p>\n      </div>\n    </ng-template>\n  `\n})"
                 },
@@ -4395,7 +3797,7 @@
                     "name": "NoHeader",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
+                    "file": "projects/lib/src/components/lists/table-list/table-list.stories.ts",
                     "type": "",
                     "defaultValue": "Template.bind({})"
                 },
@@ -4403,7 +3805,7 @@
                     "name": "Template",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
+                    "file": "projects/lib/src/components/lists/table-list/table-list.stories.ts",
                     "type": "Story<TableListComponent>",
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `<pm-table-list\n    [columns]=\"columns\"\n    [columnNames]=\"columnNames\"\n    [imageColumns]=\"imageColumns\"\n    [imageHeight]=\"imageHeight\"\n    [showHeader]=\"showHeader\"\n    [numberFormat]=\"numberFormat\"\n    [numberPrefix]=\"numberPrefix\"\n    [itemList]=\"itemList\"\n    [borderRadius]=\"borderRadius\"\n    [backgroundColor]=\"backgroundColor\"\n    [expandedDetailTemplate]=\"expandedDetailTemplate\"\n    [disableExpandedOnDisabledRow]=\"disableExpandedOnDisabledRow\"\n  ></pm-table-list>`\n})"
                 },
@@ -4411,17 +3813,17 @@
                     "name": "ThumbnailTable",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
+                    "file": "projects/lib/src/components/lists/table-list/table-list.stories.ts",
                     "type": "",
                     "defaultValue": "Template.bind({})"
                 }
             ],
-            "projects/components/src/lib/cards/icon-card/icon-card.stories.ts": [
+            "projects/lib/src/components/cards/icon-card/icon-card.stories.ts": [
                 {
                     "name": "ArrayIconCard",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/components/src/lib/cards/icon-card/icon-card.stories.ts",
+                    "file": "projects/lib/src/components/cards/icon-card/icon-card.stories.ts",
                     "type": "",
                     "defaultValue": "Template.bind({})"
                 },
@@ -4429,7 +3831,7 @@
                     "name": "defaultArgs",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/components/src/lib/cards/icon-card/icon-card.stories.ts",
+                    "file": "projects/lib/src/components/cards/icon-card/icon-card.stories.ts",
                     "type": "object",
                     "defaultValue": "{\n  textPosition: 'center',\n  paddingClass: 'p-3',\n  hoverable: true,\n  orientation: OrientationEnum.Y,\n  iconClass: 'uil uil-star',\n  title: '',\n  subtitle: '',\n  iconCardArray: [],\n}"
                 },
@@ -4437,7 +3839,7 @@
                     "name": "DefaultIconCard",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/components/src/lib/cards/icon-card/icon-card.stories.ts",
+                    "file": "projects/lib/src/components/cards/icon-card/icon-card.stories.ts",
                     "type": "",
                     "defaultValue": "Template.bind({})"
                 },
@@ -4445,17 +3847,17 @@
                     "name": "Template",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/components/src/lib/cards/icon-card/icon-card.stories.ts",
+                    "file": "projects/lib/src/components/cards/icon-card/icon-card.stories.ts",
                     "type": "Story<IconCardComponent>",
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-icon-card\n      [textPosition]=\"textPosition\"\n      [paddingClass]=\"paddingClass\"\n      [hoverable]=\"hoverable\"\n      [orientation]=\"orientation\"\n      [iconClass]=\"iconClass\"\n      [title]=\"title\"\n      [subtitle]=\"subtitle\"\n      [iconCardArray]=\"iconCardArray\"\n    >\n    </pm-icon-card>\n  `\n})"
                 }
             ],
-            "projects/components/src/lib/inputs/button/button.stories.ts": [
+            "projects/lib/src/components/inputs/button/button.stories.ts": [
                 {
                     "name": "BusyButton",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/components/src/lib/inputs/button/button.stories.ts",
+                    "file": "projects/lib/src/components/inputs/button/button.stories.ts",
                     "type": "",
                     "defaultValue": "Template.bind({})"
                 },
@@ -4463,7 +3865,7 @@
                     "name": "DangerButton",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/components/src/lib/inputs/button/button.stories.ts",
+                    "file": "projects/lib/src/components/inputs/button/button.stories.ts",
                     "type": "",
                     "defaultValue": "Template.bind({})"
                 },
@@ -4471,7 +3873,7 @@
                     "name": "defaultArgs",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/components/src/lib/inputs/button/button.stories.ts",
+                    "file": "projects/lib/src/components/inputs/button/button.stories.ts",
                     "type": "object",
                     "defaultValue": "{\n  label: '',\n  type: MainColors.default,\n  busy: false,\n  busyText: '',\n  iconClass: '',\n  iconPosition: 'start',\n  outline: false,\n  disabled: false,\n}"
                 },
@@ -4479,7 +3881,7 @@
                     "name": "DefaultButton",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/components/src/lib/inputs/button/button.stories.ts",
+                    "file": "projects/lib/src/components/inputs/button/button.stories.ts",
                     "type": "",
                     "defaultValue": "Template.bind({})"
                 },
@@ -4487,7 +3889,7 @@
                     "name": "DisabledButton",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/components/src/lib/inputs/button/button.stories.ts",
+                    "file": "projects/lib/src/components/inputs/button/button.stories.ts",
                     "type": "",
                     "defaultValue": "Template.bind({})"
                 },
@@ -4495,7 +3897,7 @@
                     "name": "IconButton",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/components/src/lib/inputs/button/button.stories.ts",
+                    "file": "projects/lib/src/components/inputs/button/button.stories.ts",
                     "type": "",
                     "defaultValue": "Template.bind({})"
                 },
@@ -4503,7 +3905,7 @@
                     "name": "InfoButton",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/components/src/lib/inputs/button/button.stories.ts",
+                    "file": "projects/lib/src/components/inputs/button/button.stories.ts",
                     "type": "",
                     "defaultValue": "Template.bind({})"
                 },
@@ -4511,7 +3913,7 @@
                     "name": "LightButton",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/components/src/lib/inputs/button/button.stories.ts",
+                    "file": "projects/lib/src/components/inputs/button/button.stories.ts",
                     "type": "",
                     "defaultValue": "Template.bind({})"
                 },
@@ -4519,7 +3921,7 @@
                     "name": "PrimaryButton",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/components/src/lib/inputs/button/button.stories.ts",
+                    "file": "projects/lib/src/components/inputs/button/button.stories.ts",
                     "type": "",
                     "defaultValue": "Template.bind({})"
                 },
@@ -4527,7 +3929,7 @@
                     "name": "SecondaryButton",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/components/src/lib/inputs/button/button.stories.ts",
+                    "file": "projects/lib/src/components/inputs/button/button.stories.ts",
                     "type": "",
                     "defaultValue": "Template.bind({})"
                 },
@@ -4535,7 +3937,7 @@
                     "name": "Template",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/components/src/lib/inputs/button/button.stories.ts",
+                    "file": "projects/lib/src/components/inputs/button/button.stories.ts",
                     "type": "Story<ButtonComponent>",
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-button\n        [label]=\"label\"\n        [type]=\"type\"\n        [busy]=\"busy\"\n        [busyText]=\"busyText\"\n        [iconClass]=\"iconClass\"\n        [iconPosition]=\"iconPosition\"\n        [outline]=\"outline\"\n        [disabled]=\"disabled\"\n    >\n        Button Content\n    </pm-button>\n  `\n})"
                 },
@@ -4543,17 +3945,17 @@
                     "name": "WarningButton",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/components/src/lib/inputs/button/button.stories.ts",
+                    "file": "projects/lib/src/components/inputs/button/button.stories.ts",
                     "type": "",
                     "defaultValue": "Template.bind({})"
                 }
             ],
-            "projects/components/src/test.ts": [
+            "projects/lib/src/test.ts": [
                 {
                     "name": "context",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/components/src/test.ts",
+                    "file": "projects/lib/src/test.ts",
                     "type": "",
                     "defaultValue": "require.context('./', true, /\\.spec\\.ts$/)"
                 },
@@ -4561,7 +3963,7 @@
                     "name": "require",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/components/src/test.ts",
+                    "file": "projects/lib/src/test.ts",
                     "type": "literal type"
                 }
             ],
@@ -4591,12 +3993,12 @@
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-XXXName\n    >\n    </pm-XXXName>\n  `\n})"
                 }
             ],
-            "projects/components/src/lib/cards/basic-card/basic-card.stories.ts": [
+            "projects/lib/src/components/cards/basic-card/basic-card.stories.ts": [
                 {
                     "name": "defaultArgs",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/components/src/lib/cards/basic-card/basic-card.stories.ts",
+                    "file": "projects/lib/src/components/cards/basic-card/basic-card.stories.ts",
                     "type": "object",
                     "defaultValue": "{\n}"
                 },
@@ -4604,7 +4006,7 @@
                     "name": "DefaultBasicCard",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/components/src/lib/cards/basic-card/basic-card.stories.ts",
+                    "file": "projects/lib/src/components/cards/basic-card/basic-card.stories.ts",
                     "type": "",
                     "defaultValue": "Template.bind({})"
                 },
@@ -4612,17 +4014,17 @@
                     "name": "Template",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/components/src/lib/cards/basic-card/basic-card.stories.ts",
+                    "file": "projects/lib/src/components/cards/basic-card/basic-card.stories.ts",
                     "type": "Story<BasicCardComponent>",
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-basic-card\n    >\n    </pm-basic-card>\n  `\n})"
                 }
             ],
-            "projects/components/src/lib/containers/expansion-panel/expansion-panel.stories.ts": [
+            "projects/lib/src/components/containers/expansion-panel/expansion-panel.stories.ts": [
                 {
                     "name": "defaultArgs",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/components/src/lib/containers/expansion-panel/expansion-panel.stories.ts",
+                    "file": "projects/lib/src/components/containers/expansion-panel/expansion-panel.stories.ts",
                     "type": "object",
                     "defaultValue": "{\n}"
                 },
@@ -4630,7 +4032,7 @@
                     "name": "DefaultExpansionPanel",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/components/src/lib/containers/expansion-panel/expansion-panel.stories.ts",
+                    "file": "projects/lib/src/components/containers/expansion-panel/expansion-panel.stories.ts",
                     "type": "",
                     "defaultValue": "Template.bind({})"
                 },
@@ -4638,171 +4040,17 @@
                     "name": "Template",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/components/src/lib/containers/expansion-panel/expansion-panel.stories.ts",
+                    "file": "projects/lib/src/components/containers/expansion-panel/expansion-panel.stories.ts",
                     "type": "Story<ExpansionPanelComponent>",
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-expansion-panel\n    >\n        Conteúdo aqui\n    </pm-expansion-panel>\n  `\n})"
                 }
             ],
-            "projects/components/src/lib/inputs/checkbox/checkbox.stories.ts": [
+            "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts": [
                 {
                     "name": "defaultArgs",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/components/src/lib/inputs/checkbox/checkbox.stories.ts",
-                    "type": "object",
-                    "defaultValue": "{\n  checked: false,\n  disabled: false,\n  selectedItem: undefined,\n}"
-                },
-                {
-                    "name": "DefaultCheckbox",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/components/src/lib/inputs/checkbox/checkbox.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "DisabledCheckbox",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/components/src/lib/inputs/checkbox/checkbox.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/components/src/lib/inputs/checkbox/checkbox.stories.ts",
-                    "type": "Story<CheckboxComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-checkbox\n      [checked]=\"checked\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>\n  `\n})"
-                }
-            ],
-            "projects/components/src/lib/inputs/combo-box/combo-box.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/components/src/lib/inputs/combo-box/combo-box.stories.ts",
-                    "type": "object",
-                    "defaultValue": "{\n  items: [],\n  disabled: false,\n  selectedItem: undefined\n}"
-                },
-                {
-                    "name": "DefaultComboBox",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/components/src/lib/inputs/combo-box/combo-box.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "defaultItems",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/components/src/lib/inputs/combo-box/combo-box.stories.ts",
-                    "type": "[]",
-                    "defaultValue": "[\n  {\n    label: 'Value 1',\n    value: 1\n  },\n  {\n    label: 'Value 2',\n    value: 2\n  },\n  {\n    label: 'Value 3',\n    value: 3\n  }\n]"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/components/src/lib/inputs/combo-box/combo-box.stories.ts",
-                    "type": "Story<ComboBoxComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-combo-box\n      [items]=\"items\"\n      [disabled]=\"disabled\"\n      [selectedItem]=\"selectedItem\"\n    >\n    </pm-combo-box>\n  `\n})"
-                }
-            ],
-            "projects/components/src/lib/inputs/copy-content-input/copy-content-input.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/components/src/lib/inputs/copy-content-input/copy-content-input.stories.ts",
-                    "type": "object",
-                    "defaultValue": "{\n  disabled: false,\n  text: ''\n}"
-                },
-                {
-                    "name": "DefaultCopyContentInput",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/components/src/lib/inputs/copy-content-input/copy-content-input.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/components/src/lib/inputs/copy-content-input/copy-content-input.stories.ts",
-                    "type": "Story<CopyContentInputComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-copy-content-input\n      [text]=\"text\"\n      [disabled]=\"disabled\"\n    >\n      Conteúdo\n    </pm-copy-content-input>\n  `\n})"
-                }
-            ],
-            "projects/components/src/lib/inputs/dropdown-actions/dropdown-actions.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/components/src/lib/inputs/dropdown-actions/dropdown-actions.stories.ts",
-                    "type": "object",
-                    "defaultValue": "{\n  actions: []\n}"
-                },
-                {
-                    "name": "DefaultDropdownActions",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/components/src/lib/inputs/dropdown-actions/dropdown-actions.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/components/src/lib/inputs/dropdown-actions/dropdown-actions.stories.ts",
-                    "type": "Story<DropdownActionsComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-dropdown-actions\n      [actions]=\"actions\"\n    >\n    </pm-dropdown-actions>\n  `\n})"
-                }
-            ],
-            "projects/components/src/lib/inputs/radio-button/radio-button.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/components/src/lib/inputs/radio-button/radio-button.stories.ts",
-                    "type": "object",
-                    "defaultValue": "{\n  orientation: OrientationEnum.Y,\n  values: [],\n  disabled: false,\n  selectedValue: undefined\n}"
-                },
-                {
-                    "name": "DefaultRadioButton",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/components/src/lib/inputs/radio-button/radio-button.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "HorizontalRadioButton",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/components/src/lib/inputs/radio-button/radio-button.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/components/src/lib/inputs/radio-button/radio-button.stories.ts",
-                    "type": "Story<RadioButtonComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-radio-button\n      [orientation]=\"orientation\"\n      [values]=\"values\"\n      [selectedValue]=\"selectedValue\"\n      [disabled]=\"disabled\"\n    >\n    </pm-radio-button>\n  `\n})"
-                }
-            ],
-            "projects/components/src/lib/lists/draggable-list/draggable-list.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/components/src/lib/lists/draggable-list/draggable-list.stories.ts",
+                    "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
                     "type": "object",
                     "defaultValue": "{\n  showIndex: true,\n  itemActionLabel: undefined,\n  itemMainLabel: undefined,\n  itemSubLabel: undefined,\n  actions: undefined,\n  itemList: undefined,\n  roundedBorders: true,\n  enableDragging: true,\n  enableSelection: true,\n}"
                 },
@@ -4810,7 +4058,7 @@
                     "name": "DefaultDraggableList",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/components/src/lib/lists/draggable-list/draggable-list.stories.ts",
+                    "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
                     "type": "",
                     "defaultValue": "Template.bind({})"
                 },
@@ -4818,7 +4066,7 @@
                     "name": "DisabledDragging",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/components/src/lib/lists/draggable-list/draggable-list.stories.ts",
+                    "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
                     "type": "",
                     "defaultValue": "Template.bind({})"
                 },
@@ -4826,7 +4074,7 @@
                     "name": "NoIndexStringList",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/components/src/lib/lists/draggable-list/draggable-list.stories.ts",
+                    "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
                     "type": "",
                     "defaultValue": "Template.bind({})"
                 },
@@ -4834,17 +4082,17 @@
                     "name": "Template",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/components/src/lib/lists/draggable-list/draggable-list.stories.ts",
+                    "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
                     "type": "Story<DraggableListComponent>",
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-draggable-list\n      [showIndex]=\"showIndex\"\n      [itemActionLabel]=\"itemActionLabel\"\n      [itemMainLabel]=\"itemMainLabel\"\n      [itemSubLabel]=\"itemSubLabel\"\n      [actions]=\"actions\"\n      [itemList]=\"itemList\"\n      [roundedBorders]=\"roundedBorders\"\n      [enableDragging]=\"enableDragging\"\n      [enableSelection]=\"enableSelection\"\n    >\n    </pm-draggable-list>\n  `\n})"
                 }
             ],
-            "projects/components/src/lib/lists/grid-list/grid-list.stories.ts": [
+            "projects/lib/src/components/lists/grid-list/grid-list.stories.ts": [
                 {
                     "name": "defaultArgs",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/components/src/lib/lists/grid-list/grid-list.stories.ts",
+                    "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
                     "type": "object",
                     "defaultValue": "{\n}"
                 },
@@ -4852,7 +4100,7 @@
                     "name": "DefaultGridList",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/components/src/lib/lists/grid-list/grid-list.stories.ts",
+                    "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
                     "type": "",
                     "defaultValue": "Template.bind({})"
                 },
@@ -4860,7 +4108,7 @@
                     "name": "getColor",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/components/src/lib/lists/grid-list/grid-list.stories.ts",
+                    "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
                     "type": "",
                     "defaultValue": "() => MainColors.primary"
                 },
@@ -4868,17 +4116,67 @@
                     "name": "Template",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/components/src/lib/lists/grid-list/grid-list.stories.ts",
+                    "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
                     "type": "Story<GridListComponent>",
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-grid-list\n      [items]=\"items\"\n      [displayStyle]=\"displayStyle\"\n      [gridHeaderReverse]=\"gridHeaderReverse\"\n      [bodyBackgroundColor]=\"bodyBackgroundColor\"\n      [actionTemplate]=\"undefined\"\n      [overflowGallery]=\"overflowGallery\"\n    >\n    </pm-grid-list>\n  `\n})"
                 }
             ],
-            "stories/Card.stories.ts": [
+            "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts": [
                 {
-                    "name": "DefaultCard",
+                    "name": "defaultArgs",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "stories/Card.stories.ts",
+                    "file": "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts",
+                    "type": "object",
+                    "defaultValue": "{\n  items: [],\n  disabled: false,\n  selectedItem: undefined\n}"
+                },
+                {
+                    "name": "DefaultComboBox",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "defaultItems",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts",
+                    "type": "[]",
+                    "defaultValue": "[\n  {\n    label: 'Value 1',\n    value: 1\n  },\n  {\n    label: 'Value 2',\n    value: 2\n  },\n  {\n    label: 'Value 3',\n    value: 3\n  }\n]"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts",
+                    "type": "Story<ComboBoxComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-combo-box\n      [items]=\"items\"\n      [disabled]=\"disabled\"\n      [selectedItem]=\"selectedItem\"\n    >\n    </pm-combo-box>\n  `\n})"
+                }
+            ],
+            "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
+                    "type": "object",
+                    "defaultValue": "{\n  checked: false,\n  disabled: false,\n  selectedItem: undefined,\n}"
+                },
+                {
+                    "name": "DefaultCheckbox",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "DisabledCheckbox",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
                     "type": "",
                     "defaultValue": "Template.bind({})"
                 },
@@ -4886,9 +4184,95 @@
                     "name": "Template",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "stories/Card.stories.ts",
-                    "type": "Story<CardComponent>",
-                    "defaultValue": "(args: CardComponent) => ({\n  component: CardComponent,\n  props: args,\n  template: `\n    <pm-card\n        [hoverable]=\"hoverable\"\n        [borderRadius]=\"borderRadius\"\n    >\n      conteudo\n    </pm-card>`\n})"
+                    "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
+                    "type": "Story<CheckboxComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-checkbox\n      [checked]=\"checked\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>\n  `\n})"
+                }
+            ],
+            "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts",
+                    "type": "object",
+                    "defaultValue": "{\n  disabled: false,\n  text: ''\n}"
+                },
+                {
+                    "name": "DefaultCopyContentInput",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts",
+                    "type": "Story<CopyContentInputComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-copy-content-input\n      [text]=\"text\"\n      [disabled]=\"disabled\"\n    >\n      Conteúdo\n    </pm-copy-content-input>\n  `\n})"
+                }
+            ],
+            "projects/lib/src/components/inputs/dropdown-actions/dropdown-actions.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/dropdown-actions/dropdown-actions.stories.ts",
+                    "type": "object",
+                    "defaultValue": "{\n  actions: []\n}"
+                },
+                {
+                    "name": "DefaultDropdownActions",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/dropdown-actions/dropdown-actions.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/dropdown-actions/dropdown-actions.stories.ts",
+                    "type": "Story<DropdownActionsComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-dropdown-actions\n      [actions]=\"actions\"\n    >\n    </pm-dropdown-actions>\n  `\n})"
+                }
+            ],
+            "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts",
+                    "type": "object",
+                    "defaultValue": "{\n  orientation: OrientationEnum.Y,\n  values: [],\n  disabled: false,\n  selectedValue: undefined\n}"
+                },
+                {
+                    "name": "DefaultRadioButton",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "HorizontalRadioButton",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts",
+                    "type": "Story<RadioButtonComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-radio-button\n      [orientation]=\"orientation\"\n      [values]=\"values\"\n      [selectedValue]=\"selectedValue\"\n      [disabled]=\"disabled\"\n    >\n    </pm-radio-button>\n  `\n})"
                 }
             ],
             "stories/Stepper.stories.ts": [
@@ -4912,7 +4296,7 @@
         },
         "groupedFunctions": {},
         "groupedEnumerations": {
-            "projects/components/src/models/colors.ts": [
+            "projects/lib/src/models/colors.ts": [
                 {
                     "name": "MainColors",
                     "childs": [
@@ -4952,7 +4336,7 @@
                     "ctype": "miscellaneous",
                     "subtype": "enum",
                     "description": "",
-                    "file": "projects/components/src/models/colors.ts"
+                    "file": "projects/lib/src/models/colors.ts"
                 },
                 {
                     "name": "PaleColors",
@@ -4993,7 +4377,7 @@
                     "ctype": "miscellaneous",
                     "subtype": "enum",
                     "description": "",
-                    "file": "projects/components/src/models/colors.ts"
+                    "file": "projects/lib/src/models/colors.ts"
                 },
                 {
                     "name": "SaturatedColors",
@@ -5034,7 +4418,7 @@
                     "ctype": "miscellaneous",
                     "subtype": "enum",
                     "description": "",
-                    "file": "projects/components/src/models/colors.ts"
+                    "file": "projects/lib/src/models/colors.ts"
                 },
                 {
                     "name": "StateColors",
@@ -5075,10 +4459,10 @@
                     "ctype": "miscellaneous",
                     "subtype": "enum",
                     "description": "",
-                    "file": "projects/components/src/models/colors.ts"
+                    "file": "projects/lib/src/models/colors.ts"
                 }
             ],
-            "projects/components/src/models/orientation.ts": [
+            "projects/lib/src/models/orientation.ts": [
                 {
                     "name": "OrientationEnum",
                     "childs": [
@@ -5094,10 +4478,10 @@
                     "ctype": "miscellaneous",
                     "subtype": "enum",
                     "description": "",
-                    "file": "projects/components/src/models/orientation.ts"
+                    "file": "projects/lib/src/models/orientation.ts"
                 }
             ],
-            "projects/components/src/models/sizes.ts": [
+            "projects/lib/src/models/sizes.ts": [
                 {
                     "name": "Sizes",
                     "childs": [
@@ -5129,7 +4513,7 @@
                     "ctype": "miscellaneous",
                     "subtype": "enum",
                     "description": "",
-                    "file": "projects/components/src/models/sizes.ts"
+                    "file": "projects/lib/src/models/sizes.ts"
                 }
             ]
         },
@@ -5141,16 +4525,7 @@
         "status": "low",
         "files": [
             {
-                "filePath": "projects/components/src/lib/card/card.component.ts",
-                "type": "component",
-                "linktype": "component",
-                "name": "CardComponent",
-                "coveragePercent": 0,
-                "coverageCount": "0/4",
-                "status": "low"
-            },
-            {
-                "filePath": "projects/components/src/lib/cards/basic-card/basic-card.component.ts",
+                "filePath": "projects/lib/src/components/cards/basic-card/basic-card.component.ts",
                 "type": "component",
                 "linktype": "component",
                 "name": "BasicCardComponent",
@@ -5159,7 +4534,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/cards/basic-card/basic-card.stories.ts",
+                "filePath": "projects/lib/src/components/cards/basic-card/basic-card.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -5169,7 +4544,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/cards/basic-card/basic-card.stories.ts",
+                "filePath": "projects/lib/src/components/cards/basic-card/basic-card.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -5179,7 +4554,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/cards/basic-card/basic-card.stories.ts",
+                "filePath": "projects/lib/src/components/cards/basic-card/basic-card.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -5189,7 +4564,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/cards/icon-card/icon-card.component.ts",
+                "filePath": "projects/lib/src/components/cards/icon-card/icon-card.component.ts",
                 "type": "component",
                 "linktype": "component",
                 "name": "IconCardComponent",
@@ -5198,7 +4573,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/cards/icon-card/icon-card.component.ts",
+                "filePath": "projects/lib/src/components/cards/icon-card/icon-card.component.ts",
                 "type": "interface",
                 "linktype": "interface",
                 "name": "IconCardArrayItem",
@@ -5207,7 +4582,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/cards/icon-card/icon-card.stories.ts",
+                "filePath": "projects/lib/src/components/cards/icon-card/icon-card.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -5217,7 +4592,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/cards/icon-card/icon-card.stories.ts",
+                "filePath": "projects/lib/src/components/cards/icon-card/icon-card.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -5227,7 +4602,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/cards/icon-card/icon-card.stories.ts",
+                "filePath": "projects/lib/src/components/cards/icon-card/icon-card.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -5237,7 +4612,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/cards/icon-card/icon-card.stories.ts",
+                "filePath": "projects/lib/src/components/cards/icon-card/icon-card.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -5247,7 +4622,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/components.component.ts",
+                "filePath": "projects/lib/src/components/components.component.ts",
                 "type": "component",
                 "linktype": "component",
                 "name": "ComponentsComponent",
@@ -5256,7 +4631,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/components.service.ts",
+                "filePath": "projects/lib/src/components/components.service.ts",
                 "type": "injectable",
                 "linktype": "injectable",
                 "name": "ComponentsService",
@@ -5265,7 +4640,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/containers/expansion-panel/expansion-panel.component.ts",
+                "filePath": "projects/lib/src/components/containers/expansion-panel/expansion-panel.component.ts",
                 "type": "component",
                 "linktype": "component",
                 "name": "ExpansionPanelComponent",
@@ -5274,7 +4649,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/containers/expansion-panel/expansion-panel.stories.ts",
+                "filePath": "projects/lib/src/components/containers/expansion-panel/expansion-panel.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -5284,7 +4659,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/containers/expansion-panel/expansion-panel.stories.ts",
+                "filePath": "projects/lib/src/components/containers/expansion-panel/expansion-panel.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -5294,7 +4669,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/containers/expansion-panel/expansion-panel.stories.ts",
+                "filePath": "projects/lib/src/components/containers/expansion-panel/expansion-panel.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -5304,7 +4679,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/inputs/button/button.component.ts",
+                "filePath": "projects/lib/src/components/inputs/button/button.component.ts",
                 "type": "component",
                 "linktype": "component",
                 "name": "ButtonComponent",
@@ -5313,7 +4688,7 @@
                 "status": "good"
             },
             {
-                "filePath": "projects/components/src/lib/inputs/button/button.stories.ts",
+                "filePath": "projects/lib/src/components/inputs/button/button.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -5323,7 +4698,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/inputs/button/button.stories.ts",
+                "filePath": "projects/lib/src/components/inputs/button/button.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -5333,7 +4708,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/inputs/button/button.stories.ts",
+                "filePath": "projects/lib/src/components/inputs/button/button.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -5343,7 +4718,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/inputs/button/button.stories.ts",
+                "filePath": "projects/lib/src/components/inputs/button/button.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -5353,7 +4728,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/inputs/button/button.stories.ts",
+                "filePath": "projects/lib/src/components/inputs/button/button.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -5363,7 +4738,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/inputs/button/button.stories.ts",
+                "filePath": "projects/lib/src/components/inputs/button/button.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -5373,7 +4748,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/inputs/button/button.stories.ts",
+                "filePath": "projects/lib/src/components/inputs/button/button.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -5383,7 +4758,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/inputs/button/button.stories.ts",
+                "filePath": "projects/lib/src/components/inputs/button/button.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -5393,7 +4768,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/inputs/button/button.stories.ts",
+                "filePath": "projects/lib/src/components/inputs/button/button.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -5403,7 +4778,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/inputs/button/button.stories.ts",
+                "filePath": "projects/lib/src/components/inputs/button/button.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -5413,7 +4788,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/inputs/button/button.stories.ts",
+                "filePath": "projects/lib/src/components/inputs/button/button.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -5423,7 +4798,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/inputs/button/button.stories.ts",
+                "filePath": "projects/lib/src/components/inputs/button/button.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -5433,7 +4808,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/inputs/checkbox/checkbox.component.ts",
+                "filePath": "projects/lib/src/components/inputs/checkbox/checkbox.component.ts",
                 "type": "component",
                 "linktype": "component",
                 "name": "CheckboxComponent",
@@ -5442,7 +4817,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/inputs/checkbox/checkbox.stories.ts",
+                "filePath": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -5452,7 +4827,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/inputs/checkbox/checkbox.stories.ts",
+                "filePath": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -5462,7 +4837,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/inputs/checkbox/checkbox.stories.ts",
+                "filePath": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -5472,7 +4847,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/inputs/checkbox/checkbox.stories.ts",
+                "filePath": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -5482,7 +4857,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/inputs/combo-box/combo-box.component.ts",
+                "filePath": "projects/lib/src/components/inputs/combo-box/combo-box.component.ts",
                 "type": "component",
                 "linktype": "component",
                 "name": "ComboBoxComponent",
@@ -5491,7 +4866,7 @@
                 "status": "medium"
             },
             {
-                "filePath": "projects/components/src/lib/inputs/combo-box/combo-box.component.ts",
+                "filePath": "projects/lib/src/components/inputs/combo-box/combo-box.component.ts",
                 "type": "interface",
                 "linktype": "interface",
                 "name": "ComboItem",
@@ -5500,7 +4875,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/inputs/combo-box/combo-box.stories.ts",
+                "filePath": "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -5510,7 +4885,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/inputs/combo-box/combo-box.stories.ts",
+                "filePath": "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -5520,7 +4895,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/inputs/combo-box/combo-box.stories.ts",
+                "filePath": "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -5530,7 +4905,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/inputs/combo-box/combo-box.stories.ts",
+                "filePath": "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -5540,7 +4915,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/inputs/copy-content-input/copy-content-input.component.ts",
+                "filePath": "projects/lib/src/components/inputs/copy-content-input/copy-content-input.component.ts",
                 "type": "component",
                 "linktype": "component",
                 "name": "CopyContentInputComponent",
@@ -5549,7 +4924,7 @@
                 "status": "medium"
             },
             {
-                "filePath": "projects/components/src/lib/inputs/copy-content-input/copy-content-input.stories.ts",
+                "filePath": "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -5559,7 +4934,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/inputs/copy-content-input/copy-content-input.stories.ts",
+                "filePath": "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -5569,7 +4944,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/inputs/copy-content-input/copy-content-input.stories.ts",
+                "filePath": "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -5579,7 +4954,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/inputs/dropdown-actions/dropdown-actions.component.ts",
+                "filePath": "projects/lib/src/components/inputs/dropdown-actions/dropdown-actions.component.ts",
                 "type": "component",
                 "linktype": "component",
                 "name": "DropdownActionsComponent",
@@ -5588,7 +4963,7 @@
                 "status": "medium"
             },
             {
-                "filePath": "projects/components/src/lib/inputs/dropdown-actions/dropdown-actions.stories.ts",
+                "filePath": "projects/lib/src/components/inputs/dropdown-actions/dropdown-actions.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -5598,7 +4973,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/inputs/dropdown-actions/dropdown-actions.stories.ts",
+                "filePath": "projects/lib/src/components/inputs/dropdown-actions/dropdown-actions.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -5608,7 +4983,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/inputs/dropdown-actions/dropdown-actions.stories.ts",
+                "filePath": "projects/lib/src/components/inputs/dropdown-actions/dropdown-actions.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -5618,7 +4993,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/inputs/radio-button/radio-button.component.ts",
+                "filePath": "projects/lib/src/components/inputs/radio-button/radio-button.component.ts",
                 "type": "component",
                 "linktype": "component",
                 "name": "RadioButtonComponent",
@@ -5627,7 +5002,7 @@
                 "status": "good"
             },
             {
-                "filePath": "projects/components/src/lib/inputs/radio-button/radio-button.stories.ts",
+                "filePath": "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -5637,7 +5012,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/inputs/radio-button/radio-button.stories.ts",
+                "filePath": "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -5647,7 +5022,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/inputs/radio-button/radio-button.stories.ts",
+                "filePath": "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -5657,7 +5032,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/inputs/radio-button/radio-button.stories.ts",
+                "filePath": "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -5667,7 +5042,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/lists/draggable-list/draggable-list.component.ts",
+                "filePath": "projects/lib/src/components/lists/draggable-list/draggable-list.component.ts",
                 "type": "component",
                 "linktype": "component",
                 "name": "DraggableListComponent",
@@ -5676,7 +5051,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/lists/draggable-list/draggable-list.stories.ts",
+                "filePath": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -5686,7 +5061,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/lists/draggable-list/draggable-list.stories.ts",
+                "filePath": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -5696,7 +5071,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/lists/draggable-list/draggable-list.stories.ts",
+                "filePath": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -5706,7 +5081,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/lists/draggable-list/draggable-list.stories.ts",
+                "filePath": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -5716,7 +5091,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/lists/draggable-list/draggable-list.stories.ts",
+                "filePath": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -5726,7 +5101,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/lists/grid-list/grid-list.component.ts",
+                "filePath": "projects/lib/src/components/lists/grid-list/grid-list.component.ts",
                 "type": "component",
                 "linktype": "component",
                 "name": "GridListComponent",
@@ -5735,7 +5110,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/lists/grid-list/grid-list.component.ts",
+                "filePath": "projects/lib/src/components/lists/grid-list/grid-list.component.ts",
                 "type": "interface",
                 "linktype": "interface",
                 "name": "GridListItem",
@@ -5744,7 +5119,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/lists/grid-list/grid-list.stories.ts",
+                "filePath": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -5754,7 +5129,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/lists/grid-list/grid-list.stories.ts",
+                "filePath": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -5764,7 +5139,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/lists/grid-list/grid-list.stories.ts",
+                "filePath": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -5774,7 +5149,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/lists/grid-list/grid-list.stories.ts",
+                "filePath": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -5784,7 +5159,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/lists/table-list/table-list.component.ts",
+                "filePath": "projects/lib/src/components/lists/table-list/table-list.component.ts",
                 "type": "component",
                 "linktype": "component",
                 "name": "TableListComponent",
@@ -5793,7 +5168,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
+                "filePath": "projects/lib/src/components/lists/table-list/table-list.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -5803,7 +5178,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
+                "filePath": "projects/lib/src/components/lists/table-list/table-list.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -5813,7 +5188,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
+                "filePath": "projects/lib/src/components/lists/table-list/table-list.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -5823,7 +5198,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
+                "filePath": "projects/lib/src/components/lists/table-list/table-list.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -5833,7 +5208,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
+                "filePath": "projects/lib/src/components/lists/table-list/table-list.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -5843,7 +5218,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
+                "filePath": "projects/lib/src/components/lists/table-list/table-list.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -5853,7 +5228,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
+                "filePath": "projects/lib/src/components/lists/table-list/table-list.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -5863,7 +5238,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
+                "filePath": "projects/lib/src/components/lists/table-list/table-list.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -5873,7 +5248,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
+                "filePath": "projects/lib/src/components/lists/table-list/table-list.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -5883,7 +5258,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/lists/table-list/table-list.stories.ts",
+                "filePath": "projects/lib/src/components/lists/table-list/table-list.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -5893,7 +5268,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/multi-level-dropdown-menu/multi-level-dropdown-menu.component.ts",
+                "filePath": "projects/lib/src/components/multi-level-dropdown-menu/multi-level-dropdown-menu.component.ts",
                 "type": "component",
                 "linktype": "component",
                 "name": "MultiLevelDropdownMenuComponent",
@@ -5902,7 +5277,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/stepper/stepper.component.ts",
+                "filePath": "projects/lib/src/components/stepper/stepper.component.ts",
                 "type": "component",
                 "linktype": "component",
                 "name": "StepperComponent",
@@ -5911,16 +5286,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/lib/table/table.component.ts",
-                "type": "component",
-                "linktype": "component",
-                "name": "TableComponent",
-                "coveragePercent": 24,
-                "coverageCount": "8/33",
-                "status": "low"
-            },
-            {
-                "filePath": "projects/components/src/test.ts",
+                "filePath": "projects/lib/src/test.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -5930,31 +5296,11 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/components/src/test.ts",
+                "filePath": "projects/lib/src/test.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
                 "name": "require",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "stories/Card.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "DefaultCard",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "stories/Card.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "Template",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"

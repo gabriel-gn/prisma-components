@@ -1,7 +1,7 @@
 import {Meta, moduleMetadata, Story} from '@storybook/angular';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {StepperModule} from '../projects/components/src/lib/stepper/stepper.module';
-import {StepperComponent} from '../projects/components/src/lib/stepper/stepper.component';
+import {StepperModule} from '../projects/lib/src/components/stepper/stepper.module';
+import {StepperComponent} from '../projects/lib/src/components/stepper/stepper.component';
 import {CdkStepperModule} from '@angular/cdk/stepper';
 
 export default {

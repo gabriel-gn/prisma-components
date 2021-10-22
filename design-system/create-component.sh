@@ -56,7 +56,7 @@ ngscriptoutput=$(eval "$ngscript")
 echo "$ngscriptoutput"
 
 # Copia os stories para as pastas que precisa
-storiesFilenamePath=${PWD}/projects/components/src/lib/${componentDir}/${componentKebabName}
+storiesFilenamePath=${PWD}/projects/lib/src/lib/${componentDir}/${componentKebabName}
 cp ./stories/default.mdx "${storiesFilenamePath}.stories.mdx"
 cp ./stories/default.ts "${storiesFilenamePath}.stories.ts"
 echo "Stories created"
@@ -73,9 +73,9 @@ done
 echo "Stories edited"
 
 # adiciona os exports no public.api para uso do módulo em outros projetos
-echo -e "\n" >> projects/components/src/public-api.ts
-echo -e "export * from './lib/$componentDir/${componentKebabName}.component';" >> projects/components/src/public-api.ts
-echo -e "export * from './lib/$componentDir/${componentKebabName}.module';" >> projects/components/src/public-api.ts
+echo -e "\n" >> projects/lib/src/public-api.ts
+echo -e "export * from './lib/$componentDir/${componentKebabName}.component';" >> projects/lib/src/public-api.ts
+echo -e "export * from './lib/$componentDir/${componentKebabName}.module';" >> projects/lib/src/public-api.ts
 echo "Module and Component exported on 'public-api.ts'"
 
 # altera o arquivo html e scss para conter uma classe com o nome do novo componente

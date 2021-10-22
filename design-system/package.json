@@ -11,9 +11,9 @@
     "storybook": "npm run docs:json && start-storybook -p 6006 -s ./.storybook/public --no-manager-cache",
     "build-storybook": "npm run docs:json && build-storybook",
     "build-storybook-dist": "npm run build-storybook -- -o ./storybook-dist -s ./.storybook/public",
-    "build-npm": "ng build --project=components --prod",
-    "deploy-npm": "cd dist/components && npm publish --access=public",
-    "deploy-gpr": "cd dist/components && npm publish"
+    "build-npm": "ng build --project=lib --prod",
+    "deploy-npm": "cd dist/lib && npm publish --access=public",
+    "deploy-gpr": "cd dist/lib && npm publish"
   },
   "private": false,
   "dependencies": {
