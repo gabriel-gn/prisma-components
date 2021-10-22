@@ -32,41 +32,41 @@
 :root {
   @each $key, $val in $colors {
     @if type-of($val) == color {
-      --#{$key}: #{$val} !important;
-      --#{$key}-rgb: #{hexToRGB($val)} !important;
+      --#{$key}: #{$val};
+      --#{$key}-rgb: #{hexToRGB($val)};
     }
   }
 
-  --bg-default:                                 #{$bg-default} !important;
-  --bg-pale:                                    #{$bg-pale} !important;
-  --color-font-default:                         #{$color-font-default} !important;
-  --color-gray-light:                           #{$color-gray-light} !important;
-  --color-gray-medium:                          #{$color-gray-medium} !important;
-  --color-gray-dark:                            #{$color-gray-dark} !important;
-  --color-gray-darker:                          #{$color-gray-darker} !important;
+  --bg-default:                                 #{$bg-default};
+  --bg-pale:                                    #{$bg-pale};
+  --color-font-default:                         #{$color-font-default};
+  --color-gray-light:                           #{$color-gray-light};
+  --color-gray-medium:                          #{$color-gray-medium};
+  --color-gray-dark:                            #{$color-gray-dark};
+  --color-gray-darker:                          #{$color-gray-darker};
 
   @each $key, $val in $border-radiuss {
-    --border-radius-#{$key}: #{$val} !important;
+    --border-radius-#{$key}: #{$val};
   }
 
   @each $key, $val in $border-widths {
-    --border-width-#{$key}: #{$val} !important;
+    --border-width-#{$key}: #{$val};
   }
 
-  --bg-disabled:                                #{$bg-disabled} !important;
-  --disabled-opacity:                           #{$disabled-opacity} !important;
+  --bg-disabled:                                #{$bg-disabled};
+  --disabled-opacity:                           #{$disabled-opacity};
 
-  --navbar-height:                              #{$navbar-height} !important;
-  --navbar-misc-bg:                             #{$navbar-misc-bg} !important;
+  --navbar-height:                              #{$navbar-height};
+  --navbar-misc-bg:                             #{$navbar-misc-bg};
 
-  --sidebar-width:                              #{$sidebar-width} !important;
-  --sidebar-mini-width:                         #{$sidebar-mini-width} !important;
+  --sidebar-width:                              #{$sidebar-width};
+  --sidebar-mini-width:                         #{$sidebar-mini-width};
 
-  --general-content-width:                      #{$general-content-width} !important;
+  --general-content-width:                      #{$general-content-width};
 
-  --gradient-default-top:                       #{$gradient-default-top} !important;
-  --gradient-default-right:                     #{$gradient-default-right} !important;
-  --gradient-default-bottom:                    #{$gradient-default-bottom} !important;
-  --gradient-default-left:                      #{$gradient-default-left} !important;
-  --gradient-default:                           #{$gradient-default} !important;
+  --gradient-default-top:                       #{$gradient-default-top};
+  --gradient-default-right:                     #{$gradient-default-right};
+  --gradient-default-bottom:                    #{$gradient-default-bottom};
+  --gradient-default-left:                      #{$gradient-default-left};
+  --gradient-default:                           #{$gradient-default};
 }

@@ -3,13 +3,27 @@
  * ng build --project=components --prod
  */
 
-export * from './components/components.service';
-export * from './components/components.component';
-export * from './components/components.module';
+/******************
+ * MODELS
+ ******************/
 
 export * from './models/colors';
 export * from './models/sizes';
 export * from './models/orientation';
+
+/******************
+ * SERVICES
+ ******************/
+
+export * from './services/color-theme/color-theme.service';
+
+/******************
+ * COMPONENTS
+ ******************/
+
+export * from './components/components.service';
+export * from './components/components.component';
+export * from './components/components.module';
 
 export * from './components/inputs/button/button.component';
 export * from './components/inputs/button/button.module';
@@ -46,7 +60,6 @@ export * from './components/cards/basic-card/basic-card.module';
 
 export * from './components/cards/icon-card/icon-card.component';
 export * from './components/cards/icon-card/icon-card.module';
-
 
 export * from './components/containers/expansion-panel/expansion-panel.component';
 export * from './components/containers/expansion-panel/expansion-panel.module';

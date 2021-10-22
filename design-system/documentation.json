@@ -159,6 +159,84 @@
     ],
     "injectables": [
         {
+            "name": "ColorThemeService",
+            "id": "injectable-ColorThemeService-444ac223f6f9c3a7758ef051fea273eb",
+            "file": "projects/lib/src/services/color-theme/color-theme.service.ts",
+            "properties": [
+                {
+                    "name": "_theme",
+                    "defaultValue": "'light'",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 20,
+                    "modifierKind": [
+                        112
+                    ]
+                },
+                {
+                    "name": "_themeList",
+                    "defaultValue": "[\n    'light',\n    'dark',\n    'default'\n  ]",
+                    "type": "[]",
+                    "optional": false,
+                    "description": "",
+                    "line": 21,
+                    "modifierKind": [
+                        112,
+                        132
+                    ]
+                }
+            ],
+            "methods": [
+                {
+                    "name": "toggle",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 31,
+                    "modifierKind": [
+                        114
+                    ]
+                }
+            ],
+            "description": "",
+            "sourceCode": "import { Injectable } from '@angular/core';\n\nexport const darkTheme = {\n  'color-primary': '#455363',\n  'color-default': '#455363',\n  'background-color': '#1f2935',\n  'text-color': '#fff'\n};\n\nexport const lightTheme = {\n  'color-primary': '#fff',\n  'color-default': '#fff',\n  'background-color': '#e5e5e5',\n  'text-color': '#2d2d2d'\n};\n\n@Injectable()\nexport class ColorThemeService {\n\n  private _theme: string = 'light';\n  private readonly _themeList = [\n    'light',\n    'dark',\n    'default'\n  ];\n\n  constructor() {\n    this.theme = `${this._theme}`;\n  }\n\n  public toggle(): void {\n    this.theme = this._theme === 'dark' ? 'light' : 'dark';\n  }\n\n  private set theme(theme: string) {\n    this._theme = theme;\n\n    let themeObj;\n    switch (theme) {\n      case 'light':\n        themeObj = lightTheme;\n        break;\n      case 'dark':\n        themeObj = darkTheme;\n        break;\n      default:\n        themeObj = lightTheme;\n        break;\n    }\n    Object.keys(themeObj).forEach(key =>\n      document.documentElement.style.setProperty(`--${key}`, `${themeObj[key]}`, 'important')\n    );\n  }\n}\n",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "args": [],
+                "line": 25
+            },
+            "accessors": {
+                "theme": {
+                    "name": "theme",
+                    "setSignature": {
+                        "name": "theme",
+                        "type": "void",
+                        "args": [
+                            {
+                                "name": "theme",
+                                "type": "string"
+                            }
+                        ],
+                        "returnType": "void",
+                        "line": 35,
+                        "jsdoctags": [
+                            {
+                                "name": "theme",
+                                "type": "string",
+                                "tagName": {
+                                    "text": "param"
+                                }
+                            }
+                        ]
+                    }
+                }
+            },
+            "type": "injectable"
+        },
+        {
             "name": "ComponentsService",
             "id": "injectable-ComponentsService-b7227a2afcbe83ba2f5742aac484e6d1",
             "file": "projects/lib/src/components/components.service.ts",
@@ -242,7 +320,7 @@
         },
         {
             "name": "ButtonComponent",
-            "id": "component-ButtonComponent-68ecbb15125068cccec0ab3a19f2361a",
+            "id": "component-ButtonComponent-3694d248d6b32c6e1df21d1c50d62464",
             "file": "projects/lib/src/components/inputs/button/button.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -263,58 +341,70 @@
                     "name": "busy",
                     "defaultValue": "false",
                     "description": "<p>Exibe botão de &quot;carregamento&quot; e desabilita o botão.\nPara alterar o texto, utilizar a propriedade <code>busyText</code></p>\n",
-                    "line": 20,
+                    "line": 21,
                     "type": "boolean"
                 },
                 {
                     "name": "busyText",
                     "description": "<p>Texto exibido junto ao botão de &quot;carregando&quot; quando a propriedade <code>busy</code> está como <code>true</code></p>\n",
-                    "line": 24,
+                    "line": 25,
                     "type": "string"
                 },
                 {
                     "name": "disabled",
                     "defaultValue": "false",
                     "description": "<p>Propriedade de habilitado ou desabilitado</p>\n",
-                    "line": 40,
+                    "line": 41,
                     "type": "boolean"
                 },
                 {
                     "name": "iconClass",
                     "description": "<p>Ícone que será exibido no botão junto ao texto. Ex: <code>uil uil-md uil-tabs</code></p>\n",
-                    "line": 28,
+                    "line": 29,
                     "type": "string"
                 },
                 {
                     "name": "iconPosition",
                     "defaultValue": "'start'",
                     "description": "<p>Caso tenha ícone, indica se o ícone estará no começo ou fim do botão</p>\n",
-                    "line": 32,
+                    "line": 33,
                     "type": "\"start\" | \"end\""
                 },
                 {
                     "name": "label",
                     "defaultValue": "''",
-                    "line": 10,
+                    "line": 11,
                     "type": "string | null"
                 },
                 {
                     "name": "outline",
                     "defaultValue": "false",
                     "description": "<p>Se o botão será cheio ou apenas contornado pela borda</p>\n",
-                    "line": 36,
+                    "line": 37,
                     "type": "boolean"
                 },
                 {
                     "name": "type",
                     "defaultValue": "`${MainColors.default}`",
                     "description": "<p>Cor do botão que será exibido.\nUtilizar as propriedades do tipo &quot;MainColors&quot;</p>\n",
-                    "line": 15,
+                    "line": 16,
                     "type": "MainColors | string"
                 }
             ],
             "outputsClass": [],
-            "propertiesClass": [],
+            "propertiesClass": [
+                {
+                    "name": "colorTheme",
+                    "type": "ColorThemeService",
+                    "optional": false,
+                    "description": "",
+                    "line": 44,
+                    "modifierKind": [
+                        114,
+                        132
+                    ]
+                }
+            ],
             "methodsClass": [
                 {
                     "name": "getClassName",
@@ -322,7 +412,7 @@
                     "optional": false,
                     "returnType": "string",
                     "typeParameters": [],
-                    "line": 44,
+                    "line": 47,
                     "modifierKind": [
                         114
                     ]
@@ -333,7 +423,7 @@
             "description": "",
             "rawdescription": "",
             "type": "component",
-            "sourceCode": "import {Component, Input} from '@angular/core';\nimport {MainColors} from '../../../models/colors';\n\n@Component({\n  selector: 'pm-button',\n  templateUrl: './button.component.html',\n  styleUrls: ['./button.component.scss']\n})\nexport class ButtonComponent {\n  @Input('label') label: string | null = '';  // Usada só pra aparecer no storybook\n  /**\n   * Cor do botão que será exibido.\n   * Utilizar as propriedades do tipo \"MainColors\"\n   */\n  @Input('type') type: MainColors | string = `${MainColors.default}`;\n  /**\n   * Exibe botão de \"carregamento\" e desabilita o botão.\n   * Para alterar o texto, utilizar a propriedade `busyText`\n   */\n  @Input('busy') busy: boolean = false;\n  /**\n   * Texto exibido junto ao botão de \"carregando\" quando a propriedade `busy` está como `true`\n   */\n  @Input('busyText') busyText: string;\n  /**\n   * Ícone que será exibido no botão junto ao texto. Ex: `uil uil-md uil-tabs`\n   */\n  @Input('iconClass') iconClass: string;\n  /**\n   * Caso tenha ícone, indica se o ícone estará no começo ou fim do botão\n   */\n  @Input('iconPosition') iconPosition: 'start' | 'end' = 'start';\n  /**\n   * Se o botão será cheio ou apenas contornado pela borda\n   */\n  @Input('outline') outline: boolean = false;\n  /**\n   * Propriedade de habilitado ou desabilitado\n   */\n  @Input('disabled') disabled: boolean = false;\n\n  constructor() { }\n\n  public getClassName(): string {\n    let name = 'btn';\n    if (this.type) {\n      if (this.outline) {\n        name += ` btn-outline-${this.type}`;\n      } else {\n        name += ` btn-${this.type}`;\n      }\n    }\n    if (this.iconClass) {\n      name += ` d-flex flex-row`;\n    }\n    return name;\n  }\n\n}\n",
+            "sourceCode": "import {Component, Input} from '@angular/core';\nimport {MainColors} from '../../../models/colors';\nimport {ColorThemeService} from '../../../services/color-theme/color-theme.service';\n\n@Component({\n  selector: 'pm-button',\n  templateUrl: './button.component.html',\n  styleUrls: ['./button.component.scss']\n})\nexport class ButtonComponent {\n  @Input('label') label: string | null = '';  // Usada só pra aparecer no storybook\n  /**\n   * Cor do botão que será exibido.\n   * Utilizar as propriedades do tipo \"MainColors\"\n   */\n  @Input('type') type: MainColors | string = `${MainColors.default}`;\n  /**\n   * Exibe botão de \"carregamento\" e desabilita o botão.\n   * Para alterar o texto, utilizar a propriedade `busyText`\n   */\n  @Input('busy') busy: boolean = false;\n  /**\n   * Texto exibido junto ao botão de \"carregando\" quando a propriedade `busy` está como `true`\n   */\n  @Input('busyText') busyText: string;\n  /**\n   * Ícone que será exibido no botão junto ao texto. Ex: `uil uil-md uil-tabs`\n   */\n  @Input('iconClass') iconClass: string;\n  /**\n   * Caso tenha ícone, indica se o ícone estará no começo ou fim do botão\n   */\n  @Input('iconPosition') iconPosition: 'start' | 'end' = 'start';\n  /**\n   * Se o botão será cheio ou apenas contornado pela borda\n   */\n  @Input('outline') outline: boolean = false;\n  /**\n   * Propriedade de habilitado ou desabilitado\n   */\n  @Input('disabled') disabled: boolean = false;\n\n  constructor(\n    public readonly colorTheme: ColorThemeService\n  ) { }\n\n  public getClassName(): string {\n    let name = 'btn';\n    if (this.type) {\n      if (this.outline) {\n        name += ` btn-outline-${this.type}`;\n      } else {\n        name += ` btn-${this.type}`;\n      }\n    }\n    if (this.iconClass) {\n      name += ` d-flex flex-row`;\n    }\n    return name;\n  }\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -345,10 +435,24 @@
             "constructorObj": {
                 "name": "constructor",
                 "description": "",
-                "args": [],
-                "line": 40
+                "args": [
+                    {
+                        "name": "colorTheme",
+                        "type": "ColorThemeService"
+                    }
+                ],
+                "line": 41,
+                "jsdoctags": [
+                    {
+                        "name": "colorTheme",
+                        "type": "ColorThemeService",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
             },
-            "templateData": "<div class=\"pm-button\">\n  <button [className]=\"getClassName()\" [disabled]=\"busy || disabled\">\n    <ng-container *ngIf=\"busy; else buttonContent\">\n      <span class=\"spinner-border spinner-border-sm mx-2\" role=\"status\" aria-hidden=\"true\"></span>\n      {{busyText ? busyText : ''}}\n    </ng-container>\n  </button>\n</div>\n\n<ng-template #buttonContent>\n  <i *ngIf=\"iconClass && busy === false && iconPosition === 'start'\" class=\"{{iconClass}}\"></i>\n  <ng-container *ngIf=\"label; else noLabel\">\n    <span class=\"align-self-center\" [ngClass]=\"{'ms-2': !!label && iconPosition === 'start', 'me-2': !!label && iconPosition === 'end'}\">\n      {{label}}\n    </span>\n  </ng-container>\n  <i *ngIf=\"iconClass && busy === false && iconPosition === 'end'\" class=\"{{iconClass}}\"></i>\n</ng-template>\n\n<ng-template #noLabel>\n  <ng-content></ng-content>\n</ng-template>\n\n"
+            "templateData": "<div class=\"pm-button\" (click)=\"colorTheme.toggle()\">\n  <button [className]=\"getClassName()\" [disabled]=\"busy || disabled\">\n    <ng-container *ngIf=\"busy; else buttonContent\">\n      <span class=\"spinner-border spinner-border-sm mx-2\" role=\"status\" aria-hidden=\"true\"></span>\n      {{busyText ? busyText : ''}}\n    </ng-container>\n  </button>\n</div>\n\n<ng-template #buttonContent>\n  <i *ngIf=\"iconClass && busy === false && iconPosition === 'start'\" class=\"{{iconClass}}\"></i>\n  <ng-container *ngIf=\"label; else noLabel\">\n    <span class=\"align-self-center\" [ngClass]=\"{'ms-2': !!label && iconPosition === 'start', 'me-2': !!label && iconPosition === 'end'}\">\n      {{label}}\n    </span>\n  </ng-container>\n  <i *ngIf=\"iconClass && busy === false && iconPosition === 'end'\" class=\"{{iconClass}}\"></i>\n</ng-template>\n\n<ng-template #noLabel>\n  <ng-content></ng-content>\n</ng-template>\n\n"
         },
         {
             "name": "CheckboxComponent",
@@ -1148,7 +1252,7 @@
         },
         {
             "name": "DropdownActionsComponent",
-            "id": "component-DropdownActionsComponent-1c3607c0cbd61c280a4da30f4f688404",
+            "id": "component-DropdownActionsComponent-85e7550703e6c0bb88cbe1b3753a28af",
             "file": "projects/lib/src/components/inputs/dropdown-actions/dropdown-actions.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -1168,35 +1272,35 @@
                 {
                     "name": "actions",
                     "defaultValue": "[]",
-                    "line": 13,
+                    "line": 14,
                     "type": "literal type[]"
                 },
                 {
                     "name": "buttonTemplate",
-                    "line": 15,
+                    "line": 16,
                     "type": "TemplateRef<any>"
                 },
                 {
                     "name": "closeOnClick",
                     "defaultValue": "true",
-                    "line": 14
+                    "line": 15
                 },
                 {
                     "name": "iconClass",
                     "defaultValue": "'uil uil-md uil-ellipsis-h'",
-                    "line": 19
+                    "line": 20
                 },
                 {
                     "name": "type",
                     "defaultValue": "MainColors.light",
-                    "line": 18,
+                    "line": 19,
                     "type": "MainColors | string"
                 },
                 {
                     "name": "busy",
                     "defaultValue": "false",
                     "description": "<p>Exibe botão de &quot;carregamento&quot; e desabilita o botão.\nPara alterar o texto, utilizar a propriedade <code>busyText</code></p>\n",
-                    "line": 20,
+                    "line": 21,
                     "type": "boolean",
                     "inheritance": {
                         "file": "ButtonComponent"
@@ -1205,7 +1309,7 @@
                 {
                     "name": "busyText",
                     "description": "<p>Texto exibido junto ao botão de &quot;carregando&quot; quando a propriedade <code>busy</code> está como <code>true</code></p>\n",
-                    "line": 24,
+                    "line": 25,
                     "type": "string",
                     "inheritance": {
                         "file": "ButtonComponent"
@@ -1215,7 +1319,7 @@
                     "name": "disabled",
                     "defaultValue": "false",
                     "description": "<p>Propriedade de habilitado ou desabilitado</p>\n",
-                    "line": 40,
+                    "line": 41,
                     "type": "boolean",
                     "inheritance": {
                         "file": "ButtonComponent"
@@ -1224,7 +1328,7 @@
                 {
                     "name": "iconClass",
                     "description": "<p>Ícone que será exibido no botão junto ao texto. Ex: <code>uil uil-md uil-tabs</code></p>\n",
-                    "line": 28,
+                    "line": 29,
                     "type": "string",
                     "inheritance": {
                         "file": "ButtonComponent"
@@ -1234,7 +1338,7 @@
                     "name": "iconPosition",
                     "defaultValue": "'start'",
                     "description": "<p>Caso tenha ícone, indica se o ícone estará no começo ou fim do botão</p>\n",
-                    "line": 32,
+                    "line": 33,
                     "type": "\"start\" | \"end\"",
                     "inheritance": {
                         "file": "ButtonComponent"
@@ -1243,7 +1347,7 @@
                 {
                     "name": "label",
                     "defaultValue": "''",
-                    "line": 10,
+                    "line": 11,
                     "type": "string | null",
                     "inheritance": {
                         "file": "ButtonComponent"
@@ -1253,7 +1357,7 @@
                     "name": "outline",
                     "defaultValue": "false",
                     "description": "<p>Se o botão será cheio ou apenas contornado pela borda</p>\n",
-                    "line": 36,
+                    "line": 37,
                     "type": "boolean",
                     "inheritance": {
                         "file": "ButtonComponent"
@@ -1263,7 +1367,7 @@
                     "name": "type",
                     "defaultValue": "`${MainColors.default}`",
                     "description": "<p>Cor do botão que será exibido.\nUtilizar as propriedades do tipo &quot;MainColors&quot;</p>\n",
-                    "line": 15,
+                    "line": 16,
                     "type": "MainColors | string",
                     "inheritance": {
                         "file": "ButtonComponent"
@@ -1271,7 +1375,33 @@
                 }
             ],
             "outputsClass": [],
-            "propertiesClass": [],
+            "propertiesClass": [
+                {
+                    "name": "ct",
+                    "type": "ColorThemeService",
+                    "optional": false,
+                    "description": "",
+                    "line": 23,
+                    "modifierKind": [
+                        114,
+                        132
+                    ]
+                },
+                {
+                    "name": "colorTheme",
+                    "type": "ColorThemeService",
+                    "optional": false,
+                    "description": "",
+                    "line": 44,
+                    "modifierKind": [
+                        114,
+                        132
+                    ],
+                    "inheritance": {
+                        "file": "ButtonComponent"
+                    }
+                }
+            ],
             "methodsClass": [
                 {
                     "name": "callMethod",
@@ -1288,7 +1418,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 25,
+                    "line": 28,
                     "modifierKind": [
                         114
                     ],
@@ -1315,7 +1445,7 @@
                     "optional": false,
                     "returnType": "string",
                     "typeParameters": [],
-                    "line": 44,
+                    "line": 47,
                     "modifierKind": [
                         114
                     ],
@@ -1329,7 +1459,7 @@
             "description": "",
             "rawdescription": "",
             "type": "component",
-            "sourceCode": "import {Component, Input, TemplateRef} from '@angular/core';\nimport {MatSelect} from '@angular/material/select';\nimport {MainColors} from '../../../models/colors';\nimport {ButtonComponent} from '../button/button.component';\n\n@Component({\n  selector: 'pm-dropdown-actions',\n  templateUrl: './dropdown-actions.component.html',\n  styleUrls: ['./dropdown-actions.component.scss']\n})\nexport class DropdownActionsComponent extends ButtonComponent {\n\n  @Input('actions') actions: {label: string, method: any}[] = [];\n  @Input() closeOnClick = true;\n  @Input() buttonTemplate: TemplateRef<any>;\n\n  // buttons input\n  @Input('type') type: MainColors | string = MainColors.light;\n  @Input('iconClass') iconClass = 'uil uil-md uil-ellipsis-h';\n\n  constructor() {\n    super();\n  }\n\n  public callMethod(action: any, actionsSelect: MatSelect): void {\n    action.method();\n    if (this.closeOnClick) {\n      actionsSelect.close();\n    }\n  }\n}\n",
+            "sourceCode": "import {Component, Input, TemplateRef} from '@angular/core';\nimport {MatSelect} from '@angular/material/select';\nimport {MainColors} from '../../../models/colors';\nimport {ButtonComponent} from '../button/button.component';\nimport {ColorThemeService} from '../../../services/color-theme/color-theme.service';\n\n@Component({\n  selector: 'pm-dropdown-actions',\n  templateUrl: './dropdown-actions.component.html',\n  styleUrls: ['./dropdown-actions.component.scss']\n})\nexport class DropdownActionsComponent extends ButtonComponent {\n\n  @Input('actions') actions: {label: string, method: any}[] = [];\n  @Input() closeOnClick = true;\n  @Input() buttonTemplate: TemplateRef<any>;\n\n  // buttons input\n  @Input('type') type: MainColors | string = MainColors.light;\n  @Input('iconClass') iconClass = 'uil uil-md uil-ellipsis-h';\n\n  constructor(\n    public readonly ct: ColorThemeService\n  ) {\n    super(ct);\n  }\n\n  public callMethod(action: any, actionsSelect: MatSelect): void {\n    action.method();\n    if (this.closeOnClick) {\n      actionsSelect.close();\n    }\n  }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -1341,8 +1471,22 @@
             "constructorObj": {
                 "name": "constructor",
                 "description": "",
-                "args": [],
-                "line": 19
+                "args": [
+                    {
+                        "name": "ct",
+                        "type": "ColorThemeService"
+                    }
+                ],
+                "line": 20,
+                "jsdoctags": [
+                    {
+                        "name": "ct",
+                        "type": "ColorThemeService",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
             },
             "extends": "ButtonComponent",
             "templateData": "<ng-container *ngTemplateOutlet=\"buttonTemplate ? buttonTemplate : defaultButtonTemplate; context: {$implicit: actionsSelect}\"></ng-container>\n\n<mat-select #actionsSelect class=\"mat-select-btn-sm\">\n  <mat-option [hidden]=\"true\"></mat-option>\n  <mat-option *ngFor=\"let action of actions\" (click)=\"callMethod(action, actionsSelect)\">{{action.label}}</mat-option>\n</mat-select>\n\n<ng-template #defaultButtonTemplate let-select>\n  <pm-button (click)=\"(disabled || busy) === false ? select.toggle() : null\"\n             [type]=\"type\"\n             [busy]=\"busy\"\n             [busyText]=\"busyText\"\n             [iconClass]=\"iconClass\"\n             [outline]=\"outline\"\n             [disabled]=\"disabled\"\n  >\n  </pm-button>\n</ng-template>\n"
@@ -2432,7 +2576,11 @@
             "children": [
                 {
                     "type": "providers",
-                    "elements": []
+                    "elements": [
+                        {
+                            "name": "ColorThemeService"
+                        }
+                    ]
                 },
                 {
                     "type": "declarations",
@@ -3046,6 +3194,14 @@
                 "defaultValue": "Template.bind({})"
             },
             {
+                "name": "darkTheme",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/services/color-theme/color-theme.service.ts",
+                "type": "object",
+                "defaultValue": "{\n  'color-primary': '#455363',\n  'color-default': '#455363',\n  'background-color': '#1f2935',\n  'text-color': '#fff'\n}"
+            },
+            {
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -3081,30 +3237,6 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
-                "type": "object",
-                "defaultValue": "{\n  showIndex: true,\n  itemActionLabel: undefined,\n  itemMainLabel: undefined,\n  itemSubLabel: undefined,\n  actions: undefined,\n  itemList: undefined,\n  roundedBorders: true,\n  enableDragging: true,\n  enableSelection: true,\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
-                "type": "object",
-                "defaultValue": "{\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/lib/src/components/lists/table-list/table-list.stories.ts",
-                "type": "object",
-                "defaultValue": "{\n  columns: [],\n  columnNames: [],\n  imageColumns: [],\n  imageHeight: '50px',\n  showHeader: true,\n  numberFormat: '1.2-2',\n  numberPrefix: '',\n  actionsTemplate: undefined,\n  itemList: undefined,\n  borderRadius: undefined,\n  backgroundColor: undefined,\n  expandedDetailTemplate: undefined,\n  disableExpandedOnDisabledRow: true,\n  expandedRow: undefined\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "projects/lib/src/components/inputs/button/button.stories.ts",
                 "type": "object",
                 "defaultValue": "{\n  label: '',\n  type: MainColors.default,\n  busy: false,\n  busyText: '',\n  iconClass: '',\n  iconPosition: 'start',\n  outline: false,\n  disabled: false,\n}"
@@ -3113,17 +3245,17 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts",
+                "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
                 "type": "object",
-                "defaultValue": "{\n  items: [],\n  disabled: false,\n  selectedItem: undefined\n}"
+                "defaultValue": "{\n  checked: false,\n  disabled: false,\n  selectedItem: undefined,\n}"
             },
             {
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
+                "file": "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts",
                 "type": "object",
-                "defaultValue": "{\n  checked: false,\n  disabled: false,\n  selectedItem: undefined,\n}"
+                "defaultValue": "{\n  items: [],\n  disabled: false,\n  selectedItem: undefined\n}"
             },
             {
                 "name": "defaultArgs",
@@ -3148,6 +3280,30 @@
                 "file": "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts",
                 "type": "object",
                 "defaultValue": "{\n  orientation: OrientationEnum.Y,\n  values: [],\n  disabled: false,\n  selectedValue: undefined\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
+                "type": "object",
+                "defaultValue": "{\n  showIndex: true,\n  itemActionLabel: undefined,\n  itemMainLabel: undefined,\n  itemSubLabel: undefined,\n  actions: undefined,\n  itemList: undefined,\n  roundedBorders: true,\n  enableDragging: true,\n  enableSelection: true,\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
+                "type": "object",
+                "defaultValue": "{\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/components/lists/table-list/table-list.stories.ts",
+                "type": "object",
+                "defaultValue": "{\n  columns: [],\n  columnNames: [],\n  imageColumns: [],\n  imageHeight: '50px',\n  showHeader: true,\n  numberFormat: '1.2-2',\n  numberPrefix: '',\n  actionsTemplate: undefined,\n  itemList: undefined,\n  borderRadius: undefined,\n  backgroundColor: undefined,\n  expandedDetailTemplate: undefined,\n  disableExpandedOnDisabledRow: true,\n  expandedRow: undefined\n}"
             },
             {
                 "name": "DefaultBasicCard",
@@ -3350,6 +3506,14 @@
                 "defaultValue": "Template.bind({})"
             },
             {
+                "name": "lightTheme",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/services/color-theme/color-theme.service.ts",
+                "type": "object",
+                "defaultValue": "{\n  'color-primary': '#fff',\n  'color-default': '#fff',\n  'background-color': '#e5e5e5',\n  'text-color': '#2d2d2d'\n}"
+            },
+            {
                 "name": "NoHeader",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -3432,30 +3596,6 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
-                "type": "Story<DraggableListComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-draggable-list\n      [showIndex]=\"showIndex\"\n      [itemActionLabel]=\"itemActionLabel\"\n      [itemMainLabel]=\"itemMainLabel\"\n      [itemSubLabel]=\"itemSubLabel\"\n      [actions]=\"actions\"\n      [itemList]=\"itemList\"\n      [roundedBorders]=\"roundedBorders\"\n      [enableDragging]=\"enableDragging\"\n      [enableSelection]=\"enableSelection\"\n    >\n    </pm-draggable-list>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
-                "type": "Story<GridListComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-grid-list\n      [items]=\"items\"\n      [displayStyle]=\"displayStyle\"\n      [gridHeaderReverse]=\"gridHeaderReverse\"\n      [bodyBackgroundColor]=\"bodyBackgroundColor\"\n      [actionTemplate]=\"undefined\"\n      [overflowGallery]=\"overflowGallery\"\n    >\n    </pm-grid-list>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/lib/src/components/lists/table-list/table-list.stories.ts",
-                "type": "Story<TableListComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `<pm-table-list\n    [columns]=\"columns\"\n    [columnNames]=\"columnNames\"\n    [imageColumns]=\"imageColumns\"\n    [imageHeight]=\"imageHeight\"\n    [showHeader]=\"showHeader\"\n    [numberFormat]=\"numberFormat\"\n    [numberPrefix]=\"numberPrefix\"\n    [itemList]=\"itemList\"\n    [borderRadius]=\"borderRadius\"\n    [backgroundColor]=\"backgroundColor\"\n    [expandedDetailTemplate]=\"expandedDetailTemplate\"\n    [disableExpandedOnDisabledRow]=\"disableExpandedOnDisabledRow\"\n  ></pm-table-list>`\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "projects/lib/src/components/inputs/button/button.stories.ts",
                 "type": "Story<ButtonComponent>",
                 "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-button\n        [label]=\"label\"\n        [type]=\"type\"\n        [busy]=\"busy\"\n        [busyText]=\"busyText\"\n        [iconClass]=\"iconClass\"\n        [iconPosition]=\"iconPosition\"\n        [outline]=\"outline\"\n        [disabled]=\"disabled\"\n    >\n        Button Content\n    </pm-button>\n  `\n})"
@@ -3464,17 +3604,17 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts",
-                "type": "Story<ComboBoxComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-combo-box\n      [items]=\"items\"\n      [disabled]=\"disabled\"\n      [selectedItem]=\"selectedItem\"\n    >\n    </pm-combo-box>\n  `\n})"
+                "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
+                "type": "Story<CheckboxComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-checkbox\n      [checked]=\"checked\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>\n  `\n})"
             },
             {
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
-                "type": "Story<CheckboxComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-checkbox\n      [checked]=\"checked\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>\n  `\n})"
+                "file": "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts",
+                "type": "Story<ComboBoxComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-combo-box\n      [items]=\"items\"\n      [disabled]=\"disabled\"\n      [selectedItem]=\"selectedItem\"\n    >\n    </pm-combo-box>\n  `\n})"
             },
             {
                 "name": "Template",
@@ -3499,6 +3639,30 @@
                 "file": "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts",
                 "type": "Story<RadioButtonComponent>",
                 "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-radio-button\n      [orientation]=\"orientation\"\n      [values]=\"values\"\n      [selectedValue]=\"selectedValue\"\n      [disabled]=\"disabled\"\n    >\n    </pm-radio-button>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
+                "type": "Story<DraggableListComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-draggable-list\n      [showIndex]=\"showIndex\"\n      [itemActionLabel]=\"itemActionLabel\"\n      [itemMainLabel]=\"itemMainLabel\"\n      [itemSubLabel]=\"itemSubLabel\"\n      [actions]=\"actions\"\n      [itemList]=\"itemList\"\n      [roundedBorders]=\"roundedBorders\"\n      [enableDragging]=\"enableDragging\"\n      [enableSelection]=\"enableSelection\"\n    >\n    </pm-draggable-list>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
+                "type": "Story<GridListComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-grid-list\n      [items]=\"items\"\n      [displayStyle]=\"displayStyle\"\n      [gridHeaderReverse]=\"gridHeaderReverse\"\n      [bodyBackgroundColor]=\"bodyBackgroundColor\"\n      [actionTemplate]=\"undefined\"\n      [overflowGallery]=\"overflowGallery\"\n    >\n    </pm-grid-list>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/components/lists/table-list/table-list.stories.ts",
+                "type": "Story<TableListComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `<pm-table-list\n    [columns]=\"columns\"\n    [columnNames]=\"columnNames\"\n    [imageColumns]=\"imageColumns\"\n    [imageHeight]=\"imageHeight\"\n    [showHeader]=\"showHeader\"\n    [numberFormat]=\"numberFormat\"\n    [numberPrefix]=\"numberPrefix\"\n    [itemList]=\"itemList\"\n    [borderRadius]=\"borderRadius\"\n    [backgroundColor]=\"backgroundColor\"\n    [expandedDetailTemplate]=\"expandedDetailTemplate\"\n    [disableExpandedOnDisabledRow]=\"disableExpandedOnDisabledRow\"\n  ></pm-table-list>`\n})"
             },
             {
                 "name": "ThumbnailTable",
@@ -3967,6 +4131,24 @@
                     "type": "literal type"
                 }
             ],
+            "projects/lib/src/services/color-theme/color-theme.service.ts": [
+                {
+                    "name": "darkTheme",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/services/color-theme/color-theme.service.ts",
+                    "type": "object",
+                    "defaultValue": "{\n  'color-primary': '#455363',\n  'color-default': '#455363',\n  'background-color': '#1f2935',\n  'text-color': '#fff'\n}"
+                },
+                {
+                    "name": "lightTheme",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/services/color-theme/color-theme.service.ts",
+                    "type": "object",
+                    "defaultValue": "{\n  'color-primary': '#fff',\n  'color-default': '#fff',\n  'background-color': '#e5e5e5',\n  'text-color': '#2d2d2d'\n}"
+                }
+            ],
             "stories/default.ts": [
                 {
                     "name": "defaultArgs",
@@ -4045,36 +4227,28 @@
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-expansion-panel\n    >\n        Conteúdo aqui\n    </pm-expansion-panel>\n  `\n})"
                 }
             ],
-            "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts": [
+            "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts": [
                 {
                     "name": "defaultArgs",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
+                    "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
                     "type": "object",
-                    "defaultValue": "{\n  showIndex: true,\n  itemActionLabel: undefined,\n  itemMainLabel: undefined,\n  itemSubLabel: undefined,\n  actions: undefined,\n  itemList: undefined,\n  roundedBorders: true,\n  enableDragging: true,\n  enableSelection: true,\n}"
+                    "defaultValue": "{\n  checked: false,\n  disabled: false,\n  selectedItem: undefined,\n}"
                 },
                 {
-                    "name": "DefaultDraggableList",
+                    "name": "DefaultCheckbox",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
+                    "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
                     "type": "",
                     "defaultValue": "Template.bind({})"
                 },
                 {
-                    "name": "DisabledDragging",
+                    "name": "DisabledCheckbox",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "NoIndexStringList",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
+                    "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
                     "type": "",
                     "defaultValue": "Template.bind({})"
                 },
@@ -4082,43 +4256,9 @@
                     "name": "Template",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
-                    "type": "Story<DraggableListComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-draggable-list\n      [showIndex]=\"showIndex\"\n      [itemActionLabel]=\"itemActionLabel\"\n      [itemMainLabel]=\"itemMainLabel\"\n      [itemSubLabel]=\"itemSubLabel\"\n      [actions]=\"actions\"\n      [itemList]=\"itemList\"\n      [roundedBorders]=\"roundedBorders\"\n      [enableDragging]=\"enableDragging\"\n      [enableSelection]=\"enableSelection\"\n    >\n    </pm-draggable-list>\n  `\n})"
-                }
-            ],
-            "projects/lib/src/components/lists/grid-list/grid-list.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
-                    "type": "object",
-                    "defaultValue": "{\n}"
-                },
-                {
-                    "name": "DefaultGridList",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "getColor",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
-                    "type": "",
-                    "defaultValue": "() => MainColors.primary"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
-                    "type": "Story<GridListComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-grid-list\n      [items]=\"items\"\n      [displayStyle]=\"displayStyle\"\n      [gridHeaderReverse]=\"gridHeaderReverse\"\n      [bodyBackgroundColor]=\"bodyBackgroundColor\"\n      [actionTemplate]=\"undefined\"\n      [overflowGallery]=\"overflowGallery\"\n    >\n    </pm-grid-list>\n  `\n})"
+                    "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
+                    "type": "Story<CheckboxComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-checkbox\n      [checked]=\"checked\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>\n  `\n})"
                 }
             ],
             "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts": [
@@ -4153,40 +4293,6 @@
                     "file": "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts",
                     "type": "Story<ComboBoxComponent>",
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-combo-box\n      [items]=\"items\"\n      [disabled]=\"disabled\"\n      [selectedItem]=\"selectedItem\"\n    >\n    </pm-combo-box>\n  `\n})"
-                }
-            ],
-            "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
-                    "type": "object",
-                    "defaultValue": "{\n  checked: false,\n  disabled: false,\n  selectedItem: undefined,\n}"
-                },
-                {
-                    "name": "DefaultCheckbox",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "DisabledCheckbox",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
-                    "type": "Story<CheckboxComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-checkbox\n      [checked]=\"checked\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>\n  `\n})"
                 }
             ],
             "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts": [
@@ -4273,6 +4379,82 @@
                     "file": "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts",
                     "type": "Story<RadioButtonComponent>",
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-radio-button\n      [orientation]=\"orientation\"\n      [values]=\"values\"\n      [selectedValue]=\"selectedValue\"\n      [disabled]=\"disabled\"\n    >\n    </pm-radio-button>\n  `\n})"
+                }
+            ],
+            "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
+                    "type": "object",
+                    "defaultValue": "{\n  showIndex: true,\n  itemActionLabel: undefined,\n  itemMainLabel: undefined,\n  itemSubLabel: undefined,\n  actions: undefined,\n  itemList: undefined,\n  roundedBorders: true,\n  enableDragging: true,\n  enableSelection: true,\n}"
+                },
+                {
+                    "name": "DefaultDraggableList",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "DisabledDragging",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "NoIndexStringList",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
+                    "type": "Story<DraggableListComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-draggable-list\n      [showIndex]=\"showIndex\"\n      [itemActionLabel]=\"itemActionLabel\"\n      [itemMainLabel]=\"itemMainLabel\"\n      [itemSubLabel]=\"itemSubLabel\"\n      [actions]=\"actions\"\n      [itemList]=\"itemList\"\n      [roundedBorders]=\"roundedBorders\"\n      [enableDragging]=\"enableDragging\"\n      [enableSelection]=\"enableSelection\"\n    >\n    </pm-draggable-list>\n  `\n})"
+                }
+            ],
+            "projects/lib/src/components/lists/grid-list/grid-list.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
+                    "type": "object",
+                    "defaultValue": "{\n}"
+                },
+                {
+                    "name": "DefaultGridList",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "getColor",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
+                    "type": "",
+                    "defaultValue": "() => MainColors.primary"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
+                    "type": "Story<GridListComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-grid-list\n      [items]=\"items\"\n      [displayStyle]=\"displayStyle\"\n      [gridHeaderReverse]=\"gridHeaderReverse\"\n      [bodyBackgroundColor]=\"bodyBackgroundColor\"\n      [actionTemplate]=\"undefined\"\n      [overflowGallery]=\"overflowGallery\"\n    >\n    </pm-grid-list>\n  `\n})"
                 }
             ],
             "stories/Stepper.stories.ts": [
@@ -4683,8 +4865,8 @@
                 "type": "component",
                 "linktype": "component",
                 "name": "ButtonComponent",
-                "coveragePercent": 63,
-                "coverageCount": "7/11",
+                "coveragePercent": 58,
+                "coverageCount": "7/12",
                 "status": "good"
             },
             {
@@ -4958,8 +5140,8 @@
                 "type": "component",
                 "linktype": "component",
                 "name": "DropdownActionsComponent",
-                "coveragePercent": 41,
-                "coverageCount": "7/17",
+                "coveragePercent": 36,
+                "coverageCount": "7/19",
                 "status": "medium"
             },
             {
@@ -5283,6 +5465,35 @@
                 "name": "StepperComponent",
                 "coveragePercent": 0,
                 "coverageCount": "0/2",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/lib/src/services/color-theme/color-theme.service.ts",
+                "type": "injectable",
+                "linktype": "injectable",
+                "name": "ColorThemeService",
+                "coveragePercent": 0,
+                "coverageCount": "0/5",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/lib/src/services/color-theme/color-theme.service.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "darkTheme",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/lib/src/services/color-theme/color-theme.service.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "lightTheme",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
                 "status": "low"
             },
             {
