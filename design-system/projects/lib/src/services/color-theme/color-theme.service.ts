@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import {Inject, Injectable} from '@angular/core';
+import {colorThemeToken} from './injection';
 
 export const defaultTheme = {
   'color-primary': '#455363',
@@ -24,10 +25,12 @@ export const darkTheme = {
 @Injectable()
 export class ColorThemeService {
 
-  private _theme: string = 'light';
+  private _theme: string;
 
-  constructor() {
-    this.theme = `${this._theme}`;
+  constructor(
+    @Inject(colorThemeToken) initialTheme: any
+  ) {
+    this.theme = initialTheme;
   }
 
   private set theme(theme: string) {
