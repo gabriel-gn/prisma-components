@@ -10,7 +10,7 @@ const getDirectories = (source) => {
 const themesPath = 'projects/lib/src/styles/themes'
 const themes = getDirectories(themesPath);
 
-for (const themeName of [themes[0]]) {
+for (const themeName of themes) {
   const themeVariables = fs.readFileSync(`${themesPath}/${themeName}/_variables.scss`).toString('utf8');
   let themeSass = fs.readFileSync(`${themesPath}/${themeName}/theme.scss`).toString('utf8');
   themeSass = themeSass.replace('@import "variables";', themeVariables);
@@ -64,7 +64,7 @@ for (const themeName of [themes[0]]) {
   const modifiedFile =
     themeServiceFile.substring(0, getNumberAfterCertainValue(objStartIndexes, themeConstIndex))
     + JSON.stringify(sassJson)
-    + themeServiceFile.substring(getNumberAfterCertainValue(objEndIndexes, themeConstIndex))
+    + themeServiceFile.substring(getNumberAfterCertainValue(objEndIndexes, themeConstIndex) + 1)
   ;
   fs.writeFileSync(servicePath, modifiedFile);
 }
