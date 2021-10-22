@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-export const darkTheme = {
+export const defaultTheme = {
   'color-primary': '#455363',
   'color-default': '#455363',
   'background-color': '#1f2935',
@@ -14,15 +14,17 @@ export const lightTheme = {
   'text-color': '#2d2d2d'
 };
 
+export const darkTheme = {
+  'color-primary': '#455363',
+  'color-default': '#455363',
+  'background-color': '#1f2935',
+  'text-color': '#fff'
+};
+
 @Injectable()
 export class ColorThemeService {
 
   private _theme: string = 'light';
-  private readonly _themeList = [
-    'default',
-    'light',
-    'dark',
-  ];
 
   constructor() {
     this.theme = `${this._theme}`;
