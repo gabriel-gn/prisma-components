@@ -30,15 +30,14 @@ export class ColorThemeService {
     this.theme = `${this._theme}`;
   }
 
-  public toggle(): void {
-    this.theme = this._theme === 'dark' ? 'light' : 'dark';
-  }
-
   private set theme(theme: string) {
     this._theme = theme;
 
     let themeObj;
     switch (theme) {
+      case 'default':
+        themeObj = defaultTheme;
+        break;
       case 'light':
         themeObj = lightTheme;
         break;
@@ -46,11 +45,15 @@ export class ColorThemeService {
         themeObj = darkTheme;
         break;
       default:
-        themeObj = lightTheme;
+        themeObj = defaultTheme;
         break;
     }
     Object.keys(themeObj).forEach(key =>
       document.documentElement.style.setProperty(`--${key}`, `${themeObj[key]}`, 'important')
     );
+  }
+
+  public toggle(): void {
+    this.theme = this._theme === 'dark' ? 'light' : 'dark';
   }
 }
