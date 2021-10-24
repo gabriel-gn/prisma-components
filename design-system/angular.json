@@ -7,7 +7,23 @@
       "projectType": "library",
       "schematics": {
         "@schematics/angular:component": {
-          "style": "scss"
+          "style": "scss",
+          "path": "projects/lib/src/components"
+        },
+        "@schematics/angular:directive": {
+          "path": "projects/lib/src/directives"
+        },
+        "@schematics/angular:module": {
+          "path": "projects/lib/src/components"
+        },
+        "@schematics/angular:service":{
+          "path": "projects/lib/src/services"
+        },
+        "@schematics/angular:pipe": {
+          "path": "projects/lib/src/pipes"
+        },
+        "@schematics/angular:class": {
+          "path": "projects/lib/src/classes"
         }
       },
       "root": "projects/lib",
