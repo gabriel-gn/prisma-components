@@ -17,8 +17,8 @@
     "build-storybook": "npm run docs:json && build-storybook",
     "build-storybook-dist": "npm run build-storybook -- -o ./storybook-dist -s ./.storybook/public",
     "build-npm": "ng build --project=lib --prod",
-    "deploy-npm": "cd dist/lib && npm publish --access=public",
-    "deploy-gpr": "cd dist/lib && npm publish"
+    "deploy-npm": "cd dist/components && npm publish --access=public",
+    "deploy-gpr": "cd dist/components && npm publish"
   },
   "private": false,
   "dependencies": {
