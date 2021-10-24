@@ -16,6 +16,7 @@ export * from './models/orientation';
  ******************/
 
 export * from './services/color-theme/color-theme.service';
+export * from './services/color-theme/color-theme.module';
 
 /******************
  * COMPONENTS
