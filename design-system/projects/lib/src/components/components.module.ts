@@ -6,15 +6,18 @@ import {DraggableListModule} from './lists/draggable-list/draggable-list.module'
 import {MatSelectModule} from '@angular/material/select';
 import {TableListModule} from './lists/table-list/table-list.module';
 import {GridListModule} from './lists/grid-list/grid-list.module';
-import {StepperModule} from './stepper/stepper.module';
 import {MultiLevelDropdownMenuModule} from './multi-level-dropdown-menu/multi-level-dropdown-menu.module';
 import {ComboBoxModule} from './inputs/combo-box/combo-box.module';
 import {DropdownActionsModule} from './inputs/dropdown-actions/dropdown-actions.module';
+import {StepperModule} from './navigation/stepper/stepper.module';
 
 
 @NgModule({
   declarations: [
     ComponentsComponent,
+  ],
+  exports: [
+    ComponentsComponent
   ],
   imports: [
     CommonModule,
@@ -27,9 +30,6 @@ import {DropdownActionsModule} from './inputs/dropdown-actions/dropdown-actions.
     StepperModule,
     DropdownActionsModule,
     MultiLevelDropdownMenuModule
-  ],
-  exports: [
-    ComponentsComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

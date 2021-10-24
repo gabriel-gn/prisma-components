@@ -49,9 +49,6 @@ export * from './components/inputs/combo-box/combo-box.module';
 export * from './components/lists/grid-list/grid-list.component';
 export * from './components/lists/grid-list/grid-list.module';
 
-export * from './components/stepper/stepper.component';
-export * from './components/stepper/stepper.module';
-
 export * from './components/inputs/dropdown-actions/dropdown-actions.component';
 export * from './components/inputs/dropdown-actions/dropdown-actions.module';
 
@@ -63,3 +60,6 @@ export * from './components/cards/icon-card/icon-card.module';
 
 export * from './components/containers/expansion-panel/expansion-panel.component';
 export * from './components/containers/expansion-panel/expansion-panel.module';
+
+export * from './components/navigation/stepper/stepper.component';
+export * from './components/navigation/stepper/stepper.module';

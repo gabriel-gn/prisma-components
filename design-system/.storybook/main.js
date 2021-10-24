@@ -9,6 +9,7 @@ module.exports = {
   "addons": [
     "storybook-ng-source-addon",
     "@storybook/addon-links",
+    "@storybook/addon-postcss",
     {
       name: '@storybook/addon-essentials',
       options: {

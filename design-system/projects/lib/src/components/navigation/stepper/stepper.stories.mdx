@@ -1,0 +1,86 @@
+import {Meta, Story, ArgsTable, Canvas, Source} from '@storybook/addon-docs';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {StepperComponent} from './stepper.component';
+import {moduleMetadata} from "@storybook/angular";
+import {StepperModule} from "./stepper.module";
+import {CdkStepperModule} from '@angular/cdk/stepper';
+import SourceStory from '!!raw-loader!./stepper.stories';
+import {
+  defaultArgs,
+  DefaultStepper,
+} from "./stepper.stories";
+
+export const argTypes = {
+  // XXXArg1: {
+  //   // description: 'CRIAR A DESCRIÇÃO COMO COMENTÁRIO MULTILINHA ACIMA DOS INPUTS NO COMPONENTE',
+  //   table: {
+  //     defaultValue: { summary: defaultArgs.XXXArg1},
+  //   },
+  //   control: { type: 'inline-radio'}, options: [true, false],
+  // },
+}
+
+<Meta
+  title='Components/Navigation/Stepper'
+  component={StepperComponent}
+  argTypes={argTypes}
+  parameters={{ badges: [ 'beta' ] }}
+  decorators={[
+    moduleMetadata({
+      imports: [
+        StepperModule,
+        BrowserAnimationsModule,
+        CdkStepperModule
+      ]
+    })
+  ]}
+/>
+
+export const Template = (args) => <StepperComponent {...args} />
+
+# Stepper
+
+#### Descrição do componente Stepper
+
+<br/>
+<br/>
+
+## Stepper padrão
+
+Descrição do componente Stepper padrão
+
+Deve ser usado da seguinte forma:
+
+```
+<pm-stepper>
+</pm-stepper>
+```
+
+<Canvas>
+  <Story name='Default' story={DefaultStepper} />
+</Canvas>
+
+## Module Config
+
+```
+import {StepperModule} from '@mprisma/components';
+
+@NgModule({
+  imports: [
+    ...,
+    StepperModule,
+    ...,
+  ]
+})
+```
+
+## Args Table
+
+<ArgsTable story='Default'/>
+
+## Source
+
+<details>
+  <summary>The source stories on file <code>stepper.stories.ts</code></summary>
+  <Source code={SourceStory} language='ts' />
+</details>
