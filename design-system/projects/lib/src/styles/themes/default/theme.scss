@@ -1,0 +1,72 @@
+@import "variables";
+
+/*******************************
+*   CORES
+********************************/
+
+@function addColorSet($colorName, $colorValue) {
+  $colors: map-merge($colors, ($colorName: $colorValue));
+  @return $colors;
+}
+
+@each $key, $val in $main-colors {
+  $colors: addColorSet(#{$key}, $val);
+  $colors: addColorSet(#{$key}-pale, desaturate($val, 10%));
+  $colors: addColorSet(#{$key}-states, darken($val, 10%));
+  $colors: addColorSet(#{$key}-sat, saturate($val, 30%));
+}
+
+
+/* Função utilizada para transformar hexadecimal em rgb, assim podemos usar como variável em rgba
+*  Ex: :root { --color-primary--rgb: #{hexToRGB($color-primary)}; }
+*  Ex: background-color: rgba(var(--color-primary--rgb), 0.4) ;
+*/
+@function hexToRGB($hex) {
+  @return red($hex), green($hex), blue($hex);
+}
+
+/*******************************
+*   ROOT - FICAM APENAS VARIÁVEIS DE CSS!!
+********************************/
+
+:root {
+  @each $key, $val in $colors {
+    @if type-of($val) == color {
+      --#{$key}: #{$val};
+      --#{$key}-rgb: #{hexToRGB($val)};
+    }
+  }
+
+  --bg-default:                                 #{$bg-default};
+  --bg-pale:                                    #{$bg-pale};
+  --color-font-default:                         #{$color-font-default};
+  --color-gray-light:                           #{$color-gray-light};
+  --color-gray-medium:                          #{$color-gray-medium};
+  --color-gray-dark:                            #{$color-gray-dark};
+  --color-gray-darker:                          #{$color-gray-darker};
+
+  @each $key, $val in $border-radiuss {
+    --border-radius-#{$key}: #{$val};
+  }
+
+  @each $key, $val in $border-widths {
+    --border-width-#{$key}: #{$val};
+  }
+
+  --bg-disabled:                                #{$bg-disabled};
+  --disabled-opacity:                           #{$disabled-opacity};
+
+  --navbar-height:                              #{$navbar-height};
+  --navbar-misc-bg:                             #{$navbar-misc-bg};
+
+  --sidebar-width:                              #{$sidebar-width};
+  --sidebar-mini-width:                         #{$sidebar-mini-width};
+
+  --general-content-width:                      #{$general-content-width};
+
+  --gradient-default-top:                       #{$gradient-default-top};
+  --gradient-default-right:                     #{$gradient-default-right};
+  --gradient-default-bottom:                    #{$gradient-default-bottom};
+  --gradient-default-left:                      #{$gradient-default-left};
+  --gradient-default:                           #{$gradient-default};
+}

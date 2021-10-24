@@ -1,0 +1,34 @@
+<div [ngClass]="{'pm-stepper': true}">
+  <section class="example-container">
+    <header>
+      <ng-container *ngTemplateOutlet="headerActions"></ng-container>
+      <h2>Step {{ selectedIndex + 1 }}/{{ steps.length }}</h2>
+    </header>
+
+    <div [ngTemplateOutlet]="selected ? selected.content : null"></div>
+
+    <footer class="example-step-navigation-bar">
+      <ng-container *ngTemplateOutlet="footerActions"></ng-container>
+    </footer>
+  </section>
+
+  <ng-template #headerActions>
+    <button class="example-nav-button" cdkStepperPrevious>&larr;</button>
+    <button
+      class="example-step"
+      [class.example-active]="selectedIndex === i"
+      *ngFor="let step of steps; let i = index"
+      (click)="selectStepByIndex(i)"
+    >
+      Step {{ i + 1 }}
+    </button>
+    <button class="example-nav-button" cdkStepperNext>&rarr;</button>
+  </ng-template>
+
+  <ng-template #footerActions>
+    <div class="w-100 d-flex justify-content-between">
+      <pm-button (click)="previous()" [type]="'light'">Retornar</pm-button>
+      <pm-button (click)="next()" [type]="'primary'">Próximo</pm-button>
+    </div>
+  </ng-template>
+</div>

@@ -1,5 +1,5 @@
 import {Component, ViewChild} from '@angular/core';
-import {TableComponent} from '../../../design-system/projects/components/src/lib/table/table.component';
+import {TableComponent} from '../../../design-system/projects/lib/src/components/table/table.component';
 
 @Component({
   selector: 'ma-root',

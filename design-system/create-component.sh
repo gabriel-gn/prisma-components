@@ -44,25 +44,26 @@ for i in "${!pathArray[@]}"; do
     fi
 done
 
+filenamePath=${PWD}/projects/lib/src/components/${componentDir}/${componentKebabName}
+echo "componentPath: ${componentPath}"
 # Executa os comandos de criação de módulo e componente do angular
-ngscript="ng generate module $componentPath --project=components"
+ngscript="ng generate module $componentPath --project=lib"
 echo "$ngscript"
 ngscriptoutput=$(eval "$ngscript")
 echo "$ngscriptoutput"
 
-ngscript="ng generate component $componentPath --project=components"
+ngscript="ng generate component $componentPath --project=lib"
 echo "$ngscript"
 ngscriptoutput=$(eval "$ngscript")
 echo "$ngscriptoutput"
 
 # Copia os stories para as pastas que precisa
-storiesFilenamePath=${PWD}/projects/components/src/lib/${componentDir}/${componentKebabName}
-cp ./stories/default.mdx "${storiesFilenamePath}.stories.mdx"
-cp ./stories/default.ts "${storiesFilenamePath}.stories.ts"
+cp ./stories/default.mdx "${filenamePath}.stories.mdx"
+cp ./stories/default.ts "${filenamePath}.stories.ts"
 echo "Stories created"
 
 # altera os stories default com os valores novos de acordo com o componente criado
-filesToEdit=("${storiesFilenamePath}.stories.ts" "${storiesFilenamePath}.stories.mdx")
+filesToEdit=("${filenamePath}.stories.ts" "${filenamePath}.stories.mdx")
 for i in "${!filesToEdit[@]}"; do
     sed -i '' -e "s/XXXTitle/$component/g" "${filesToEdit[$i]}"
     sed -i '' -e "s/XXXComponent/${component}Component/g" "${filesToEdit[$i]}"
@@ -73,15 +74,15 @@ done
 echo "Stories edited"
 
 # adiciona os exports no public.api para uso do módulo em outros projetos
-echo -e "\n" >> projects/components/src/public-api.ts
-echo -e "export * from './lib/$componentDir/${componentKebabName}.component';" >> projects/components/src/public-api.ts
-echo -e "export * from './lib/$componentDir/${componentKebabName}.module';" >> projects/components/src/public-api.ts
+# echo -e "\n" >> projects/lib/src/public-api.ts
+echo -e "export * from './components/$componentDir/${componentKebabName}.component';" >> projects/lib/src/public-api.ts
+echo -e "export * from './components/$componentDir/${componentKebabName}.module';" >> projects/lib/src/public-api.ts
 echo "Module and Component exported on 'public-api.ts'"
 
 # altera o arquivo html e scss para conter uma classe com o nome do novo componente
-sed -i '' -e '1d' "${storiesFilenamePath}.component.html"  # remove a primeira do html
+sed -i '' -e '1d' "${filenamePath}.component.html"  # remove a primeira do html
 # adiciona o texto que vai no html com a classe
-echo -e "<div class=\"pm-${componentKebabName}\">\n  ${component} component created successfully!\n</div>" >> "${storiesFilenamePath}.component.html"
+echo -e "<div class=\"pm-${componentKebabName}\">\n  ${component} component created successfully!\n</div>" >> "${filenamePath}.component.html"
 # adiciona uma nova classe no scss do componente com o mesmo nome dele
-echo -e ".pm-${componentKebabName} {\n\n}" >> "${storiesFilenamePath}.component.scss"
+echo -e ".pm-${componentKebabName} {\n\n}" >> "${filenamePath}.component.scss"
 echo "Html and Scss files edited"

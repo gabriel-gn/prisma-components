@@ -25,8 +25,8 @@ jobs:
       - name: Check version changes
         uses: gabriel-gn/hello-world-github-action@v1.0.1
         with:
-          filepath: 'design-system/projects/components/package.json'
           packageName: '@mprisma/components'
+          filepath: 'design-system/projects/lib/package.json'
         id: check # Usa o output checked a partir desse id
       - name: Version checked
         run: 'echo "Version -> ${{ steps.check.outputs.changed }}"'
@@ -76,7 +76,7 @@ jobs:
       - uses: Klemensas/action-autotag@stable
         with:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-          package_root: "/design-system/projects/components"
+          package_root: "/design-system/projects/lib"
           tag_prefix: "v"
 
   create-release:
