@@ -1,4 +1,4 @@
-import {Component, ElementRef, AfterViewInit, ViewChild, HostListener, Renderer2} from '@angular/core';
+import {Component, ElementRef, AfterViewInit, ViewChild, HostListener, Renderer2, OnDestroy} from '@angular/core';
 import {ComponentInjectorService} from '../component-injector.service';
 
 @Component({
@@ -6,7 +6,7 @@ import {ComponentInjectorService} from '../component-injector.service';
   templateUrl: './dialog.component.html',
   styleUrls: ['./dialog.component.scss']
 })
-export class DialogComponent implements AfterViewInit {
+export class DialogComponent implements AfterViewInit, OnDestroy {
 
   @ViewChild('rootPanel', {static: true}) rootPanelComponent: ElementRef;
   public itself: any;
@@ -16,6 +16,7 @@ export class DialogComponent implements AfterViewInit {
     private componentInjectorService: ComponentInjectorService,
     private renderer2: Renderer2
   ) {
+    document.documentElement.style.setProperty(`overflow-x`, `hidden`, 'important');
   }
 
   public ngAfterViewInit(): void {
@@ -28,6 +29,10 @@ export class DialogComponent implements AfterViewInit {
         this.componentInjectorService.removeComponentFromBody(this.itself);
       }
     });
+  }
+
+  public ngOnDestroy(): void {
+    document.documentElement.style.removeProperty(`overflow-x`);
   }
 
 }
