@@ -47,6 +47,25 @@
             "methods": []
         },
         {
+            "name": "CommandPaletteConfig",
+            "id": "interface-CommandPaletteConfig-efcdab515d46550a4d5f05e92f26b5b9",
+            "file": "projects/lib/src/services/command-palette/injection.ts",
+            "type": "interface",
+            "sourceCode": "import {InjectionToken} from '@angular/core';\n\nexport interface CommandPaletteConfig {\n  theme?: string;\n}\n\nexport const commandPaletteConfig: CommandPaletteConfig = {\n  theme: 'sla'\n};\n\nexport const COMMAND_PALETTE_CONFIG = new InjectionToken<CommandPaletteConfig>('commandPaletteConfig');\n",
+            "properties": [
+                {
+                    "name": "theme",
+                    "type": "string",
+                    "optional": true,
+                    "description": "",
+                    "line": 4
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 150,
+            "methods": []
+        },
+        {
             "name": "GridListItem",
             "id": "interface-GridListItem-5cb4593f16dbd542aaf26bdce3745f28",
             "file": "projects/lib/src/components/lists/grid-list/grid-list.component.ts",
@@ -253,6 +272,170 @@
                         ]
                     }
                 }
+            },
+            "type": "injectable"
+        },
+        {
+            "name": "CommandPaletteService",
+            "id": "injectable-CommandPaletteService-bef1502668e9358e6179de74f74e3325",
+            "file": "projects/lib/src/services/command-palette/command-palette.service.ts",
+            "properties": [
+                {
+                    "name": "configs",
+                    "type": "CommandPaletteConfig",
+                    "optional": false,
+                    "description": "",
+                    "line": 11,
+                    "modifierKind": [
+                        112
+                    ]
+                }
+            ],
+            "methods": [
+                {
+                    "name": "triggerDialog",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 20,
+                    "modifierKind": [
+                        114
+                    ]
+                }
+            ],
+            "description": "",
+            "sourceCode": "import {\n  Inject,\n  Injectable,\n} from '@angular/core';\nimport {COMMAND_PALETTE_CONFIG, CommandPaletteConfig} from './injection';\nimport {DialogComponent} from './dialog/dialog.component';\nimport {ComponentInjectorService} from './component-injector.service';\n\n@Injectable()\nexport class CommandPaletteService {\n  private configs: CommandPaletteConfig;\n\n  constructor(\n    @Inject(COMMAND_PALETTE_CONFIG) initialConfig: CommandPaletteConfig,\n    private componentInjectorService: ComponentInjectorService\n  ) {\n    this.configs = initialConfig;\n  }\n\n  public triggerDialog(): void {\n    this.componentInjectorService.appendComponentToBody(DialogComponent).then(\n      (createdComponent) => {\n        console.log('palette opened');\n        createdComponent.instance.itself = createdComponent;\n      }\n    );\n  }\n}\n",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "args": [
+                    {
+                        "name": "initialConfig",
+                        "type": "CommandPaletteConfig"
+                    },
+                    {
+                        "name": "componentInjectorService",
+                        "type": "ComponentInjectorService"
+                    }
+                ],
+                "line": 11,
+                "jsdoctags": [
+                    {
+                        "name": "initialConfig",
+                        "type": "CommandPaletteConfig",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "componentInjectorService",
+                        "type": "ComponentInjectorService",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            "type": "injectable"
+        },
+        {
+            "name": "ComponentInjectorService",
+            "id": "injectable-ComponentInjectorService-b92e776c119e2f77d4b2d887e145e1c8",
+            "file": "projects/lib/src/services/command-palette/component-injector.service.ts",
+            "properties": [],
+            "methods": [
+                {
+                    "name": "appendComponentToBody",
+                    "args": [
+                        {
+                            "name": "component",
+                            "type": "any"
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "Promise<ComponentRef<any>>",
+                    "typeParameters": [],
+                    "line": 19,
+                    "modifierKind": [
+                        120
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "component",
+                            "type": "any",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "removeComponentFromBody",
+                    "args": [
+                        {
+                            "name": "componentRef",
+                            "type": "ComponentRef<any>"
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 37,
+                    "jsdoctags": [
+                        {
+                            "name": "componentRef",
+                            "type": "ComponentRef<any>",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "description": "",
+            "sourceCode": "import {\n  ApplicationRef,\n  ComponentFactoryResolver,\n  ComponentRef,\n  EmbeddedViewRef,\n  Injectable,\n  Injector\n} from '@angular/core';\n\n@Injectable()\nexport class ComponentInjectorService {\n\n  constructor(\n    private componentFactoryResolver: ComponentFactoryResolver,\n    private applicationRef: ApplicationRef,\n    private injector: Injector\n  ) { }\n\n  async appendComponentToBody(component: any): Promise<ComponentRef<any>> {\n    return await new Promise((resolve) => {\n      // create a component reference\n      const componentRef = this.componentFactoryResolver\n        .resolveComponentFactory(component)\n        .create(this.injector);\n\n      // attach component to the appRef so that so that it will be dirty checked.\n      this.applicationRef.attachView(componentRef.hostView);\n\n      // get DOM element from component\n      const domElem = (componentRef.hostView as EmbeddedViewRef<any>)\n        .rootNodes[0] as HTMLElement;\n      document.body.appendChild(domElem);\n      resolve(componentRef);\n    });\n  }\n\n  removeComponentFromBody(componentRef: ComponentRef<any>): void {\n    this.applicationRef.detachView(componentRef.hostView);\n    componentRef.destroy();\n  }\n}\n",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "args": [
+                    {
+                        "name": "componentFactoryResolver",
+                        "type": "ComponentFactoryResolver"
+                    },
+                    {
+                        "name": "applicationRef",
+                        "type": "ApplicationRef"
+                    },
+                    {
+                        "name": "injector",
+                        "type": "Injector"
+                    }
+                ],
+                "line": 11,
+                "jsdoctags": [
+                    {
+                        "name": "componentFactoryResolver",
+                        "type": "ComponentFactoryResolver",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "applicationRef",
+                        "type": "ApplicationRef",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "injector",
+                        "type": "Injector",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
             },
             "type": "injectable"
         },
@@ -750,7 +933,7 @@
         },
         {
             "name": "CopyContentInputComponent",
-            "id": "component-CopyContentInputComponent-bfa6a3c1d58c743a61a528776134b1ac",
+            "id": "component-CopyContentInputComponent-4227110165a0422c8e70c8e453155193",
             "file": "projects/lib/src/components/inputs/copy-content-input/copy-content-input.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -771,17 +954,28 @@
                     "name": "disabled",
                     "defaultValue": "true",
                     "description": "<p>Desabilita a interação o input.</p>\n",
-                    "line": 17
+                    "line": 18
                 },
                 {
                     "name": "text",
                     "defaultValue": "''",
                     "description": "<p>texto a ser exibido como conteúdo</p>\n",
-                    "line": 13
+                    "line": 14
                 }
             ],
             "outputsClass": [],
-            "propertiesClass": [],
+            "propertiesClass": [
+                {
+                    "name": "commandPaletteService",
+                    "type": "CommandPaletteService",
+                    "optional": false,
+                    "description": "",
+                    "line": 23,
+                    "modifierKind": [
+                        114
+                    ]
+                }
+            ],
             "methodsClass": [
                 {
                     "name": "ngOnInit",
@@ -789,7 +983,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 26
+                    "line": 28
                 }
             ],
             "hostBindings": [],
@@ -797,7 +991,7 @@
             "description": "",
             "rawdescription": "",
             "type": "component",
-            "sourceCode": "import {Component, Input, OnInit} from '@angular/core';\n\n@Component({\n  selector: 'pm-copy-content-input',\n  templateUrl: './copy-content-input.component.html',\n  styleUrls: ['./copy-content-input.component.scss']\n})\nexport class CopyContentInputComponent implements OnInit {\n\n  /**\n   * texto a ser exibido como conteúdo\n   */\n  @Input() text = '';\n  /**\n   * Desabilita a interação o input.\n   */\n  @Input() disabled = true;\n  // public readonly notifier: SnotifyService;\n\n  constructor(\n    // private notifierService: SnotifyService\n  ) {\n    // this.notifier = notifierService;\n  }\n\n  ngOnInit(): void {\n  }\n\n  // /**\n  //  * Notifica que o valor foi copiado para a clipboard.\n  //  * O que copia mesmo é a diretiva [cdkCopyToClipboard]=\"texto\"\n  //  * @param inputElement: uma tag input\n  //  */\n  // copyInputMessage(inputElement) {\n  //   this.notifier.info('Link copiado para a área de transferência')\n  // }\n\n}\n",
+            "sourceCode": "import {Component, Input, OnInit} from '@angular/core';\nimport {CommandPaletteService} from '../../../services/command-palette/command-palette.service';\n\n@Component({\n  selector: 'pm-copy-content-input',\n  templateUrl: './copy-content-input.component.html',\n  styleUrls: ['./copy-content-input.component.scss']\n})\nexport class CopyContentInputComponent implements OnInit {\n\n  /**\n   * texto a ser exibido como conteúdo\n   */\n  @Input() text = '';\n  /**\n   * Desabilita a interação o input.\n   */\n  @Input() disabled = true;\n  // public readonly notifier: SnotifyService;\n\n  constructor(\n    // private notifierService: SnotifyService\n    public commandPaletteService: CommandPaletteService\n  ) {\n    // this.notifier = notifierService;\n  }\n\n  ngOnInit(): void {\n  }\n\n  // /**\n  //  * Notifica que o valor foi copiado para a clipboard.\n  //  * O que copia mesmo é a diretiva [cdkCopyToClipboard]=\"texto\"\n  //  * @param inputElement: uma tag input\n  //  */\n  // copyInputMessage(inputElement) {\n  //   this.notifier.info('Link copiado para a área de transferência')\n  // }\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -809,13 +1003,135 @@
             "constructorObj": {
                 "name": "constructor",
                 "description": "",
-                "args": [],
-                "line": 17
+                "args": [
+                    {
+                        "name": "commandPaletteService",
+                        "type": "CommandPaletteService"
+                    }
+                ],
+                "line": 18,
+                "jsdoctags": [
+                    {
+                        "name": "commandPaletteService",
+                        "type": "CommandPaletteService",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
             },
             "implements": [
                 "OnInit"
             ],
-            "templateData": "<ng-container *ngIf=\"text\">\n  <div class=\"d-flex\">\n    <input [attr.readonly]=\"disabled\" [attr.disabled]=\"disabled\" [value]=\"text\" class=\"form-control\" [title]=\"text\"\n           style=\"border-radius: var(--border-radius-md) 0px 0px var(--border-radius-md) !important;\" type=\"text\">\n    <button [cdkCopyToClipboard]=\"text\" class=\"btn-copy\">\n      <i class=\"uil uil-lg uil-copy\"></i>\n    </button>\n  </div>\n</ng-container>\n"
+            "templateData": "<ng-container *ngIf=\"text\">\n  <div class=\"d-flex\">\n    <input [attr.readonly]=\"disabled\" [attr.disabled]=\"disabled\" [value]=\"text\" class=\"form-control\" [title]=\"text\"\n           style=\"border-radius: var(--border-radius-md) 0px 0px var(--border-radius-md) !important;\" type=\"text\">\n    <button (click)=\"commandPaletteService.triggerDialog()\" class=\"btn-copy\">\n      <i class=\"uil uil-lg uil-copy\"></i>\n    </button>\n  </div>\n</ng-container>\n"
+        },
+        {
+            "name": "DialogComponent",
+            "id": "component-DialogComponent-78737044a426e5c05417cacd6ace5a51",
+            "file": "projects/lib/src/services/command-palette/dialog/dialog.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "pm-dialog",
+            "styleUrls": [
+                "./dialog.component.scss"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./dialog.component.html"
+            ],
+            "viewProviders": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "itself",
+                    "type": "any",
+                    "optional": false,
+                    "description": "",
+                    "line": 12,
+                    "modifierKind": [
+                        114
+                    ]
+                },
+                {
+                    "name": "rootPanelComponent",
+                    "type": "ElementRef",
+                    "optional": false,
+                    "description": "",
+                    "line": 11,
+                    "decorators": [
+                        {
+                            "name": "ViewChild",
+                            "stringifiedArguments": "'rootPanel', {static: true}"
+                        }
+                    ]
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "ngAfterViewInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 19,
+                    "modifierKind": [
+                        114
+                    ]
+                },
+                {
+                    "name": "onBlur",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 23,
+                    "modifierKind": [
+                        114
+                    ]
+                }
+            ],
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "",
+            "type": "component",
+            "sourceCode": "import {Component, ElementRef, AfterViewInit, ViewChild} from '@angular/core';\nimport {ComponentInjectorService} from '../component-injector.service';\n\n@Component({\n  selector: 'pm-dialog',\n  templateUrl: './dialog.component.html',\n  styleUrls: ['./dialog.component.scss']\n})\nexport class DialogComponent implements AfterViewInit {\n\n  @ViewChild('rootPanel', {static: true}) rootPanelComponent: ElementRef;\n  public itself: any;\n\n  constructor(\n    private componentInjectorService: ComponentInjectorService\n  ) {\n  }\n\n  public ngAfterViewInit(): void {\n    this.rootPanelComponent.nativeElement.focus();\n  }\n\n  public onBlur(): void {\n    this.componentInjectorService.removeComponentFromBody(this.itself);\n  }\n\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": "",
+                    "styleUrl": "./dialog.component.scss"
+                }
+            ],
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "args": [
+                    {
+                        "name": "componentInjectorService",
+                        "type": "ComponentInjectorService"
+                    }
+                ],
+                "line": 12,
+                "jsdoctags": [
+                    {
+                        "name": "componentInjectorService",
+                        "type": "ComponentInjectorService",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            "implements": [
+                "AfterViewInit"
+            ],
+            "templateData": "<div #rootPanel (blur)=\"onBlur()\" tabindex=\"0\">\n  <p>busca</p>\n  <input type=\"text\">\n</div>\n"
         },
         {
             "name": "DraggableListComponent",
@@ -2485,6 +2801,45 @@
                 "AfterViewInit"
             ],
             "templateData": "<mat-table #table [dataSource]=\"itemList\" class=\"pm-table-list\"\n           [ngStyle]=\"{'border-radius': borderRadius ? 'var(--border-radius-' + borderRadius + ')' : null, 'background-color': backgroundColor ? backgroundColor : null}\"\n>\n\n  <ng-container *ngFor=\"let column of columns; let i = index;\">\n    <ng-container matColumnDef=\"{{column}}\">\n      <mat-header-cell *matHeaderCellDef>{{columnNames ? columnNames[i] : column}}</mat-header-cell>\n      <mat-cell *matCellDef=\"let item\" [ngClass]=\"{'disabled': item?.disabled === true}\">\n        <ng-container\n          *ngTemplateOutlet=\"getCellTemplate(item, column);\n          context: {$implicit: item, column: column}\">\n        </ng-container>\n      </mat-cell>\n    </ng-container>\n  </ng-container>\n\n  <ng-container matColumnDef=\"expandedDetail\">\n    <mat-cell *matCellDef=\"let item\" [ngClass]=\"{'disabled': item?.disabled === true}\">\n      <ng-container *ngTemplateOutlet=\"expandedDetailTemplate; context: {$implicit: item.element}\"></ng-container>\n    </mat-cell>\n  </ng-container>\n\n  <mat-header-row *matHeaderRowDef=\"columns\" [ngClass]=\"{'d-none': !showHeader}\"></mat-header-row>\n  <mat-row *matRowDef=\"let row; columns: columns\"\n           [ngClass]=\"{'element-row': expandedDetailTemplate}\"\n           [class.expanded]=\"expandedRow == row\"\n           (click)=\"setSelectedRow(row)\"\n  ></mat-row>\n  <mat-row *matRowDef=\"let row; columns: ['expandedDetail']; when: isExpansionDetailRow\"\n           [@detailExpand]=\"isSelectedRow(row) ? 'expanded' : 'collapsed'\"\n           (click)=\"setSelectedRow(row)\"\n           style=\"overflow: hidden\"\n  >\n  </mat-row>\n</mat-table>\n\n<ng-template #imageCell let-item let-column=\"column\">\n  <img [attr.src]=\"item[column]\" [attr.alt]=\"item[column]\"\n       class=\"img-fluid my-2\" [ngStyle]=\"{'height': imageHeight ? imageHeight : '50px', 'max-height': imageHeight ? imageHeight : '50px'}\">\n</ng-template>\n\n<ng-template #singleLabelCell let-item let-column=\"column\">\n  <p class=\"main-label\">{{item[column]}}</p>\n</ng-template>\n\n<ng-template #doubleLabelCell let-item let-column=\"column\">\n  <div class=\"d-block\">\n    <p class=\"main-label\">{{item[column][0]}}</p>\n    <p class=\"sub-label\">{{item[column][1]}}</p>\n  </div>\n</ng-template>\n\n<ng-template #formattedNumberCell let-item let-column=\"column\">\n  <p class=\"main-label\">{{numberPrefix}}{{item[column] | number: numberFormat}}</p>\n</ng-template>\n"
+        },
+        {
+            "name": "TriggerButtonComponent",
+            "id": "component-TriggerButtonComponent-d6d99525aa82433bb22a46b27359f06d",
+            "file": "projects/lib/src/services/command-palette/trigger-button/trigger-button.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "pm-palette-trigger-button",
+            "styleUrls": [],
+            "styles": [
+                ""
+            ],
+            "templateUrl": [
+                "./trigger-button.component.html"
+            ],
+            "viewProviders": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [],
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "",
+            "type": "component",
+            "sourceCode": "import { Component } from '@angular/core';\n\n@Component({\n  selector: 'pm-palette-trigger-button',\n  templateUrl: './trigger-button.component.html',\n  styles: [``]\n})\nexport class TriggerButtonComponent {\n\n  constructor() { }\n\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "\n",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "args": [],
+                "line": 8
+            },
+            "templateData": "<pm-button\n  [label]=\"'Trigger'\"\n  [type]=\"'light'\"\n  [iconClass]=\"''\"\n  [outline]=\"false\"\n>\n</pm-button>\n"
         }
     ],
     "modules": [
@@ -2666,6 +3021,46 @@
             ]
         },
         {
+            "name": "CommandPaletteModule",
+            "children": [
+                {
+                    "type": "providers",
+                    "elements": []
+                },
+                {
+                    "type": "declarations",
+                    "elements": [
+                        {
+                            "name": "DialogComponent"
+                        },
+                        {
+                            "name": "TriggerButtonComponent"
+                        }
+                    ]
+                },
+                {
+                    "type": "imports",
+                    "elements": [
+                        {
+                            "name": "ButtonModule"
+                        }
+                    ]
+                },
+                {
+                    "type": "exports",
+                    "elements": []
+                },
+                {
+                    "type": "bootstrap",
+                    "elements": []
+                },
+                {
+                    "type": "classes",
+                    "elements": []
+                }
+            ]
+        },
+        {
             "name": "CopyContentInputModule",
             "children": [
                 {
@@ -2682,7 +3077,11 @@
                 },
                 {
                     "type": "imports",
-                    "elements": []
+                    "elements": [
+                        {
+                            "name": "CommandPaletteModule"
+                        }
+                    ]
                 },
                 {
                     "type": "exports",
@@ -3165,6 +3564,22 @@
                 "defaultValue": "new InjectionToken<string>(defaultColorTheme)"
             },
             {
+                "name": "COMMAND_PALETTE_CONFIG",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/services/command-palette/injection.ts",
+                "type": "",
+                "defaultValue": "new InjectionToken<CommandPaletteConfig>('commandPaletteConfig')"
+            },
+            {
+                "name": "commandPaletteConfig",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/services/command-palette/injection.ts",
+                "type": "CommandPaletteConfig",
+                "defaultValue": "{\n  theme: 'sla'\n}"
+            },
+            {
                 "name": "context",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -3224,30 +3639,6 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/lists/table-list/table-list.stories.ts",
-                "type": "object",
-                "defaultValue": "{\n  columns: [],\n  columnNames: [],\n  imageColumns: [],\n  imageHeight: '50px',\n  showHeader: true,\n  numberFormat: '1.2-2',\n  numberPrefix: '',\n  actionsTemplate: undefined,\n  itemList: undefined,\n  borderRadius: undefined,\n  backgroundColor: undefined,\n  expandedDetailTemplate: undefined,\n  disableExpandedOnDisabledRow: true,\n  expandedRow: undefined\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
-                "type": "object",
-                "defaultValue": "{\n  showIndex: true,\n  itemActionLabel: undefined,\n  itemMainLabel: undefined,\n  itemSubLabel: undefined,\n  actions: undefined,\n  itemList: undefined,\n  roundedBorders: true,\n  enableDragging: true,\n  enableSelection: true,\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
-                "type": "object",
-                "defaultValue": "{\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "projects/lib/src/components/inputs/button/button.stories.ts",
                 "type": "object",
                 "defaultValue": "{\n  label: '',\n  type: MainColors.default,\n  busy: false,\n  busyText: '',\n  iconClass: '',\n  iconPosition: 'start',\n  outline: false,\n  disabled: false,\n}"
@@ -3259,6 +3650,14 @@
                 "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
                 "type": "object",
                 "defaultValue": "{\n  checked: false,\n  disabled: false,\n  selectedItem: undefined,\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts",
+                "type": "object",
+                "defaultValue": "{\n  items: [],\n  disabled: false,\n  selectedItem: undefined\n}"
             },
             {
                 "name": "defaultArgs",
@@ -3280,9 +3679,9 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts",
+                "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
                 "type": "object",
-                "defaultValue": "{\n  items: [],\n  disabled: false,\n  selectedItem: undefined\n}"
+                "defaultValue": "{\n  showIndex: true,\n  itemActionLabel: undefined,\n  itemMainLabel: undefined,\n  itemSubLabel: undefined,\n  actions: undefined,\n  itemList: undefined,\n  roundedBorders: true,\n  enableDragging: true,\n  enableSelection: true,\n}"
             },
             {
                 "name": "defaultArgs",
@@ -3291,6 +3690,22 @@
                 "file": "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts",
                 "type": "object",
                 "defaultValue": "{\n  orientation: OrientationEnum.Y,\n  values: [],\n  disabled: false,\n  selectedValue: undefined\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
+                "type": "object",
+                "defaultValue": "{\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/components/lists/table-list/table-list.stories.ts",
+                "type": "object",
+                "defaultValue": "{\n  columns: [],\n  columnNames: [],\n  imageColumns: [],\n  imageHeight: '50px',\n  showHeader: true,\n  numberFormat: '1.2-2',\n  numberPrefix: '',\n  actionsTemplate: undefined,\n  itemList: undefined,\n  borderRadius: undefined,\n  backgroundColor: undefined,\n  expandedDetailTemplate: undefined,\n  disableExpandedOnDisabledRow: true,\n  expandedRow: undefined\n}"
             },
             {
                 "name": "defaultArgs",
@@ -3395,6 +3810,14 @@
                 "file": "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts",
                 "type": "[]",
                 "defaultValue": "[\n  {\n    label: 'Value 1',\n    value: 1\n  },\n  {\n    label: 'Value 2',\n    value: 2\n  },\n  {\n    label: 'Value 3',\n    value: 3\n  }\n]"
+            },
+            {
+                "name": "DefaultModal",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/services/command-palette/command-palette.stories.ts",
+                "type": "",
+                "defaultValue": "Template.bind({})"
             },
             {
                 "name": "DefaultRadioButton",
@@ -3575,6 +3998,14 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
+                "file": "projects/lib/src/services/command-palette/command-palette.stories.ts",
+                "type": "Story<TriggerButtonComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-palette-trigger-button>\n    </pm-palette-trigger-button>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
                 "file": "projects/lib/src/components/cards/basic-card/basic-card.stories.ts",
                 "type": "Story<BasicCardComponent>",
                 "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-basic-card\n    >\n    </pm-basic-card>\n  `\n})"
@@ -3599,30 +4030,6 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/lists/table-list/table-list.stories.ts",
-                "type": "Story<TableListComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `<pm-table-list\n    [columns]=\"columns\"\n    [columnNames]=\"columnNames\"\n    [imageColumns]=\"imageColumns\"\n    [imageHeight]=\"imageHeight\"\n    [showHeader]=\"showHeader\"\n    [numberFormat]=\"numberFormat\"\n    [numberPrefix]=\"numberPrefix\"\n    [itemList]=\"itemList\"\n    [borderRadius]=\"borderRadius\"\n    [backgroundColor]=\"backgroundColor\"\n    [expandedDetailTemplate]=\"expandedDetailTemplate\"\n    [disableExpandedOnDisabledRow]=\"disableExpandedOnDisabledRow\"\n  ></pm-table-list>`\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
-                "type": "Story<DraggableListComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-draggable-list\n      [showIndex]=\"showIndex\"\n      [itemActionLabel]=\"itemActionLabel\"\n      [itemMainLabel]=\"itemMainLabel\"\n      [itemSubLabel]=\"itemSubLabel\"\n      [actions]=\"actions\"\n      [itemList]=\"itemList\"\n      [roundedBorders]=\"roundedBorders\"\n      [enableDragging]=\"enableDragging\"\n      [enableSelection]=\"enableSelection\"\n    >\n    </pm-draggable-list>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
-                "type": "Story<GridListComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-grid-list\n      [items]=\"items\"\n      [displayStyle]=\"displayStyle\"\n      [gridHeaderReverse]=\"gridHeaderReverse\"\n      [bodyBackgroundColor]=\"bodyBackgroundColor\"\n      [actionTemplate]=\"undefined\"\n      [overflowGallery]=\"overflowGallery\"\n    >\n    </pm-grid-list>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "projects/lib/src/components/inputs/button/button.stories.ts",
                 "type": "Story<ButtonComponent>",
                 "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-button\n        [label]=\"label\"\n        [type]=\"type\"\n        [busy]=\"busy\"\n        [busyText]=\"busyText\"\n        [iconClass]=\"iconClass\"\n        [iconPosition]=\"iconPosition\"\n        [outline]=\"outline\"\n        [disabled]=\"disabled\"\n    >\n        Button Content\n    </pm-button>\n  `\n})"
@@ -3634,6 +4041,14 @@
                 "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
                 "type": "Story<CheckboxComponent>",
                 "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-checkbox\n      [checked]=\"checked\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts",
+                "type": "Story<ComboBoxComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-combo-box\n      [items]=\"items\"\n      [disabled]=\"disabled\"\n      [selectedItem]=\"selectedItem\"\n    >\n    </pm-combo-box>\n  `\n})"
             },
             {
                 "name": "Template",
@@ -3655,9 +4070,9 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts",
-                "type": "Story<ComboBoxComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-combo-box\n      [items]=\"items\"\n      [disabled]=\"disabled\"\n      [selectedItem]=\"selectedItem\"\n    >\n    </pm-combo-box>\n  `\n})"
+                "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
+                "type": "Story<DraggableListComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-draggable-list\n      [showIndex]=\"showIndex\"\n      [itemActionLabel]=\"itemActionLabel\"\n      [itemMainLabel]=\"itemMainLabel\"\n      [itemSubLabel]=\"itemSubLabel\"\n      [actions]=\"actions\"\n      [itemList]=\"itemList\"\n      [roundedBorders]=\"roundedBorders\"\n      [enableDragging]=\"enableDragging\"\n      [enableSelection]=\"enableSelection\"\n    >\n    </pm-draggable-list>\n  `\n})"
             },
             {
                 "name": "Template",
@@ -3666,6 +4081,22 @@
                 "file": "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts",
                 "type": "Story<RadioButtonComponent>",
                 "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-radio-button\n      [orientation]=\"orientation\"\n      [values]=\"values\"\n      [selectedValue]=\"selectedValue\"\n      [disabled]=\"disabled\"\n    >\n    </pm-radio-button>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
+                "type": "Story<GridListComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-grid-list\n      [items]=\"items\"\n      [displayStyle]=\"displayStyle\"\n      [gridHeaderReverse]=\"gridHeaderReverse\"\n      [bodyBackgroundColor]=\"bodyBackgroundColor\"\n      [actionTemplate]=\"undefined\"\n      [overflowGallery]=\"overflowGallery\"\n    >\n    </pm-grid-list>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/components/lists/table-list/table-list.stories.ts",
+                "type": "Story<TableListComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `<pm-table-list\n    [columns]=\"columns\"\n    [columnNames]=\"columnNames\"\n    [imageColumns]=\"imageColumns\"\n    [imageHeight]=\"imageHeight\"\n    [showHeader]=\"showHeader\"\n    [numberFormat]=\"numberFormat\"\n    [numberPrefix]=\"numberPrefix\"\n    [itemList]=\"itemList\"\n    [borderRadius]=\"borderRadius\"\n    [backgroundColor]=\"backgroundColor\"\n    [expandedDetailTemplate]=\"expandedDetailTemplate\"\n    [disableExpandedOnDisabledRow]=\"disableExpandedOnDisabledRow\"\n  ></pm-table-list>`\n})"
             },
             {
                 "name": "Template",
@@ -4143,6 +4574,24 @@
                     "defaultValue": "'default'"
                 }
             ],
+            "projects/lib/src/services/command-palette/injection.ts": [
+                {
+                    "name": "COMMAND_PALETTE_CONFIG",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/services/command-palette/injection.ts",
+                    "type": "",
+                    "defaultValue": "new InjectionToken<CommandPaletteConfig>('commandPaletteConfig')"
+                },
+                {
+                    "name": "commandPaletteConfig",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/services/command-palette/injection.ts",
+                    "type": "CommandPaletteConfig",
+                    "defaultValue": "{\n  theme: 'sla'\n}"
+                }
+            ],
             "projects/lib/src/test.ts": [
                 {
                     "name": "context",
@@ -4264,82 +4713,6 @@
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-expansion-panel\n    >\n        Conteúdo aqui\n    </pm-expansion-panel>\n  `\n})"
                 }
             ],
-            "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
-                    "type": "object",
-                    "defaultValue": "{\n  showIndex: true,\n  itemActionLabel: undefined,\n  itemMainLabel: undefined,\n  itemSubLabel: undefined,\n  actions: undefined,\n  itemList: undefined,\n  roundedBorders: true,\n  enableDragging: true,\n  enableSelection: true,\n}"
-                },
-                {
-                    "name": "DefaultDraggableList",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "DisabledDragging",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "NoIndexStringList",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
-                    "type": "Story<DraggableListComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-draggable-list\n      [showIndex]=\"showIndex\"\n      [itemActionLabel]=\"itemActionLabel\"\n      [itemMainLabel]=\"itemMainLabel\"\n      [itemSubLabel]=\"itemSubLabel\"\n      [actions]=\"actions\"\n      [itemList]=\"itemList\"\n      [roundedBorders]=\"roundedBorders\"\n      [enableDragging]=\"enableDragging\"\n      [enableSelection]=\"enableSelection\"\n    >\n    </pm-draggable-list>\n  `\n})"
-                }
-            ],
-            "projects/lib/src/components/lists/grid-list/grid-list.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
-                    "type": "object",
-                    "defaultValue": "{\n}"
-                },
-                {
-                    "name": "DefaultGridList",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "getColor",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
-                    "type": "",
-                    "defaultValue": "() => MainColors.primary"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
-                    "type": "Story<GridListComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-grid-list\n      [items]=\"items\"\n      [displayStyle]=\"displayStyle\"\n      [gridHeaderReverse]=\"gridHeaderReverse\"\n      [bodyBackgroundColor]=\"bodyBackgroundColor\"\n      [actionTemplate]=\"undefined\"\n      [overflowGallery]=\"overflowGallery\"\n    >\n    </pm-grid-list>\n  `\n})"
-                }
-            ],
             "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts": [
                 {
                     "name": "defaultArgs",
@@ -4372,6 +4745,40 @@
                     "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
                     "type": "Story<CheckboxComponent>",
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-checkbox\n      [checked]=\"checked\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>\n  `\n})"
+                }
+            ],
+            "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts",
+                    "type": "object",
+                    "defaultValue": "{\n  items: [],\n  disabled: false,\n  selectedItem: undefined\n}"
+                },
+                {
+                    "name": "DefaultComboBox",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "defaultItems",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts",
+                    "type": "[]",
+                    "defaultValue": "[\n  {\n    label: 'Value 1',\n    value: 1\n  },\n  {\n    label: 'Value 2',\n    value: 2\n  },\n  {\n    label: 'Value 3',\n    value: 3\n  }\n]"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts",
+                    "type": "Story<ComboBoxComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-combo-box\n      [items]=\"items\"\n      [disabled]=\"disabled\"\n      [selectedItem]=\"selectedItem\"\n    >\n    </pm-combo-box>\n  `\n})"
                 }
             ],
             "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts": [
@@ -4426,38 +4833,46 @@
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-dropdown-actions\n      [actions]=\"actions\"\n    >\n    </pm-dropdown-actions>\n  `\n})"
                 }
             ],
-            "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts": [
+            "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts": [
                 {
                     "name": "defaultArgs",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts",
+                    "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
                     "type": "object",
-                    "defaultValue": "{\n  items: [],\n  disabled: false,\n  selectedItem: undefined\n}"
+                    "defaultValue": "{\n  showIndex: true,\n  itemActionLabel: undefined,\n  itemMainLabel: undefined,\n  itemSubLabel: undefined,\n  actions: undefined,\n  itemList: undefined,\n  roundedBorders: true,\n  enableDragging: true,\n  enableSelection: true,\n}"
                 },
                 {
-                    "name": "DefaultComboBox",
+                    "name": "DefaultDraggableList",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts",
+                    "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
                     "type": "",
                     "defaultValue": "Template.bind({})"
                 },
                 {
-                    "name": "defaultItems",
+                    "name": "DisabledDragging",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts",
-                    "type": "[]",
-                    "defaultValue": "[\n  {\n    label: 'Value 1',\n    value: 1\n  },\n  {\n    label: 'Value 2',\n    value: 2\n  },\n  {\n    label: 'Value 3',\n    value: 3\n  }\n]"
+                    "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "NoIndexStringList",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
                 },
                 {
                     "name": "Template",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts",
-                    "type": "Story<ComboBoxComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-combo-box\n      [items]=\"items\"\n      [disabled]=\"disabled\"\n      [selectedItem]=\"selectedItem\"\n    >\n    </pm-combo-box>\n  `\n})"
+                    "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
+                    "type": "Story<DraggableListComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-draggable-list\n      [showIndex]=\"showIndex\"\n      [itemActionLabel]=\"itemActionLabel\"\n      [itemMainLabel]=\"itemMainLabel\"\n      [itemSubLabel]=\"itemSubLabel\"\n      [actions]=\"actions\"\n      [itemList]=\"itemList\"\n      [roundedBorders]=\"roundedBorders\"\n      [enableDragging]=\"enableDragging\"\n      [enableSelection]=\"enableSelection\"\n    >\n    </pm-draggable-list>\n  `\n})"
                 }
             ],
             "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts": [
@@ -4494,6 +4909,40 @@
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-radio-button\n      [orientation]=\"orientation\"\n      [values]=\"values\"\n      [selectedValue]=\"selectedValue\"\n      [disabled]=\"disabled\"\n    >\n    </pm-radio-button>\n  `\n})"
                 }
             ],
+            "projects/lib/src/components/lists/grid-list/grid-list.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
+                    "type": "object",
+                    "defaultValue": "{\n}"
+                },
+                {
+                    "name": "DefaultGridList",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "getColor",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
+                    "type": "",
+                    "defaultValue": "() => MainColors.primary"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
+                    "type": "Story<GridListComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-grid-list\n      [items]=\"items\"\n      [displayStyle]=\"displayStyle\"\n      [gridHeaderReverse]=\"gridHeaderReverse\"\n      [bodyBackgroundColor]=\"bodyBackgroundColor\"\n      [actionTemplate]=\"undefined\"\n      [overflowGallery]=\"overflowGallery\"\n    >\n    </pm-grid-list>\n  `\n})"
+                }
+            ],
             "projects/lib/src/components/navigation/stepper/stepper.stories.ts": [
                 {
                     "name": "defaultArgs",
@@ -4518,6 +4967,24 @@
                     "file": "projects/lib/src/components/navigation/stepper/stepper.stories.ts",
                     "type": "Story<StepperComponent>",
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-stepper>\n      <cdk-step> <p>This is any content of \"Step 1\"</p> </cdk-step>\n      <cdk-step> <p>This is any content of \"Step 2\"</p> </cdk-step>\n    </pm-stepper>\n  `\n})"
+                }
+            ],
+            "projects/lib/src/services/command-palette/command-palette.stories.ts": [
+                {
+                    "name": "DefaultModal",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/services/command-palette/command-palette.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/services/command-palette/command-palette.stories.ts",
+                    "type": "Story<TriggerButtonComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-palette-trigger-button>\n    </pm-palette-trigger-button>\n  `\n})"
                 }
             ]
         },
@@ -5146,8 +5613,8 @@
                 "type": "component",
                 "linktype": "component",
                 "name": "CopyContentInputComponent",
-                "coveragePercent": 40,
-                "coverageCount": "2/5",
+                "coveragePercent": 33,
+                "coverageCount": "2/6",
                 "status": "medium"
             },
             {
@@ -5608,6 +6075,91 @@
                 "name": "defaultColorTheme",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/lib/src/services/command-palette/command-palette.service.ts",
+                "type": "injectable",
+                "linktype": "injectable",
+                "name": "CommandPaletteService",
+                "coveragePercent": 0,
+                "coverageCount": "0/4",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/lib/src/services/command-palette/command-palette.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "DefaultModal",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/lib/src/services/command-palette/command-palette.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/lib/src/services/command-palette/component-injector.service.ts",
+                "type": "injectable",
+                "linktype": "injectable",
+                "name": "ComponentInjectorService",
+                "coveragePercent": 0,
+                "coverageCount": "0/4",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/lib/src/services/command-palette/dialog/dialog.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "DialogComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/6",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/lib/src/services/command-palette/injection.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "CommandPaletteConfig",
+                "coveragePercent": 0,
+                "coverageCount": "0/2",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/lib/src/services/command-palette/injection.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "COMMAND_PALETTE_CONFIG",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/lib/src/services/command-palette/injection.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "commandPaletteConfig",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/lib/src/services/command-palette/trigger-button/trigger-button.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "TriggerButtonComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/2",
                 "status": "low"
             },
             {

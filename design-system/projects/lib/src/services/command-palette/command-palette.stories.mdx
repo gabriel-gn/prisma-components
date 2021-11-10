@@ -1,0 +1,68 @@
+import {Meta, Story, ArgsTable, Canvas, Source} from '@storybook/addon-docs';
+import {moduleMetadata} from "@storybook/angular";
+import {CommandPaletteModule} from "./command-palette.module"
+import {
+  DefaultModal,
+} from "./command-palette.stories";
+import {TriggerButtonComponent} from "./trigger-button/trigger-button.component";
+
+<Meta
+  title='Services/Command Palette'
+  component={TriggerButtonComponent}
+  parameters={{badges: ['beta']}}
+  decorators={[
+    moduleMetadata({
+      imports: [
+        CommandPaletteModule.forRoot()
+      ]
+    })
+  ]}
+/>
+
+# BUTTON
+
+#### Botões em geral para serem utilizados em aplicações.
+
+<br/>
+<br/>
+
+## Botões padrões
+
+Usados em geral para componentes angular. Pra mudar a cor, utilizar o input `type`.
+As cores são atribuídas por meio do model `MainColors`
+
+Devem ser usados da seguinte forma:
+
+```
+<pm-button [type]="'primary'">
+  Button Content
+</pm-button>
+```
+
+<Canvas>
+  <Story name='Default' story={DefaultModal}/>
+</Canvas>
+
+```
+<pm-button [iconClass]="'uil uil-lg uil-arrow-to-bottom'" [outline]="true">
+  Download
+</pm-button>
+```
+
+## Module Config
+
+```
+import {ButtonModule} from '@mprisma/components';
+
+@NgModule({
+  imports: [
+    ...,
+    ButtonModule,
+    ...,
+  ]
+})
+```
+
+## Args Table
+
+<ArgsTable story='Default'/>
