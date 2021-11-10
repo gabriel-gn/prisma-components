@@ -13,7 +13,7 @@
       width: 100vw;
       height: 100vh;
       background-color: rgba(0, 0, 0, 0.30);
-      padding-top: calc(1.5 * var(--navbar-height));
+      padding: calc(1.5 * var(--navbar-height)) 1em;
 
       overflow: hidden !important;
       overflow-y: hidden !important;

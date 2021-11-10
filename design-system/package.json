@@ -40,6 +40,7 @@
     "@storybook/api": "^6.4.0-alpha.18",
     "@storybook/components": "^6.4.0-alpha.18",
     "@storybook/core-events": "^6.4.0-alpha.18",
+    "angular2-hotkeys": "^2.4.0",
     "autoprefixer": "^10.3.7",
     "postcss-flexbugs-fixes": "^5.0.2",
     "react": "^16.14.0",

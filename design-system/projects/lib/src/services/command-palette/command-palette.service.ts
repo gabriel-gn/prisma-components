@@ -5,6 +5,7 @@ import {
 import {COMMAND_PALETTE_CONFIG, CommandPaletteConfig} from './injection';
 import {DialogComponent} from './dialog/dialog.component';
 import {ComponentInjectorService} from './component-injector.service';
+import {Hotkey, HotkeysService} from 'angular2-hotkeys';
 
 @Injectable()
 export class CommandPaletteService {
@@ -12,15 +13,19 @@ export class CommandPaletteService {
 
   constructor(
     @Inject(COMMAND_PALETTE_CONFIG) initialConfig: CommandPaletteConfig,
-    private componentInjectorService: ComponentInjectorService
+    private componentInjectorService: ComponentInjectorService,
+    private hotkeysService: HotkeysService
   ) {
     this.configs = initialConfig;
+    this.hotkeysService.add(new Hotkey(['meta+k', 'ctrl+k'], (event: KeyboardEvent, combo: string): boolean => {
+      this.triggerDialog();
+      return true;
+    }));
   }
 
   public triggerDialog(): void {
     this.componentInjectorService.appendComponentToBody(DialogComponent).then(
       (createdComponent) => {
-        console.log('palette opened');
         createdComponent.instance.itself = createdComponent;
       }
     );

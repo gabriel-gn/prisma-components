@@ -5,6 +5,7 @@ import {
   DefaultModal,
 } from "./command-palette.stories";
 import {TriggerButtonComponent} from "./trigger-button/trigger-button.component";
+import {HotkeyModule} from "angular2-hotkeys";
 
 <Meta
   title='Services/Command Palette'
@@ -13,6 +14,7 @@ import {TriggerButtonComponent} from "./trigger-button/trigger-button.component"
   decorators={[
     moduleMetadata({
       imports: [
+        HotkeyModule.forRoot(),
         CommandPaletteModule.forRoot()
       ]
     })

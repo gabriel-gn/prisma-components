@@ -6,6 +6,7 @@ import {DialogComponent} from './dialog/dialog.component';
 import {ComponentInjectorService} from './component-injector.service';
 import {TriggerButtonComponent} from './trigger-button/trigger-button.component';
 import {ButtonModule} from '../../components/inputs/button/button.module';
+import {HotkeyModule} from 'angular2-hotkeys';
 
 const components = [
   DialogComponent,
@@ -17,7 +18,8 @@ const components = [
   exports: components,
   imports: [
     CommonModule,
-    ButtonModule
+    ButtonModule,
+    HotkeyModule
   ]
 })
 export class CommandPaletteModule {
