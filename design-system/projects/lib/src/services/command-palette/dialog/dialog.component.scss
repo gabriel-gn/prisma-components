@@ -1,0 +1,13 @@
+::ng-deep {
+  pm-command-palette-dialog {
+    position: absolute;
+    z-index: 9999;
+    overflow: hidden;
+
+    .backdrop {
+      width: 100vw;
+      height: 1000vh;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+  }
+}

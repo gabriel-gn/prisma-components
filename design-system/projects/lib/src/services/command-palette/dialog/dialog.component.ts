@@ -2,7 +2,7 @@ import {Component, ElementRef, AfterViewInit, ViewChild, HostListener, Renderer2
 import {ComponentInjectorService} from '../component-injector.service';
 
 @Component({
-  selector: 'pm-dialog',
+  selector: 'pm-command-palette-dialog',
   templateUrl: './dialog.component.html',
   styleUrls: ['./dialog.component.scss']
 })
