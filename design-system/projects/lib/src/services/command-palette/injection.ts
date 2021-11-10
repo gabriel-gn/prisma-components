@@ -1,11 +1,11 @@
 import {InjectionToken} from '@angular/core';
 
 export interface CommandPaletteConfig {
-  theme?: string;
+  hotkeys: string[];
 }
 
 export const commandPaletteConfig: CommandPaletteConfig = {
-  theme: 'sla'
+  hotkeys: ['meta+k', 'ctrl+k']
 };
 
 export const COMMAND_PALETTE_CONFIG = new InjectionToken<CommandPaletteConfig>('commandPaletteConfig');

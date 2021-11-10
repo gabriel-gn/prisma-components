@@ -17,7 +17,9 @@ export class CommandPaletteService {
     private hotkeysService: HotkeysService
   ) {
     this.configs = initialConfig;
-    this.hotkeysService.add(new Hotkey(['meta+k', 'ctrl+k'], (event: KeyboardEvent, combo: string): boolean => {
+    this.hotkeysService.add(new Hotkey(this.configs.hotkeys, (event: KeyboardEvent, combo: string): boolean => {
+      event.stopPropagation();
+      event.preventDefault();
       this.triggerDialog();
       return true;
     }));
