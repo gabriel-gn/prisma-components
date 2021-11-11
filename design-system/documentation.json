@@ -48,15 +48,15 @@
         },
         {
             "name": "CommandPaletteConfig",
-            "id": "interface-CommandPaletteConfig-efcdab515d46550a4d5f05e92f26b5b9",
+            "id": "interface-CommandPaletteConfig-de6552afec57b49008973ba3ad1aa38f",
             "file": "projects/lib/src/services/command-palette/injection.ts",
             "type": "interface",
-            "sourceCode": "import {InjectionToken} from '@angular/core';\n\nexport interface CommandPaletteConfig {\n  theme?: string;\n}\n\nexport const commandPaletteConfig: CommandPaletteConfig = {\n  theme: 'sla'\n};\n\nexport const COMMAND_PALETTE_CONFIG = new InjectionToken<CommandPaletteConfig>('commandPaletteConfig');\n",
+            "sourceCode": "import {InjectionToken} from '@angular/core';\n\nexport interface CommandPaletteConfig {\n  hotkeys: string[];\n}\n\nexport const commandPaletteConfig: CommandPaletteConfig = {\n  hotkeys: ['meta+k', 'ctrl+k']\n};\n\nexport const COMMAND_PALETTE_CONFIG = new InjectionToken<CommandPaletteConfig>('commandPaletteConfig');\n",
             "properties": [
                 {
-                    "name": "theme",
-                    "type": "string",
-                    "optional": true,
+                    "name": "hotkeys",
+                    "type": "string[]",
+                    "optional": false,
                     "description": "",
                     "line": 4
                 }
@@ -198,7 +198,7 @@
     "injectables": [
         {
             "name": "ColorThemeService",
-            "id": "injectable-ColorThemeService-2dfb7700945dd97d24d212a554f3acea",
+            "id": "injectable-ColorThemeService-3b705aa4a844c0071bc848f4334a7cd5",
             "file": "projects/lib/src/services/color-theme/color-theme.service.ts",
             "properties": [
                 {
@@ -206,7 +206,7 @@
                     "type": "string",
                     "optional": false,
                     "description": "",
-                    "line": 13,
+                    "line": 28,
                     "modifierKind": [
                         112
                     ]
@@ -219,14 +219,14 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 44,
+                    "line": 59,
                     "modifierKind": [
                         114
                     ]
                 }
             ],
             "description": "",
-            "sourceCode": "import {Inject, Injectable} from '@angular/core';\nimport {colorThemeToken} from './injection';\n\nexport const defaultTheme = {\"bg-default\":\"#F3F4F6\",\"bg-default-rgb\":\"243,244,246\",\"bg-pale\":\"#f5f5f5\",\"bg-pale-rgb\":\"245,245,245\",\"color-font-default\":\"#5B5F67\",\"color-font-default-rgb\":\"91,95,103\",\"color-gray-light\":\"#EEEEEE\",\"color-gray-light-rgb\":\"238,238,238\",\"color-gray-medium\":\"#CCCCCC\",\"color-gray-medium-rgb\":\"204,204,204\",\"color-gray-dark\":\"#9A9A9A\",\"color-gray-dark-rgb\":\"154,154,154\",\"color-gray-darker\":\"#505050\",\"color-gray-darker-rgb\":\"80,80,80\",\"color-primary\":\"#efa76c\",\"color-primary-rgb\":\"239,167,108\",\"color-primary-pale\":\"#e7a874\",\"color-primary-pale-rgb\":\"230.85,167.80878,116.15\",\"color-primary-states\":\"#ea8b3e\",\"color-primary-states-rgb\":\"233.99387,139.46626,62.00613\",\"color-primary-sat\":\"#ffa55c\",\"color-primary-sat-rgb\":\"255,165.41221,92\",\"color-secondary\":\"#6F5897\",\"color-secondary-rgb\":\"111,88,151\",\"color-secondary-pale\":\"#72648b\",\"color-secondary-pale-rgb\":\"114.2246,99.95,139.05\",\"color-secondary-states\":\"#574577\",\"color-secondary-states-rgb\":\"87.31381,69.22176,118.77824\",\"color-secondary-sat\":\"#6534bb\",\"color-secondary-sat-rgb\":\"101.32619,52.15,186.85\",\"color-success\":\"#6bd098\",\"color-success-rgb\":\"107,208,152\",\"color-success-pale\":\"#75c699\",\"color-success-pale-rgb\":\"116.75,198.25,153.06188\",\"color-success-states\":\"#44c47d\",\"color-success-states-rgb\":\"68.29231,195.70769,125.06154\",\"color-success-sat\":\"#4eed95\",\"color-success-sat-rgb\":\"77.75,237.25,148.81436\",\"color-info\":\"#51bcda\",\"color-info-rgb\":\"81,188,218\",\"color-info-pale\":\"#5cb6cf\",\"color-info-pale-rgb\":\"91.55,182.07044,207.45\",\"color-info-states\":\"#2ba9cd\",\"color-info-states-rgb\":\"43.48815,169.25118,204.51185\",\"color-info-sat\":\"#31cefa\",\"color-info-sat-rgb\":\"49.35,205.78869,249.65\",\"color-warning\":\"#fbc658\",\"color-warning-rgb\":\"251,198,88\",\"color-warning-pale\":\"#f2c361\",\"color-warning-pale-rgb\":\"242.45,195.01012,96.55\",\"color-warning-states\":\"#fab526\",\"color-warning-states-rgb\":\"249.80702,181,38.19298\",\"color-warning-sat\":\"#ffc754\",\"color-warning-sat-rgb\":\"255,199.39877,84\",\"color-danger\":\"#ef8157\",\"color-danger-rgb\":\"239,129,87\",\"color-danger-pale\":\"#e68560\",\"color-danger-pale-rgb\":\"229.8,133.11579,96.2\",\"color-danger-states\":\"#eb5e28\",\"color-danger-states-rgb\":\"234.56522,94.07609,40.43478\",\"color-danger-sat\":\"#ff7a47\",\"color-danger-sat-rgb\":\"255,121.84211,71\",\"color-light\":\"#eff3f8\",\"color-light-rgb\":\"239,243,248\",\"color-light-pale\":\"#f0f3f7\",\"color-light-pale-rgb\":\"240.15,243.12778,246.85\",\"color-light-states\":\"#ccd8e8\",\"color-light-states-rgb\":\"203.52174,216.3913,232.47826\",\"color-light-sat\":\"#ecf3fb\",\"color-light-sat-rgb\":\"235.55,242.61667,251.45\",\"color-default\":\"#6F5897\",\"color-default-rgb\":\"111,88,151\",\"color-default-pale\":\"#72648b\",\"color-default-pale-rgb\":\"114.2246,99.95,139.05\",\"color-default-states\":\"#574577\",\"color-default-states-rgb\":\"87.31381,69.22176,118.77824\",\"color-default-sat\":\"#6534bb\",\"color-default-sat-rgb\":\"101.32619,52.15,186.85\",\"border-radius-xxl\":\"50px\",\"border-radius-xl\":\"30px\",\"border-radius-lg\":\"20px\",\"border-radius-md\":\"10px\",\"border-radius-sm\":\"5px\",\"border-radius-default\":\"10px\",\"border-width-sm\":\"1px\",\"border-width-md\":\"2px\",\"border-width-lg\":\"3px\",\"border-width-xl\":\"4px\",\"border-width-default\":\"1px\",\"bg-disabled\":\"rgba(0,0,0,0.3)\",\"disabled-opacity\":\"0.4\",\"navbar-height\":\"64px\",\"navbar-misc-bg\":\"#9d6feb\",\"sidebar-width\":\"250px\",\"sidebar-mini-width\":\"58px\",\"general-content-width\":\"1100px\",\"gradient-default-top\":\"linear-gradient(to top,#7873ed,#9765e1)\",\"gradient-default-right\":\"linear-gradient(to right,#7873ed,#9765e1)\",\"gradient-default-bottom\":\"linear-gradient(to bottom,#7873ed,#9765e1)\",\"gradient-default-left\":\"linear-gradient(to left,#7873ed,#9765e1)\",\"gradient-default\":\"linear-gradient(to left,#7873ed,#9765e1)\"};\n\nexport const lightTheme = {\"bg-default\":\"#F3F4F6\",\"bg-default-rgb\":\"243,244,246\",\"bg-pale\":\"#f5f5f5\",\"bg-pale-rgb\":\"245,245,245\",\"color-font-default\":\"#5B5F67\",\"color-font-default-rgb\":\"91,95,103\",\"color-gray-light\":\"#EEEEEE\",\"color-gray-light-rgb\":\"238,238,238\",\"color-gray-medium\":\"#CCCCCC\",\"color-gray-medium-rgb\":\"204,204,204\",\"color-gray-dark\":\"#9A9A9A\",\"color-gray-dark-rgb\":\"154,154,154\",\"color-gray-darker\":\"#505050\",\"color-gray-darker-rgb\":\"80,80,80\",\"color-primary\":\"#42ADB3\",\"color-primary-rgb\":\"66,173,179\",\"color-primary-pale\":\"#4ea2a7\",\"color-primary-pale-rgb\":\"78.25,162.05088,166.75\",\"color-primary-states\":\"#34898e\",\"color-primary-states-rgb\":\"52.26122,136.98776,141.73878\",\"color-primary-sat\":\"#1dced8\",\"color-primary-sat-rgb\":\"29.25,205.84735,215.75\",\"color-secondary\":\"#646F7E\",\"color-secondary-rgb\":\"100,111,126\",\"color-secondary-pale\":\"#6f7173\",\"color-secondary-pale-rgb\":\"111.3,112.73846,114.7\",\"color-secondary-states\":\"#4d5662\",\"color-secondary-states-rgb\":\"77.43363,85.95133,97.56637\",\"color-secondary-sat\":\"#426aa0\",\"color-secondary-sat-rgb\":\"66.1,105.78462,159.9\",\"color-success\":\"#6bd098\",\"color-success-rgb\":\"107,208,152\",\"color-success-pale\":\"#75c699\",\"color-success-pale-rgb\":\"116.75,198.25,153.06188\",\"color-success-states\":\"#44c47d\",\"color-success-states-rgb\":\"68.29231,195.70769,125.06154\",\"color-success-sat\":\"#4eed95\",\"color-success-sat-rgb\":\"77.75,237.25,148.81436\",\"color-info\":\"#51bcda\",\"color-info-rgb\":\"81,188,218\",\"color-info-pale\":\"#5cb6cf\",\"color-info-pale-rgb\":\"91.55,182.07044,207.45\",\"color-info-states\":\"#2ba9cd\",\"color-info-states-rgb\":\"43.48815,169.25118,204.51185\",\"color-info-sat\":\"#31cefa\",\"color-info-sat-rgb\":\"49.35,205.78869,249.65\",\"color-warning\":\"#fbc658\",\"color-warning-rgb\":\"251,198,88\",\"color-warning-pale\":\"#f2c361\",\"color-warning-pale-rgb\":\"242.45,195.01012,96.55\",\"color-warning-states\":\"#fab526\",\"color-warning-states-rgb\":\"249.80702,181,38.19298\",\"color-warning-sat\":\"#ffc754\",\"color-warning-sat-rgb\":\"255,199.39877,84\",\"color-danger\":\"#ef8157\",\"color-danger-rgb\":\"239,129,87\",\"color-danger-pale\":\"#e68560\",\"color-danger-pale-rgb\":\"229.8,133.11579,96.2\",\"color-danger-states\":\"#eb5e28\",\"color-danger-states-rgb\":\"234.56522,94.07609,40.43478\",\"color-danger-sat\":\"#ff7a47\",\"color-danger-sat-rgb\":\"255,121.84211,71\",\"color-light\":\"#eff3f8\",\"color-light-rgb\":\"239,243,248\",\"color-light-pale\":\"#f0f3f7\",\"color-light-pale-rgb\":\"240.15,243.12778,246.85\",\"color-light-states\":\"#ccd8e8\",\"color-light-states-rgb\":\"203.52174,216.3913,232.47826\",\"color-light-sat\":\"#ecf3fb\",\"color-light-sat-rgb\":\"235.55,242.61667,251.45\",\"color-default\":\"#646F7E\",\"color-default-rgb\":\"100,111,126\",\"color-default-pale\":\"#6f7173\",\"color-default-pale-rgb\":\"111.3,112.73846,114.7\",\"color-default-states\":\"#4d5662\",\"color-default-states-rgb\":\"77.43363,85.95133,97.56637\",\"color-default-sat\":\"#426aa0\",\"color-default-sat-rgb\":\"66.1,105.78462,159.9\",\"border-radius-xxl\":\"50px\",\"border-radius-xl\":\"30px\",\"border-radius-lg\":\"20px\",\"border-radius-md\":\"10px\",\"border-radius-sm\":\"5px\",\"border-radius-default\":\"10px\",\"border-width-sm\":\"1px\",\"border-width-md\":\"2px\",\"border-width-lg\":\"3px\",\"border-width-xl\":\"4px\",\"border-width-default\":\"1px\",\"bg-disabled\":\"rgba(0,0,0,0.3)\",\"disabled-opacity\":\"0.4\",\"navbar-height\":\"64px\",\"navbar-misc-bg\":\"#9d6feb\",\"sidebar-width\":\"250px\",\"sidebar-mini-width\":\"58px\",\"general-content-width\":\"1100px\",\"gradient-default-top\":\"linear-gradient(to top,#7873ed,#9765e1)\",\"gradient-default-right\":\"linear-gradient(to right,#7873ed,#9765e1)\",\"gradient-default-bottom\":\"linear-gradient(to bottom,#7873ed,#9765e1)\",\"gradient-default-left\":\"linear-gradient(to left,#7873ed,#9765e1)\",\"gradient-default\":\"linear-gradient(to left,#7873ed,#9765e1)\"};\n\nexport const darkTheme = {\"bg-default\":\"#F3F4F6\",\"bg-default-rgb\":\"243,244,246\",\"bg-pale\":\"#f5f5f5\",\"bg-pale-rgb\":\"245,245,245\",\"color-font-default\":\"#5B5F67\",\"color-font-default-rgb\":\"91,95,103\",\"color-gray-light\":\"#EEEEEE\",\"color-gray-light-rgb\":\"238,238,238\",\"color-gray-medium\":\"#CCCCCC\",\"color-gray-medium-rgb\":\"204,204,204\",\"color-gray-dark\":\"#9A9A9A\",\"color-gray-dark-rgb\":\"154,154,154\",\"color-gray-darker\":\"#505050\",\"color-gray-darker-rgb\":\"80,80,80\",\"color-primary\":\"#efa76c\",\"color-primary-rgb\":\"239,167,108\",\"color-primary-pale\":\"#e7a874\",\"color-primary-pale-rgb\":\"230.85,167.80878,116.15\",\"color-primary-states\":\"#f4c39a\",\"color-primary-states-rgb\":\"244.00613,194.53374,153.99387\",\"color-primary-sat\":\"#ffa55c\",\"color-primary-sat-rgb\":\"255,165.41221,92\",\"color-secondary\":\"#6F5897\",\"color-secondary-rgb\":\"111,88,151\",\"color-secondary-pale\":\"#72648b\",\"color-secondary-pale-rgb\":\"114.2246,99.95,139.05\",\"color-secondary-states\":\"#8974ae\",\"color-secondary-states-rgb\":\"137.17573,116.00418,173.99582\",\"color-secondary-sat\":\"#6534bb\",\"color-secondary-sat-rgb\":\"101.32619,52.15,186.85\",\"color-success\":\"#6bd098\",\"color-success-rgb\":\"107,208,152\",\"color-success-pale\":\"#75c699\",\"color-success-pale-rgb\":\"116.75,198.25,153.06188\",\"color-success-states\":\"#92dcb3\",\"color-success-states-rgb\":\"145.70769,220.29231,178.93846\",\"color-success-sat\":\"#4eed95\",\"color-success-sat-rgb\":\"77.75,237.25,148.81436\",\"color-info\":\"#51bcda\",\"color-info-rgb\":\"81,188,218\",\"color-info-pale\":\"#5cb6cf\",\"color-info-pale-rgb\":\"91.55,182.07044,207.45\",\"color-info-states\":\"#7bcce3\",\"color-info-states-rgb\":\"123.05687,204.19431,226.94313\",\"color-info-sat\":\"#31cefa\",\"color-info-sat-rgb\":\"49.35,205.78869,249.65\",\"color-warning\":\"#fbc658\",\"color-warning-rgb\":\"251,198,88\",\"color-warning-pale\":\"#f2c361\",\"color-warning-pale-rgb\":\"242.45,195.01012,96.55\",\"color-warning-states\":\"#fcd78a\",\"color-warning-states-rgb\":\"252.19298,215,137.80702\",\"color-warning-sat\":\"#ffc754\",\"color-warning-sat-rgb\":\"255,199.39877,84\",\"color-danger\":\"#ef8157\",\"color-danger-rgb\":\"239,129,87\",\"color-danger-pale\":\"#e68560\",\"color-danger-pale-rgb\":\"229.8,133.11579,96.2\",\"color-danger-states\":\"#f3a486\",\"color-danger-states-rgb\":\"243.43478,163.92391,133.56522\",\"color-danger-sat\":\"#ff7a47\",\"color-danger-sat-rgb\":\"255,121.84211,71\",\"color-light\":\"#eff3f8\",\"color-light-rgb\":\"239,243,248\",\"color-light-pale\":\"#f0f3f7\",\"color-light-pale-rgb\":\"240.15,243.12778,246.85\",\"color-light-states\":\"white\",\"color-light-states-rgb\":\"255,255,255\",\"color-light-sat\":\"#ecf3fb\",\"color-light-sat-rgb\":\"235.55,242.61667,251.45\",\"color-default\":\"#6F5897\",\"color-default-rgb\":\"111,88,151\",\"color-default-pale\":\"#72648b\",\"color-default-pale-rgb\":\"114.2246,99.95,139.05\",\"color-default-states\":\"#8974ae\",\"color-default-states-rgb\":\"137.17573,116.00418,173.99582\",\"color-default-sat\":\"#6534bb\",\"color-default-sat-rgb\":\"101.32619,52.15,186.85\",\"border-radius-xxl\":\"50px\",\"border-radius-xl\":\"30px\",\"border-radius-lg\":\"20px\",\"border-radius-md\":\"10px\",\"border-radius-sm\":\"5px\",\"border-radius-default\":\"10px\",\"border-width-sm\":\"1px\",\"border-width-md\":\"2px\",\"border-width-lg\":\"3px\",\"border-width-xl\":\"4px\",\"border-width-default\":\"1px\",\"bg-disabled\":\"rgba(0,0,0,0.3)\",\"disabled-opacity\":\"0.4\",\"navbar-height\":\"64px\",\"navbar-misc-bg\":\"#9d6feb\",\"sidebar-width\":\"250px\",\"sidebar-mini-width\":\"58px\",\"general-content-width\":\"1100px\",\"gradient-default-top\":\"linear-gradient(to top,#7873ed,#9765e1)\",\"gradient-default-right\":\"linear-gradient(to right,#7873ed,#9765e1)\",\"gradient-default-bottom\":\"linear-gradient(to bottom,#7873ed,#9765e1)\",\"gradient-default-left\":\"linear-gradient(to left,#7873ed,#9765e1)\",\"gradient-default\":\"linear-gradient(to left,#7873ed,#9765e1)\"};\n\n@Injectable()\nexport class ColorThemeService {\n\n  private _theme: string;\n\n  constructor(\n    @Inject(colorThemeToken) initialTheme: any\n  ) {\n    this.theme = initialTheme;\n  }\n\n  private set theme(theme: string) {\n    this._theme = theme;\n\n    let themeObj;\n    switch (theme) {\n      case 'default':\n        themeObj = defaultTheme;\n        break;\n      case 'light':\n        themeObj = lightTheme;\n        break;\n      case 'dark':\n        themeObj = darkTheme;\n        break;\n      default:\n        themeObj = defaultTheme;\n        break;\n    }\n    Object.keys(themeObj).forEach(key =>\n      document.documentElement.style.setProperty(`--${key}`, `${themeObj[key]}`, 'important')\n    );\n  }\n\n  public toggle(): void {\n    this.theme = this._theme === 'dark' ? 'light' : 'dark';\n  }\n}\n",
+            "sourceCode": "import {Inject, Injectable} from '@angular/core';\nimport {colorThemeToken} from './injection';\n\nexport const defaultTheme = {\n  'color-primary': '#455363',\n  'color-default': '#455363',\n  'background-color': '#1f2935',\n  'text-color': '#fff'\n};\n\nexport const lightTheme = {\n  'color-primary': '#fff',\n  'color-default': '#fff',\n  'background-color': '#e5e5e5',\n  'text-color': '#2d2d2d'\n};\n\nexport const darkTheme = {\n  'color-primary': '#455363',\n  'color-default': '#455363',\n  'background-color': '#1f2935',\n  'text-color': '#fff'\n};\n\n@Injectable()\nexport class ColorThemeService {\n\n  private _theme: string;\n\n  constructor(\n    @Inject(colorThemeToken) initialTheme: any\n  ) {\n    this.theme = initialTheme;\n  }\n\n  private set theme(theme: string) {\n    this._theme = theme;\n\n    let themeObj;\n    switch (theme) {\n      case 'default':\n        themeObj = defaultTheme;\n        break;\n      case 'light':\n        themeObj = lightTheme;\n        break;\n      case 'dark':\n        themeObj = darkTheme;\n        break;\n      default:\n        themeObj = defaultTheme;\n        break;\n    }\n    Object.keys(themeObj).forEach(key =>\n      document.documentElement.style.setProperty(`--${key}`, `${themeObj[key]}`, 'important')\n    );\n  }\n\n  public toggle(): void {\n    this.theme = this._theme === 'dark' ? 'light' : 'dark';\n  }\n}\n",
             "constructorObj": {
                 "name": "constructor",
                 "description": "",
@@ -236,7 +236,7 @@
                         "type": "any"
                     }
                 ],
-                "line": 13,
+                "line": 28,
                 "jsdoctags": [
                     {
                         "name": "initialTheme",
@@ -260,7 +260,7 @@
                             }
                         ],
                         "returnType": "void",
-                        "line": 21,
+                        "line": 36,
                         "jsdoctags": [
                             {
                                 "name": "theme",
@@ -277,7 +277,7 @@
         },
         {
             "name": "CommandPaletteService",
-            "id": "injectable-CommandPaletteService-45d6b42a83bfb795858d5af0556f59d4",
+            "id": "injectable-CommandPaletteService-9bcb95a1f9329c9c175e5d9d74bcf9cf",
             "file": "projects/lib/src/services/command-palette/command-palette.service.ts",
             "properties": [
                 {
@@ -298,14 +298,14 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 27,
+                    "line": 28,
                     "modifierKind": [
                         114
                     ]
                 }
             ],
             "description": "",
-            "sourceCode": "import {\n  Inject,\n  Injectable,\n} from '@angular/core';\nimport {COMMAND_PALETTE_CONFIG, CommandPaletteConfig} from './injection';\nimport {DialogComponent} from './dialog/dialog.component';\nimport {ComponentInjectorService} from './component-injector.service';\nimport {Hotkey, HotkeysService} from 'angular2-hotkeys';\n\n@Injectable()\nexport class CommandPaletteService {\n  private configs: CommandPaletteConfig;\n\n  constructor(\n    @Inject(COMMAND_PALETTE_CONFIG) initialConfig: CommandPaletteConfig,\n    private componentInjectorService: ComponentInjectorService,\n    private hotkeysService: HotkeysService\n  ) {\n    this.configs = initialConfig;\n    this.hotkeysService.add(new Hotkey(['meta+k', 'ctrl+k'], (event: KeyboardEvent, combo: string): boolean => {\n      console.log('Combo: ' + combo); // 'Combo: meta+shift+g' or 'Combo: alt+shift+s'\n      this.triggerDialog();\n      return true;\n    }));\n  }\n\n  public triggerDialog(): void {\n    this.componentInjectorService.appendComponentToBody(DialogComponent).then(\n      (createdComponent) => {\n        console.log('palette opened');\n        createdComponent.instance.itself = createdComponent;\n      }\n    );\n  }\n}\n",
+            "sourceCode": "import {\n  Inject,\n  Injectable,\n} from '@angular/core';\nimport {COMMAND_PALETTE_CONFIG, CommandPaletteConfig} from './injection';\nimport {DialogComponent} from './dialog/dialog.component';\nimport {ComponentInjectorService} from './component-injector.service';\nimport {Hotkey, HotkeysService} from 'angular2-hotkeys';\n\n@Injectable()\nexport class CommandPaletteService {\n  private configs: CommandPaletteConfig;\n\n  constructor(\n    @Inject(COMMAND_PALETTE_CONFIG) initialConfig: CommandPaletteConfig,\n    private componentInjectorService: ComponentInjectorService,\n    private hotkeysService: HotkeysService\n  ) {\n    this.configs = initialConfig;\n    this.hotkeysService.add(new Hotkey(this.configs.hotkeys, (event: KeyboardEvent, combo: string): boolean => {\n      event.stopPropagation();\n      event.preventDefault();\n      this.triggerDialog();\n      return true;\n    }));\n  }\n\n  public triggerDialog(): void {\n    this.componentInjectorService.appendComponentToBody(DialogComponent).then(\n      (createdComponent) => {\n        createdComponent.instance.itself = createdComponent;\n      }\n    );\n  }\n}\n",
             "constructorObj": {
                 "name": "constructor",
                 "description": "",
@@ -3613,7 +3613,7 @@
                 "subtype": "variable",
                 "file": "projects/lib/src/services/command-palette/injection.ts",
                 "type": "CommandPaletteConfig",
-                "defaultValue": "{\n  theme: 'sla'\n}"
+                "defaultValue": "{\n  hotkeys: ['meta+k', 'ctrl+k']\n}"
             },
             {
                 "name": "components",
@@ -3645,7 +3645,7 @@
                 "subtype": "variable",
                 "file": "projects/lib/src/services/color-theme/color-theme.service.ts",
                 "type": "object",
-                "defaultValue": "{\"bg-default\":\"#F3F4F6\",\"bg-default-rgb\":\"243,244,246\",\"bg-pale\":\"#f5f5f5\",\"bg-pale-rgb\":\"245,245,245\",\"color-font-default\":\"#5B5F67\",\"color-font-default-rgb\":\"91,95,103\",\"color-gray-light\":\"#EEEEEE\",\"color-gray-light-rgb\":\"238,238,238\",\"color-gray-medium\":\"#CCCCCC\",\"color-gray-medium-rgb\":\"204,204,204\",\"color-gray-dark\":\"#9A9A9A\",\"color-gray-dark-rgb\":\"154,154,154\",\"color-gray-darker\":\"#505050\",\"color-gray-darker-rgb\":\"80,80,80\",\"color-primary\":\"#efa76c\",\"color-primary-rgb\":\"239,167,108\",\"color-primary-pale\":\"#e7a874\",\"color-primary-pale-rgb\":\"230.85,167.80878,116.15\",\"color-primary-states\":\"#f4c39a\",\"color-primary-states-rgb\":\"244.00613,194.53374,153.99387\",\"color-primary-sat\":\"#ffa55c\",\"color-primary-sat-rgb\":\"255,165.41221,92\",\"color-secondary\":\"#6F5897\",\"color-secondary-rgb\":\"111,88,151\",\"color-secondary-pale\":\"#72648b\",\"color-secondary-pale-rgb\":\"114.2246,99.95,139.05\",\"color-secondary-states\":\"#8974ae\",\"color-secondary-states-rgb\":\"137.17573,116.00418,173.99582\",\"color-secondary-sat\":\"#6534bb\",\"color-secondary-sat-rgb\":\"101.32619,52.15,186.85\",\"color-success\":\"#6bd098\",\"color-success-rgb\":\"107,208,152\",\"color-success-pale\":\"#75c699\",\"color-success-pale-rgb\":\"116.75,198.25,153.06188\",\"color-success-states\":\"#92dcb3\",\"color-success-states-rgb\":\"145.70769,220.29231,178.93846\",\"color-success-sat\":\"#4eed95\",\"color-success-sat-rgb\":\"77.75,237.25,148.81436\",\"color-info\":\"#51bcda\",\"color-info-rgb\":\"81,188,218\",\"color-info-pale\":\"#5cb6cf\",\"color-info-pale-rgb\":\"91.55,182.07044,207.45\",\"color-info-states\":\"#7bcce3\",\"color-info-states-rgb\":\"123.05687,204.19431,226.94313\",\"color-info-sat\":\"#31cefa\",\"color-info-sat-rgb\":\"49.35,205.78869,249.65\",\"color-warning\":\"#fbc658\",\"color-warning-rgb\":\"251,198,88\",\"color-warning-pale\":\"#f2c361\",\"color-warning-pale-rgb\":\"242.45,195.01012,96.55\",\"color-warning-states\":\"#fcd78a\",\"color-warning-states-rgb\":\"252.19298,215,137.80702\",\"color-warning-sat\":\"#ffc754\",\"color-warning-sat-rgb\":\"255,199.39877,84\",\"color-danger\":\"#ef8157\",\"color-danger-rgb\":\"239,129,87\",\"color-danger-pale\":\"#e68560\",\"color-danger-pale-rgb\":\"229.8,133.11579,96.2\",\"color-danger-states\":\"#f3a486\",\"color-danger-states-rgb\":\"243.43478,163.92391,133.56522\",\"color-danger-sat\":\"#ff7a47\",\"color-danger-sat-rgb\":\"255,121.84211,71\",\"color-light\":\"#eff3f8\",\"color-light-rgb\":\"239,243,248\",\"color-light-pale\":\"#f0f3f7\",\"color-light-pale-rgb\":\"240.15,243.12778,246.85\",\"color-light-states\":\"white\",\"color-light-states-rgb\":\"255,255,255\",\"color-light-sat\":\"#ecf3fb\",\"color-light-sat-rgb\":\"235.55,242.61667,251.45\",\"color-default\":\"#6F5897\",\"color-default-rgb\":\"111,88,151\",\"color-default-pale\":\"#72648b\",\"color-default-pale-rgb\":\"114.2246,99.95,139.05\",\"color-default-states\":\"#8974ae\",\"color-default-states-rgb\":\"137.17573,116.00418,173.99582\",\"color-default-sat\":\"#6534bb\",\"color-default-sat-rgb\":\"101.32619,52.15,186.85\",\"border-radius-xxl\":\"50px\",\"border-radius-xl\":\"30px\",\"border-radius-lg\":\"20px\",\"border-radius-md\":\"10px\",\"border-radius-sm\":\"5px\",\"border-radius-default\":\"10px\",\"border-width-sm\":\"1px\",\"border-width-md\":\"2px\",\"border-width-lg\":\"3px\",\"border-width-xl\":\"4px\",\"border-width-default\":\"1px\",\"bg-disabled\":\"rgba(0,0,0,0.3)\",\"disabled-opacity\":\"0.4\",\"navbar-height\":\"64px\",\"navbar-misc-bg\":\"#9d6feb\",\"sidebar-width\":\"250px\",\"sidebar-mini-width\":\"58px\",\"general-content-width\":\"1100px\",\"gradient-default-top\":\"linear-gradient(to top,#7873ed,#9765e1)\",\"gradient-default-right\":\"linear-gradient(to right,#7873ed,#9765e1)\",\"gradient-default-bottom\":\"linear-gradient(to bottom,#7873ed,#9765e1)\",\"gradient-default-left\":\"linear-gradient(to left,#7873ed,#9765e1)\",\"gradient-default\":\"linear-gradient(to left,#7873ed,#9765e1)\"}"
+                "defaultValue": "{\n  'color-primary': '#455363',\n  'color-default': '#455363',\n  'background-color': '#1f2935',\n  'text-color': '#fff'\n}"
             },
             {
                 "name": "defaultArgs",
@@ -3659,17 +3659,17 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/cards/basic-card/basic-card.stories.ts",
+                "file": "projects/lib/src/components/cards/icon-card/icon-card.stories.ts",
                 "type": "object",
-                "defaultValue": "{\n}"
+                "defaultValue": "{\n  textPosition: 'center',\n  paddingClass: 'p-3',\n  hoverable: true,\n  orientation: OrientationEnum.Y,\n  iconClass: 'uil uil-star',\n  title: '',\n  subtitle: '',\n  iconCardArray: [],\n}"
             },
             {
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/cards/icon-card/icon-card.stories.ts",
+                "file": "projects/lib/src/components/cards/basic-card/basic-card.stories.ts",
                 "type": "object",
-                "defaultValue": "{\n  textPosition: 'center',\n  paddingClass: 'p-3',\n  hoverable: true,\n  orientation: OrientationEnum.Y,\n  iconClass: 'uil uil-star',\n  title: '',\n  subtitle: '',\n  iconCardArray: [],\n}"
+                "defaultValue": "{\n}"
             },
             {
                 "name": "defaultArgs",
@@ -3707,33 +3707,9 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts",
-                "type": "object",
-                "defaultValue": "{\n  disabled: false,\n  text: ''\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "projects/lib/src/components/inputs/dropdown-actions/dropdown-actions.stories.ts",
                 "type": "object",
                 "defaultValue": "{\n  actions: []\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts",
-                "type": "object",
-                "defaultValue": "{\n  orientation: OrientationEnum.Y,\n  values: [],\n  disabled: false,\n  selectedValue: undefined\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/lib/src/components/navigation/stepper/stepper.stories.ts",
-                "type": "object",
-                "defaultValue": "{}"
             },
             {
                 "name": "defaultArgs",
@@ -3755,9 +3731,33 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
+                "file": "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts",
+                "type": "object",
+                "defaultValue": "{\n  disabled: false,\n  text: ''\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts",
+                "type": "object",
+                "defaultValue": "{\n  orientation: OrientationEnum.Y,\n  values: [],\n  disabled: false,\n  selectedValue: undefined\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
                 "file": "projects/lib/src/components/lists/table-list/table-list.stories.ts",
                 "type": "object",
                 "defaultValue": "{\n  columns: [],\n  columnNames: [],\n  imageColumns: [],\n  imageHeight: '50px',\n  showHeader: true,\n  numberFormat: '1.2-2',\n  numberPrefix: '',\n  actionsTemplate: undefined,\n  itemList: undefined,\n  borderRadius: undefined,\n  backgroundColor: undefined,\n  expandedDetailTemplate: undefined,\n  disableExpandedOnDisabledRow: true,\n  expandedRow: undefined\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/components/navigation/stepper/stepper.stories.ts",
+                "type": "object",
+                "defaultValue": "{}"
             },
             {
                 "name": "DefaultBasicCard",
@@ -3893,7 +3893,7 @@
                 "subtype": "variable",
                 "file": "projects/lib/src/services/color-theme/color-theme.service.ts",
                 "type": "object",
-                "defaultValue": "{\"bg-default\":\"#F3F4F6\",\"bg-default-rgb\":\"243,244,246\",\"bg-pale\":\"#f5f5f5\",\"bg-pale-rgb\":\"245,245,245\",\"color-font-default\":\"#5B5F67\",\"color-font-default-rgb\":\"91,95,103\",\"color-gray-light\":\"#EEEEEE\",\"color-gray-light-rgb\":\"238,238,238\",\"color-gray-medium\":\"#CCCCCC\",\"color-gray-medium-rgb\":\"204,204,204\",\"color-gray-dark\":\"#9A9A9A\",\"color-gray-dark-rgb\":\"154,154,154\",\"color-gray-darker\":\"#505050\",\"color-gray-darker-rgb\":\"80,80,80\",\"color-primary\":\"#efa76c\",\"color-primary-rgb\":\"239,167,108\",\"color-primary-pale\":\"#e7a874\",\"color-primary-pale-rgb\":\"230.85,167.80878,116.15\",\"color-primary-states\":\"#ea8b3e\",\"color-primary-states-rgb\":\"233.99387,139.46626,62.00613\",\"color-primary-sat\":\"#ffa55c\",\"color-primary-sat-rgb\":\"255,165.41221,92\",\"color-secondary\":\"#6F5897\",\"color-secondary-rgb\":\"111,88,151\",\"color-secondary-pale\":\"#72648b\",\"color-secondary-pale-rgb\":\"114.2246,99.95,139.05\",\"color-secondary-states\":\"#574577\",\"color-secondary-states-rgb\":\"87.31381,69.22176,118.77824\",\"color-secondary-sat\":\"#6534bb\",\"color-secondary-sat-rgb\":\"101.32619,52.15,186.85\",\"color-success\":\"#6bd098\",\"color-success-rgb\":\"107,208,152\",\"color-success-pale\":\"#75c699\",\"color-success-pale-rgb\":\"116.75,198.25,153.06188\",\"color-success-states\":\"#44c47d\",\"color-success-states-rgb\":\"68.29231,195.70769,125.06154\",\"color-success-sat\":\"#4eed95\",\"color-success-sat-rgb\":\"77.75,237.25,148.81436\",\"color-info\":\"#51bcda\",\"color-info-rgb\":\"81,188,218\",\"color-info-pale\":\"#5cb6cf\",\"color-info-pale-rgb\":\"91.55,182.07044,207.45\",\"color-info-states\":\"#2ba9cd\",\"color-info-states-rgb\":\"43.48815,169.25118,204.51185\",\"color-info-sat\":\"#31cefa\",\"color-info-sat-rgb\":\"49.35,205.78869,249.65\",\"color-warning\":\"#fbc658\",\"color-warning-rgb\":\"251,198,88\",\"color-warning-pale\":\"#f2c361\",\"color-warning-pale-rgb\":\"242.45,195.01012,96.55\",\"color-warning-states\":\"#fab526\",\"color-warning-states-rgb\":\"249.80702,181,38.19298\",\"color-warning-sat\":\"#ffc754\",\"color-warning-sat-rgb\":\"255,199.39877,84\",\"color-danger\":\"#ef8157\",\"color-danger-rgb\":\"239,129,87\",\"color-danger-pale\":\"#e68560\",\"color-danger-pale-rgb\":\"229.8,133.11579,96.2\",\"color-danger-states\":\"#eb5e28\",\"color-danger-states-rgb\":\"234.56522,94.07609,40.43478\",\"color-danger-sat\":\"#ff7a47\",\"color-danger-sat-rgb\":\"255,121.84211,71\",\"color-light\":\"#eff3f8\",\"color-light-rgb\":\"239,243,248\",\"color-light-pale\":\"#f0f3f7\",\"color-light-pale-rgb\":\"240.15,243.12778,246.85\",\"color-light-states\":\"#ccd8e8\",\"color-light-states-rgb\":\"203.52174,216.3913,232.47826\",\"color-light-sat\":\"#ecf3fb\",\"color-light-sat-rgb\":\"235.55,242.61667,251.45\",\"color-default\":\"#6F5897\",\"color-default-rgb\":\"111,88,151\",\"color-default-pale\":\"#72648b\",\"color-default-pale-rgb\":\"114.2246,99.95,139.05\",\"color-default-states\":\"#574577\",\"color-default-states-rgb\":\"87.31381,69.22176,118.77824\",\"color-default-sat\":\"#6534bb\",\"color-default-sat-rgb\":\"101.32619,52.15,186.85\",\"border-radius-xxl\":\"50px\",\"border-radius-xl\":\"30px\",\"border-radius-lg\":\"20px\",\"border-radius-md\":\"10px\",\"border-radius-sm\":\"5px\",\"border-radius-default\":\"10px\",\"border-width-sm\":\"1px\",\"border-width-md\":\"2px\",\"border-width-lg\":\"3px\",\"border-width-xl\":\"4px\",\"border-width-default\":\"1px\",\"bg-disabled\":\"rgba(0,0,0,0.3)\",\"disabled-opacity\":\"0.4\",\"navbar-height\":\"64px\",\"navbar-misc-bg\":\"#9d6feb\",\"sidebar-width\":\"250px\",\"sidebar-mini-width\":\"58px\",\"general-content-width\":\"1100px\",\"gradient-default-top\":\"linear-gradient(to top,#7873ed,#9765e1)\",\"gradient-default-right\":\"linear-gradient(to right,#7873ed,#9765e1)\",\"gradient-default-bottom\":\"linear-gradient(to bottom,#7873ed,#9765e1)\",\"gradient-default-left\":\"linear-gradient(to left,#7873ed,#9765e1)\",\"gradient-default\":\"linear-gradient(to left,#7873ed,#9765e1)\"}"
+                "defaultValue": "{\n  'color-primary': '#455363',\n  'color-default': '#455363',\n  'background-color': '#1f2935',\n  'text-color': '#fff'\n}"
             },
             {
                 "name": "DefaultXXXTitle",
@@ -3989,7 +3989,7 @@
                 "subtype": "variable",
                 "file": "projects/lib/src/services/color-theme/color-theme.service.ts",
                 "type": "object",
-                "defaultValue": "{\"bg-default\":\"#F3F4F6\",\"bg-default-rgb\":\"243,244,246\",\"bg-pale\":\"#f5f5f5\",\"bg-pale-rgb\":\"245,245,245\",\"color-font-default\":\"#5B5F67\",\"color-font-default-rgb\":\"91,95,103\",\"color-gray-light\":\"#EEEEEE\",\"color-gray-light-rgb\":\"238,238,238\",\"color-gray-medium\":\"#CCCCCC\",\"color-gray-medium-rgb\":\"204,204,204\",\"color-gray-dark\":\"#9A9A9A\",\"color-gray-dark-rgb\":\"154,154,154\",\"color-gray-darker\":\"#505050\",\"color-gray-darker-rgb\":\"80,80,80\",\"color-primary\":\"#42ADB3\",\"color-primary-rgb\":\"66,173,179\",\"color-primary-pale\":\"#4ea2a7\",\"color-primary-pale-rgb\":\"78.25,162.05088,166.75\",\"color-primary-states\":\"#34898e\",\"color-primary-states-rgb\":\"52.26122,136.98776,141.73878\",\"color-primary-sat\":\"#1dced8\",\"color-primary-sat-rgb\":\"29.25,205.84735,215.75\",\"color-secondary\":\"#646F7E\",\"color-secondary-rgb\":\"100,111,126\",\"color-secondary-pale\":\"#6f7173\",\"color-secondary-pale-rgb\":\"111.3,112.73846,114.7\",\"color-secondary-states\":\"#4d5662\",\"color-secondary-states-rgb\":\"77.43363,85.95133,97.56637\",\"color-secondary-sat\":\"#426aa0\",\"color-secondary-sat-rgb\":\"66.1,105.78462,159.9\",\"color-success\":\"#6bd098\",\"color-success-rgb\":\"107,208,152\",\"color-success-pale\":\"#75c699\",\"color-success-pale-rgb\":\"116.75,198.25,153.06188\",\"color-success-states\":\"#44c47d\",\"color-success-states-rgb\":\"68.29231,195.70769,125.06154\",\"color-success-sat\":\"#4eed95\",\"color-success-sat-rgb\":\"77.75,237.25,148.81436\",\"color-info\":\"#51bcda\",\"color-info-rgb\":\"81,188,218\",\"color-info-pale\":\"#5cb6cf\",\"color-info-pale-rgb\":\"91.55,182.07044,207.45\",\"color-info-states\":\"#2ba9cd\",\"color-info-states-rgb\":\"43.48815,169.25118,204.51185\",\"color-info-sat\":\"#31cefa\",\"color-info-sat-rgb\":\"49.35,205.78869,249.65\",\"color-warning\":\"#fbc658\",\"color-warning-rgb\":\"251,198,88\",\"color-warning-pale\":\"#f2c361\",\"color-warning-pale-rgb\":\"242.45,195.01012,96.55\",\"color-warning-states\":\"#fab526\",\"color-warning-states-rgb\":\"249.80702,181,38.19298\",\"color-warning-sat\":\"#ffc754\",\"color-warning-sat-rgb\":\"255,199.39877,84\",\"color-danger\":\"#ef8157\",\"color-danger-rgb\":\"239,129,87\",\"color-danger-pale\":\"#e68560\",\"color-danger-pale-rgb\":\"229.8,133.11579,96.2\",\"color-danger-states\":\"#eb5e28\",\"color-danger-states-rgb\":\"234.56522,94.07609,40.43478\",\"color-danger-sat\":\"#ff7a47\",\"color-danger-sat-rgb\":\"255,121.84211,71\",\"color-light\":\"#eff3f8\",\"color-light-rgb\":\"239,243,248\",\"color-light-pale\":\"#f0f3f7\",\"color-light-pale-rgb\":\"240.15,243.12778,246.85\",\"color-light-states\":\"#ccd8e8\",\"color-light-states-rgb\":\"203.52174,216.3913,232.47826\",\"color-light-sat\":\"#ecf3fb\",\"color-light-sat-rgb\":\"235.55,242.61667,251.45\",\"color-default\":\"#646F7E\",\"color-default-rgb\":\"100,111,126\",\"color-default-pale\":\"#6f7173\",\"color-default-pale-rgb\":\"111.3,112.73846,114.7\",\"color-default-states\":\"#4d5662\",\"color-default-states-rgb\":\"77.43363,85.95133,97.56637\",\"color-default-sat\":\"#426aa0\",\"color-default-sat-rgb\":\"66.1,105.78462,159.9\",\"border-radius-xxl\":\"50px\",\"border-radius-xl\":\"30px\",\"border-radius-lg\":\"20px\",\"border-radius-md\":\"10px\",\"border-radius-sm\":\"5px\",\"border-radius-default\":\"10px\",\"border-width-sm\":\"1px\",\"border-width-md\":\"2px\",\"border-width-lg\":\"3px\",\"border-width-xl\":\"4px\",\"border-width-default\":\"1px\",\"bg-disabled\":\"rgba(0,0,0,0.3)\",\"disabled-opacity\":\"0.4\",\"navbar-height\":\"64px\",\"navbar-misc-bg\":\"#9d6feb\",\"sidebar-width\":\"250px\",\"sidebar-mini-width\":\"58px\",\"general-content-width\":\"1100px\",\"gradient-default-top\":\"linear-gradient(to top,#7873ed,#9765e1)\",\"gradient-default-right\":\"linear-gradient(to right,#7873ed,#9765e1)\",\"gradient-default-bottom\":\"linear-gradient(to bottom,#7873ed,#9765e1)\",\"gradient-default-left\":\"linear-gradient(to left,#7873ed,#9765e1)\",\"gradient-default\":\"linear-gradient(to left,#7873ed,#9765e1)\"}"
+                "defaultValue": "{\n  'color-primary': '#fff',\n  'color-default': '#fff',\n  'background-color': '#e5e5e5',\n  'text-color': '#2d2d2d'\n}"
             },
             {
                 "name": "NoHeader",
@@ -4050,17 +4050,17 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/cards/basic-card/basic-card.stories.ts",
-                "type": "Story<BasicCardComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-basic-card\n    >\n    </pm-basic-card>\n  `\n})"
+                "file": "projects/lib/src/components/cards/icon-card/icon-card.stories.ts",
+                "type": "Story<IconCardComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-icon-card\n      [textPosition]=\"textPosition\"\n      [paddingClass]=\"paddingClass\"\n      [hoverable]=\"hoverable\"\n      [orientation]=\"orientation\"\n      [iconClass]=\"iconClass\"\n      [title]=\"title\"\n      [subtitle]=\"subtitle\"\n      [iconCardArray]=\"iconCardArray\"\n    >\n    </pm-icon-card>\n  `\n})"
             },
             {
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/cards/icon-card/icon-card.stories.ts",
-                "type": "Story<IconCardComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-icon-card\n      [textPosition]=\"textPosition\"\n      [paddingClass]=\"paddingClass\"\n      [hoverable]=\"hoverable\"\n      [orientation]=\"orientation\"\n      [iconClass]=\"iconClass\"\n      [title]=\"title\"\n      [subtitle]=\"subtitle\"\n      [iconCardArray]=\"iconCardArray\"\n    >\n    </pm-icon-card>\n  `\n})"
+                "file": "projects/lib/src/components/cards/basic-card/basic-card.stories.ts",
+                "type": "Story<BasicCardComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-basic-card\n    >\n    </pm-basic-card>\n  `\n})"
             },
             {
                 "name": "Template",
@@ -4098,33 +4098,9 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts",
-                "type": "Story<CopyContentInputComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-copy-content-input\n      [text]=\"text\"\n      [disabled]=\"disabled\"\n    >\n      Conteúdo\n    </pm-copy-content-input>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "projects/lib/src/components/inputs/dropdown-actions/dropdown-actions.stories.ts",
                 "type": "Story<DropdownActionsComponent>",
                 "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-dropdown-actions\n      [actions]=\"actions\"\n    >\n    </pm-dropdown-actions>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts",
-                "type": "Story<RadioButtonComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-radio-button\n      [orientation]=\"orientation\"\n      [values]=\"values\"\n      [selectedValue]=\"selectedValue\"\n      [disabled]=\"disabled\"\n    >\n    </pm-radio-button>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/lib/src/components/navigation/stepper/stepper.stories.ts",
-                "type": "Story<StepperComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-stepper>\n      <cdk-step> <p>This is any content of \"Step 1\"</p> </cdk-step>\n      <cdk-step> <p>This is any content of \"Step 2\"</p> </cdk-step>\n    </pm-stepper>\n  `\n})"
             },
             {
                 "name": "Template",
@@ -4146,9 +4122,33 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
+                "file": "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts",
+                "type": "Story<CopyContentInputComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-copy-content-input\n      [text]=\"text\"\n      [disabled]=\"disabled\"\n    >\n      Conteúdo\n    </pm-copy-content-input>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts",
+                "type": "Story<RadioButtonComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-radio-button\n      [orientation]=\"orientation\"\n      [values]=\"values\"\n      [selectedValue]=\"selectedValue\"\n      [disabled]=\"disabled\"\n    >\n    </pm-radio-button>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
                 "file": "projects/lib/src/components/lists/table-list/table-list.stories.ts",
                 "type": "Story<TableListComponent>",
                 "defaultValue": "(args) => ({\n  props: args,\n  template: `<pm-table-list\n    [columns]=\"columns\"\n    [columnNames]=\"columnNames\"\n    [imageColumns]=\"imageColumns\"\n    [imageHeight]=\"imageHeight\"\n    [showHeader]=\"showHeader\"\n    [numberFormat]=\"numberFormat\"\n    [numberPrefix]=\"numberPrefix\"\n    [itemList]=\"itemList\"\n    [borderRadius]=\"borderRadius\"\n    [backgroundColor]=\"backgroundColor\"\n    [expandedDetailTemplate]=\"expandedDetailTemplate\"\n    [disableExpandedOnDisabledRow]=\"disableExpandedOnDisabledRow\"\n  ></pm-table-list>`\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/components/navigation/stepper/stepper.stories.ts",
+                "type": "Story<StepperComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-stepper>\n      <cdk-step> <p>This is any content of \"Step 1\"</p> </cdk-step>\n      <cdk-step> <p>This is any content of \"Step 2\"</p> </cdk-step>\n    </pm-stepper>\n  `\n})"
             },
             {
                 "name": "ThumbnailTable",
@@ -4633,7 +4633,7 @@
                     "subtype": "variable",
                     "file": "projects/lib/src/services/command-palette/injection.ts",
                     "type": "CommandPaletteConfig",
-                    "defaultValue": "{\n  theme: 'sla'\n}"
+                    "defaultValue": "{\n  hotkeys: ['meta+k', 'ctrl+k']\n}"
                 }
             ],
             "projects/lib/src/services/command-palette/command-palette.module.ts": [
@@ -4670,7 +4670,7 @@
                     "subtype": "variable",
                     "file": "projects/lib/src/services/color-theme/color-theme.service.ts",
                     "type": "object",
-                    "defaultValue": "{\"bg-default\":\"#F3F4F6\",\"bg-default-rgb\":\"243,244,246\",\"bg-pale\":\"#f5f5f5\",\"bg-pale-rgb\":\"245,245,245\",\"color-font-default\":\"#5B5F67\",\"color-font-default-rgb\":\"91,95,103\",\"color-gray-light\":\"#EEEEEE\",\"color-gray-light-rgb\":\"238,238,238\",\"color-gray-medium\":\"#CCCCCC\",\"color-gray-medium-rgb\":\"204,204,204\",\"color-gray-dark\":\"#9A9A9A\",\"color-gray-dark-rgb\":\"154,154,154\",\"color-gray-darker\":\"#505050\",\"color-gray-darker-rgb\":\"80,80,80\",\"color-primary\":\"#efa76c\",\"color-primary-rgb\":\"239,167,108\",\"color-primary-pale\":\"#e7a874\",\"color-primary-pale-rgb\":\"230.85,167.80878,116.15\",\"color-primary-states\":\"#f4c39a\",\"color-primary-states-rgb\":\"244.00613,194.53374,153.99387\",\"color-primary-sat\":\"#ffa55c\",\"color-primary-sat-rgb\":\"255,165.41221,92\",\"color-secondary\":\"#6F5897\",\"color-secondary-rgb\":\"111,88,151\",\"color-secondary-pale\":\"#72648b\",\"color-secondary-pale-rgb\":\"114.2246,99.95,139.05\",\"color-secondary-states\":\"#8974ae\",\"color-secondary-states-rgb\":\"137.17573,116.00418,173.99582\",\"color-secondary-sat\":\"#6534bb\",\"color-secondary-sat-rgb\":\"101.32619,52.15,186.85\",\"color-success\":\"#6bd098\",\"color-success-rgb\":\"107,208,152\",\"color-success-pale\":\"#75c699\",\"color-success-pale-rgb\":\"116.75,198.25,153.06188\",\"color-success-states\":\"#92dcb3\",\"color-success-states-rgb\":\"145.70769,220.29231,178.93846\",\"color-success-sat\":\"#4eed95\",\"color-success-sat-rgb\":\"77.75,237.25,148.81436\",\"color-info\":\"#51bcda\",\"color-info-rgb\":\"81,188,218\",\"color-info-pale\":\"#5cb6cf\",\"color-info-pale-rgb\":\"91.55,182.07044,207.45\",\"color-info-states\":\"#7bcce3\",\"color-info-states-rgb\":\"123.05687,204.19431,226.94313\",\"color-info-sat\":\"#31cefa\",\"color-info-sat-rgb\":\"49.35,205.78869,249.65\",\"color-warning\":\"#fbc658\",\"color-warning-rgb\":\"251,198,88\",\"color-warning-pale\":\"#f2c361\",\"color-warning-pale-rgb\":\"242.45,195.01012,96.55\",\"color-warning-states\":\"#fcd78a\",\"color-warning-states-rgb\":\"252.19298,215,137.80702\",\"color-warning-sat\":\"#ffc754\",\"color-warning-sat-rgb\":\"255,199.39877,84\",\"color-danger\":\"#ef8157\",\"color-danger-rgb\":\"239,129,87\",\"color-danger-pale\":\"#e68560\",\"color-danger-pale-rgb\":\"229.8,133.11579,96.2\",\"color-danger-states\":\"#f3a486\",\"color-danger-states-rgb\":\"243.43478,163.92391,133.56522\",\"color-danger-sat\":\"#ff7a47\",\"color-danger-sat-rgb\":\"255,121.84211,71\",\"color-light\":\"#eff3f8\",\"color-light-rgb\":\"239,243,248\",\"color-light-pale\":\"#f0f3f7\",\"color-light-pale-rgb\":\"240.15,243.12778,246.85\",\"color-light-states\":\"white\",\"color-light-states-rgb\":\"255,255,255\",\"color-light-sat\":\"#ecf3fb\",\"color-light-sat-rgb\":\"235.55,242.61667,251.45\",\"color-default\":\"#6F5897\",\"color-default-rgb\":\"111,88,151\",\"color-default-pale\":\"#72648b\",\"color-default-pale-rgb\":\"114.2246,99.95,139.05\",\"color-default-states\":\"#8974ae\",\"color-default-states-rgb\":\"137.17573,116.00418,173.99582\",\"color-default-sat\":\"#6534bb\",\"color-default-sat-rgb\":\"101.32619,52.15,186.85\",\"border-radius-xxl\":\"50px\",\"border-radius-xl\":\"30px\",\"border-radius-lg\":\"20px\",\"border-radius-md\":\"10px\",\"border-radius-sm\":\"5px\",\"border-radius-default\":\"10px\",\"border-width-sm\":\"1px\",\"border-width-md\":\"2px\",\"border-width-lg\":\"3px\",\"border-width-xl\":\"4px\",\"border-width-default\":\"1px\",\"bg-disabled\":\"rgba(0,0,0,0.3)\",\"disabled-opacity\":\"0.4\",\"navbar-height\":\"64px\",\"navbar-misc-bg\":\"#9d6feb\",\"sidebar-width\":\"250px\",\"sidebar-mini-width\":\"58px\",\"general-content-width\":\"1100px\",\"gradient-default-top\":\"linear-gradient(to top,#7873ed,#9765e1)\",\"gradient-default-right\":\"linear-gradient(to right,#7873ed,#9765e1)\",\"gradient-default-bottom\":\"linear-gradient(to bottom,#7873ed,#9765e1)\",\"gradient-default-left\":\"linear-gradient(to left,#7873ed,#9765e1)\",\"gradient-default\":\"linear-gradient(to left,#7873ed,#9765e1)\"}"
+                    "defaultValue": "{\n  'color-primary': '#455363',\n  'color-default': '#455363',\n  'background-color': '#1f2935',\n  'text-color': '#fff'\n}"
                 },
                 {
                     "name": "defaultTheme",
@@ -4678,7 +4678,7 @@
                     "subtype": "variable",
                     "file": "projects/lib/src/services/color-theme/color-theme.service.ts",
                     "type": "object",
-                    "defaultValue": "{\"bg-default\":\"#F3F4F6\",\"bg-default-rgb\":\"243,244,246\",\"bg-pale\":\"#f5f5f5\",\"bg-pale-rgb\":\"245,245,245\",\"color-font-default\":\"#5B5F67\",\"color-font-default-rgb\":\"91,95,103\",\"color-gray-light\":\"#EEEEEE\",\"color-gray-light-rgb\":\"238,238,238\",\"color-gray-medium\":\"#CCCCCC\",\"color-gray-medium-rgb\":\"204,204,204\",\"color-gray-dark\":\"#9A9A9A\",\"color-gray-dark-rgb\":\"154,154,154\",\"color-gray-darker\":\"#505050\",\"color-gray-darker-rgb\":\"80,80,80\",\"color-primary\":\"#efa76c\",\"color-primary-rgb\":\"239,167,108\",\"color-primary-pale\":\"#e7a874\",\"color-primary-pale-rgb\":\"230.85,167.80878,116.15\",\"color-primary-states\":\"#ea8b3e\",\"color-primary-states-rgb\":\"233.99387,139.46626,62.00613\",\"color-primary-sat\":\"#ffa55c\",\"color-primary-sat-rgb\":\"255,165.41221,92\",\"color-secondary\":\"#6F5897\",\"color-secondary-rgb\":\"111,88,151\",\"color-secondary-pale\":\"#72648b\",\"color-secondary-pale-rgb\":\"114.2246,99.95,139.05\",\"color-secondary-states\":\"#574577\",\"color-secondary-states-rgb\":\"87.31381,69.22176,118.77824\",\"color-secondary-sat\":\"#6534bb\",\"color-secondary-sat-rgb\":\"101.32619,52.15,186.85\",\"color-success\":\"#6bd098\",\"color-success-rgb\":\"107,208,152\",\"color-success-pale\":\"#75c699\",\"color-success-pale-rgb\":\"116.75,198.25,153.06188\",\"color-success-states\":\"#44c47d\",\"color-success-states-rgb\":\"68.29231,195.70769,125.06154\",\"color-success-sat\":\"#4eed95\",\"color-success-sat-rgb\":\"77.75,237.25,148.81436\",\"color-info\":\"#51bcda\",\"color-info-rgb\":\"81,188,218\",\"color-info-pale\":\"#5cb6cf\",\"color-info-pale-rgb\":\"91.55,182.07044,207.45\",\"color-info-states\":\"#2ba9cd\",\"color-info-states-rgb\":\"43.48815,169.25118,204.51185\",\"color-info-sat\":\"#31cefa\",\"color-info-sat-rgb\":\"49.35,205.78869,249.65\",\"color-warning\":\"#fbc658\",\"color-warning-rgb\":\"251,198,88\",\"color-warning-pale\":\"#f2c361\",\"color-warning-pale-rgb\":\"242.45,195.01012,96.55\",\"color-warning-states\":\"#fab526\",\"color-warning-states-rgb\":\"249.80702,181,38.19298\",\"color-warning-sat\":\"#ffc754\",\"color-warning-sat-rgb\":\"255,199.39877,84\",\"color-danger\":\"#ef8157\",\"color-danger-rgb\":\"239,129,87\",\"color-danger-pale\":\"#e68560\",\"color-danger-pale-rgb\":\"229.8,133.11579,96.2\",\"color-danger-states\":\"#eb5e28\",\"color-danger-states-rgb\":\"234.56522,94.07609,40.43478\",\"color-danger-sat\":\"#ff7a47\",\"color-danger-sat-rgb\":\"255,121.84211,71\",\"color-light\":\"#eff3f8\",\"color-light-rgb\":\"239,243,248\",\"color-light-pale\":\"#f0f3f7\",\"color-light-pale-rgb\":\"240.15,243.12778,246.85\",\"color-light-states\":\"#ccd8e8\",\"color-light-states-rgb\":\"203.52174,216.3913,232.47826\",\"color-light-sat\":\"#ecf3fb\",\"color-light-sat-rgb\":\"235.55,242.61667,251.45\",\"color-default\":\"#6F5897\",\"color-default-rgb\":\"111,88,151\",\"color-default-pale\":\"#72648b\",\"color-default-pale-rgb\":\"114.2246,99.95,139.05\",\"color-default-states\":\"#574577\",\"color-default-states-rgb\":\"87.31381,69.22176,118.77824\",\"color-default-sat\":\"#6534bb\",\"color-default-sat-rgb\":\"101.32619,52.15,186.85\",\"border-radius-xxl\":\"50px\",\"border-radius-xl\":\"30px\",\"border-radius-lg\":\"20px\",\"border-radius-md\":\"10px\",\"border-radius-sm\":\"5px\",\"border-radius-default\":\"10px\",\"border-width-sm\":\"1px\",\"border-width-md\":\"2px\",\"border-width-lg\":\"3px\",\"border-width-xl\":\"4px\",\"border-width-default\":\"1px\",\"bg-disabled\":\"rgba(0,0,0,0.3)\",\"disabled-opacity\":\"0.4\",\"navbar-height\":\"64px\",\"navbar-misc-bg\":\"#9d6feb\",\"sidebar-width\":\"250px\",\"sidebar-mini-width\":\"58px\",\"general-content-width\":\"1100px\",\"gradient-default-top\":\"linear-gradient(to top,#7873ed,#9765e1)\",\"gradient-default-right\":\"linear-gradient(to right,#7873ed,#9765e1)\",\"gradient-default-bottom\":\"linear-gradient(to bottom,#7873ed,#9765e1)\",\"gradient-default-left\":\"linear-gradient(to left,#7873ed,#9765e1)\",\"gradient-default\":\"linear-gradient(to left,#7873ed,#9765e1)\"}"
+                    "defaultValue": "{\n  'color-primary': '#455363',\n  'color-default': '#455363',\n  'background-color': '#1f2935',\n  'text-color': '#fff'\n}"
                 },
                 {
                     "name": "lightTheme",
@@ -4686,7 +4686,7 @@
                     "subtype": "variable",
                     "file": "projects/lib/src/services/color-theme/color-theme.service.ts",
                     "type": "object",
-                    "defaultValue": "{\"bg-default\":\"#F3F4F6\",\"bg-default-rgb\":\"243,244,246\",\"bg-pale\":\"#f5f5f5\",\"bg-pale-rgb\":\"245,245,245\",\"color-font-default\":\"#5B5F67\",\"color-font-default-rgb\":\"91,95,103\",\"color-gray-light\":\"#EEEEEE\",\"color-gray-light-rgb\":\"238,238,238\",\"color-gray-medium\":\"#CCCCCC\",\"color-gray-medium-rgb\":\"204,204,204\",\"color-gray-dark\":\"#9A9A9A\",\"color-gray-dark-rgb\":\"154,154,154\",\"color-gray-darker\":\"#505050\",\"color-gray-darker-rgb\":\"80,80,80\",\"color-primary\":\"#42ADB3\",\"color-primary-rgb\":\"66,173,179\",\"color-primary-pale\":\"#4ea2a7\",\"color-primary-pale-rgb\":\"78.25,162.05088,166.75\",\"color-primary-states\":\"#34898e\",\"color-primary-states-rgb\":\"52.26122,136.98776,141.73878\",\"color-primary-sat\":\"#1dced8\",\"color-primary-sat-rgb\":\"29.25,205.84735,215.75\",\"color-secondary\":\"#646F7E\",\"color-secondary-rgb\":\"100,111,126\",\"color-secondary-pale\":\"#6f7173\",\"color-secondary-pale-rgb\":\"111.3,112.73846,114.7\",\"color-secondary-states\":\"#4d5662\",\"color-secondary-states-rgb\":\"77.43363,85.95133,97.56637\",\"color-secondary-sat\":\"#426aa0\",\"color-secondary-sat-rgb\":\"66.1,105.78462,159.9\",\"color-success\":\"#6bd098\",\"color-success-rgb\":\"107,208,152\",\"color-success-pale\":\"#75c699\",\"color-success-pale-rgb\":\"116.75,198.25,153.06188\",\"color-success-states\":\"#44c47d\",\"color-success-states-rgb\":\"68.29231,195.70769,125.06154\",\"color-success-sat\":\"#4eed95\",\"color-success-sat-rgb\":\"77.75,237.25,148.81436\",\"color-info\":\"#51bcda\",\"color-info-rgb\":\"81,188,218\",\"color-info-pale\":\"#5cb6cf\",\"color-info-pale-rgb\":\"91.55,182.07044,207.45\",\"color-info-states\":\"#2ba9cd\",\"color-info-states-rgb\":\"43.48815,169.25118,204.51185\",\"color-info-sat\":\"#31cefa\",\"color-info-sat-rgb\":\"49.35,205.78869,249.65\",\"color-warning\":\"#fbc658\",\"color-warning-rgb\":\"251,198,88\",\"color-warning-pale\":\"#f2c361\",\"color-warning-pale-rgb\":\"242.45,195.01012,96.55\",\"color-warning-states\":\"#fab526\",\"color-warning-states-rgb\":\"249.80702,181,38.19298\",\"color-warning-sat\":\"#ffc754\",\"color-warning-sat-rgb\":\"255,199.39877,84\",\"color-danger\":\"#ef8157\",\"color-danger-rgb\":\"239,129,87\",\"color-danger-pale\":\"#e68560\",\"color-danger-pale-rgb\":\"229.8,133.11579,96.2\",\"color-danger-states\":\"#eb5e28\",\"color-danger-states-rgb\":\"234.56522,94.07609,40.43478\",\"color-danger-sat\":\"#ff7a47\",\"color-danger-sat-rgb\":\"255,121.84211,71\",\"color-light\":\"#eff3f8\",\"color-light-rgb\":\"239,243,248\",\"color-light-pale\":\"#f0f3f7\",\"color-light-pale-rgb\":\"240.15,243.12778,246.85\",\"color-light-states\":\"#ccd8e8\",\"color-light-states-rgb\":\"203.52174,216.3913,232.47826\",\"color-light-sat\":\"#ecf3fb\",\"color-light-sat-rgb\":\"235.55,242.61667,251.45\",\"color-default\":\"#646F7E\",\"color-default-rgb\":\"100,111,126\",\"color-default-pale\":\"#6f7173\",\"color-default-pale-rgb\":\"111.3,112.73846,114.7\",\"color-default-states\":\"#4d5662\",\"color-default-states-rgb\":\"77.43363,85.95133,97.56637\",\"color-default-sat\":\"#426aa0\",\"color-default-sat-rgb\":\"66.1,105.78462,159.9\",\"border-radius-xxl\":\"50px\",\"border-radius-xl\":\"30px\",\"border-radius-lg\":\"20px\",\"border-radius-md\":\"10px\",\"border-radius-sm\":\"5px\",\"border-radius-default\":\"10px\",\"border-width-sm\":\"1px\",\"border-width-md\":\"2px\",\"border-width-lg\":\"3px\",\"border-width-xl\":\"4px\",\"border-width-default\":\"1px\",\"bg-disabled\":\"rgba(0,0,0,0.3)\",\"disabled-opacity\":\"0.4\",\"navbar-height\":\"64px\",\"navbar-misc-bg\":\"#9d6feb\",\"sidebar-width\":\"250px\",\"sidebar-mini-width\":\"58px\",\"general-content-width\":\"1100px\",\"gradient-default-top\":\"linear-gradient(to top,#7873ed,#9765e1)\",\"gradient-default-right\":\"linear-gradient(to right,#7873ed,#9765e1)\",\"gradient-default-bottom\":\"linear-gradient(to bottom,#7873ed,#9765e1)\",\"gradient-default-left\":\"linear-gradient(to left,#7873ed,#9765e1)\",\"gradient-default\":\"linear-gradient(to left,#7873ed,#9765e1)\"}"
+                    "defaultValue": "{\n  'color-primary': '#fff',\n  'color-default': '#fff',\n  'background-color': '#e5e5e5',\n  'text-color': '#2d2d2d'\n}"
                 }
             ],
             "stories/default.ts": [
@@ -4835,32 +4835,6 @@
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-combo-box\n      [items]=\"items\"\n      [disabled]=\"disabled\"\n      [selectedItem]=\"selectedItem\"\n    >\n    </pm-combo-box>\n  `\n})"
                 }
             ],
-            "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts",
-                    "type": "object",
-                    "defaultValue": "{\n  disabled: false,\n  text: ''\n}"
-                },
-                {
-                    "name": "DefaultCopyContentInput",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts",
-                    "type": "Story<CopyContentInputComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-copy-content-input\n      [text]=\"text\"\n      [disabled]=\"disabled\"\n    >\n      Conteúdo\n    </pm-copy-content-input>\n  `\n})"
-                }
-            ],
             "projects/lib/src/components/inputs/dropdown-actions/dropdown-actions.stories.ts": [
                 {
                     "name": "defaultArgs",
@@ -4885,66 +4859,6 @@
                     "file": "projects/lib/src/components/inputs/dropdown-actions/dropdown-actions.stories.ts",
                     "type": "Story<DropdownActionsComponent>",
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-dropdown-actions\n      [actions]=\"actions\"\n    >\n    </pm-dropdown-actions>\n  `\n})"
-                }
-            ],
-            "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts",
-                    "type": "object",
-                    "defaultValue": "{\n  orientation: OrientationEnum.Y,\n  values: [],\n  disabled: false,\n  selectedValue: undefined\n}"
-                },
-                {
-                    "name": "DefaultRadioButton",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "HorizontalRadioButton",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts",
-                    "type": "Story<RadioButtonComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-radio-button\n      [orientation]=\"orientation\"\n      [values]=\"values\"\n      [selectedValue]=\"selectedValue\"\n      [disabled]=\"disabled\"\n    >\n    </pm-radio-button>\n  `\n})"
-                }
-            ],
-            "projects/lib/src/components/navigation/stepper/stepper.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/navigation/stepper/stepper.stories.ts",
-                    "type": "object",
-                    "defaultValue": "{}"
-                },
-                {
-                    "name": "DefaultStepper",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/navigation/stepper/stepper.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/navigation/stepper/stepper.stories.ts",
-                    "type": "Story<StepperComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-stepper>\n      <cdk-step> <p>This is any content of \"Step 1\"</p> </cdk-step>\n      <cdk-step> <p>This is any content of \"Step 2\"</p> </cdk-step>\n    </pm-stepper>\n  `\n})"
                 }
             ],
             "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts": [
@@ -5021,6 +4935,92 @@
                     "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
                     "type": "Story<GridListComponent>",
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-grid-list\n      [items]=\"items\"\n      [displayStyle]=\"displayStyle\"\n      [gridHeaderReverse]=\"gridHeaderReverse\"\n      [bodyBackgroundColor]=\"bodyBackgroundColor\"\n      [actionTemplate]=\"undefined\"\n      [overflowGallery]=\"overflowGallery\"\n    >\n    </pm-grid-list>\n  `\n})"
+                }
+            ],
+            "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts",
+                    "type": "object",
+                    "defaultValue": "{\n  disabled: false,\n  text: ''\n}"
+                },
+                {
+                    "name": "DefaultCopyContentInput",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts",
+                    "type": "Story<CopyContentInputComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-copy-content-input\n      [text]=\"text\"\n      [disabled]=\"disabled\"\n    >\n      Conteúdo\n    </pm-copy-content-input>\n  `\n})"
+                }
+            ],
+            "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts",
+                    "type": "object",
+                    "defaultValue": "{\n  orientation: OrientationEnum.Y,\n  values: [],\n  disabled: false,\n  selectedValue: undefined\n}"
+                },
+                {
+                    "name": "DefaultRadioButton",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "HorizontalRadioButton",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts",
+                    "type": "Story<RadioButtonComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-radio-button\n      [orientation]=\"orientation\"\n      [values]=\"values\"\n      [selectedValue]=\"selectedValue\"\n      [disabled]=\"disabled\"\n    >\n    </pm-radio-button>\n  `\n})"
+                }
+            ],
+            "projects/lib/src/components/navigation/stepper/stepper.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/navigation/stepper/stepper.stories.ts",
+                    "type": "object",
+                    "defaultValue": "{}"
+                },
+                {
+                    "name": "DefaultStepper",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/navigation/stepper/stepper.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/navigation/stepper/stepper.stories.ts",
+                    "type": "Story<StepperComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-stepper>\n      <cdk-step> <p>This is any content of \"Step 1\"</p> </cdk-step>\n      <cdk-step> <p>This is any content of \"Step 2\"</p> </cdk-step>\n    </pm-stepper>\n  `\n})"
                 }
             ],
             "projects/lib/src/services/command-palette/command-palette.stories.ts": [

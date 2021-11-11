@@ -10,11 +10,17 @@ export default {
 export const Template: Story<TriggerButtonComponent> = (args) => ({
   props: args,
   template: `
-    <pm-palette-trigger-button>
+    <pm-palette-trigger-button
+        [label]="label"
+        [iconClass]="iconClass"
+    >
     </pm-palette-trigger-button>
   `
 });
 
 export const DefaultModal = Template.bind({});
 DefaultModal.args = {
+  label: undefined,
+  iconClass: undefined
+  // iconClass: 'uil uil-xl uil-apps'
 };
