@@ -193,6 +193,46 @@
             "indexSignatures": [],
             "kind": 150,
             "methods": []
+        },
+        {
+            "name": "PaletteEntry",
+            "id": "interface-PaletteEntry-77b2e8c118dac98bf4664b25e3139c6b",
+            "file": "projects/lib/src/services/command-palette/dialog/dialog.component.ts",
+            "type": "interface",
+            "sourceCode": "import {Component, ElementRef, AfterViewInit, ViewChild, HostListener, Renderer2, OnDestroy} from '@angular/core';\nimport {ComponentInjectorService} from '../component-injector.service';\nimport {Observable} from 'rxjs';\nimport _ from 'lodash';\nimport {DOCUMENT} from '@angular/common';\n\nexport interface PaletteEntry {\n  label: string;\n  id: string;\n  entries?: PaletteEntry[]; // deve obrigatoriamente ter APENAS ou 'entries' ou 'action'\n  action?: () => void | Observable<any>;\n}\n\n@Component({\n  selector: 'pm-command-palette-dialog',\n  templateUrl: './dialog.component.html',\n  styleUrls: ['./dialog.component.scss']\n})\nexport class DialogComponent implements AfterViewInit, OnDestroy {\n\n  @ViewChild('rootPanel', {static: true}) rootPanelComponent: ElementRef;\n  @ViewChild('searchResultContainer', {static: true}) searchResultContainer: ElementRef;\n  public searchString = '';\n  public placeholderString = 'Digite sua busca...';\n  public searchIdTree = []; // utilizado para navegar entre os ids da lista de entradas\n  public itself: any;\n  private unlistener: () => void;\n\n  public paletteEntries: PaletteEntry[] = [\n    {\n      label: 'Pages',\n      id: 'pages',\n      entries: [\n        {\n          label: 'Dashboard',\n          id: 'dashboard',\n          action: () => {\n            console.log('dashboard');\n          }\n        },\n        {\n          label: 'Notifications',\n          id: 'notifications',\n          action: () => {\n            console.log('notifications');\n          }\n        }\n      ]\n    },\n    {\n      label: 'Preferences',\n      id: 'preferences',\n      entries: [\n        {\n          label: 'Change Theme',\n          id: 'theme',\n          entries: [\n            {\n              label: 'Light',\n              id: 'light',\n              action: () => {\n                console.log('LIGHT THEME');\n              }\n            },\n            {\n              label: 'Dark',\n              id: 'dark',\n              action: () => {\n                console.log('DARK THEME');\n              }\n            }\n          ]\n        }\n      ]\n    }\n  ];\n  public currentPaletteEntries: PaletteEntry[];\n\n  constructor(\n    private componentInjectorService: ComponentInjectorService,\n    private renderer2: Renderer2\n  ) {\n    document.documentElement.style.setProperty(`overflow-x`, `hidden`, 'important');\n    this.currentPaletteEntries = [...this.paletteEntries];\n  }\n\n  public ngAfterViewInit(): void {\n    this.focusSearchInput();\n    this.unlistener = this.renderer2.listen('window', 'focusin', event => {\n      if (!(\n        event.target === this.rootPanelComponent.nativeElement\n        || this.rootPanelComponent.nativeElement.contains(event.target)\n      )) {\n        this.destroyItself();\n      }\n    });\n  }\n\n  private focusSearchInput(): void {\n    setTimeout(() => {\n      this.rootPanelComponent.nativeElement.children[0].focus();\n    }, 50);\n  }\n\n  public focusNext(): void {\n    const currentFocus = document.activeElement;\n    const resultEntries: Element[] = Array.from(this.searchResultContainer.nativeElement.getElementsByClassName('result-entry cursor-pointer'));\n    const currentFocusIndex = -1; // resultEntries.findIndex(item => item === currentFocus);\n    if (!!currentFocusIndex) {\n      setTimeout(() => {\n        // resultEntries[currentFocusIndex + 1].focus();\n      }, 50);\n    } else {\n      this.focusSearchInput();\n    }\n  }\n\n  public destroyItself(): void {\n    this.componentInjectorService.removeComponentFromBody(this.itself);\n  }\n\n  public ngOnDestroy(): void {\n    document.documentElement.style.removeProperty(`overflow-x`);\n  }\n\n  public searchAction(searchValue: string): void {\n    const entriesToFlat: (paletteEntries: PaletteEntry[]) => string[] = (paletteEntries: PaletteEntry[]) => {\n      const idTreeArray = [];\n\n      const isSearchValueInEntry: (paletteEntry: PaletteEntry) => boolean = (paletteEntry: PaletteEntry) => {\n        return true;\n      };\n\n      const entryToFlat: (paletteEntry: PaletteEntry, idPrefix: string) => void = (paletteEntry: PaletteEntry, idPrefix: string = '') => {\n        idPrefix = !!idPrefix ? `${idPrefix}` : `${paletteEntry.id}`;\n        if (this.hasChildEntries(paletteEntry)) {\n          idTreeArray.push(`${idPrefix}`);\n          for (let i = 0; i < paletteEntry.entries.length; i++) {\n            const entry = paletteEntry.entries[i];\n            const idSuffix = `.entries[${i}]`;\n            entryToFlat(entry, `${idPrefix}${idSuffix}`);\n          }\n        } else {\n          if (isSearchValueInEntry(paletteEntry)) {\n            idTreeArray.push(`${idPrefix}`);\n          }\n        }\n      };\n\n      const resultEntry: PaletteEntry = {\n        label: 'Results',\n        id: 'results',\n        entries: paletteEntries\n      };\n\n      entryToFlat(resultEntry, '');\n      return idTreeArray.slice(1);\n    };\n\n    const flatEntriesToEntries: (flatEntries: string[], entriesToCheck: PaletteEntry[]) => PaletteEntry[] = (flatEntries: string[], entriesToCheck: PaletteEntry[]) => {\n      const resultObjToCheck = {results: {entries: [...entriesToCheck]}};\n      const entries: PaletteEntry[] = [];\n      for (const flatEntry of flatEntries) {\n        const entryToAdd = _.get(resultObjToCheck, flatEntry);\n        entries.push(entryToAdd);\n      }\n      console.log(entries);\n      return entries;\n    };\n\n    if (!!searchValue) {\n      this.currentPaletteEntries = [{\n        label: 'Results',\n        id: 'results',\n        entries: flatEntriesToEntries(entriesToFlat(this.currentPaletteEntries), this.currentPaletteEntries)\n      }];\n    } else {\n      this.searchIdTree = [];\n      this.currentPaletteEntries = [...this.paletteEntries];\n    }\n  }\n\n  public hasChildEntries(paletteEntry: PaletteEntry): boolean {\n    return paletteEntry?.entries && paletteEntry.entries.length > 0;\n  }\n\n  /**\n   * caso tenha child entries, atualiza o dialog, senão executa a ação da entry.\n   */\n  public paletteEntryAction(paletteEntry: PaletteEntry): void {\n    if (this.hasChildEntries(paletteEntry)) {\n      this.currentPaletteEntries = [paletteEntry];\n      this.searchString += `${paletteEntry.id} > `;\n    } else {\n      paletteEntry.action();\n    }\n  }\n\n}\n",
+            "properties": [
+                {
+                    "name": "action",
+                    "type": "function",
+                    "optional": true,
+                    "description": "",
+                    "line": 11
+                },
+                {
+                    "name": "entries",
+                    "type": "PaletteEntry[]",
+                    "optional": true,
+                    "description": "",
+                    "line": 10
+                },
+                {
+                    "name": "id",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 9
+                },
+                {
+                    "name": "label",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 8
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 150,
+            "methods": []
         }
     ],
     "injectables": [
@@ -1024,7 +1064,7 @@
         },
         {
             "name": "DialogComponent",
-            "id": "component-DialogComponent-7707b0fcc1ee06a0d2738e1fa2aee913",
+            "id": "component-DialogComponent-77b2e8c118dac98bf4664b25e3139c6b",
             "file": "projects/lib/src/services/command-palette/dialog/dialog.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -1044,11 +1084,43 @@
             "outputsClass": [],
             "propertiesClass": [
                 {
+                    "name": "currentPaletteEntries",
+                    "type": "PaletteEntry[]",
+                    "optional": false,
+                    "description": "",
+                    "line": 77,
+                    "modifierKind": [
+                        114
+                    ]
+                },
+                {
                     "name": "itself",
                     "type": "any",
                     "optional": false,
                     "description": "",
-                    "line": 12,
+                    "line": 26,
+                    "modifierKind": [
+                        114
+                    ]
+                },
+                {
+                    "name": "paletteEntries",
+                    "defaultValue": "[\n    {\n      label: 'Pages',\n      id: 'pages',\n      entries: [\n        {\n          label: 'Dashboard',\n          id: 'dashboard',\n          action: () => {\n            console.log('dashboard');\n          }\n        },\n        {\n          label: 'Notifications',\n          id: 'notifications',\n          action: () => {\n            console.log('notifications');\n          }\n        }\n      ]\n    },\n    {\n      label: 'Preferences',\n      id: 'preferences',\n      entries: [\n        {\n          label: 'Change Theme',\n          id: 'theme',\n          entries: [\n            {\n              label: 'Light',\n              id: 'light',\n              action: () => {\n                console.log('LIGHT THEME');\n              }\n            },\n            {\n              label: 'Dark',\n              id: 'dark',\n              action: () => {\n                console.log('DARK THEME');\n              }\n            }\n          ]\n        }\n      ]\n    }\n  ]",
+                    "type": "PaletteEntry[]",
+                    "optional": false,
+                    "description": "",
+                    "line": 29,
+                    "modifierKind": [
+                        114
+                    ]
+                },
+                {
+                    "name": "placeholderString",
+                    "defaultValue": "'Digite sua busca...'",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 24,
                     "modifierKind": [
                         114
                     ]
@@ -1058,7 +1130,7 @@
                     "type": "ElementRef",
                     "optional": false,
                     "description": "",
-                    "line": 11,
+                    "line": 21,
                     "decorators": [
                         {
                             "name": "ViewChild",
@@ -1067,11 +1139,46 @@
                     ]
                 },
                 {
+                    "name": "searchIdTree",
+                    "defaultValue": "[]",
+                    "type": "[]",
+                    "optional": false,
+                    "description": "",
+                    "line": 25,
+                    "modifierKind": [
+                        114
+                    ]
+                },
+                {
+                    "name": "searchResultContainer",
+                    "type": "ElementRef",
+                    "optional": false,
+                    "description": "",
+                    "line": 22,
+                    "decorators": [
+                        {
+                            "name": "ViewChild",
+                            "stringifiedArguments": "'searchResultContainer', {static: true}"
+                        }
+                    ]
+                },
+                {
+                    "name": "searchString",
+                    "defaultValue": "''",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 23,
+                    "modifierKind": [
+                        114
+                    ]
+                },
+                {
                     "name": "unlistener",
                     "type": "function",
                     "optional": false,
                     "description": "",
-                    "line": 13,
+                    "line": 27,
                     "modifierKind": [
                         112
                     ]
@@ -1079,12 +1186,70 @@
             ],
             "methodsClass": [
                 {
+                    "name": "destroyItself",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 118,
+                    "modifierKind": [
+                        114
+                    ]
+                },
+                {
+                    "name": "focusNext",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 105,
+                    "modifierKind": [
+                        114
+                    ]
+                },
+                {
+                    "name": "focusSearchInput",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 99,
+                    "modifierKind": [
+                        112
+                    ]
+                },
+                {
+                    "name": "hasChildEntries",
+                    "args": [
+                        {
+                            "name": "paletteEntry",
+                            "type": "PaletteEntry"
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "boolean",
+                    "typeParameters": [],
+                    "line": 183,
+                    "modifierKind": [
+                        114
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "paletteEntry",
+                            "type": "PaletteEntry",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
                     "name": "ngAfterViewInit",
                     "args": [],
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 22,
+                    "line": 87,
                     "modifierKind": [
                         114
                     ]
@@ -1095,9 +1260,60 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 34,
+                    "line": 122,
                     "modifierKind": [
                         114
+                    ]
+                },
+                {
+                    "name": "paletteEntryAction",
+                    "args": [
+                        {
+                            "name": "paletteEntry",
+                            "type": "PaletteEntry"
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 190,
+                    "description": "<p>caso tenha child entries, atualiza o dialog, senão executa a ação da entry.</p>\n",
+                    "modifierKind": [
+                        114
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "paletteEntry",
+                            "type": "PaletteEntry",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "searchAction",
+                    "args": [
+                        {
+                            "name": "searchValue",
+                            "type": "string"
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 126,
+                    "modifierKind": [
+                        114
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "searchValue",
+                            "type": "string",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
                     ]
                 }
             ],
@@ -1106,11 +1322,11 @@
             "description": "",
             "rawdescription": "",
             "type": "component",
-            "sourceCode": "import {Component, ElementRef, AfterViewInit, ViewChild, HostListener, Renderer2, OnDestroy} from '@angular/core';\nimport {ComponentInjectorService} from '../component-injector.service';\n\n@Component({\n  selector: 'pm-command-palette-dialog',\n  templateUrl: './dialog.component.html',\n  styleUrls: ['./dialog.component.scss']\n})\nexport class DialogComponent implements AfterViewInit, OnDestroy {\n\n  @ViewChild('rootPanel', {static: true}) rootPanelComponent: ElementRef;\n  public itself: any;\n  private unlistener: () => void;\n\n  constructor(\n    private componentInjectorService: ComponentInjectorService,\n    private renderer2: Renderer2\n  ) {\n    document.documentElement.style.setProperty(`overflow-x`, `hidden`, 'important');\n  }\n\n  public ngAfterViewInit(): void {\n    this.rootPanelComponent.nativeElement.focus();\n    this.unlistener = this.renderer2.listen('window', 'focusin', event => {\n      if (!(\n        event.target === this.rootPanelComponent.nativeElement\n        || this.rootPanelComponent.nativeElement.contains(event.target)\n      )) {\n        this.componentInjectorService.removeComponentFromBody(this.itself);\n      }\n    });\n  }\n\n  public ngOnDestroy(): void {\n    document.documentElement.style.removeProperty(`overflow-x`);\n  }\n\n}\n",
+            "sourceCode": "import {Component, ElementRef, AfterViewInit, ViewChild, HostListener, Renderer2, OnDestroy} from '@angular/core';\nimport {ComponentInjectorService} from '../component-injector.service';\nimport {Observable} from 'rxjs';\nimport _ from 'lodash';\nimport {DOCUMENT} from '@angular/common';\n\nexport interface PaletteEntry {\n  label: string;\n  id: string;\n  entries?: PaletteEntry[]; // deve obrigatoriamente ter APENAS ou 'entries' ou 'action'\n  action?: () => void | Observable<any>;\n}\n\n@Component({\n  selector: 'pm-command-palette-dialog',\n  templateUrl: './dialog.component.html',\n  styleUrls: ['./dialog.component.scss']\n})\nexport class DialogComponent implements AfterViewInit, OnDestroy {\n\n  @ViewChild('rootPanel', {static: true}) rootPanelComponent: ElementRef;\n  @ViewChild('searchResultContainer', {static: true}) searchResultContainer: ElementRef;\n  public searchString = '';\n  public placeholderString = 'Digite sua busca...';\n  public searchIdTree = []; // utilizado para navegar entre os ids da lista de entradas\n  public itself: any;\n  private unlistener: () => void;\n\n  public paletteEntries: PaletteEntry[] = [\n    {\n      label: 'Pages',\n      id: 'pages',\n      entries: [\n        {\n          label: 'Dashboard',\n          id: 'dashboard',\n          action: () => {\n            console.log('dashboard');\n          }\n        },\n        {\n          label: 'Notifications',\n          id: 'notifications',\n          action: () => {\n            console.log('notifications');\n          }\n        }\n      ]\n    },\n    {\n      label: 'Preferences',\n      id: 'preferences',\n      entries: [\n        {\n          label: 'Change Theme',\n          id: 'theme',\n          entries: [\n            {\n              label: 'Light',\n              id: 'light',\n              action: () => {\n                console.log('LIGHT THEME');\n              }\n            },\n            {\n              label: 'Dark',\n              id: 'dark',\n              action: () => {\n                console.log('DARK THEME');\n              }\n            }\n          ]\n        }\n      ]\n    }\n  ];\n  public currentPaletteEntries: PaletteEntry[];\n\n  constructor(\n    private componentInjectorService: ComponentInjectorService,\n    private renderer2: Renderer2\n  ) {\n    document.documentElement.style.setProperty(`overflow-x`, `hidden`, 'important');\n    this.currentPaletteEntries = [...this.paletteEntries];\n  }\n\n  public ngAfterViewInit(): void {\n    this.focusSearchInput();\n    this.unlistener = this.renderer2.listen('window', 'focusin', event => {\n      if (!(\n        event.target === this.rootPanelComponent.nativeElement\n        || this.rootPanelComponent.nativeElement.contains(event.target)\n      )) {\n        this.destroyItself();\n      }\n    });\n  }\n\n  private focusSearchInput(): void {\n    setTimeout(() => {\n      this.rootPanelComponent.nativeElement.children[0].focus();\n    }, 50);\n  }\n\n  public focusNext(): void {\n    const currentFocus = document.activeElement;\n    const resultEntries: Element[] = Array.from(this.searchResultContainer.nativeElement.getElementsByClassName('result-entry cursor-pointer'));\n    const currentFocusIndex = -1; // resultEntries.findIndex(item => item === currentFocus);\n    if (!!currentFocusIndex) {\n      setTimeout(() => {\n        // resultEntries[currentFocusIndex + 1].focus();\n      }, 50);\n    } else {\n      this.focusSearchInput();\n    }\n  }\n\n  public destroyItself(): void {\n    this.componentInjectorService.removeComponentFromBody(this.itself);\n  }\n\n  public ngOnDestroy(): void {\n    document.documentElement.style.removeProperty(`overflow-x`);\n  }\n\n  public searchAction(searchValue: string): void {\n    const entriesToFlat: (paletteEntries: PaletteEntry[]) => string[] = (paletteEntries: PaletteEntry[]) => {\n      const idTreeArray = [];\n\n      const isSearchValueInEntry: (paletteEntry: PaletteEntry) => boolean = (paletteEntry: PaletteEntry) => {\n        return true;\n      };\n\n      const entryToFlat: (paletteEntry: PaletteEntry, idPrefix: string) => void = (paletteEntry: PaletteEntry, idPrefix: string = '') => {\n        idPrefix = !!idPrefix ? `${idPrefix}` : `${paletteEntry.id}`;\n        if (this.hasChildEntries(paletteEntry)) {\n          idTreeArray.push(`${idPrefix}`);\n          for (let i = 0; i < paletteEntry.entries.length; i++) {\n            const entry = paletteEntry.entries[i];\n            const idSuffix = `.entries[${i}]`;\n            entryToFlat(entry, `${idPrefix}${idSuffix}`);\n          }\n        } else {\n          if (isSearchValueInEntry(paletteEntry)) {\n            idTreeArray.push(`${idPrefix}`);\n          }\n        }\n      };\n\n      const resultEntry: PaletteEntry = {\n        label: 'Results',\n        id: 'results',\n        entries: paletteEntries\n      };\n\n      entryToFlat(resultEntry, '');\n      return idTreeArray.slice(1);\n    };\n\n    const flatEntriesToEntries: (flatEntries: string[], entriesToCheck: PaletteEntry[]) => PaletteEntry[] = (flatEntries: string[], entriesToCheck: PaletteEntry[]) => {\n      const resultObjToCheck = {results: {entries: [...entriesToCheck]}};\n      const entries: PaletteEntry[] = [];\n      for (const flatEntry of flatEntries) {\n        const entryToAdd = _.get(resultObjToCheck, flatEntry);\n        entries.push(entryToAdd);\n      }\n      console.log(entries);\n      return entries;\n    };\n\n    if (!!searchValue) {\n      this.currentPaletteEntries = [{\n        label: 'Results',\n        id: 'results',\n        entries: flatEntriesToEntries(entriesToFlat(this.currentPaletteEntries), this.currentPaletteEntries)\n      }];\n    } else {\n      this.searchIdTree = [];\n      this.currentPaletteEntries = [...this.paletteEntries];\n    }\n  }\n\n  public hasChildEntries(paletteEntry: PaletteEntry): boolean {\n    return paletteEntry?.entries && paletteEntry.entries.length > 0;\n  }\n\n  /**\n   * caso tenha child entries, atualiza o dialog, senão executa a ação da entry.\n   */\n  public paletteEntryAction(paletteEntry: PaletteEntry): void {\n    if (this.hasChildEntries(paletteEntry)) {\n      this.currentPaletteEntries = [paletteEntry];\n      this.searchString += `${paletteEntry.id} > `;\n    } else {\n      paletteEntry.action();\n    }\n  }\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": "::ng-deep {\n  pm-command-palette-dialog {\n    * {\n      &:focus,\n      &:focus-visible {\n        outline: none;\n      }\n    }\n\n    position: fixed;\n    z-index: 9999;\n    overflow: hidden !important;\n    overflow-y: hidden !important;\n    overflow-x: hidden !important;\n\n    .backdrop {\n      display: flex;\n      flex-direction: column;\n      align-items: center;\n      width: 100vw;\n      height: 100vh;\n      background-color: rgba(0, 0, 0, 0.30);\n      padding: calc(1.5 * var(--navbar-height)) 1em;\n\n      overflow: hidden !important;\n      overflow-y: hidden !important;\n      overflow-x: hidden !important;\n    }\n\n    .palette-dialog {\n      width: calc(100% - 1em);\n      max-width: 900px;\n\n      input {\n        padding: 1em;\n        border: none;\n        border-bottom: 2px solid var(--color-gray-light);\n        border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;\n        color: var(--color-gray-darker);\n      }\n    }\n  }\n}\n",
+                    "data": "::ng-deep {\n  pm-command-palette-dialog {\n    * {\n      &:focus,\n      &:focus-visible {\n        outline: none;\n      }\n    }\n\n    position: fixed;\n    z-index: 9999;\n    overflow: hidden !important;\n    overflow-y: hidden !important;\n    overflow-x: hidden !important;\n\n    .backdrop {\n      display: flex;\n      flex-direction: column;\n      align-items: center;\n      width: 100vw;\n      height: 100vh;\n      background-color: rgba(0, 0, 0, 0.30);\n      padding: calc(1.5 * var(--navbar-height)) 1em;\n\n      overflow: hidden !important;\n      overflow-y: hidden !important;\n      overflow-x: hidden !important;\n    }\n\n    .palette-dialog-container {\n      overflow: hidden;\n      border-radius: var(--border-radius-md);\n      width: calc(100% - 1em);\n      max-width: 900px;\n    }\n\n    .palette-dialog {\n      $side-padding: 12px;\n\n      overflow: auto;\n      border: none;\n\n      width: 100%;\n      height: 100%;\n      position: relative;\n\n      input {\n        padding: 1em;\n        border: none;\n        border-bottom: 2px solid var(--color-gray-light);\n        border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;\n        color: var(--color-gray-darker);\n        position: sticky;\n        top: 0;\n        left: 0;\n        width: 100%;\n      }\n\n      .search-result-container {\n        & > * {\n          h1, h2, h3, h4, h5, h6, p {\n            margin: 0;\n          }\n        }\n\n        .result-category {\n          & > {\n            h1, h2, h3, h4, h5, h6, p {\n              font-size: 0.9em;\n              padding: ($side-padding/2) $side-padding;\n            }\n          }\n          color: var(--color-gray-medium);\n        }\n\n        .result-entry {\n          font-size: 1em;\n          padding: $side-padding;\n          color: var(--color-gray-darker);\n\n          &:focus,\n          &:hover {\n            $border-size: 4px;\n            border-left: $border-size solid var(--color-default);\n            padding-left: calc(#{$side-padding} - #{$border-size});\n            background-color: var(--color-gray-light);\n          }\n\n\n          &:last-child {\n            margin-bottom: $side-padding;\n          }\n        }\n      }\n    }\n  }\n}\n",
                     "styleUrl": "./dialog.component.scss"
                 }
             ],
@@ -1128,7 +1344,7 @@
                         "type": "Renderer2"
                     }
                 ],
-                "line": 13,
+                "line": 77,
                 "jsdoctags": [
                     {
                         "name": "componentInjectorService",
@@ -1150,7 +1366,7 @@
                 "AfterViewInit",
                 "OnDestroy"
             ],
-            "templateData": "<div tabindex=\"0\" class=\"backdrop\">\n  <div #rootPanel tabindex=\"0\" class=\"form-control palette-dialog card-basic\" style=\"min-height: 300px;\">\n    <input type=\"text\" [attr.placeholder]=\"'Digite sua busca...'\" autofocus>\n  </div>\n</div>\n"
+            "templateData": "<div\n  tabindex=\"0\" class=\"backdrop\"\n  (keydown.esc)=\"destroyItself()\"\n  (keydown.arrowDown)=\"focusNext()\"\n>\n  <div class=\"palette-dialog-container\">\n  <div #rootPanel tabindex=\"0\" class=\"card-basic palette-dialog\">\n    <input\n      (input)=\"searchAction($event.target['value'])\"\n      [(ngModel)]=\"searchString\"\n      type=\"text\"\n      [attr.placeholder]=\"'Digite sua busca...'\"\n    >\n    <div #searchResultContainer class=\"search-result-container\">\n      <div *ngFor=\"let currentEntry of currentPaletteEntries\"\n           class=\"result-category\"\n      >\n      <p>{{currentEntry.label}}</p>\n      <div *ngFor=\"let childEntry of currentEntry.entries\"\n           (click)=\"paletteEntryAction(childEntry)\"\n           class=\"result-entry cursor-pointer\"\n      >\n        <p>{{childEntry.label}}{{hasChildEntries(childEntry) ? '...' : ''}}</p>\n      </div>\n    </div>\n  </div>\n  </div>\n</div>\n"
         },
         {
             "name": "DraggableListComponent",
@@ -3712,14 +3928,6 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/inputs/button/button.stories.ts",
-                "type": "object",
-                "defaultValue": "{\n  label: '',\n  type: MainColors.default,\n  busy: false,\n  busyText: '',\n  iconClass: '',\n  iconPosition: 'start',\n  outline: false,\n  disabled: false,\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "projects/lib/src/components/containers/expansion-panel/expansion-panel.stories.ts",
                 "type": "object",
                 "defaultValue": "{\n}"
@@ -3728,9 +3936,9 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
+                "file": "projects/lib/src/components/inputs/button/button.stories.ts",
                 "type": "object",
-                "defaultValue": "{\n  checked: false,\n  disabled: false,\n  selectedItem: undefined,\n}"
+                "defaultValue": "{\n  label: '',\n  type: MainColors.default,\n  busy: false,\n  busyText: '',\n  iconClass: '',\n  iconPosition: 'start',\n  outline: false,\n  disabled: false,\n}"
             },
             {
                 "name": "defaultArgs",
@@ -3739,6 +3947,14 @@
                 "file": "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts",
                 "type": "object",
                 "defaultValue": "{\n  items: [],\n  disabled: false,\n  selectedItem: undefined\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
+                "type": "object",
+                "defaultValue": "{\n  checked: false,\n  disabled: false,\n  selectedItem: undefined,\n}"
             },
             {
                 "name": "defaultArgs",
@@ -4103,14 +4319,6 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/inputs/button/button.stories.ts",
-                "type": "Story<ButtonComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-button\n        [label]=\"label\"\n        [type]=\"type\"\n        [busy]=\"busy\"\n        [busyText]=\"busyText\"\n        [iconClass]=\"iconClass\"\n        [iconPosition]=\"iconPosition\"\n        [outline]=\"outline\"\n        [disabled]=\"disabled\"\n    >\n        Button Content\n    </pm-button>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "projects/lib/src/components/containers/expansion-panel/expansion-panel.stories.ts",
                 "type": "Story<ExpansionPanelComponent>",
                 "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-expansion-panel\n    >\n        Conteúdo aqui\n    </pm-expansion-panel>\n  `\n})"
@@ -4119,9 +4327,9 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
-                "type": "Story<CheckboxComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-checkbox\n      [checked]=\"checked\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>\n  `\n})"
+                "file": "projects/lib/src/components/inputs/button/button.stories.ts",
+                "type": "Story<ButtonComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-button\n        [label]=\"label\"\n        [type]=\"type\"\n        [busy]=\"busy\"\n        [busyText]=\"busyText\"\n        [iconClass]=\"iconClass\"\n        [iconPosition]=\"iconPosition\"\n        [outline]=\"outline\"\n        [disabled]=\"disabled\"\n    >\n        Button Content\n    </pm-button>\n  `\n})"
             },
             {
                 "name": "Template",
@@ -4130,6 +4338,14 @@
                 "file": "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts",
                 "type": "Story<ComboBoxComponent>",
                 "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-combo-box\n      [items]=\"items\"\n      [disabled]=\"disabled\"\n      [selectedItem]=\"selectedItem\"\n    >\n    </pm-combo-box>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
+                "type": "Story<CheckboxComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-checkbox\n      [checked]=\"checked\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>\n  `\n})"
             },
             {
                 "name": "Template",
@@ -4804,40 +5020,6 @@
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-expansion-panel\n    >\n        Conteúdo aqui\n    </pm-expansion-panel>\n  `\n})"
                 }
             ],
-            "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
-                    "type": "object",
-                    "defaultValue": "{\n  checked: false,\n  disabled: false,\n  selectedItem: undefined,\n}"
-                },
-                {
-                    "name": "DefaultCheckbox",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "DisabledCheckbox",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
-                    "type": "Story<CheckboxComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-checkbox\n      [checked]=\"checked\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>\n  `\n})"
-                }
-            ],
             "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts": [
                 {
                     "name": "defaultArgs",
@@ -4870,6 +5052,40 @@
                     "file": "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts",
                     "type": "Story<ComboBoxComponent>",
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-combo-box\n      [items]=\"items\"\n      [disabled]=\"disabled\"\n      [selectedItem]=\"selectedItem\"\n    >\n    </pm-combo-box>\n  `\n})"
+                }
+            ],
+            "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
+                    "type": "object",
+                    "defaultValue": "{\n  checked: false,\n  disabled: false,\n  selectedItem: undefined,\n}"
+                },
+                {
+                    "name": "DefaultCheckbox",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "DisabledCheckbox",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
+                    "type": "Story<CheckboxComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-checkbox\n      [checked]=\"checked\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>\n  `\n})"
                 }
             ],
             "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts": [
@@ -6221,8 +6437,17 @@
                 "type": "component",
                 "linktype": "component",
                 "name": "DialogComponent",
+                "coveragePercent": 5,
+                "coverageCount": "1/19",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/lib/src/services/command-palette/dialog/dialog.component.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "PaletteEntry",
                 "coveragePercent": 0,
-                "coverageCount": "0/7",
+                "coverageCount": "0/5",
                 "status": "low"
             },
             {

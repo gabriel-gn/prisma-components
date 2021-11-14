@@ -1,23 +1,26 @@
-<div (keydown.esc)="destroyItself()" tabindex="0" class="backdrop">
+<div
+  tabindex="0" class="backdrop"
+  (keydown.esc)="destroyItself()"
+  (keydown.arrowDown)="focusNext()"
+>
   <div class="palette-dialog-container">
-  <div #rootPanel tabindex="0" class="palette-dialog card-basic">
+  <div #rootPanel tabindex="0" class="card-basic palette-dialog">
     <input
-      (input)="searchAction($event.target.value)"
+      (input)="searchAction($event.target['value'])"
       [(ngModel)]="searchString"
       type="text"
       [attr.placeholder]="'Digite sua busca...'"
-      autofocus
     >
-    <div *ngIf="currentPaletteEntries" class="search-result-container">
+    <div #searchResultContainer class="search-result-container">
       <div *ngFor="let currentEntry of currentPaletteEntries"
            class="result-category"
       >
-        <p>{{currentEntry.label}}</p>
-        <div *ngFor="let childEntry of currentEntry.entries"
-             class="result-entry cursor-pointer"
-        >
-          <p (click)="paletteEntryAction(childEntry)">{{childEntry.label}}{{hasChildEntries(childEntry) ? '...' : ''}}</p>
-        </div>
+      <p>{{currentEntry.label}}</p>
+      <div *ngFor="let childEntry of currentEntry.entries"
+           (click)="paletteEntryAction(childEntry)"
+           class="result-entry cursor-pointer"
+      >
+        <p>{{childEntry.label}}{{hasChildEntries(childEntry) ? '...' : ''}}</p>
       </div>
     </div>
   </div>
