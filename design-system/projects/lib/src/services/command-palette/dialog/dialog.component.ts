@@ -144,7 +144,6 @@ export class DialogComponent implements AfterViewInit, OnDestroy {
     const arrayResultEntryElements = this.resultEntryElements.toArray();
     const currentFocusIndex = arrayResultEntryElements.findIndex(item => item === this.currentFocusedElement);
     const focusPreviousIndex = currentFocusIndex - 1;
-    console.log(focusPreviousIndex);
     if (focusPreviousIndex < 0) {
       this.focusSearchInput();
     }
