@@ -266,4 +266,12 @@ export class DialogComponent implements AfterViewInit, OnDestroy {
     }
   }
 
+  public clearAll(): void {
+    this.searchString = '';
+    this.searchIdTree = [];
+    this.searchPaletteEntries = [...this.paletteEntries];
+    this.currentPaletteEntries = [...this.paletteEntries];
+    this.focusSearchInput();
+  }
+
 }
