@@ -4,5 +4,10 @@
       cursor: not-allowed;
       pointer-events: none;
     }
+
+    &.sm {
+      font-size: 0.7rem !important;
+      padding: 0.2rem 0.5rem !important;
+    }
   }
 }

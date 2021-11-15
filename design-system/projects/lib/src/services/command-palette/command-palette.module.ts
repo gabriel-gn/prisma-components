@@ -2,7 +2,7 @@ import {ModuleWithProviders, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {CommandPaletteService} from './command-palette.service';
 import {COMMAND_PALETTE_CONFIG, commandPaletteConfig, CommandPaletteConfig} from './injection';
-import {DialogComponent} from './dialog/dialog.component';
+import {DialogComponent, ResultSearchElements} from './dialog/dialog.component';
 import {ComponentInjectorService} from './component-injector.service';
 import {TriggerButtonComponent} from './trigger-button/trigger-button.component';
 import {ButtonModule} from '../../components/inputs/button/button.module';
@@ -11,7 +11,8 @@ import {FormsModule} from '@angular/forms';
 
 const components = [
   DialogComponent,
-  TriggerButtonComponent
+  TriggerButtonComponent,
+  ResultSearchElements
 ];
 
 @NgModule({

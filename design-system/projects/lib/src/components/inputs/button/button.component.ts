@@ -38,11 +38,18 @@ export class ButtonComponent {
    * Propriedade de habilitado ou desabilitado
    */
   @Input('disabled') disabled: boolean = false;
+  /**
+   * Tamanho do botão
+   */
+  @Input('size') size: 'sm' | 'md' = 'md';
 
   constructor() { }
 
   public getClassName(): string {
     let name = 'btn';
+    if (this.size !== 'md') {
+      name += ` ${this.size}`;
+    }
     if (this.type) {
       if (this.outline) {
         name += ` btn-outline-${this.type}`;

@@ -44,16 +44,29 @@
       height: 100%;
       position: relative;
 
-      input {
-        padding: 1em;
-        border: none;
-        border-bottom: 2px solid var(--color-gray-light);
-        border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;
-        color: var(--color-gray-darker);
+      .search-input-container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
         position: sticky;
+        padding: 1em;
         top: 0;
         left: 0;
         width: 100%;
+        border-bottom: 2px solid var(--color-gray-light);
+        border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;
+
+        pm-button {
+          &:not(:first-child) {
+            margin-left: 0.3em;
+          }
+        }
+
+        input {
+          border: none;
+          color: var(--color-gray-darker);
+          margin-left: 0.3em;
+        }
       }
 
       .search-result-container {
@@ -79,7 +92,9 @@
           color: var(--color-gray-darker);
 
           &:hover,
-          &:focus {
+          &:focus,
+          &:focus-within,
+          &:active {
             $border-size: 4px;
             border-left: $border-size solid var(--color-primary);
             padding-left: calc(#{$side-padding} - #{$border-size});

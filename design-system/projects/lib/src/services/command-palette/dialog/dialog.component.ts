@@ -1,14 +1,27 @@
-import {Component, ElementRef, AfterViewInit, ViewChild, HostListener, Renderer2, OnDestroy} from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  AfterViewInit,
+  ViewChild,
+  Renderer2,
+  OnDestroy,
+  ViewChildren, QueryList, Directive
+} from '@angular/core';
 import {ComponentInjectorService} from '../component-injector.service';
 import {Observable} from 'rxjs';
 import _ from 'lodash';
-import {DOCUMENT} from '@angular/common';
+import {isNumeric} from 'rxjs/internal-compatibility';
 
 export interface PaletteEntry {
   label: string;
   id: string;
   entries?: PaletteEntry[]; // deve obrigatoriamente ter APENAS ou 'entries' ou 'action'
   action?: () => void | Observable<any>;
+}
+
+// tslint:disable-next-line:directive-selector directive-class-suffix
+@Directive({selector: '.result-entry'}) export class ResultSearchElements {
+  //
 }
 
 @Component({
@@ -20,11 +33,14 @@ export class DialogComponent implements AfterViewInit, OnDestroy {
 
   @ViewChild('rootPanel', {static: true}) rootPanelComponent: ElementRef;
   @ViewChild('searchResultContainer', {static: true}) searchResultContainer: ElementRef;
+  @ViewChildren(ResultSearchElements, { read: ElementRef }) resultEntryElements: QueryList<ElementRef>;
   public searchString = '';
   public placeholderString = 'Digite sua busca...';
   public searchIdTree = []; // utilizado para navegar entre os ids da lista de entradas
   public itself: any;
+  private currentFocusedElement: ElementRef;
   private unlistener: () => void;
+  private deleteLatestSearchEntryOnDelete: boolean = false;
 
   public paletteEntries: PaletteEntry[] = [
     {
@@ -75,6 +91,7 @@ export class DialogComponent implements AfterViewInit, OnDestroy {
     }
   ];
   public currentPaletteEntries: PaletteEntry[];
+  public searchPaletteEntries: PaletteEntry[];
 
   constructor(
     private componentInjectorService: ComponentInjectorService,
@@ -82,6 +99,7 @@ export class DialogComponent implements AfterViewInit, OnDestroy {
   ) {
     document.documentElement.style.setProperty(`overflow-x`, `hidden`, 'important');
     this.currentPaletteEntries = [...this.paletteEntries];
+    this.searchPaletteEntries = [...this.paletteEntries];
   }
 
   public ngAfterViewInit(): void {
@@ -98,18 +116,41 @@ export class DialogComponent implements AfterViewInit, OnDestroy {
 
   private focusSearchInput(): void {
     setTimeout(() => {
-      this.rootPanelComponent.nativeElement.children[0].focus();
+      this.currentFocusedElement = this.rootPanelComponent;
+      this.rootPanelComponent.nativeElement.children[0].children[1].focus();
     }, 50);
   }
 
+  private isSearchInputFocused(): boolean {
+    return this.currentFocusedElement === this.rootPanelComponent;
+  }
+
   public focusNext(): void {
-    const currentFocus = document.activeElement;
-    const resultEntries: Element[] = Array.from(this.searchResultContainer.nativeElement.getElementsByClassName('result-entry cursor-pointer'));
-    const currentFocusIndex = -1; // resultEntries.findIndex(item => item === currentFocus);
-    if (!!currentFocusIndex) {
-      setTimeout(() => {
-        // resultEntries[currentFocusIndex + 1].focus();
-      }, 50);
+    const arrayResultEntryElements = this.resultEntryElements.toArray();
+    const currentFocusIndex = arrayResultEntryElements.findIndex(item => item === this.currentFocusedElement);
+    const focusNextIndex = currentFocusIndex + 1;
+    if (focusNextIndex >= arrayResultEntryElements.length) {
+      this.focusSearchInput();
+    }
+    else if (isNumeric(focusNextIndex)) {
+      this.currentFocusedElement = arrayResultEntryElements[focusNextIndex];
+      this.currentFocusedElement.nativeElement.focus();
+    } else {
+      this.focusSearchInput();
+    }
+  }
+
+  public focusPrevious(): void {
+    const arrayResultEntryElements = this.resultEntryElements.toArray();
+    const currentFocusIndex = arrayResultEntryElements.findIndex(item => item === this.currentFocusedElement);
+    const focusPreviousIndex = currentFocusIndex - 1;
+    console.log(focusPreviousIndex);
+    if (focusPreviousIndex < 0) {
+      this.focusSearchInput();
+    }
+    else if (isNumeric(focusPreviousIndex)) {
+      this.currentFocusedElement = arrayResultEntryElements[focusPreviousIndex];
+      this.currentFocusedElement.nativeElement.focus();
     } else {
       this.focusSearchInput();
     }
@@ -128,7 +169,8 @@ export class DialogComponent implements AfterViewInit, OnDestroy {
       const idTreeArray = [];
 
       const isSearchValueInEntry: (paletteEntry: PaletteEntry) => boolean = (paletteEntry: PaletteEntry) => {
-        return paletteEntry.label.includes(searchValue) || paletteEntry.id.includes(searchValue);
+        return paletteEntry.label.toLowerCase().includes(searchValue.toLowerCase())
+          || paletteEntry.id.toLowerCase().includes(searchValue.toLowerCase());
       };
 
       const entryToFlat: (paletteEntry: PaletteEntry, idPrefix: string) => void = (paletteEntry: PaletteEntry, idPrefix: string = '') => {
@@ -171,20 +213,37 @@ export class DialogComponent implements AfterViewInit, OnDestroy {
     };
 
     if (!!searchValue) {
+      this.deleteLatestSearchEntryOnDelete = false;
       let entries;
-      if (!!this.currentPaletteEntries && this.currentPaletteEntries.length > 0 && this.currentPaletteEntries[0].id === 'results') {
-        entries = this.currentPaletteEntries[0].entries;
+      if (!!this.searchPaletteEntries && this.searchPaletteEntries.length > 0 && this.searchPaletteEntries[0].id === 'results') {
+        entries = this.searchPaletteEntries[0].entries;
       } else {
-        entries = this.currentPaletteEntries;
+        entries = this.searchPaletteEntries;
       }
-      this.currentPaletteEntries = [{
+      this.searchPaletteEntries = [{
         label: 'Results',
         id: 'results',
         entries: flatEntriesToEntries(entriesToFlat(entries), entries)
       }];
     } else {
-      this.searchIdTree = [];
-      this.currentPaletteEntries = [...this.paletteEntries];
+      if (this.deleteLatestSearchEntryOnDelete) {
+        this.goBackOneLevel();
+      }
+      this.deleteLatestSearchEntryOnDelete = true;
+      this.searchPaletteEntries = [...this.currentPaletteEntries];
+    }
+  }
+
+  public goBackOneLevel(): void {
+    if (this.isSearchInputFocused()) {
+      if (this.searchIdTree.length === 0) {
+        this.destroyItself();
+      } else {
+        this.searchIdTree.pop();
+        this.focusSearchInput();
+      }
+    } else {
+      this.focusSearchInput();
     }
   }
 
@@ -197,10 +256,14 @@ export class DialogComponent implements AfterViewInit, OnDestroy {
    */
   public paletteEntryAction(paletteEntry: PaletteEntry): void {
     if (this.hasChildEntries(paletteEntry)) {
+      this.searchIdTree.push(paletteEntry.id);
+      this.searchPaletteEntries = [paletteEntry];
       this.currentPaletteEntries = [paletteEntry];
-      this.searchString += `${paletteEntry.id} > `;
+      this.searchString = '';
+      this.focusSearchInput();
     } else {
       paletteEntry.action();
+      this.destroyItself();
     }
   }
 
