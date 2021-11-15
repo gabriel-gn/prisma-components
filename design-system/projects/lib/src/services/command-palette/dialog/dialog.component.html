@@ -32,6 +32,8 @@
                [attr.tabindex]="index"
                (click)="paletteEntryAction(childEntry)"
                (keydown.enter)="paletteEntryAction(childEntry)"
+               (keydown.arrowRight)="paletteEntryAction(childEntry)"
+               (keydown.tab)="paletteEntryAction(childEntry)"
                class="result-entry cursor-pointer"
           >
             <p>{{childEntry.label}}{{hasChildEntries(childEntry) ? '...' : ''}}</p>
