@@ -16,7 +16,7 @@
     "storybook": "npm run docs:json && start-storybook -p 6006 -s ./.storybook/public --no-manager-cache",
     "build-storybook": "npm run docs:json && build-storybook",
     "build-storybook-dist": "npm run build-storybook -- -o ./storybook-dist -s ./.storybook/public",
-    "build-npm": "npm i node-sass && node scripts/update-color-themes.js && ng build --project=lib --prod",
+    "build-npm": "npm i node-sass && node scripts/update-color-themes.js && ng build --project=lib --prod && npm uninstall node-sass",
     "deploy-npm": "cd dist/components && npm publish --access=public",
     "deploy-gpr": "cd dist/components && npm publish"
   },
@@ -40,6 +40,7 @@
     "@storybook/api": "^6.4.0-alpha.18",
     "@storybook/components": "^6.4.0-alpha.18",
     "@storybook/core-events": "^6.4.0-alpha.18",
+    "angular2-hotkeys": "^2.4.0",
     "autoprefixer": "^10.3.7",
     "postcss-flexbugs-fixes": "^5.0.2",
     "react": "^16.14.0",

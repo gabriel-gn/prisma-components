@@ -13,7 +13,8 @@ import {
   WarningButton,
   BusyButton,
   DisabledButton,
-  IconButton
+  IconButton,
+  SmallButton
 } from "./button.stories";
 import {MainColors} from "../../../models/colors";
 
@@ -68,6 +69,12 @@ export const argTypes = {
     },
     control: { type: 'text'},
   },
+  size: {
+    table: {
+      defaultValue: { summary: defaultArgs.size},
+    },
+    control: {type: 'select'}, options: ['sm', 'md'],
+  },
 }
 
 <Meta
@@ -113,6 +120,16 @@ Devem ser usados da seguinte forma:
   <Story name='Warning' story={WarningButton} />
   <Story name='Danger' story={DangerButton} />
   <Story name='Light' story={LightButton} />
+</Canvas>
+
+## Tamanho dos botões
+
+É possível alterar o tamanho dos botões com o input `size`. Tendo os valores `sm` ou `md`
+
+Exemplo:
+
+<Canvas>
+  <Story name='Small' story={SmallButton} />
 </Canvas>
 
 ## Botões ocupados e desabilitados

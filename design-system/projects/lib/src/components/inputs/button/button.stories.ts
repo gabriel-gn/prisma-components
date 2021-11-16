@@ -20,6 +20,7 @@ export const Template: Story<ButtonComponent> = (args) => ({
         [iconPosition]="iconPosition"
         [outline]="outline"
         [disabled]="disabled"
+        [size]="size"
     >
         Button Content
     </pm-button>
@@ -35,6 +36,7 @@ export const defaultArgs = {
   iconPosition: 'start',
   outline: false,
   disabled: false,
+  size: 'md'
 };
 
 export const DefaultButton = Template.bind({});
@@ -102,4 +104,10 @@ IconButton.args = {
   iconClass: 'uil uil-lg uil-arrow-to-bottom',
   outline: true,
   label: 'Download',
+};
+
+export const SmallButton = Template.bind({});
+SmallButton.args = {
+  ...defaultArgs,
+  size: 'sm'
 };

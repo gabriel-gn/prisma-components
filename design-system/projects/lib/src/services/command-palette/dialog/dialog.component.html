@@ -1,0 +1,52 @@
+<div
+  tabindex="0" class="backdrop"
+  (keydown.esc)="goBackOneLevel()"
+  (keydown.arrowDown)="focusNext()"
+  (keydown.arrowUp)="focusPrevious()"
+>
+  <div class="palette-dialog-container">
+    <div #rootPanel tabindex="0" class="card-basic palette-dialog">
+      <div class="search-input-container">
+        <div class="d-flex search-tag-container">
+          <pm-button
+            *ngFor="let treeEntry of searchIdTree; let index = index"
+            (click)="rebuildCurrentEntriesFromTree(index);"
+            [type]="'primary'"
+            [size]="'sm'"
+          >
+            {{treeEntry.label}}
+          </pm-button>
+        </div>
+        <input
+          #searchInput
+          class="w-100 flex-fill"
+          (keydown.delete)="searchAction(searchInput.value)"
+          (keydown.backspace)="searchAction(searchInput.value)"
+          (input)="searchAction($event.target['value'])"
+          [(ngModel)]="searchString"
+          type="text"
+          [attr.placeholder]="searchIdTree.length > 0 ? '' : 'Digite sua busca...'"
+        >
+        <pm-button (click)="clearAll()" [type]="'light'" [size]="'sm'">
+          {{'X'}}
+        </pm-button>
+      </div>
+      <div #searchResultContainer class="search-result-container">
+        <div *ngFor="let searchEntry of searchPaletteEntries"
+             class="result-category"
+        >
+          <p>{{searchEntry.label}}</p>
+          <div *ngFor="let childEntry of searchEntry.entries; let index = index;"
+               [attr.tabindex]="index"
+               (click)="paletteEntryAction(childEntry)"
+               (keydown.enter)="paletteEntryAction(childEntry)"
+               (keydown.arrowRight)="paletteEntryAction(childEntry)"
+               class="palette-result-entry"
+          >
+            <p>{{childEntry.label}}{{hasChildEntries(childEntry) ? '...' : ''}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
