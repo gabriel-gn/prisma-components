@@ -73,11 +73,24 @@ export class DialogComponent implements AfterViewInit, OnDestroy {
           id: 'theme',
           entries: [
             {
-              label: 'Light',
-              id: 'light',
-              action: () => {
-                console.log('LIGHT THEME');
-              }
+              label: 'Light Themes',
+              id: 'lightThemes',
+              entries: [
+                {
+                  label: 'Light',
+                  id: 'light',
+                  action: () => {
+                    console.log('LIGHT THEME');
+                  }
+                },
+                {
+                  label: 'Light Alternative',
+                  id: 'lightAlt',
+                  action: () => {
+                    console.log('LIGHT THEME ALTERNATIVE');
+                  }
+                },
+              ]
             },
             {
               label: 'Dark',
@@ -162,6 +175,33 @@ export class DialogComponent implements AfterViewInit, OnDestroy {
     } else {
       this.focusSearchInput();
     }
+  }
+
+  public buildTreeIdEntriesFromPaletteEntry(paletteEntry: PaletteEntry, entriesToVerify: PaletteEntry[]): any {
+    let result;
+    let foundEqual: boolean = false;
+
+    const verifyChildren = (entryToVerify: PaletteEntry) => {
+      result.push({id: entryToVerify.id, label: entryToVerify.label});
+      foundEqual = _.isEqual(entryToVerify, paletteEntry);
+
+      if (this.hasChildEntries(entryToVerify)) {
+        for (const child of entryToVerify.entries) {
+          if (!foundEqual) {
+            verifyChildren(child);
+          } else {
+            break;
+          }
+        }
+      }
+    };
+
+    for (const entry of entriesToVerify) {
+      result = []; // toda vez que itera sobre um novo item do array base zera a árvore de results
+      verifyChildren(entry);
+    }
+
+    return result;
   }
 
   public rebuildCurrentEntriesFromTree(treeEntryIndex: number, sliceTree: boolean = true): void {
@@ -292,20 +332,10 @@ export class DialogComponent implements AfterViewInit, OnDestroy {
 
   /**
    * caso tenha child entries, atualiza o dialog, senão executa a ação da entry.
-   * TODO REMOVER O PARENT ENTRY E FAZER A ARVORE DE ACORDO COM A ENTRY SELECIONADA
    */
-  public paletteEntryAction(paletteEntry: PaletteEntry, parentEntry: PaletteEntry = undefined): void {
+  public paletteEntryAction(paletteEntry: PaletteEntry): void {
     if (this.hasChildEntries(paletteEntry)) {
-      // if (paletteEntry.hasOwnProperty('treeId')) {
-      //   const splittedTree: string[] = paletteEntry.treeId.split('.');
-      //   for (let i = 1; i < splittedTree.length; i++) {
-      //     const currentTreeId = splittedTree.slice(0, i + 1).join('.');
-      //     const entry = _.get(this.searchPaletteEntries, currentTreeId);
-      //     this.searchIdTree.push({id: entry.id, label: entry.label});
-      //   }
-      // } else {
-      this.searchIdTree.push({id: paletteEntry.id, label: paletteEntry.label});
-      // }
+      this.searchIdTree = this.buildTreeIdEntriesFromPaletteEntry(paletteEntry, this.paletteEntries);
       this.rebuildCurrentEntriesFromTree(this.searchIdTree.length, false);
       this.searchString = '';
       this.focusSearchInput();
