@@ -181,26 +181,34 @@ export class DialogComponent implements AfterViewInit, OnDestroy {
     let result;
     let foundEqual: boolean = false;
 
-    const verifyChildren = (entryToVerify: PaletteEntry) => {
+    const verifyEqual = (entryToVerify: PaletteEntry) => {
       result.push({id: entryToVerify.id, label: entryToVerify.label});
       foundEqual = _.isEqual(entryToVerify, paletteEntry);
+    };
 
-      if (this.hasChildEntries(entryToVerify)) {
-        for (const child of entryToVerify.entries) {
-          if (!foundEqual) {
-            verifyChildren(child);
-          } else {
-            break;
+    const verifyChildren = (entryToVerify: PaletteEntry) => {
+      verifyEqual(entryToVerify);
+      if (!foundEqual) {
+        if (this.hasChildEntries(entryToVerify)) {
+          for (const child of entryToVerify.entries) {
+            if (!foundEqual) {
+              verifyChildren(child);
+            } else {
+              break;
+            }
           }
         }
       }
     };
 
     for (const entry of entriesToVerify) {
-      result = []; // toda vez que itera sobre um novo item do array base zera a árvore de results
-      verifyChildren(entry);
+      if (!foundEqual) {
+        result = []; // toda vez que itera sobre um novo item do array base zera a árvore de results
+        verifyChildren(entry);
+      } else {
+        break;
+      }
     }
-
     return result;
   }
 
@@ -278,15 +286,6 @@ export class DialogComponent implements AfterViewInit, OnDestroy {
         entries.push(entryToAdd);
       }
       return _.uniqWith(entries, _.isEqual); // remove objetos iguais
-    };
-
-    const addTreeIds: (paletteEntries: PaletteEntry[]) => PaletteEntry[] = (paletteEntries: PaletteEntry[]) => {
-      const flatEntries = entriesToFlat(paletteEntries[0].entries);
-      for (let i = 1; i < flatEntries.length - 1; i++) {
-        const flatEntry = flatEntries[i];
-        paletteEntries[0].entries[i].treeId = flatEntry;
-      }
-      return paletteEntries;
     };
 
     if (!!searchValue) {
