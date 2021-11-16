@@ -48,17 +48,24 @@
         },
         {
             "name": "CommandPaletteConfig",
-            "id": "interface-CommandPaletteConfig-de6552afec57b49008973ba3ad1aa38f",
+            "id": "interface-CommandPaletteConfig-c764e09f4c750b7bfe19d802918e1c9b",
             "file": "projects/lib/src/services/command-palette/injection.ts",
             "type": "interface",
-            "sourceCode": "import {InjectionToken} from '@angular/core';\n\nexport interface CommandPaletteConfig {\n  hotkeys: string[];\n}\n\nexport const commandPaletteConfig: CommandPaletteConfig = {\n  hotkeys: ['meta+k', 'ctrl+k']\n};\n\nexport const COMMAND_PALETTE_CONFIG = new InjectionToken<CommandPaletteConfig>('commandPaletteConfig');\n",
+            "sourceCode": "import {InjectionToken} from '@angular/core';\nimport {PaletteEntry} from './models';\n\nexport interface CommandPaletteConfig {\n  hotkeys: string[];\n  paletteEntries: PaletteEntry[];\n}\n\nexport const commandPaletteConfig: CommandPaletteConfig = {\n  hotkeys: ['meta+k', 'ctrl+k'],\n  paletteEntries: []\n};\n\nexport const COMMAND_PALETTE_CONFIG = new InjectionToken<CommandPaletteConfig>('commandPaletteConfig');\n",
             "properties": [
                 {
                     "name": "hotkeys",
                     "type": "string[]",
                     "optional": false,
                     "description": "",
-                    "line": 4
+                    "line": 5
+                },
+                {
+                    "name": "paletteEntries",
+                    "type": "PaletteEntry[]",
+                    "optional": false,
+                    "description": "",
+                    "line": 6
                 }
             ],
             "indexSignatures": [],
@@ -196,45 +203,71 @@
         },
         {
             "name": "PaletteEntry",
-            "id": "interface-PaletteEntry-2b7825be85784a53cd1a8d652d8055b0",
-            "file": "projects/lib/src/services/command-palette/dialog/dialog.component.ts",
+            "id": "interface-PaletteEntry-7dec8570bb6b358e4bae69ce9fd94112",
+            "file": "projects/lib/src/services/command-palette/models.ts",
             "type": "interface",
-            "sourceCode": "import {\n  Component,\n  ElementRef,\n  AfterViewInit,\n  ViewChild,\n  Renderer2,\n  OnDestroy,\n  ViewChildren, QueryList, Directive\n} from '@angular/core';\nimport {ComponentInjectorService} from '../component-injector.service';\nimport {Observable} from 'rxjs';\nimport _ from 'lodash';\nimport deepdash from 'deepdash-es';\nimport {isNumeric} from 'rxjs/internal-compatibility';\nconst deep = deepdash(_);\n\nexport interface PaletteEntry {\n  label: string;\n  id: string;\n  treeId?: string; // totalmente opcional\n  entries?: PaletteEntry[]; // deve obrigatoriamente ter APENAS ou 'entries' ou 'action'\n  action?: () => void | Observable<any>; // TODO incluir comportamento com observable\n}\n\n// tslint:disable-next-line:directive-selector directive-class-suffix\n@Directive({selector: '.result-entry'}) export class ResultSearchElements {\n  //\n}\n\n@Component({\n  selector: 'pm-command-palette-dialog',\n  templateUrl: './dialog.component.html',\n  styleUrls: ['./dialog.component.scss']\n})\nexport class DialogComponent implements AfterViewInit, OnDestroy {\n\n  @ViewChild('rootPanel', {static: true}) rootPanelComponent: ElementRef;\n  @ViewChild('searchResultContainer', {static: true}) searchResultContainer: ElementRef;\n  @ViewChildren(ResultSearchElements, { read: ElementRef }) resultEntryElements: QueryList<ElementRef>;\n  public searchString = '';\n  public placeholderString = 'Digite sua busca...';\n  public searchIdTree: {id: string, label: string}[] = []; // utilizado para navegar entre os ids da lista de entradas\n  public itself: any;\n  private currentFocusedElement: ElementRef;\n  private unlistener: () => void;\n  private deleteLatestSearchEntryOnDelete: boolean = false;\n\n  public paletteEntries: PaletteEntry[] = [\n    {\n      label: 'Pages',\n      id: 'pages',\n      entries: [\n        {\n          label: 'Dashboard',\n          id: 'dashboard',\n          action: () => {\n            console.log('dashboard');\n          }\n        },\n        {\n          label: 'Notifications',\n          id: 'notifications',\n          action: () => {\n            console.log('notifications');\n          }\n        }\n      ]\n    },\n    {\n      label: 'Preferences',\n      id: 'preferences',\n      entries: [\n        {\n          label: 'Change Theme',\n          id: 'theme',\n          entries: [\n            {\n              label: 'Light Themes',\n              id: 'lightThemes',\n              entries: [\n                {\n                  label: 'Light',\n                  id: 'light',\n                  action: () => {\n                    console.log('LIGHT THEME');\n                  }\n                },\n                {\n                  label: 'Light Alternative',\n                  id: 'lightAlt',\n                  action: () => {\n                    console.log('LIGHT THEME ALTERNATIVE');\n                  }\n                },\n              ]\n            },\n            {\n              label: 'Dark',\n              id: 'dark',\n              action: () => {\n                console.log('DARK THEME');\n              }\n            }\n          ]\n        }\n      ]\n    }\n  ];\n  public currentPaletteEntries: PaletteEntry[];\n  public searchPaletteEntries: PaletteEntry[];\n\n  constructor(\n    private componentInjectorService: ComponentInjectorService,\n    private renderer2: Renderer2\n  ) {\n    document.documentElement.style.setProperty(`overflow-x`, `hidden`, 'important');\n    this.currentPaletteEntries = [...this.paletteEntries];\n    this.searchPaletteEntries = [...this.paletteEntries];\n  }\n\n  public ngAfterViewInit(): void {\n    this.focusSearchInput();\n    this.unlistener = this.renderer2.listen('window', 'focusin', event => {\n      if (!(\n        event.target === this.rootPanelComponent.nativeElement\n        || this.rootPanelComponent.nativeElement.contains(event.target)\n      )) {\n        this.destroyItself();\n      }\n    });\n  }\n\n  public ngOnDestroy(): void {\n    document.documentElement.style.removeProperty(`overflow-x`);\n  }\n\n  public destroyItself(): void {\n    this.componentInjectorService.removeComponentFromBody(this.itself);\n  }\n\n  private focusSearchInput(): void {\n    setTimeout(() => {\n      this.currentFocusedElement = this.rootPanelComponent;\n      this.rootPanelComponent.nativeElement.children[0].children[1].focus();\n    }, 50);\n  }\n\n  private isSearchInputFocused(): boolean {\n    return this.currentFocusedElement === this.rootPanelComponent;\n  }\n\n  public focusNext(): void {\n    const arrayResultEntryElements = this.resultEntryElements.toArray();\n    const currentFocusIndex = arrayResultEntryElements.findIndex(item => item === this.currentFocusedElement);\n    const focusNextIndex = currentFocusIndex + 1;\n    if (focusNextIndex >= arrayResultEntryElements.length) {\n      this.focusSearchInput();\n    }\n    else if (isNumeric(focusNextIndex)) {\n      this.currentFocusedElement = arrayResultEntryElements[focusNextIndex];\n      this.currentFocusedElement.nativeElement.focus();\n    } else {\n      this.focusSearchInput();\n    }\n  }\n\n  public focusPrevious(): void {\n    const arrayResultEntryElements = this.resultEntryElements.toArray();\n    const currentFocusIndex = arrayResultEntryElements.findIndex(item => item === this.currentFocusedElement);\n    const focusPreviousIndex = currentFocusIndex - 1;\n    if (focusPreviousIndex < 0) {\n      this.focusSearchInput();\n    }\n    else if (isNumeric(focusPreviousIndex)) {\n      this.currentFocusedElement = arrayResultEntryElements[focusPreviousIndex];\n      this.currentFocusedElement.nativeElement.focus();\n    } else {\n      this.focusSearchInput();\n    }\n  }\n\n  public buildTreeIdEntriesFromPaletteEntry(paletteEntry: PaletteEntry, entriesToCompare: PaletteEntry[]): any {\n    const deepFind = (array, obj) => {\n      return array.reduce((result, arrayItem) => {\n        if (result.length) {\n          return result;\n        }\n        if (_.isEqual(arrayItem, obj)) {\n          return result.concat([arrayItem]);\n        }\n        return arrayItem.items.length ? deepFind(arrayItem.items, obj) : result;\n      }, []);\n    };\n    return deepFind(entriesToCompare, paletteEntry);\n  }\n\n  public rebuildCurrentEntriesFromTree(treeEntryIndex: number, sliceTree: boolean = true): void {\n    let resultEntries = [...this.paletteEntries];\n    if (this.searchIdTree.length > 0) {\n      const slicedTreeEntries = this.searchIdTree.slice(0, treeEntryIndex);\n      // tslint:disable-next-line:prefer-for-of\n      for (let i = 0; i < slicedTreeEntries.length; i++) {\n        const treeEntry = slicedTreeEntries[i];\n        let paletteEntry;\n        if (i === 0) {\n          paletteEntry = resultEntries.find(entry => entry.id === treeEntry.id);\n        } else {\n          paletteEntry = resultEntries[0].entries.find(entry => entry.id === treeEntry.id);\n        }\n        resultEntries = [paletteEntry];\n      }\n    }\n    if (sliceTree) {\n      this.searchIdTree = this.searchIdTree.slice(0, treeEntryIndex);\n    }\n    this.searchPaletteEntries = resultEntries;\n    this.currentPaletteEntries = resultEntries;\n  }\n\n  public searchAction(searchValue: string): void {\n    const entriesToFlat: (paletteEntries: PaletteEntry[]) => string[] = (paletteEntries: PaletteEntry[]) => {\n      const idTreeArray = [];\n\n      const isSearchValueInEntry: (paletteEntry: PaletteEntry) => boolean = (paletteEntry: PaletteEntry) => {\n        return paletteEntry.label.toLowerCase().includes(searchValue.toLowerCase())\n          || paletteEntry.id.toLowerCase().includes(searchValue.toLowerCase());\n      };\n\n      const entryToFlat: (paletteEntry: PaletteEntry, idPrefix: string) => void = (paletteEntry: PaletteEntry, idPrefix: string = '') => {\n        idPrefix = !!idPrefix ? `${idPrefix}` : `${paletteEntry.id}`;\n        if (this.hasChildEntries(paletteEntry)) {\n          idTreeArray.push(`${idPrefix}`);\n          for (let i = 0; i < paletteEntry.entries.length; i++) {\n            const entry = paletteEntry.entries[i];\n            const idSuffix = `.entries[${i}]`;\n            entryToFlat(entry, `${idPrefix}${idSuffix}`);\n          }\n        } else {\n          if (isSearchValueInEntry(paletteEntry)) {\n            idTreeArray.push(`${idPrefix}`);\n          }\n        }\n      };\n\n      if (paletteEntries.length > 0 && paletteEntries[0].id === 'results') {\n        paletteEntries = paletteEntries[0].entries;\n      }\n      const resultEntry: PaletteEntry = {\n        label: 'Results',\n        id: 'results',\n        entries: paletteEntries\n      };\n\n      entryToFlat(resultEntry, '');\n      if (this.searchIdTree.length === 0) {\n        return idTreeArray.slice(1);\n      } else {\n        return idTreeArray.slice(2);\n      }\n    };\n\n    const flatEntriesToEntries: (flatEntries: string[], entriesToCheck: PaletteEntry[]) => PaletteEntry[] = (flatEntries: string[], entriesToCheck: PaletteEntry[]) => {\n      const resultObjToCheck = {results: {entries: [...entriesToCheck]}};\n      const entries: PaletteEntry[] = [];\n      for (const flatEntry of flatEntries) {\n        const entryToAdd: PaletteEntry = _.get(resultObjToCheck, flatEntry);\n        entryToAdd.treeId = flatEntry;\n        entries.push(entryToAdd);\n      }\n      return _.uniqWith(entries, _.isEqual); // remove objetos iguais\n    };\n\n    const addTreeIds: (paletteEntries: PaletteEntry[]) => PaletteEntry[] = (paletteEntries: PaletteEntry[]) => {\n      const flatEntries = entriesToFlat(paletteEntries[0].entries);\n      for (let i = 1; i < flatEntries.length - 1; i++) {\n        const flatEntry = flatEntries[i];\n        paletteEntries[0].entries[i].treeId = flatEntry;\n      }\n      return paletteEntries;\n    };\n\n    if (!!searchValue) {\n      this.deleteLatestSearchEntryOnDelete = false;\n      let entries;\n      if (!!this.searchPaletteEntries && this.searchPaletteEntries.length > 0 && this.searchPaletteEntries[0].id === 'results') {\n        entries = this.searchPaletteEntries[0].entries;\n      } else {\n        entries = this.searchPaletteEntries;\n      }\n      this.searchPaletteEntries = [\n        {\n          label: 'Results',\n          id: 'results',\n          entries: flatEntriesToEntries(entriesToFlat(entries), entries)\n        }\n      ];\n    } else {\n      if (this.deleteLatestSearchEntryOnDelete) {\n        this.goBackOneLevel();\n      }\n      this.deleteLatestSearchEntryOnDelete = true;\n      this.searchPaletteEntries = [...this.currentPaletteEntries];\n    }\n  }\n\n  public goBackOneLevel(): void {\n    if (this.isSearchInputFocused()) {\n      if (this.searchIdTree.length === 0) {\n        this.destroyItself();\n      } else {\n        this.rebuildCurrentEntriesFromTree(this.searchIdTree.length - 1);\n        this.focusSearchInput();\n      }\n    } else {\n      this.focusSearchInput();\n    }\n  }\n\n  public hasChildEntries(paletteEntry: PaletteEntry): boolean {\n    return paletteEntry?.entries && paletteEntry.entries.length > 0;\n  }\n\n  /**\n   * caso tenha child entries, atualiza o dialog, senão executa a ação da entry.\n   * TODO FAZER A ARVORE (searchIdTree) DE ACORDO COM A ENTRY SELECIONADA\n   */\n  public paletteEntryAction(paletteEntry: PaletteEntry): void {\n    if (this.hasChildEntries(paletteEntry)) {\n      console.log(this.buildTreeIdEntriesFromPaletteEntry(paletteEntry, this.paletteEntries));\n      // this.searchIdTree.push({id: paletteEntry.id, label: paletteEntry.label});\n      this.rebuildCurrentEntriesFromTree(this.searchIdTree.length, false);\n      this.searchString = '';\n      this.focusSearchInput();\n    } else {\n      paletteEntry.action();\n      this.destroyItself();\n    }\n  }\n\n  public clearAll(): void {\n    this.searchString = '';\n    this.searchIdTree = [];\n    this.searchPaletteEntries = [...this.paletteEntries];\n    this.currentPaletteEntries = [...this.paletteEntries];\n    this.focusSearchInput();\n  }\n\n}\n",
+            "sourceCode": "import {Observable} from 'rxjs';\n\nexport interface PaletteEntry {\n  label: string;\n  id: string;\n  treeId?: string; // totalmente opcional\n  entries?: PaletteEntry[]; // deve obrigatoriamente ter APENAS ou 'entries' ou 'action'\n  action?: () => void | Observable<any>; // TODO incluir comportamento com observable\n}\n\nexport interface PaletteTreeEntry {\n  label: string;\n  id: string;\n}\n",
             "properties": [
                 {
                     "name": "action",
                     "type": "function",
                     "optional": true,
                     "description": "",
-                    "line": 22
+                    "line": 8
                 },
                 {
                     "name": "entries",
                     "type": "PaletteEntry[]",
                     "optional": true,
                     "description": "",
-                    "line": 21
+                    "line": 7
                 },
                 {
                     "name": "id",
                     "type": "string",
                     "optional": false,
                     "description": "",
-                    "line": 19
+                    "line": 5
                 },
                 {
                     "name": "label",
                     "type": "string",
                     "optional": false,
                     "description": "",
-                    "line": 18
+                    "line": 4
                 },
                 {
                     "name": "treeId",
                     "type": "string",
                     "optional": true,
                     "description": "",
-                    "line": 20
+                    "line": 6
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 150,
+            "methods": []
+        },
+        {
+            "name": "PaletteTreeEntry",
+            "id": "interface-PaletteTreeEntry-7dec8570bb6b358e4bae69ce9fd94112",
+            "file": "projects/lib/src/services/command-palette/models.ts",
+            "type": "interface",
+            "sourceCode": "import {Observable} from 'rxjs';\n\nexport interface PaletteEntry {\n  label: string;\n  id: string;\n  treeId?: string; // totalmente opcional\n  entries?: PaletteEntry[]; // deve obrigatoriamente ter APENAS ou 'entries' ou 'action'\n  action?: () => void | Observable<any>; // TODO incluir comportamento com observable\n}\n\nexport interface PaletteTreeEntry {\n  label: string;\n  id: string;\n}\n",
+            "properties": [
+                {
+                    "name": "id",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 13
+                },
+                {
+                    "name": "label",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 12
                 }
             ],
             "indexSignatures": [],
@@ -323,8 +356,91 @@
             "type": "injectable"
         },
         {
+            "name": "CommandPaletteEntriesService",
+            "id": "injectable-CommandPaletteEntriesService-585345a0810a43d5b7665064c4238bcd",
+            "file": "projects/lib/src/services/command-palette/command-palette-entries.service.ts",
+            "properties": [
+                {
+                    "name": "_paletteEntries",
+                    "defaultValue": "[]",
+                    "type": "PaletteEntry[]",
+                    "optional": false,
+                    "description": "",
+                    "line": 8,
+                    "modifierKind": [
+                        112
+                    ]
+                },
+                {
+                    "name": "paletteEntries$",
+                    "defaultValue": "this.paletteEntries$$.asObservable()",
+                    "type": "Observable<PaletteEntry[]>",
+                    "optional": false,
+                    "description": "",
+                    "line": 10,
+                    "modifierKind": [
+                        114,
+                        132
+                    ]
+                },
+                {
+                    "name": "paletteEntries$$",
+                    "defaultValue": "new BehaviorSubject<PaletteEntry[]>(this._paletteEntries)",
+                    "type": "BehaviorSubject<PaletteEntry[]>",
+                    "optional": false,
+                    "description": "",
+                    "line": 9,
+                    "modifierKind": [
+                        112
+                    ]
+                }
+            ],
+            "methods": [],
+            "description": "",
+            "sourceCode": "import { Injectable } from '@angular/core';\nimport {PaletteEntry} from './models';\nimport {BehaviorSubject, Observable} from 'rxjs';\n\n@Injectable()\nexport class CommandPaletteEntriesService {\n\n  private _paletteEntries: PaletteEntry[] = [];\n  private paletteEntries$$: BehaviorSubject<PaletteEntry[]> = new BehaviorSubject<PaletteEntry[]>(this._paletteEntries);\n  public readonly paletteEntries$: Observable<PaletteEntry[]> = this.paletteEntries$$.asObservable();\n\n  constructor() { }\n\n  public get paletteEntries(): PaletteEntry[] {\n    return this._paletteEntries;\n  }\n\n  public set paletteEntries(paletteEntries: PaletteEntry[]) {\n    this._paletteEntries = paletteEntries;\n    this.paletteEntries$$.next(this._paletteEntries);\n  }\n}\n",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "args": [],
+                "line": 10
+            },
+            "accessors": {
+                "paletteEntries": {
+                    "name": "paletteEntries",
+                    "setSignature": {
+                        "name": "paletteEntries",
+                        "type": "void",
+                        "args": [
+                            {
+                                "name": "paletteEntries",
+                                "type": "[]"
+                            }
+                        ],
+                        "returnType": "void",
+                        "line": 18,
+                        "jsdoctags": [
+                            {
+                                "name": "paletteEntries",
+                                "type": "[]",
+                                "tagName": {
+                                    "text": "param"
+                                }
+                            }
+                        ]
+                    },
+                    "getSignature": {
+                        "name": "paletteEntries",
+                        "type": "[]",
+                        "returnType": "PaletteEntry[]",
+                        "line": 14
+                    }
+                }
+            },
+            "type": "injectable"
+        },
+        {
             "name": "CommandPaletteService",
-            "id": "injectable-CommandPaletteService-93b59519be02f3cab3b28b1df8d404ff",
+            "id": "injectable-CommandPaletteService-8c82e855c0bba41d0ce903d804b0e4f2",
             "file": "projects/lib/src/services/command-palette/command-palette.service.ts",
             "properties": [
                 {
@@ -332,9 +448,19 @@
                     "type": "CommandPaletteConfig",
                     "optional": false,
                     "description": "",
-                    "line": 12,
+                    "line": 13,
                     "modifierKind": [
                         112
+                    ]
+                },
+                {
+                    "name": "commandPaletteEntriesService",
+                    "type": "CommandPaletteEntriesService",
+                    "optional": false,
+                    "description": "",
+                    "line": 17,
+                    "modifierKind": [
+                        114
                     ]
                 }
             ],
@@ -345,14 +471,14 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 32,
+                    "line": 35,
                     "modifierKind": [
                         114
                     ]
                 }
             ],
             "description": "",
-            "sourceCode": "import {\n  Inject,\n  Injectable,\n} from '@angular/core';\nimport {COMMAND_PALETTE_CONFIG, CommandPaletteConfig} from './injection';\nimport {DialogComponent} from './dialog/dialog.component';\nimport {ComponentInjectorService} from './component-injector.service';\nimport {Hotkey, HotkeysService} from 'angular2-hotkeys';\n\n@Injectable()\nexport class CommandPaletteService {\n  private _configs: CommandPaletteConfig;\n\n  constructor(\n    @Inject(COMMAND_PALETTE_CONFIG) initialConfig: CommandPaletteConfig,\n    private componentInjectorService: ComponentInjectorService,\n    private hotkeysService: HotkeysService\n  ) {\n    this._configs = initialConfig;\n    this.hotkeysService.add(new Hotkey(this._configs.hotkeys, (event: KeyboardEvent, combo: string): boolean => {\n      event.stopPropagation();\n      event.preventDefault();\n      this.triggerDialog();\n      return true;\n    }));\n  }\n\n  public get configs(): CommandPaletteConfig {\n    return this._configs;\n  }\n\n  public triggerDialog(): void {\n    this.componentInjectorService.appendComponentToBody(DialogComponent).then(\n      (createdComponent) => {\n        createdComponent.instance.itself = createdComponent;\n      }\n    );\n  }\n}\n",
+            "sourceCode": "import {\n  Inject,\n  Injectable,\n} from '@angular/core';\nimport {COMMAND_PALETTE_CONFIG, CommandPaletteConfig} from './injection';\nimport {DialogComponent} from './dialog/dialog.component';\nimport {ComponentInjectorService} from './component-injector.service';\nimport {Hotkey, HotkeysService} from 'angular2-hotkeys';\nimport {CommandPaletteEntriesService} from './command-palette-entries.service';\n\n@Injectable()\nexport class CommandPaletteService {\n  private _configs: CommandPaletteConfig;\n\n  constructor(\n    @Inject(COMMAND_PALETTE_CONFIG) initialConfig: CommandPaletteConfig,\n    public commandPaletteEntriesService: CommandPaletteEntriesService,\n    private componentInjectorService: ComponentInjectorService,\n    private hotkeysService: HotkeysService,\n  ) {\n    this._configs = initialConfig;\n    this.commandPaletteEntriesService.paletteEntries = this._configs.paletteEntries;\n    this.hotkeysService.add(new Hotkey(this._configs.hotkeys, (event: KeyboardEvent, combo: string): boolean => {\n      event.stopPropagation();\n      event.preventDefault();\n      this.triggerDialog();\n      return true;\n    }));\n  }\n\n  public get configs(): CommandPaletteConfig {\n    return this._configs;\n  }\n\n  public triggerDialog(): void {\n    this.componentInjectorService.appendComponentToBody(DialogComponent).then(\n      (createdComponent) => {\n        createdComponent.instance.itself = createdComponent;\n      }\n    );\n  }\n}\n",
             "constructorObj": {
                 "name": "constructor",
                 "description": "",
@@ -360,6 +486,10 @@
                     {
                         "name": "initialConfig",
                         "type": "CommandPaletteConfig"
+                    },
+                    {
+                        "name": "commandPaletteEntriesService",
+                        "type": "CommandPaletteEntriesService"
                     },
                     {
                         "name": "componentInjectorService",
@@ -370,11 +500,18 @@
                         "type": "HotkeysService"
                     }
                 ],
-                "line": 12,
+                "line": 13,
                 "jsdoctags": [
                     {
                         "name": "initialConfig",
                         "type": "CommandPaletteConfig",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "commandPaletteEntriesService",
+                        "type": "CommandPaletteEntriesService",
                         "tagName": {
                             "text": "param"
                         }
@@ -402,7 +539,7 @@
                         "name": "configs",
                         "type": "",
                         "returnType": "CommandPaletteConfig",
-                        "line": 28
+                        "line": 31
                     }
                 }
             },
@@ -529,12 +666,12 @@
     "directives": [
         {
             "name": "ResultSearchElements",
-            "id": "directive-ResultSearchElements-2b7825be85784a53cd1a8d652d8055b0",
+            "id": "directive-ResultSearchElements-82553d6771f4234900c2899ef790e372",
             "file": "projects/lib/src/services/command-palette/dialog/dialog.component.ts",
             "type": "directive",
             "description": "",
-            "sourceCode": "import {\n  Component,\n  ElementRef,\n  AfterViewInit,\n  ViewChild,\n  Renderer2,\n  OnDestroy,\n  ViewChildren, QueryList, Directive\n} from '@angular/core';\nimport {ComponentInjectorService} from '../component-injector.service';\nimport {Observable} from 'rxjs';\nimport _ from 'lodash';\nimport deepdash from 'deepdash-es';\nimport {isNumeric} from 'rxjs/internal-compatibility';\nconst deep = deepdash(_);\n\nexport interface PaletteEntry {\n  label: string;\n  id: string;\n  treeId?: string; // totalmente opcional\n  entries?: PaletteEntry[]; // deve obrigatoriamente ter APENAS ou 'entries' ou 'action'\n  action?: () => void | Observable<any>; // TODO incluir comportamento com observable\n}\n\n// tslint:disable-next-line:directive-selector directive-class-suffix\n@Directive({selector: '.result-entry'}) export class ResultSearchElements {\n  //\n}\n\n@Component({\n  selector: 'pm-command-palette-dialog',\n  templateUrl: './dialog.component.html',\n  styleUrls: ['./dialog.component.scss']\n})\nexport class DialogComponent implements AfterViewInit, OnDestroy {\n\n  @ViewChild('rootPanel', {static: true}) rootPanelComponent: ElementRef;\n  @ViewChild('searchResultContainer', {static: true}) searchResultContainer: ElementRef;\n  @ViewChildren(ResultSearchElements, { read: ElementRef }) resultEntryElements: QueryList<ElementRef>;\n  public searchString = '';\n  public placeholderString = 'Digite sua busca...';\n  public searchIdTree: {id: string, label: string}[] = []; // utilizado para navegar entre os ids da lista de entradas\n  public itself: any;\n  private currentFocusedElement: ElementRef;\n  private unlistener: () => void;\n  private deleteLatestSearchEntryOnDelete: boolean = false;\n\n  public paletteEntries: PaletteEntry[] = [\n    {\n      label: 'Pages',\n      id: 'pages',\n      entries: [\n        {\n          label: 'Dashboard',\n          id: 'dashboard',\n          action: () => {\n            console.log('dashboard');\n          }\n        },\n        {\n          label: 'Notifications',\n          id: 'notifications',\n          action: () => {\n            console.log('notifications');\n          }\n        }\n      ]\n    },\n    {\n      label: 'Preferences',\n      id: 'preferences',\n      entries: [\n        {\n          label: 'Change Theme',\n          id: 'theme',\n          entries: [\n            {\n              label: 'Light Themes',\n              id: 'lightThemes',\n              entries: [\n                {\n                  label: 'Light',\n                  id: 'light',\n                  action: () => {\n                    console.log('LIGHT THEME');\n                  }\n                },\n                {\n                  label: 'Light Alternative',\n                  id: 'lightAlt',\n                  action: () => {\n                    console.log('LIGHT THEME ALTERNATIVE');\n                  }\n                },\n              ]\n            },\n            {\n              label: 'Dark',\n              id: 'dark',\n              action: () => {\n                console.log('DARK THEME');\n              }\n            }\n          ]\n        }\n      ]\n    }\n  ];\n  public currentPaletteEntries: PaletteEntry[];\n  public searchPaletteEntries: PaletteEntry[];\n\n  constructor(\n    private componentInjectorService: ComponentInjectorService,\n    private renderer2: Renderer2\n  ) {\n    document.documentElement.style.setProperty(`overflow-x`, `hidden`, 'important');\n    this.currentPaletteEntries = [...this.paletteEntries];\n    this.searchPaletteEntries = [...this.paletteEntries];\n  }\n\n  public ngAfterViewInit(): void {\n    this.focusSearchInput();\n    this.unlistener = this.renderer2.listen('window', 'focusin', event => {\n      if (!(\n        event.target === this.rootPanelComponent.nativeElement\n        || this.rootPanelComponent.nativeElement.contains(event.target)\n      )) {\n        this.destroyItself();\n      }\n    });\n  }\n\n  public ngOnDestroy(): void {\n    document.documentElement.style.removeProperty(`overflow-x`);\n  }\n\n  public destroyItself(): void {\n    this.componentInjectorService.removeComponentFromBody(this.itself);\n  }\n\n  private focusSearchInput(): void {\n    setTimeout(() => {\n      this.currentFocusedElement = this.rootPanelComponent;\n      this.rootPanelComponent.nativeElement.children[0].children[1].focus();\n    }, 50);\n  }\n\n  private isSearchInputFocused(): boolean {\n    return this.currentFocusedElement === this.rootPanelComponent;\n  }\n\n  public focusNext(): void {\n    const arrayResultEntryElements = this.resultEntryElements.toArray();\n    const currentFocusIndex = arrayResultEntryElements.findIndex(item => item === this.currentFocusedElement);\n    const focusNextIndex = currentFocusIndex + 1;\n    if (focusNextIndex >= arrayResultEntryElements.length) {\n      this.focusSearchInput();\n    }\n    else if (isNumeric(focusNextIndex)) {\n      this.currentFocusedElement = arrayResultEntryElements[focusNextIndex];\n      this.currentFocusedElement.nativeElement.focus();\n    } else {\n      this.focusSearchInput();\n    }\n  }\n\n  public focusPrevious(): void {\n    const arrayResultEntryElements = this.resultEntryElements.toArray();\n    const currentFocusIndex = arrayResultEntryElements.findIndex(item => item === this.currentFocusedElement);\n    const focusPreviousIndex = currentFocusIndex - 1;\n    if (focusPreviousIndex < 0) {\n      this.focusSearchInput();\n    }\n    else if (isNumeric(focusPreviousIndex)) {\n      this.currentFocusedElement = arrayResultEntryElements[focusPreviousIndex];\n      this.currentFocusedElement.nativeElement.focus();\n    } else {\n      this.focusSearchInput();\n    }\n  }\n\n  public buildTreeIdEntriesFromPaletteEntry(paletteEntry: PaletteEntry, entriesToCompare: PaletteEntry[]): any {\n    const deepFind = (array, obj) => {\n      return array.reduce((result, arrayItem) => {\n        if (result.length) {\n          return result;\n        }\n        if (_.isEqual(arrayItem, obj)) {\n          return result.concat([arrayItem]);\n        }\n        return arrayItem.items.length ? deepFind(arrayItem.items, obj) : result;\n      }, []);\n    };\n    return deepFind(entriesToCompare, paletteEntry);\n  }\n\n  public rebuildCurrentEntriesFromTree(treeEntryIndex: number, sliceTree: boolean = true): void {\n    let resultEntries = [...this.paletteEntries];\n    if (this.searchIdTree.length > 0) {\n      const slicedTreeEntries = this.searchIdTree.slice(0, treeEntryIndex);\n      // tslint:disable-next-line:prefer-for-of\n      for (let i = 0; i < slicedTreeEntries.length; i++) {\n        const treeEntry = slicedTreeEntries[i];\n        let paletteEntry;\n        if (i === 0) {\n          paletteEntry = resultEntries.find(entry => entry.id === treeEntry.id);\n        } else {\n          paletteEntry = resultEntries[0].entries.find(entry => entry.id === treeEntry.id);\n        }\n        resultEntries = [paletteEntry];\n      }\n    }\n    if (sliceTree) {\n      this.searchIdTree = this.searchIdTree.slice(0, treeEntryIndex);\n    }\n    this.searchPaletteEntries = resultEntries;\n    this.currentPaletteEntries = resultEntries;\n  }\n\n  public searchAction(searchValue: string): void {\n    const entriesToFlat: (paletteEntries: PaletteEntry[]) => string[] = (paletteEntries: PaletteEntry[]) => {\n      const idTreeArray = [];\n\n      const isSearchValueInEntry: (paletteEntry: PaletteEntry) => boolean = (paletteEntry: PaletteEntry) => {\n        return paletteEntry.label.toLowerCase().includes(searchValue.toLowerCase())\n          || paletteEntry.id.toLowerCase().includes(searchValue.toLowerCase());\n      };\n\n      const entryToFlat: (paletteEntry: PaletteEntry, idPrefix: string) => void = (paletteEntry: PaletteEntry, idPrefix: string = '') => {\n        idPrefix = !!idPrefix ? `${idPrefix}` : `${paletteEntry.id}`;\n        if (this.hasChildEntries(paletteEntry)) {\n          idTreeArray.push(`${idPrefix}`);\n          for (let i = 0; i < paletteEntry.entries.length; i++) {\n            const entry = paletteEntry.entries[i];\n            const idSuffix = `.entries[${i}]`;\n            entryToFlat(entry, `${idPrefix}${idSuffix}`);\n          }\n        } else {\n          if (isSearchValueInEntry(paletteEntry)) {\n            idTreeArray.push(`${idPrefix}`);\n          }\n        }\n      };\n\n      if (paletteEntries.length > 0 && paletteEntries[0].id === 'results') {\n        paletteEntries = paletteEntries[0].entries;\n      }\n      const resultEntry: PaletteEntry = {\n        label: 'Results',\n        id: 'results',\n        entries: paletteEntries\n      };\n\n      entryToFlat(resultEntry, '');\n      if (this.searchIdTree.length === 0) {\n        return idTreeArray.slice(1);\n      } else {\n        return idTreeArray.slice(2);\n      }\n    };\n\n    const flatEntriesToEntries: (flatEntries: string[], entriesToCheck: PaletteEntry[]) => PaletteEntry[] = (flatEntries: string[], entriesToCheck: PaletteEntry[]) => {\n      const resultObjToCheck = {results: {entries: [...entriesToCheck]}};\n      const entries: PaletteEntry[] = [];\n      for (const flatEntry of flatEntries) {\n        const entryToAdd: PaletteEntry = _.get(resultObjToCheck, flatEntry);\n        entryToAdd.treeId = flatEntry;\n        entries.push(entryToAdd);\n      }\n      return _.uniqWith(entries, _.isEqual); // remove objetos iguais\n    };\n\n    const addTreeIds: (paletteEntries: PaletteEntry[]) => PaletteEntry[] = (paletteEntries: PaletteEntry[]) => {\n      const flatEntries = entriesToFlat(paletteEntries[0].entries);\n      for (let i = 1; i < flatEntries.length - 1; i++) {\n        const flatEntry = flatEntries[i];\n        paletteEntries[0].entries[i].treeId = flatEntry;\n      }\n      return paletteEntries;\n    };\n\n    if (!!searchValue) {\n      this.deleteLatestSearchEntryOnDelete = false;\n      let entries;\n      if (!!this.searchPaletteEntries && this.searchPaletteEntries.length > 0 && this.searchPaletteEntries[0].id === 'results') {\n        entries = this.searchPaletteEntries[0].entries;\n      } else {\n        entries = this.searchPaletteEntries;\n      }\n      this.searchPaletteEntries = [\n        {\n          label: 'Results',\n          id: 'results',\n          entries: flatEntriesToEntries(entriesToFlat(entries), entries)\n        }\n      ];\n    } else {\n      if (this.deleteLatestSearchEntryOnDelete) {\n        this.goBackOneLevel();\n      }\n      this.deleteLatestSearchEntryOnDelete = true;\n      this.searchPaletteEntries = [...this.currentPaletteEntries];\n    }\n  }\n\n  public goBackOneLevel(): void {\n    if (this.isSearchInputFocused()) {\n      if (this.searchIdTree.length === 0) {\n        this.destroyItself();\n      } else {\n        this.rebuildCurrentEntriesFromTree(this.searchIdTree.length - 1);\n        this.focusSearchInput();\n      }\n    } else {\n      this.focusSearchInput();\n    }\n  }\n\n  public hasChildEntries(paletteEntry: PaletteEntry): boolean {\n    return paletteEntry?.entries && paletteEntry.entries.length > 0;\n  }\n\n  /**\n   * caso tenha child entries, atualiza o dialog, senão executa a ação da entry.\n   * TODO FAZER A ARVORE (searchIdTree) DE ACORDO COM A ENTRY SELECIONADA\n   */\n  public paletteEntryAction(paletteEntry: PaletteEntry): void {\n    if (this.hasChildEntries(paletteEntry)) {\n      console.log(this.buildTreeIdEntriesFromPaletteEntry(paletteEntry, this.paletteEntries));\n      // this.searchIdTree.push({id: paletteEntry.id, label: paletteEntry.label});\n      this.rebuildCurrentEntriesFromTree(this.searchIdTree.length, false);\n      this.searchString = '';\n      this.focusSearchInput();\n    } else {\n      paletteEntry.action();\n      this.destroyItself();\n    }\n  }\n\n  public clearAll(): void {\n    this.searchString = '';\n    this.searchIdTree = [];\n    this.searchPaletteEntries = [...this.paletteEntries];\n    this.currentPaletteEntries = [...this.paletteEntries];\n    this.focusSearchInput();\n  }\n\n}\n",
-            "selector": ".result-entry",
+            "sourceCode": "import {\n  Component,\n  ElementRef,\n  AfterViewInit,\n  ViewChild,\n  Renderer2,\n  OnDestroy,\n  ViewChildren, QueryList, Directive\n} from '@angular/core';\nimport {ComponentInjectorService} from '../component-injector.service';\nimport {Observable} from 'rxjs';\nimport _ from 'lodash';\nimport {isNumeric} from 'rxjs/internal-compatibility';\nimport {PaletteEntry, PaletteTreeEntry} from '../models';\nimport {CommandPaletteEntriesService} from '../command-palette-entries.service';\n\n// tslint:disable-next-line:directive-selector directive-class-suffix\n@Directive({selector: '.palette-result-entry'}) export class ResultSearchElements {\n  //\n}\n\n@Component({\n  selector: 'pm-command-palette-dialog',\n  templateUrl: './dialog.component.html',\n  styleUrls: ['./dialog.component.scss']\n})\nexport class DialogComponent implements AfterViewInit, OnDestroy {\n\n  @ViewChild('rootPanel', {static: true}) rootPanelComponent: ElementRef;\n  @ViewChild('searchResultContainer', {static: true}) searchResultContainer: ElementRef;\n  @ViewChildren(ResultSearchElements, { read: ElementRef }) resultEntryElements: QueryList<ElementRef>;\n  public searchString = '';\n  public placeholderString = 'Digite sua busca...';\n  public searchIdTree: PaletteTreeEntry[] = []; // utilizado para navegar entre os ids da lista de entradas\n  public itself: any;\n  private currentFocusedElement: ElementRef;\n  private unlistener: () => void;\n  private deleteLatestSearchEntryOnDelete: boolean = false;\n\n  public paletteEntries: PaletteEntry[] = [];\n  public currentPaletteEntries: PaletteEntry[];\n  public searchPaletteEntries: PaletteEntry[];\n\n  constructor(\n    private commandPaletteEntriesService: CommandPaletteEntriesService,\n    private componentInjectorService: ComponentInjectorService,\n    private renderer2: Renderer2\n  ) {\n    document.documentElement.style.setProperty(`overflow-x`, `hidden`, 'important');\n    this.commandPaletteEntriesService.paletteEntries$.subscribe(entries => {\n      this.paletteEntries = [...entries];\n      this.currentPaletteEntries = [...this.paletteEntries];\n      this.searchPaletteEntries = [...this.paletteEntries];\n    });\n  }\n\n  public ngAfterViewInit(): void {\n    this.clearAll();\n    this.unlistener = this.renderer2.listen('window', 'focusin', event => {\n      if (!(\n        event.target === this.rootPanelComponent.nativeElement\n        || this.rootPanelComponent.nativeElement.contains(event.target)\n      )) {\n        this.destroyItself();\n      }\n    });\n  }\n\n  public ngOnDestroy(): void {\n    document.documentElement.style.removeProperty(`overflow-x`);\n  }\n\n  public destroyItself(): void {\n    this.componentInjectorService.removeComponentFromBody(this.itself);\n  }\n\n  private focusSearchInput(): void {\n    setTimeout(() => {\n      this.currentFocusedElement = this.rootPanelComponent;\n      this.rootPanelComponent.nativeElement.children[0].children[1].focus();\n    }, 50);\n  }\n\n  private isSearchInputFocused(): boolean {\n    return this.currentFocusedElement === this.rootPanelComponent;\n  }\n\n  public focusNext(): void {\n    const arrayResultEntryElements = this.resultEntryElements.toArray();\n    const currentFocusIndex = arrayResultEntryElements.findIndex(item => item === this.currentFocusedElement);\n    const focusNextIndex = currentFocusIndex + 1;\n    if (focusNextIndex >= arrayResultEntryElements.length) {\n      this.focusSearchInput();\n    }\n    else if (isNumeric(focusNextIndex)) {\n      this.currentFocusedElement = arrayResultEntryElements[focusNextIndex];\n      this.currentFocusedElement.nativeElement.focus();\n    } else {\n      this.focusSearchInput();\n    }\n  }\n\n  public focusPrevious(): void {\n    const arrayResultEntryElements = this.resultEntryElements.toArray();\n    const currentFocusIndex = arrayResultEntryElements.findIndex(item => item === this.currentFocusedElement);\n    const focusPreviousIndex = currentFocusIndex - 1;\n    if (focusPreviousIndex < 0) {\n      this.focusSearchInput();\n    }\n    else if (isNumeric(focusPreviousIndex)) {\n      this.currentFocusedElement = arrayResultEntryElements[focusPreviousIndex];\n      this.currentFocusedElement.nativeElement.focus();\n    } else {\n      this.focusSearchInput();\n    }\n  }\n\n  public buildTreeIdEntriesFromPaletteEntry(paletteEntry: PaletteEntry, entriesToVerify: PaletteEntry[]): any {\n    let result;\n    let foundEqual: boolean = false;\n\n    const verifyEqual = (entryToVerify: PaletteEntry) => {\n      result.push({id: entryToVerify.id, label: entryToVerify.label});\n      foundEqual = _.isEqual(entryToVerify, paletteEntry);\n    };\n\n    const verifyChildren = (entryToVerify: PaletteEntry) => {\n      verifyEqual(entryToVerify);\n      if (!foundEqual) {\n        if (this.hasChildEntries(entryToVerify)) {\n          for (const child of entryToVerify.entries) {\n            if (!foundEqual) {\n              verifyChildren(child);\n            } else {\n              break;\n            }\n          }\n        }\n      }\n    };\n\n    for (const entry of entriesToVerify) {\n      if (!foundEqual) {\n        result = []; // toda vez que itera sobre um novo item do array base zera a árvore de results\n        verifyChildren(entry);\n      } else {\n        break;\n      }\n    }\n    return result;\n  }\n\n  public rebuildCurrentEntriesFromTree(treeEntryIndex: number, sliceTree: boolean = true): void {\n    let resultEntries = [...this.paletteEntries];\n    if (this.searchIdTree.length > 0) {\n      const slicedTreeEntries = this.searchIdTree.slice(0, treeEntryIndex);\n      // tslint:disable-next-line:prefer-for-of\n      for (let i = 0; i < slicedTreeEntries.length; i++) {\n        const treeEntry = slicedTreeEntries[i];\n        let paletteEntry;\n        if (i === 0) {\n          paletteEntry = resultEntries.find(entry => entry.id === treeEntry.id);\n        } else {\n          paletteEntry = resultEntries[0].entries.find(entry => entry.id === treeEntry.id);\n        }\n        resultEntries = [paletteEntry];\n      }\n    }\n    if (sliceTree) {\n      this.searchIdTree = this.searchIdTree.slice(0, treeEntryIndex);\n    }\n    this.searchPaletteEntries = resultEntries;\n    this.currentPaletteEntries = resultEntries;\n  }\n\n  public searchAction(searchValue: string): void {\n    const entriesToFlat: (paletteEntries: PaletteEntry[]) => string[] = (paletteEntries: PaletteEntry[]) => {\n      const idTreeArray = [];\n\n      const isSearchValueInEntry: (paletteEntry: PaletteEntry) => boolean = (paletteEntry: PaletteEntry) => {\n        return paletteEntry.label.toLowerCase().includes(searchValue.toLowerCase())\n          || paletteEntry.id.toLowerCase().includes(searchValue.toLowerCase());\n      };\n\n      const entryToFlat: (paletteEntry: PaletteEntry, idPrefix: string) => void = (paletteEntry: PaletteEntry, idPrefix: string = '') => {\n        idPrefix = !!idPrefix ? `${idPrefix}` : `${paletteEntry.id}`;\n        if (this.hasChildEntries(paletteEntry)) {\n          idTreeArray.push(`${idPrefix}`);\n          for (let i = 0; i < paletteEntry.entries.length; i++) {\n            const entry = paletteEntry.entries[i];\n            const idSuffix = `.entries[${i}]`;\n            entryToFlat(entry, `${idPrefix}${idSuffix}`);\n          }\n        } else {\n          if (isSearchValueInEntry(paletteEntry)) {\n            idTreeArray.push(`${idPrefix}`);\n          }\n        }\n      };\n\n      if (paletteEntries.length > 0 && paletteEntries[0].id === 'results') {\n        paletteEntries = paletteEntries[0].entries;\n      }\n      const resultEntry: PaletteEntry = {\n        label: 'Results',\n        id: 'results',\n        entries: paletteEntries\n      };\n\n      entryToFlat(resultEntry, '');\n      if (this.searchIdTree.length === 0) {\n        return idTreeArray.slice(1);\n      } else {\n        return idTreeArray.slice(2);\n      }\n    };\n\n    const flatEntriesToEntries: (flatEntries: string[], entriesToCheck: PaletteEntry[]) => PaletteEntry[] = (flatEntries: string[], entriesToCheck: PaletteEntry[]) => {\n      const resultObjToCheck = {results: {entries: [...entriesToCheck]}};\n      const entries: PaletteEntry[] = [];\n      for (const flatEntry of flatEntries) {\n        const entryToAdd: PaletteEntry = _.get(resultObjToCheck, flatEntry);\n        entryToAdd.treeId = flatEntry;\n        entries.push(entryToAdd);\n      }\n      return _.uniqWith(entries, _.isEqual); // remove objetos iguais\n    };\n\n    if (!!searchValue) {\n      this.deleteLatestSearchEntryOnDelete = false;\n      let entries;\n      if (!!this.searchPaletteEntries && this.searchPaletteEntries.length > 0 && this.searchPaletteEntries[0].id === 'results') {\n        entries = this.searchPaletteEntries[0].entries;\n      } else {\n        entries = this.searchPaletteEntries;\n      }\n      this.searchPaletteEntries = [\n        {\n          label: 'Results',\n          id: 'results',\n          entries: flatEntriesToEntries(entriesToFlat(entries), entries)\n        }\n      ];\n    } else {\n      if (this.deleteLatestSearchEntryOnDelete) {\n        this.goBackOneLevel();\n      }\n      this.deleteLatestSearchEntryOnDelete = true;\n      this.searchPaletteEntries = [...this.currentPaletteEntries];\n    }\n  }\n\n  public goBackOneLevel(): void {\n    if (this.isSearchInputFocused()) {\n      if (this.searchIdTree.length === 0) {\n        this.destroyItself();\n      } else {\n        this.rebuildCurrentEntriesFromTree(this.searchIdTree.length - 1);\n        this.focusSearchInput();\n      }\n    } else {\n      this.focusSearchInput();\n    }\n  }\n\n  public hasChildEntries(paletteEntry: PaletteEntry): boolean {\n    return paletteEntry?.entries && paletteEntry.entries.length > 0;\n  }\n\n  /**\n   * caso tenha child entries, atualiza o dialog, senão executa a ação da entry.\n   */\n  public paletteEntryAction(paletteEntry: PaletteEntry): void {\n    if (this.hasChildEntries(paletteEntry)) {\n      this.searchIdTree = this.buildTreeIdEntriesFromPaletteEntry(paletteEntry, this.paletteEntries);\n      this.rebuildCurrentEntriesFromTree(this.searchIdTree.length, false);\n      this.searchString = '';\n      this.focusSearchInput();\n    } else {\n      paletteEntry.action();\n      this.destroyItself();\n    }\n  }\n\n  public clearAll(): void {\n    this.searchString = '';\n    this.searchIdTree = [];\n    this.searchPaletteEntries = [...this.paletteEntries];\n    this.currentPaletteEntries = [...this.paletteEntries];\n    this.focusSearchInput();\n  }\n\n}\n",
+            "selector": ".palette-result-entry",
             "providers": [],
             "inputsClass": [],
             "outputsClass": [],
@@ -1095,7 +1232,7 @@
         },
         {
             "name": "DialogComponent",
-            "id": "component-DialogComponent-2b7825be85784a53cd1a8d652d8055b0",
+            "id": "component-DialogComponent-82553d6771f4234900c2899ef790e372",
             "file": "projects/lib/src/services/command-palette/dialog/dialog.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -1119,7 +1256,7 @@
                     "type": "ElementRef",
                     "optional": false,
                     "description": "",
-                    "line": 44,
+                    "line": 36,
                     "modifierKind": [
                         112
                     ]
@@ -1129,7 +1266,7 @@
                     "type": "PaletteEntry[]",
                     "optional": false,
                     "description": "",
-                    "line": 109,
+                    "line": 41,
                     "modifierKind": [
                         114
                     ]
@@ -1140,7 +1277,7 @@
                     "type": "boolean",
                     "optional": false,
                     "description": "",
-                    "line": 46,
+                    "line": 38,
                     "modifierKind": [
                         112
                     ]
@@ -1150,18 +1287,18 @@
                     "type": "any",
                     "optional": false,
                     "description": "",
-                    "line": 43,
+                    "line": 35,
                     "modifierKind": [
                         114
                     ]
                 },
                 {
                     "name": "paletteEntries",
-                    "defaultValue": "[\n    {\n      label: 'Pages',\n      id: 'pages',\n      entries: [\n        {\n          label: 'Dashboard',\n          id: 'dashboard',\n          action: () => {\n            console.log('dashboard');\n          }\n        },\n        {\n          label: 'Notifications',\n          id: 'notifications',\n          action: () => {\n            console.log('notifications');\n          }\n        }\n      ]\n    },\n    {\n      label: 'Preferences',\n      id: 'preferences',\n      entries: [\n        {\n          label: 'Change Theme',\n          id: 'theme',\n          entries: [\n            {\n              label: 'Light Themes',\n              id: 'lightThemes',\n              entries: [\n                {\n                  label: 'Light',\n                  id: 'light',\n                  action: () => {\n                    console.log('LIGHT THEME');\n                  }\n                },\n                {\n                  label: 'Light Alternative',\n                  id: 'lightAlt',\n                  action: () => {\n                    console.log('LIGHT THEME ALTERNATIVE');\n                  }\n                },\n              ]\n            },\n            {\n              label: 'Dark',\n              id: 'dark',\n              action: () => {\n                console.log('DARK THEME');\n              }\n            }\n          ]\n        }\n      ]\n    }\n  ]",
+                    "defaultValue": "[]",
                     "type": "PaletteEntry[]",
                     "optional": false,
                     "description": "",
-                    "line": 48,
+                    "line": 40,
                     "modifierKind": [
                         114
                     ]
@@ -1172,7 +1309,7 @@
                     "type": "string",
                     "optional": false,
                     "description": "",
-                    "line": 41,
+                    "line": 33,
                     "modifierKind": [
                         114
                     ]
@@ -1182,7 +1319,7 @@
                     "type": "QueryList<ElementRef>",
                     "optional": false,
                     "description": "",
-                    "line": 39,
+                    "line": 31,
                     "decorators": [
                         {
                             "name": "ViewChildren",
@@ -1195,7 +1332,7 @@
                     "type": "ElementRef",
                     "optional": false,
                     "description": "",
-                    "line": 37,
+                    "line": 29,
                     "decorators": [
                         {
                             "name": "ViewChild",
@@ -1206,10 +1343,10 @@
                 {
                     "name": "searchIdTree",
                     "defaultValue": "[]",
-                    "type": "literal type[]",
+                    "type": "PaletteTreeEntry[]",
                     "optional": false,
                     "description": "",
-                    "line": 42,
+                    "line": 34,
                     "modifierKind": [
                         114
                     ]
@@ -1219,7 +1356,7 @@
                     "type": "PaletteEntry[]",
                     "optional": false,
                     "description": "",
-                    "line": 110,
+                    "line": 42,
                     "modifierKind": [
                         114
                     ]
@@ -1229,7 +1366,7 @@
                     "type": "ElementRef",
                     "optional": false,
                     "description": "",
-                    "line": 38,
+                    "line": 30,
                     "decorators": [
                         {
                             "name": "ViewChild",
@@ -1243,7 +1380,7 @@
                     "type": "string",
                     "optional": false,
                     "description": "",
-                    "line": 40,
+                    "line": 32,
                     "modifierKind": [
                         114
                     ]
@@ -1253,7 +1390,7 @@
                     "type": "function",
                     "optional": false,
                     "description": "",
-                    "line": 45,
+                    "line": 37,
                     "modifierKind": [
                         112
                     ]
@@ -1268,14 +1405,14 @@
                             "type": "PaletteEntry"
                         },
                         {
-                            "name": "entriesToCompare",
+                            "name": "entriesToVerify",
                             "type": "PaletteEntry[]"
                         }
                     ],
                     "optional": false,
                     "returnType": "any",
                     "typeParameters": [],
-                    "line": 182,
+                    "line": 118,
                     "modifierKind": [
                         114
                     ],
@@ -1288,7 +1425,7 @@
                             }
                         },
                         {
-                            "name": "entriesToCompare",
+                            "name": "entriesToVerify",
                             "type": "PaletteEntry[]",
                             "tagName": {
                                 "text": "param"
@@ -1302,7 +1439,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 340,
+                    "line": 285,
                     "modifierKind": [
                         114
                     ]
@@ -1313,7 +1450,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 137,
+                    "line": 73,
                     "modifierKind": [
                         114
                     ]
@@ -1324,7 +1461,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 152,
+                    "line": 88,
                     "modifierKind": [
                         114
                     ]
@@ -1335,7 +1472,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 167,
+                    "line": 103,
                     "modifierKind": [
                         114
                     ]
@@ -1346,7 +1483,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 141,
+                    "line": 77,
                     "modifierKind": [
                         112
                     ]
@@ -1357,7 +1494,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 306,
+                    "line": 253,
                     "modifierKind": [
                         114
                     ]
@@ -1373,7 +1510,7 @@
                     "optional": false,
                     "returnType": "boolean",
                     "typeParameters": [],
-                    "line": 319,
+                    "line": 266,
                     "modifierKind": [
                         114
                     ],
@@ -1393,7 +1530,7 @@
                     "optional": false,
                     "returnType": "boolean",
                     "typeParameters": [],
-                    "line": 148,
+                    "line": 84,
                     "modifierKind": [
                         112
                     ]
@@ -1404,7 +1541,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 121,
+                    "line": 57,
                     "modifierKind": [
                         114
                     ]
@@ -1415,7 +1552,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 133,
+                    "line": 69,
                     "modifierKind": [
                         114
                     ]
@@ -1431,8 +1568,8 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 327,
-                    "description": "<p>caso tenha child entries, atualiza o dialog, senão executa a ação da entry.\nTODO FAZER A ARVORE (searchIdTree) DE ACORDO COM A ENTRY SELECIONADA</p>\n",
+                    "line": 273,
+                    "description": "<p>caso tenha child entries, atualiza o dialog, senão executa a ação da entry.</p>\n",
                     "modifierKind": [
                         114
                     ],
@@ -1462,7 +1599,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 197,
+                    "line": 153,
                     "modifierKind": [
                         114
                     ],
@@ -1495,7 +1632,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 220,
+                    "line": 176,
                     "modifierKind": [
                         114
                     ],
@@ -1515,11 +1652,11 @@
             "description": "",
             "rawdescription": "",
             "type": "component",
-            "sourceCode": "import {\n  Component,\n  ElementRef,\n  AfterViewInit,\n  ViewChild,\n  Renderer2,\n  OnDestroy,\n  ViewChildren, QueryList, Directive\n} from '@angular/core';\nimport {ComponentInjectorService} from '../component-injector.service';\nimport {Observable} from 'rxjs';\nimport _ from 'lodash';\nimport deepdash from 'deepdash-es';\nimport {isNumeric} from 'rxjs/internal-compatibility';\nconst deep = deepdash(_);\n\nexport interface PaletteEntry {\n  label: string;\n  id: string;\n  treeId?: string; // totalmente opcional\n  entries?: PaletteEntry[]; // deve obrigatoriamente ter APENAS ou 'entries' ou 'action'\n  action?: () => void | Observable<any>; // TODO incluir comportamento com observable\n}\n\n// tslint:disable-next-line:directive-selector directive-class-suffix\n@Directive({selector: '.result-entry'}) export class ResultSearchElements {\n  //\n}\n\n@Component({\n  selector: 'pm-command-palette-dialog',\n  templateUrl: './dialog.component.html',\n  styleUrls: ['./dialog.component.scss']\n})\nexport class DialogComponent implements AfterViewInit, OnDestroy {\n\n  @ViewChild('rootPanel', {static: true}) rootPanelComponent: ElementRef;\n  @ViewChild('searchResultContainer', {static: true}) searchResultContainer: ElementRef;\n  @ViewChildren(ResultSearchElements, { read: ElementRef }) resultEntryElements: QueryList<ElementRef>;\n  public searchString = '';\n  public placeholderString = 'Digite sua busca...';\n  public searchIdTree: {id: string, label: string}[] = []; // utilizado para navegar entre os ids da lista de entradas\n  public itself: any;\n  private currentFocusedElement: ElementRef;\n  private unlistener: () => void;\n  private deleteLatestSearchEntryOnDelete: boolean = false;\n\n  public paletteEntries: PaletteEntry[] = [\n    {\n      label: 'Pages',\n      id: 'pages',\n      entries: [\n        {\n          label: 'Dashboard',\n          id: 'dashboard',\n          action: () => {\n            console.log('dashboard');\n          }\n        },\n        {\n          label: 'Notifications',\n          id: 'notifications',\n          action: () => {\n            console.log('notifications');\n          }\n        }\n      ]\n    },\n    {\n      label: 'Preferences',\n      id: 'preferences',\n      entries: [\n        {\n          label: 'Change Theme',\n          id: 'theme',\n          entries: [\n            {\n              label: 'Light Themes',\n              id: 'lightThemes',\n              entries: [\n                {\n                  label: 'Light',\n                  id: 'light',\n                  action: () => {\n                    console.log('LIGHT THEME');\n                  }\n                },\n                {\n                  label: 'Light Alternative',\n                  id: 'lightAlt',\n                  action: () => {\n                    console.log('LIGHT THEME ALTERNATIVE');\n                  }\n                },\n              ]\n            },\n            {\n              label: 'Dark',\n              id: 'dark',\n              action: () => {\n                console.log('DARK THEME');\n              }\n            }\n          ]\n        }\n      ]\n    }\n  ];\n  public currentPaletteEntries: PaletteEntry[];\n  public searchPaletteEntries: PaletteEntry[];\n\n  constructor(\n    private componentInjectorService: ComponentInjectorService,\n    private renderer2: Renderer2\n  ) {\n    document.documentElement.style.setProperty(`overflow-x`, `hidden`, 'important');\n    this.currentPaletteEntries = [...this.paletteEntries];\n    this.searchPaletteEntries = [...this.paletteEntries];\n  }\n\n  public ngAfterViewInit(): void {\n    this.focusSearchInput();\n    this.unlistener = this.renderer2.listen('window', 'focusin', event => {\n      if (!(\n        event.target === this.rootPanelComponent.nativeElement\n        || this.rootPanelComponent.nativeElement.contains(event.target)\n      )) {\n        this.destroyItself();\n      }\n    });\n  }\n\n  public ngOnDestroy(): void {\n    document.documentElement.style.removeProperty(`overflow-x`);\n  }\n\n  public destroyItself(): void {\n    this.componentInjectorService.removeComponentFromBody(this.itself);\n  }\n\n  private focusSearchInput(): void {\n    setTimeout(() => {\n      this.currentFocusedElement = this.rootPanelComponent;\n      this.rootPanelComponent.nativeElement.children[0].children[1].focus();\n    }, 50);\n  }\n\n  private isSearchInputFocused(): boolean {\n    return this.currentFocusedElement === this.rootPanelComponent;\n  }\n\n  public focusNext(): void {\n    const arrayResultEntryElements = this.resultEntryElements.toArray();\n    const currentFocusIndex = arrayResultEntryElements.findIndex(item => item === this.currentFocusedElement);\n    const focusNextIndex = currentFocusIndex + 1;\n    if (focusNextIndex >= arrayResultEntryElements.length) {\n      this.focusSearchInput();\n    }\n    else if (isNumeric(focusNextIndex)) {\n      this.currentFocusedElement = arrayResultEntryElements[focusNextIndex];\n      this.currentFocusedElement.nativeElement.focus();\n    } else {\n      this.focusSearchInput();\n    }\n  }\n\n  public focusPrevious(): void {\n    const arrayResultEntryElements = this.resultEntryElements.toArray();\n    const currentFocusIndex = arrayResultEntryElements.findIndex(item => item === this.currentFocusedElement);\n    const focusPreviousIndex = currentFocusIndex - 1;\n    if (focusPreviousIndex < 0) {\n      this.focusSearchInput();\n    }\n    else if (isNumeric(focusPreviousIndex)) {\n      this.currentFocusedElement = arrayResultEntryElements[focusPreviousIndex];\n      this.currentFocusedElement.nativeElement.focus();\n    } else {\n      this.focusSearchInput();\n    }\n  }\n\n  public buildTreeIdEntriesFromPaletteEntry(paletteEntry: PaletteEntry, entriesToCompare: PaletteEntry[]): any {\n    const deepFind = (array, obj) => {\n      return array.reduce((result, arrayItem) => {\n        if (result.length) {\n          return result;\n        }\n        if (_.isEqual(arrayItem, obj)) {\n          return result.concat([arrayItem]);\n        }\n        return arrayItem.items.length ? deepFind(arrayItem.items, obj) : result;\n      }, []);\n    };\n    return deepFind(entriesToCompare, paletteEntry);\n  }\n\n  public rebuildCurrentEntriesFromTree(treeEntryIndex: number, sliceTree: boolean = true): void {\n    let resultEntries = [...this.paletteEntries];\n    if (this.searchIdTree.length > 0) {\n      const slicedTreeEntries = this.searchIdTree.slice(0, treeEntryIndex);\n      // tslint:disable-next-line:prefer-for-of\n      for (let i = 0; i < slicedTreeEntries.length; i++) {\n        const treeEntry = slicedTreeEntries[i];\n        let paletteEntry;\n        if (i === 0) {\n          paletteEntry = resultEntries.find(entry => entry.id === treeEntry.id);\n        } else {\n          paletteEntry = resultEntries[0].entries.find(entry => entry.id === treeEntry.id);\n        }\n        resultEntries = [paletteEntry];\n      }\n    }\n    if (sliceTree) {\n      this.searchIdTree = this.searchIdTree.slice(0, treeEntryIndex);\n    }\n    this.searchPaletteEntries = resultEntries;\n    this.currentPaletteEntries = resultEntries;\n  }\n\n  public searchAction(searchValue: string): void {\n    const entriesToFlat: (paletteEntries: PaletteEntry[]) => string[] = (paletteEntries: PaletteEntry[]) => {\n      const idTreeArray = [];\n\n      const isSearchValueInEntry: (paletteEntry: PaletteEntry) => boolean = (paletteEntry: PaletteEntry) => {\n        return paletteEntry.label.toLowerCase().includes(searchValue.toLowerCase())\n          || paletteEntry.id.toLowerCase().includes(searchValue.toLowerCase());\n      };\n\n      const entryToFlat: (paletteEntry: PaletteEntry, idPrefix: string) => void = (paletteEntry: PaletteEntry, idPrefix: string = '') => {\n        idPrefix = !!idPrefix ? `${idPrefix}` : `${paletteEntry.id}`;\n        if (this.hasChildEntries(paletteEntry)) {\n          idTreeArray.push(`${idPrefix}`);\n          for (let i = 0; i < paletteEntry.entries.length; i++) {\n            const entry = paletteEntry.entries[i];\n            const idSuffix = `.entries[${i}]`;\n            entryToFlat(entry, `${idPrefix}${idSuffix}`);\n          }\n        } else {\n          if (isSearchValueInEntry(paletteEntry)) {\n            idTreeArray.push(`${idPrefix}`);\n          }\n        }\n      };\n\n      if (paletteEntries.length > 0 && paletteEntries[0].id === 'results') {\n        paletteEntries = paletteEntries[0].entries;\n      }\n      const resultEntry: PaletteEntry = {\n        label: 'Results',\n        id: 'results',\n        entries: paletteEntries\n      };\n\n      entryToFlat(resultEntry, '');\n      if (this.searchIdTree.length === 0) {\n        return idTreeArray.slice(1);\n      } else {\n        return idTreeArray.slice(2);\n      }\n    };\n\n    const flatEntriesToEntries: (flatEntries: string[], entriesToCheck: PaletteEntry[]) => PaletteEntry[] = (flatEntries: string[], entriesToCheck: PaletteEntry[]) => {\n      const resultObjToCheck = {results: {entries: [...entriesToCheck]}};\n      const entries: PaletteEntry[] = [];\n      for (const flatEntry of flatEntries) {\n        const entryToAdd: PaletteEntry = _.get(resultObjToCheck, flatEntry);\n        entryToAdd.treeId = flatEntry;\n        entries.push(entryToAdd);\n      }\n      return _.uniqWith(entries, _.isEqual); // remove objetos iguais\n    };\n\n    const addTreeIds: (paletteEntries: PaletteEntry[]) => PaletteEntry[] = (paletteEntries: PaletteEntry[]) => {\n      const flatEntries = entriesToFlat(paletteEntries[0].entries);\n      for (let i = 1; i < flatEntries.length - 1; i++) {\n        const flatEntry = flatEntries[i];\n        paletteEntries[0].entries[i].treeId = flatEntry;\n      }\n      return paletteEntries;\n    };\n\n    if (!!searchValue) {\n      this.deleteLatestSearchEntryOnDelete = false;\n      let entries;\n      if (!!this.searchPaletteEntries && this.searchPaletteEntries.length > 0 && this.searchPaletteEntries[0].id === 'results') {\n        entries = this.searchPaletteEntries[0].entries;\n      } else {\n        entries = this.searchPaletteEntries;\n      }\n      this.searchPaletteEntries = [\n        {\n          label: 'Results',\n          id: 'results',\n          entries: flatEntriesToEntries(entriesToFlat(entries), entries)\n        }\n      ];\n    } else {\n      if (this.deleteLatestSearchEntryOnDelete) {\n        this.goBackOneLevel();\n      }\n      this.deleteLatestSearchEntryOnDelete = true;\n      this.searchPaletteEntries = [...this.currentPaletteEntries];\n    }\n  }\n\n  public goBackOneLevel(): void {\n    if (this.isSearchInputFocused()) {\n      if (this.searchIdTree.length === 0) {\n        this.destroyItself();\n      } else {\n        this.rebuildCurrentEntriesFromTree(this.searchIdTree.length - 1);\n        this.focusSearchInput();\n      }\n    } else {\n      this.focusSearchInput();\n    }\n  }\n\n  public hasChildEntries(paletteEntry: PaletteEntry): boolean {\n    return paletteEntry?.entries && paletteEntry.entries.length > 0;\n  }\n\n  /**\n   * caso tenha child entries, atualiza o dialog, senão executa a ação da entry.\n   * TODO FAZER A ARVORE (searchIdTree) DE ACORDO COM A ENTRY SELECIONADA\n   */\n  public paletteEntryAction(paletteEntry: PaletteEntry): void {\n    if (this.hasChildEntries(paletteEntry)) {\n      console.log(this.buildTreeIdEntriesFromPaletteEntry(paletteEntry, this.paletteEntries));\n      // this.searchIdTree.push({id: paletteEntry.id, label: paletteEntry.label});\n      this.rebuildCurrentEntriesFromTree(this.searchIdTree.length, false);\n      this.searchString = '';\n      this.focusSearchInput();\n    } else {\n      paletteEntry.action();\n      this.destroyItself();\n    }\n  }\n\n  public clearAll(): void {\n    this.searchString = '';\n    this.searchIdTree = [];\n    this.searchPaletteEntries = [...this.paletteEntries];\n    this.currentPaletteEntries = [...this.paletteEntries];\n    this.focusSearchInput();\n  }\n\n}\n",
+            "sourceCode": "import {\n  Component,\n  ElementRef,\n  AfterViewInit,\n  ViewChild,\n  Renderer2,\n  OnDestroy,\n  ViewChildren, QueryList, Directive\n} from '@angular/core';\nimport {ComponentInjectorService} from '../component-injector.service';\nimport {Observable} from 'rxjs';\nimport _ from 'lodash';\nimport {isNumeric} from 'rxjs/internal-compatibility';\nimport {PaletteEntry, PaletteTreeEntry} from '../models';\nimport {CommandPaletteEntriesService} from '../command-palette-entries.service';\n\n// tslint:disable-next-line:directive-selector directive-class-suffix\n@Directive({selector: '.palette-result-entry'}) export class ResultSearchElements {\n  //\n}\n\n@Component({\n  selector: 'pm-command-palette-dialog',\n  templateUrl: './dialog.component.html',\n  styleUrls: ['./dialog.component.scss']\n})\nexport class DialogComponent implements AfterViewInit, OnDestroy {\n\n  @ViewChild('rootPanel', {static: true}) rootPanelComponent: ElementRef;\n  @ViewChild('searchResultContainer', {static: true}) searchResultContainer: ElementRef;\n  @ViewChildren(ResultSearchElements, { read: ElementRef }) resultEntryElements: QueryList<ElementRef>;\n  public searchString = '';\n  public placeholderString = 'Digite sua busca...';\n  public searchIdTree: PaletteTreeEntry[] = []; // utilizado para navegar entre os ids da lista de entradas\n  public itself: any;\n  private currentFocusedElement: ElementRef;\n  private unlistener: () => void;\n  private deleteLatestSearchEntryOnDelete: boolean = false;\n\n  public paletteEntries: PaletteEntry[] = [];\n  public currentPaletteEntries: PaletteEntry[];\n  public searchPaletteEntries: PaletteEntry[];\n\n  constructor(\n    private commandPaletteEntriesService: CommandPaletteEntriesService,\n    private componentInjectorService: ComponentInjectorService,\n    private renderer2: Renderer2\n  ) {\n    document.documentElement.style.setProperty(`overflow-x`, `hidden`, 'important');\n    this.commandPaletteEntriesService.paletteEntries$.subscribe(entries => {\n      this.paletteEntries = [...entries];\n      this.currentPaletteEntries = [...this.paletteEntries];\n      this.searchPaletteEntries = [...this.paletteEntries];\n    });\n  }\n\n  public ngAfterViewInit(): void {\n    this.clearAll();\n    this.unlistener = this.renderer2.listen('window', 'focusin', event => {\n      if (!(\n        event.target === this.rootPanelComponent.nativeElement\n        || this.rootPanelComponent.nativeElement.contains(event.target)\n      )) {\n        this.destroyItself();\n      }\n    });\n  }\n\n  public ngOnDestroy(): void {\n    document.documentElement.style.removeProperty(`overflow-x`);\n  }\n\n  public destroyItself(): void {\n    this.componentInjectorService.removeComponentFromBody(this.itself);\n  }\n\n  private focusSearchInput(): void {\n    setTimeout(() => {\n      this.currentFocusedElement = this.rootPanelComponent;\n      this.rootPanelComponent.nativeElement.children[0].children[1].focus();\n    }, 50);\n  }\n\n  private isSearchInputFocused(): boolean {\n    return this.currentFocusedElement === this.rootPanelComponent;\n  }\n\n  public focusNext(): void {\n    const arrayResultEntryElements = this.resultEntryElements.toArray();\n    const currentFocusIndex = arrayResultEntryElements.findIndex(item => item === this.currentFocusedElement);\n    const focusNextIndex = currentFocusIndex + 1;\n    if (focusNextIndex >= arrayResultEntryElements.length) {\n      this.focusSearchInput();\n    }\n    else if (isNumeric(focusNextIndex)) {\n      this.currentFocusedElement = arrayResultEntryElements[focusNextIndex];\n      this.currentFocusedElement.nativeElement.focus();\n    } else {\n      this.focusSearchInput();\n    }\n  }\n\n  public focusPrevious(): void {\n    const arrayResultEntryElements = this.resultEntryElements.toArray();\n    const currentFocusIndex = arrayResultEntryElements.findIndex(item => item === this.currentFocusedElement);\n    const focusPreviousIndex = currentFocusIndex - 1;\n    if (focusPreviousIndex < 0) {\n      this.focusSearchInput();\n    }\n    else if (isNumeric(focusPreviousIndex)) {\n      this.currentFocusedElement = arrayResultEntryElements[focusPreviousIndex];\n      this.currentFocusedElement.nativeElement.focus();\n    } else {\n      this.focusSearchInput();\n    }\n  }\n\n  public buildTreeIdEntriesFromPaletteEntry(paletteEntry: PaletteEntry, entriesToVerify: PaletteEntry[]): any {\n    let result;\n    let foundEqual: boolean = false;\n\n    const verifyEqual = (entryToVerify: PaletteEntry) => {\n      result.push({id: entryToVerify.id, label: entryToVerify.label});\n      foundEqual = _.isEqual(entryToVerify, paletteEntry);\n    };\n\n    const verifyChildren = (entryToVerify: PaletteEntry) => {\n      verifyEqual(entryToVerify);\n      if (!foundEqual) {\n        if (this.hasChildEntries(entryToVerify)) {\n          for (const child of entryToVerify.entries) {\n            if (!foundEqual) {\n              verifyChildren(child);\n            } else {\n              break;\n            }\n          }\n        }\n      }\n    };\n\n    for (const entry of entriesToVerify) {\n      if (!foundEqual) {\n        result = []; // toda vez que itera sobre um novo item do array base zera a árvore de results\n        verifyChildren(entry);\n      } else {\n        break;\n      }\n    }\n    return result;\n  }\n\n  public rebuildCurrentEntriesFromTree(treeEntryIndex: number, sliceTree: boolean = true): void {\n    let resultEntries = [...this.paletteEntries];\n    if (this.searchIdTree.length > 0) {\n      const slicedTreeEntries = this.searchIdTree.slice(0, treeEntryIndex);\n      // tslint:disable-next-line:prefer-for-of\n      for (let i = 0; i < slicedTreeEntries.length; i++) {\n        const treeEntry = slicedTreeEntries[i];\n        let paletteEntry;\n        if (i === 0) {\n          paletteEntry = resultEntries.find(entry => entry.id === treeEntry.id);\n        } else {\n          paletteEntry = resultEntries[0].entries.find(entry => entry.id === treeEntry.id);\n        }\n        resultEntries = [paletteEntry];\n      }\n    }\n    if (sliceTree) {\n      this.searchIdTree = this.searchIdTree.slice(0, treeEntryIndex);\n    }\n    this.searchPaletteEntries = resultEntries;\n    this.currentPaletteEntries = resultEntries;\n  }\n\n  public searchAction(searchValue: string): void {\n    const entriesToFlat: (paletteEntries: PaletteEntry[]) => string[] = (paletteEntries: PaletteEntry[]) => {\n      const idTreeArray = [];\n\n      const isSearchValueInEntry: (paletteEntry: PaletteEntry) => boolean = (paletteEntry: PaletteEntry) => {\n        return paletteEntry.label.toLowerCase().includes(searchValue.toLowerCase())\n          || paletteEntry.id.toLowerCase().includes(searchValue.toLowerCase());\n      };\n\n      const entryToFlat: (paletteEntry: PaletteEntry, idPrefix: string) => void = (paletteEntry: PaletteEntry, idPrefix: string = '') => {\n        idPrefix = !!idPrefix ? `${idPrefix}` : `${paletteEntry.id}`;\n        if (this.hasChildEntries(paletteEntry)) {\n          idTreeArray.push(`${idPrefix}`);\n          for (let i = 0; i < paletteEntry.entries.length; i++) {\n            const entry = paletteEntry.entries[i];\n            const idSuffix = `.entries[${i}]`;\n            entryToFlat(entry, `${idPrefix}${idSuffix}`);\n          }\n        } else {\n          if (isSearchValueInEntry(paletteEntry)) {\n            idTreeArray.push(`${idPrefix}`);\n          }\n        }\n      };\n\n      if (paletteEntries.length > 0 && paletteEntries[0].id === 'results') {\n        paletteEntries = paletteEntries[0].entries;\n      }\n      const resultEntry: PaletteEntry = {\n        label: 'Results',\n        id: 'results',\n        entries: paletteEntries\n      };\n\n      entryToFlat(resultEntry, '');\n      if (this.searchIdTree.length === 0) {\n        return idTreeArray.slice(1);\n      } else {\n        return idTreeArray.slice(2);\n      }\n    };\n\n    const flatEntriesToEntries: (flatEntries: string[], entriesToCheck: PaletteEntry[]) => PaletteEntry[] = (flatEntries: string[], entriesToCheck: PaletteEntry[]) => {\n      const resultObjToCheck = {results: {entries: [...entriesToCheck]}};\n      const entries: PaletteEntry[] = [];\n      for (const flatEntry of flatEntries) {\n        const entryToAdd: PaletteEntry = _.get(resultObjToCheck, flatEntry);\n        entryToAdd.treeId = flatEntry;\n        entries.push(entryToAdd);\n      }\n      return _.uniqWith(entries, _.isEqual); // remove objetos iguais\n    };\n\n    if (!!searchValue) {\n      this.deleteLatestSearchEntryOnDelete = false;\n      let entries;\n      if (!!this.searchPaletteEntries && this.searchPaletteEntries.length > 0 && this.searchPaletteEntries[0].id === 'results') {\n        entries = this.searchPaletteEntries[0].entries;\n      } else {\n        entries = this.searchPaletteEntries;\n      }\n      this.searchPaletteEntries = [\n        {\n          label: 'Results',\n          id: 'results',\n          entries: flatEntriesToEntries(entriesToFlat(entries), entries)\n        }\n      ];\n    } else {\n      if (this.deleteLatestSearchEntryOnDelete) {\n        this.goBackOneLevel();\n      }\n      this.deleteLatestSearchEntryOnDelete = true;\n      this.searchPaletteEntries = [...this.currentPaletteEntries];\n    }\n  }\n\n  public goBackOneLevel(): void {\n    if (this.isSearchInputFocused()) {\n      if (this.searchIdTree.length === 0) {\n        this.destroyItself();\n      } else {\n        this.rebuildCurrentEntriesFromTree(this.searchIdTree.length - 1);\n        this.focusSearchInput();\n      }\n    } else {\n      this.focusSearchInput();\n    }\n  }\n\n  public hasChildEntries(paletteEntry: PaletteEntry): boolean {\n    return paletteEntry?.entries && paletteEntry.entries.length > 0;\n  }\n\n  /**\n   * caso tenha child entries, atualiza o dialog, senão executa a ação da entry.\n   */\n  public paletteEntryAction(paletteEntry: PaletteEntry): void {\n    if (this.hasChildEntries(paletteEntry)) {\n      this.searchIdTree = this.buildTreeIdEntriesFromPaletteEntry(paletteEntry, this.paletteEntries);\n      this.rebuildCurrentEntriesFromTree(this.searchIdTree.length, false);\n      this.searchString = '';\n      this.focusSearchInput();\n    } else {\n      paletteEntry.action();\n      this.destroyItself();\n    }\n  }\n\n  public clearAll(): void {\n    this.searchString = '';\n    this.searchIdTree = [];\n    this.searchPaletteEntries = [...this.paletteEntries];\n    this.currentPaletteEntries = [...this.paletteEntries];\n    this.focusSearchInput();\n  }\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": "::ng-deep {\n  pm-command-palette-dialog {\n    * {\n      &:focus,\n      &:focus-visible {\n        outline: none;\n      }\n    }\n\n    position: fixed;\n    z-index: 9999;\n    overflow: hidden !important;\n    overflow-y: hidden !important;\n    overflow-x: hidden !important;\n\n    .backdrop {\n      display: flex;\n      flex-direction: column;\n      align-items: center;\n      width: 100vw;\n      height: 100vh;\n      background-color: rgba(0, 0, 0, 0.30);\n      padding: calc(1.5 * var(--navbar-height)) 1em;\n\n      overflow: hidden !important;\n      overflow-y: hidden !important;\n      overflow-x: hidden !important;\n    }\n\n    .palette-dialog-container {\n      overflow: hidden;\n      border-radius: var(--border-radius-md);\n      width: calc(100% - 1em);\n      max-width: 900px;\n    }\n\n    .palette-dialog {\n      $side-padding: 12px;\n\n      overflow: auto;\n      border: none;\n\n      width: 100%;\n      height: 100%;\n      position: relative;\n\n      .search-input-container {\n        background-color: #fff;\n        display: flex;\n        flex-direction: row;\n        align-items: center;\n        position: sticky;\n        padding: 1em;\n        top: 0;\n        left: 0;\n        width: 100%;\n        border-bottom: 2px solid var(--color-gray-light);\n        border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;\n\n        pm-button {\n          &:not(:first-child) {\n            margin-left: 0.3em;\n          }\n        }\n\n        .pm-button {\n          height: 100%;\n          button {\n            height: 100%;\n          }\n        }\n\n        input {\n          border: none;\n          color: var(--color-gray-darker);\n          margin-left: 0.3em;\n        }\n      }\n\n      .search-result-container {\n        & > * {\n          h1, h2, h3, h4, h5, h6, p {\n            margin: 0;\n          }\n        }\n\n        .result-category {\n          & > {\n            h1, h2, h3, h4, h5, h6, p {\n              font-size: 0.9em;\n              padding: ($side-padding/2) $side-padding;\n            }\n          }\n          color: var(--color-gray-medium);\n        }\n\n        .result-entry {\n          font-size: 1em;\n          padding: $side-padding;\n          color: var(--color-gray-darker);\n\n          &:hover,\n          &:focus,\n          &:focus-within,\n          &:active {\n            $border-size: 4px;\n            border-left: $border-size solid var(--color-primary);\n            padding-left: calc(#{$side-padding} - #{$border-size});\n            background-color: var(--color-gray-light);\n          }\n\n\n          &:last-child {\n            margin-bottom: $side-padding;\n          }\n        }\n      }\n    }\n  }\n}\n",
+                    "data": "::ng-deep {\n  pm-command-palette-dialog {\n    * {\n      &:focus,\n      &:focus-visible {\n        outline: none;\n      }\n    }\n\n    position: fixed;\n    z-index: 9999;\n    overflow: hidden !important;\n    overflow-y: hidden !important;\n    overflow-x: hidden !important;\n\n    .backdrop {\n      display: flex;\n      flex-direction: column;\n      align-items: center;\n      width: 100vw;\n      height: 100vh;\n      background-color: rgba(0, 0, 0, 0.30);\n      padding: calc(1.5 * var(--navbar-height)) 1em;\n\n      overflow: hidden !important;\n      overflow-y: hidden !important;\n      overflow-x: hidden !important;\n    }\n\n    .palette-dialog-container {\n      overflow: hidden;\n      border-radius: var(--border-radius-md);\n      width: calc(100% - 1em);\n      max-width: 900px;\n    }\n\n    .palette-dialog {\n      $side-padding: 12px;\n\n      overflow: auto;\n      border: none;\n\n      width: 100%;\n      height: 100%;\n      position: relative;\n\n      .search-input-container {\n        background-color: #fff;\n        display: flex;\n        flex-direction: row;\n        align-items: center;\n        position: sticky;\n        padding: 1em;\n        top: 0;\n        left: 0;\n        width: 100%;\n        border-bottom: 2px solid var(--color-gray-light);\n        border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;\n\n        pm-button {\n          &:not(:first-child) {\n            margin-left: 0.3em;\n          }\n        }\n\n        .pm-button {\n          height: 100%;\n          button {\n            height: 100%;\n          }\n        }\n\n        input {\n          border: none;\n          color: var(--color-gray-darker);\n          margin-left: 0.3em;\n        }\n      }\n\n      .search-result-container {\n        & > * {\n          h1, h2, h3, h4, h5, h6, p {\n            margin: 0;\n          }\n        }\n\n        .result-category {\n          & > {\n            h1, h2, h3, h4, h5, h6, p {\n              font-size: 0.9em;\n              padding: ($side-padding/2) $side-padding;\n            }\n          }\n          color: var(--color-gray-medium);\n        }\n\n        .palette-result-entry {\n          cursor: pointer;\n          font-size: 1em;\n          padding: $side-padding;\n          color: var(--color-gray-darker);\n\n          &:hover,\n          &:focus,\n          &:focus-within,\n          &:active {\n            $border-size: 4px;\n            border-left: $border-size solid var(--color-primary);\n            padding-left: calc(#{$side-padding} - #{$border-size});\n            background-color: var(--color-gray-light);\n          }\n\n\n          &:last-child {\n            margin-bottom: $side-padding;\n          }\n        }\n      }\n    }\n  }\n}\n",
                     "styleUrl": "./dialog.component.scss"
                 }
             ],
@@ -1529,6 +1666,10 @@
                 "description": "",
                 "args": [
                     {
+                        "name": "commandPaletteEntriesService",
+                        "type": "CommandPaletteEntriesService"
+                    },
+                    {
                         "name": "componentInjectorService",
                         "type": "ComponentInjectorService"
                     },
@@ -1537,8 +1678,15 @@
                         "type": "Renderer2"
                     }
                 ],
-                "line": 110,
+                "line": 42,
                 "jsdoctags": [
+                    {
+                        "name": "commandPaletteEntriesService",
+                        "type": "CommandPaletteEntriesService",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
                     {
                         "name": "componentInjectorService",
                         "type": "ComponentInjectorService",
@@ -1559,7 +1707,7 @@
                 "AfterViewInit",
                 "OnDestroy"
             ],
-            "templateData": "<div\n  tabindex=\"0\" class=\"backdrop\"\n  (keydown.esc)=\"goBackOneLevel()\"\n  (keydown.arrowDown)=\"focusNext()\"\n  (keydown.arrowUp)=\"focusPrevious()\"\n>\n  <div class=\"palette-dialog-container\">\n    <div #rootPanel tabindex=\"0\" class=\"card-basic palette-dialog\">\n      <div class=\"search-input-container\">\n        <div class=\"d-flex search-tag-container\">\n          <pm-button\n            *ngFor=\"let treeEntry of searchIdTree; let index = index\"\n            (click)=\"rebuildCurrentEntriesFromTree(index);\"\n            [type]=\"'primary'\"\n            [size]=\"'sm'\"\n          >\n            {{treeEntry.label}}\n          </pm-button>\n        </div>\n        <input\n          #searchInput\n          class=\"w-100 flex-fill\"\n          (keydown.delete)=\"searchAction(searchInput.value)\"\n          (keydown.backspace)=\"searchAction(searchInput.value)\"\n          (input)=\"searchAction($event.target['value'])\"\n          [(ngModel)]=\"searchString\"\n          type=\"text\"\n          [attr.placeholder]=\"searchIdTree.length > 0 ? '' : 'Digite sua busca...'\"\n        >\n        <pm-button (click)=\"clearAll()\" [type]=\"'light'\" [size]=\"'sm'\">\n          {{'clear'}}\n        </pm-button>\n      </div>\n      <div #searchResultContainer class=\"search-result-container\">\n        <div *ngFor=\"let searchEntry of searchPaletteEntries\"\n             class=\"result-category\"\n        >\n          <p>{{searchEntry.label}}</p>\n          <div *ngFor=\"let childEntry of searchEntry.entries; let index = index;\"\n               [attr.tabindex]=\"index\"\n               (click)=\"paletteEntryAction(childEntry)\"\n               (keydown.enter)=\"paletteEntryAction(childEntry)\"\n               (keydown.arrowRight)=\"paletteEntryAction(childEntry)\"\n               class=\"result-entry cursor-pointer\"\n          >\n            <p>{{childEntry.label}}{{hasChildEntries(childEntry) ? '...' : ''}}</p>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n"
+            "templateData": "<div\n  tabindex=\"0\" class=\"backdrop\"\n  (keydown.esc)=\"goBackOneLevel()\"\n  (keydown.arrowDown)=\"focusNext()\"\n  (keydown.arrowUp)=\"focusPrevious()\"\n>\n  <div class=\"palette-dialog-container\">\n    <div #rootPanel tabindex=\"0\" class=\"card-basic palette-dialog\">\n      <div class=\"search-input-container\">\n        <div class=\"d-flex search-tag-container\">\n          <pm-button\n            *ngFor=\"let treeEntry of searchIdTree; let index = index\"\n            (click)=\"rebuildCurrentEntriesFromTree(index);\"\n            [type]=\"'primary'\"\n            [size]=\"'sm'\"\n          >\n            {{treeEntry.label}}\n          </pm-button>\n        </div>\n        <input\n          #searchInput\n          class=\"w-100 flex-fill\"\n          (keydown.delete)=\"searchAction(searchInput.value)\"\n          (keydown.backspace)=\"searchAction(searchInput.value)\"\n          (input)=\"searchAction($event.target['value'])\"\n          [(ngModel)]=\"searchString\"\n          type=\"text\"\n          [attr.placeholder]=\"searchIdTree.length > 0 ? '' : 'Digite sua busca...'\"\n        >\n        <pm-button (click)=\"clearAll()\" [type]=\"'light'\" [size]=\"'sm'\">\n          {{'X'}}\n        </pm-button>\n      </div>\n      <div #searchResultContainer class=\"search-result-container\">\n        <div *ngFor=\"let searchEntry of searchPaletteEntries\"\n             class=\"result-category\"\n        >\n          <p>{{searchEntry.label}}</p>\n          <div *ngFor=\"let childEntry of searchEntry.entries; let index = index;\"\n               [attr.tabindex]=\"index\"\n               (click)=\"paletteEntryAction(childEntry)\"\n               (keydown.enter)=\"paletteEntryAction(childEntry)\"\n               (keydown.arrowRight)=\"paletteEntryAction(childEntry)\"\n               class=\"palette-result-entry\"\n          >\n            <p>{{childEntry.label}}{{hasChildEntries(childEntry) ? '...' : ''}}</p>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n"
         },
         {
             "name": "DraggableListComponent",
@@ -3242,7 +3390,7 @@
         },
         {
             "name": "TriggerButtonComponent",
-            "id": "component-TriggerButtonComponent-f17b705cb6c1e8e9d1bfca375b268dd8",
+            "id": "component-TriggerButtonComponent-c062aba48bc5d070bacf3fbb5d842b63",
             "file": "projects/lib/src/services/command-palette/trigger-button/trigger-button.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -3262,22 +3410,32 @@
                 {
                     "name": "iconClass",
                     "defaultValue": "''",
-                    "line": 12
+                    "line": 13
                 },
                 {
                     "name": "label",
                     "defaultValue": "'⌘ + K / ctrl + K'",
-                    "line": 11
+                    "line": 12
                 }
             ],
             "outputsClass": [],
             "propertiesClass": [
                 {
+                    "name": "commandPaletteEntriesService",
+                    "type": "CommandPaletteEntriesService",
+                    "optional": false,
+                    "description": "",
+                    "line": 17,
+                    "modifierKind": [
+                        114
+                    ]
+                },
+                {
                     "name": "commandPaletteService",
                     "type": "CommandPaletteService",
                     "optional": false,
                     "description": "",
-                    "line": 15,
+                    "line": 16,
                     "modifierKind": [
                         114
                     ]
@@ -3290,7 +3448,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 19,
+                    "line": 82,
                     "modifierKind": [
                         114
                     ]
@@ -3301,7 +3459,7 @@
             "description": "",
             "rawdescription": "",
             "type": "component",
-            "sourceCode": "import {AfterViewInit, Component, Input} from '@angular/core';\nimport {CommandPaletteService} from '../command-palette.service';\n\n@Component({\n  selector: 'pm-palette-trigger-button',\n  templateUrl: './trigger-button.component.html',\n  styles: [``]\n})\nexport class TriggerButtonComponent implements AfterViewInit {\n\n  @Input() label = '⌘ + K / ctrl + K';\n  @Input() iconClass = '';\n\n  constructor(\n    public commandPaletteService: CommandPaletteService\n  ) {\n  }\n\n  public ngAfterViewInit(): void {\n    if (!this.label && !this.iconClass) {\n      this.label = this.commandPaletteService.configs.hotkeys.join(' / ')\n        .split('meta').join('⌘')\n        .split('+').join(' + ');\n    }\n  }\n\n}\n",
+            "sourceCode": "import {AfterViewInit, Component, Input} from '@angular/core';\nimport {CommandPaletteService} from '../command-palette.service';\nimport {CommandPaletteEntriesService} from '../command-palette-entries.service';\n\n@Component({\n  selector: 'pm-palette-trigger-button',\n  templateUrl: './trigger-button.component.html',\n  styles: [``]\n})\nexport class TriggerButtonComponent implements AfterViewInit {\n\n  @Input() label = '⌘ + K / ctrl + K';\n  @Input() iconClass = '';\n\n  constructor(\n    public commandPaletteService: CommandPaletteService,\n    public commandPaletteEntriesService: CommandPaletteEntriesService\n  ) {\n    this.commandPaletteEntriesService.paletteEntries = [\n      {\n        label: 'Pages',\n        id: 'pages',\n        entries: [\n          {\n            label: 'Dashboard',\n            id: 'dashboard',\n            action: () => {\n              console.log('dashboard');\n            }\n          },\n          {\n            label: 'Notifications',\n            id: 'notifications',\n            action: () => {\n              console.log('notifications');\n            }\n          }\n        ]\n      },\n      {\n        label: 'Preferences',\n        id: 'preferences',\n        entries: [\n          {\n            label: 'Change Theme',\n            id: 'theme',\n            entries: [\n              {\n                label: 'Light Themes',\n                id: 'lightThemes',\n                entries: [\n                  {\n                    label: 'Light',\n                    id: 'light',\n                    action: () => {\n                      console.log('LIGHT THEME');\n                    }\n                  },\n                  {\n                    label: 'Light Alternative',\n                    id: 'lightAlt',\n                    action: () => {\n                      console.log('LIGHT THEME ALTERNATIVE');\n                    }\n                  },\n                ]\n              },\n              {\n                label: 'Dark',\n                id: 'dark',\n                action: () => {\n                  console.log('DARK THEME');\n                }\n              }\n            ]\n          }\n        ]\n      }\n    ];\n  }\n\n  public ngAfterViewInit(): void {\n    if (!this.label && !this.iconClass) {\n      this.label = this.commandPaletteService.configs.hotkeys.join(' / ')\n        .split('meta').join('⌘')\n        .split('+').join(' + ');\n    }\n  }\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "\n",
@@ -3312,13 +3470,24 @@
                     {
                         "name": "commandPaletteService",
                         "type": "CommandPaletteService"
+                    },
+                    {
+                        "name": "commandPaletteEntriesService",
+                        "type": "CommandPaletteEntriesService"
                     }
                 ],
-                "line": 12,
+                "line": 13,
                 "jsdoctags": [
                     {
                         "name": "commandPaletteService",
                         "type": "CommandPaletteService",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "commandPaletteEntriesService",
+                        "type": "CommandPaletteEntriesService",
                         "tagName": {
                             "text": "param"
                         }
@@ -4075,7 +4244,7 @@
                 "subtype": "variable",
                 "file": "projects/lib/src/services/command-palette/injection.ts",
                 "type": "CommandPaletteConfig",
-                "defaultValue": "{\n  hotkeys: ['meta+k', 'ctrl+k']\n}"
+                "defaultValue": "{\n  hotkeys: ['meta+k', 'ctrl+k'],\n  paletteEntries: []\n}"
             },
             {
                 "name": "components",
@@ -4108,14 +4277,6 @@
                 "file": "projects/lib/src/services/color-theme/color-theme.service.ts",
                 "type": "object",
                 "defaultValue": "{\n  'color-primary': '#455363',\n  'color-default': '#455363',\n  'background-color': '#1f2935',\n  'text-color': '#fff'\n}"
-            },
-            {
-                "name": "deep",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/lib/src/services/command-palette/dialog/dialog.component.ts",
-                "type": "",
-                "defaultValue": "deepdash(_)"
             },
             {
                 "name": "defaultArgs",
@@ -4153,33 +4314,9 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
-                "type": "object",
-                "defaultValue": "{\n  showIndex: true,\n  itemActionLabel: undefined,\n  itemMainLabel: undefined,\n  itemSubLabel: undefined,\n  actions: undefined,\n  itemList: undefined,\n  roundedBorders: true,\n  enableDragging: true,\n  enableSelection: true,\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/lib/src/components/lists/table-list/table-list.stories.ts",
-                "type": "object",
-                "defaultValue": "{\n  columns: [],\n  columnNames: [],\n  imageColumns: [],\n  imageHeight: '50px',\n  showHeader: true,\n  numberFormat: '1.2-2',\n  numberPrefix: '',\n  actionsTemplate: undefined,\n  itemList: undefined,\n  borderRadius: undefined,\n  backgroundColor: undefined,\n  expandedDetailTemplate: undefined,\n  disableExpandedOnDisabledRow: true,\n  expandedRow: undefined\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "projects/lib/src/components/inputs/button/button.stories.ts",
                 "type": "object",
                 "defaultValue": "{\n  label: '',\n  type: MainColors.default,\n  busy: false,\n  busyText: '',\n  iconClass: '',\n  iconPosition: 'start',\n  outline: false,\n  disabled: false,\n  size: 'md'\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
-                "type": "object",
-                "defaultValue": "{\n}"
             },
             {
                 "name": "defaultArgs",
@@ -4193,17 +4330,17 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts",
+                "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
                 "type": "object",
-                "defaultValue": "{\n  disabled: false,\n  text: ''\n}"
+                "defaultValue": "{\n  checked: false,\n  disabled: false,\n  selectedItem: undefined,\n}"
             },
             {
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
+                "file": "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts",
                 "type": "object",
-                "defaultValue": "{\n  checked: false,\n  disabled: false,\n  selectedItem: undefined,\n}"
+                "defaultValue": "{\n  disabled: false,\n  text: ''\n}"
             },
             {
                 "name": "defaultArgs",
@@ -4220,6 +4357,30 @@
                 "file": "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts",
                 "type": "object",
                 "defaultValue": "{\n  orientation: OrientationEnum.Y,\n  values: [],\n  disabled: false,\n  selectedValue: undefined\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
+                "type": "object",
+                "defaultValue": "{\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
+                "type": "object",
+                "defaultValue": "{\n  showIndex: true,\n  itemActionLabel: undefined,\n  itemMainLabel: undefined,\n  itemSubLabel: undefined,\n  actions: undefined,\n  itemList: undefined,\n  roundedBorders: true,\n  enableDragging: true,\n  enableSelection: true,\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/components/lists/table-list/table-list.stories.ts",
+                "type": "object",
+                "defaultValue": "{\n  columns: [],\n  columnNames: [],\n  imageColumns: [],\n  imageHeight: '50px',\n  showHeader: true,\n  numberFormat: '1.2-2',\n  numberPrefix: '',\n  actionsTemplate: undefined,\n  itemList: undefined,\n  borderRadius: undefined,\n  backgroundColor: undefined,\n  expandedDetailTemplate: undefined,\n  disableExpandedOnDisabledRow: true,\n  expandedRow: undefined\n}"
             },
             {
                 "name": "defaultArgs",
@@ -4552,33 +4713,9 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
-                "type": "Story<DraggableListComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-draggable-list\n      [showIndex]=\"showIndex\"\n      [itemActionLabel]=\"itemActionLabel\"\n      [itemMainLabel]=\"itemMainLabel\"\n      [itemSubLabel]=\"itemSubLabel\"\n      [actions]=\"actions\"\n      [itemList]=\"itemList\"\n      [roundedBorders]=\"roundedBorders\"\n      [enableDragging]=\"enableDragging\"\n      [enableSelection]=\"enableSelection\"\n    >\n    </pm-draggable-list>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/lib/src/components/lists/table-list/table-list.stories.ts",
-                "type": "Story<TableListComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `<pm-table-list\n    [columns]=\"columns\"\n    [columnNames]=\"columnNames\"\n    [imageColumns]=\"imageColumns\"\n    [imageHeight]=\"imageHeight\"\n    [showHeader]=\"showHeader\"\n    [numberFormat]=\"numberFormat\"\n    [numberPrefix]=\"numberPrefix\"\n    [itemList]=\"itemList\"\n    [borderRadius]=\"borderRadius\"\n    [backgroundColor]=\"backgroundColor\"\n    [expandedDetailTemplate]=\"expandedDetailTemplate\"\n    [disableExpandedOnDisabledRow]=\"disableExpandedOnDisabledRow\"\n  ></pm-table-list>`\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "projects/lib/src/components/inputs/button/button.stories.ts",
                 "type": "Story<ButtonComponent>",
                 "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-button\n        [label]=\"label\"\n        [type]=\"type\"\n        [busy]=\"busy\"\n        [busyText]=\"busyText\"\n        [iconClass]=\"iconClass\"\n        [iconPosition]=\"iconPosition\"\n        [outline]=\"outline\"\n        [disabled]=\"disabled\"\n        [size]=\"size\"\n    >\n        Button Content\n    </pm-button>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
-                "type": "Story<GridListComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-grid-list\n      [items]=\"items\"\n      [displayStyle]=\"displayStyle\"\n      [gridHeaderReverse]=\"gridHeaderReverse\"\n      [bodyBackgroundColor]=\"bodyBackgroundColor\"\n      [actionTemplate]=\"undefined\"\n      [overflowGallery]=\"overflowGallery\"\n    >\n    </pm-grid-list>\n  `\n})"
             },
             {
                 "name": "Template",
@@ -4592,17 +4729,17 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts",
-                "type": "Story<CopyContentInputComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-copy-content-input\n      [text]=\"text\"\n      [disabled]=\"disabled\"\n    >\n      Conteúdo\n    </pm-copy-content-input>\n  `\n})"
+                "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
+                "type": "Story<CheckboxComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-checkbox\n      [checked]=\"checked\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>\n  `\n})"
             },
             {
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
-                "type": "Story<CheckboxComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-checkbox\n      [checked]=\"checked\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>\n  `\n})"
+                "file": "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts",
+                "type": "Story<CopyContentInputComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-copy-content-input\n      [text]=\"text\"\n      [disabled]=\"disabled\"\n    >\n      Conteúdo\n    </pm-copy-content-input>\n  `\n})"
             },
             {
                 "name": "Template",
@@ -4619,6 +4756,30 @@
                 "file": "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts",
                 "type": "Story<RadioButtonComponent>",
                 "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-radio-button\n      [orientation]=\"orientation\"\n      [values]=\"values\"\n      [selectedValue]=\"selectedValue\"\n      [disabled]=\"disabled\"\n    >\n    </pm-radio-button>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
+                "type": "Story<GridListComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-grid-list\n      [items]=\"items\"\n      [displayStyle]=\"displayStyle\"\n      [gridHeaderReverse]=\"gridHeaderReverse\"\n      [bodyBackgroundColor]=\"bodyBackgroundColor\"\n      [actionTemplate]=\"undefined\"\n      [overflowGallery]=\"overflowGallery\"\n    >\n    </pm-grid-list>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
+                "type": "Story<DraggableListComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-draggable-list\n      [showIndex]=\"showIndex\"\n      [itemActionLabel]=\"itemActionLabel\"\n      [itemMainLabel]=\"itemMainLabel\"\n      [itemSubLabel]=\"itemSubLabel\"\n      [actions]=\"actions\"\n      [itemList]=\"itemList\"\n      [roundedBorders]=\"roundedBorders\"\n      [enableDragging]=\"enableDragging\"\n      [enableSelection]=\"enableSelection\"\n    >\n    </pm-draggable-list>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/components/lists/table-list/table-list.stories.ts",
+                "type": "Story<TableListComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `<pm-table-list\n    [columns]=\"columns\"\n    [columnNames]=\"columnNames\"\n    [imageColumns]=\"imageColumns\"\n    [imageHeight]=\"imageHeight\"\n    [showHeader]=\"showHeader\"\n    [numberFormat]=\"numberFormat\"\n    [numberPrefix]=\"numberPrefix\"\n    [itemList]=\"itemList\"\n    [borderRadius]=\"borderRadius\"\n    [backgroundColor]=\"backgroundColor\"\n    [expandedDetailTemplate]=\"expandedDetailTemplate\"\n    [disableExpandedOnDisabledRow]=\"disableExpandedOnDisabledRow\"\n  ></pm-table-list>`\n})"
             },
             {
                 "name": "Template",
@@ -5119,7 +5280,7 @@
                     "subtype": "variable",
                     "file": "projects/lib/src/services/command-palette/injection.ts",
                     "type": "CommandPaletteConfig",
-                    "defaultValue": "{\n  hotkeys: ['meta+k', 'ctrl+k']\n}"
+                    "defaultValue": "{\n  hotkeys: ['meta+k', 'ctrl+k'],\n  paletteEntries: []\n}"
                 }
             ],
             "projects/lib/src/services/command-palette/command-palette.module.ts": [
@@ -5173,16 +5334,6 @@
                     "file": "projects/lib/src/services/color-theme/color-theme.service.ts",
                     "type": "object",
                     "defaultValue": "{\n  'color-primary': '#fff',\n  'color-default': '#fff',\n  'background-color': '#e5e5e5',\n  'text-color': '#2d2d2d'\n}"
-                }
-            ],
-            "projects/lib/src/services/command-palette/dialog/dialog.component.ts": [
-                {
-                    "name": "deep",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/services/command-palette/dialog/dialog.component.ts",
-                    "type": "",
-                    "defaultValue": "deepdash(_)"
                 }
             ],
             "stories/default.ts": [
@@ -5263,82 +5414,6 @@
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-expansion-panel\n    >\n        Conteúdo aqui\n    </pm-expansion-panel>\n  `\n})"
                 }
             ],
-            "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
-                    "type": "object",
-                    "defaultValue": "{\n  showIndex: true,\n  itemActionLabel: undefined,\n  itemMainLabel: undefined,\n  itemSubLabel: undefined,\n  actions: undefined,\n  itemList: undefined,\n  roundedBorders: true,\n  enableDragging: true,\n  enableSelection: true,\n}"
-                },
-                {
-                    "name": "DefaultDraggableList",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "DisabledDragging",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "NoIndexStringList",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
-                    "type": "Story<DraggableListComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-draggable-list\n      [showIndex]=\"showIndex\"\n      [itemActionLabel]=\"itemActionLabel\"\n      [itemMainLabel]=\"itemMainLabel\"\n      [itemSubLabel]=\"itemSubLabel\"\n      [actions]=\"actions\"\n      [itemList]=\"itemList\"\n      [roundedBorders]=\"roundedBorders\"\n      [enableDragging]=\"enableDragging\"\n      [enableSelection]=\"enableSelection\"\n    >\n    </pm-draggable-list>\n  `\n})"
-                }
-            ],
-            "projects/lib/src/components/lists/grid-list/grid-list.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
-                    "type": "object",
-                    "defaultValue": "{\n}"
-                },
-                {
-                    "name": "DefaultGridList",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "getColor",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
-                    "type": "",
-                    "defaultValue": "() => MainColors.primary"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
-                    "type": "Story<GridListComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-grid-list\n      [items]=\"items\"\n      [displayStyle]=\"displayStyle\"\n      [gridHeaderReverse]=\"gridHeaderReverse\"\n      [bodyBackgroundColor]=\"bodyBackgroundColor\"\n      [actionTemplate]=\"undefined\"\n      [overflowGallery]=\"overflowGallery\"\n    >\n    </pm-grid-list>\n  `\n})"
-                }
-            ],
             "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts": [
                 {
                     "name": "defaultArgs",
@@ -5373,32 +5448,6 @@
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-combo-box\n      [items]=\"items\"\n      [disabled]=\"disabled\"\n      [selectedItem]=\"selectedItem\"\n    >\n    </pm-combo-box>\n  `\n})"
                 }
             ],
-            "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts",
-                    "type": "object",
-                    "defaultValue": "{\n  disabled: false,\n  text: ''\n}"
-                },
-                {
-                    "name": "DefaultCopyContentInput",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts",
-                    "type": "Story<CopyContentInputComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-copy-content-input\n      [text]=\"text\"\n      [disabled]=\"disabled\"\n    >\n      Conteúdo\n    </pm-copy-content-input>\n  `\n})"
-                }
-            ],
             "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts": [
                 {
                     "name": "defaultArgs",
@@ -5431,6 +5480,32 @@
                     "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
                     "type": "Story<CheckboxComponent>",
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-checkbox\n      [checked]=\"checked\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>\n  `\n})"
+                }
+            ],
+            "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts",
+                    "type": "object",
+                    "defaultValue": "{\n  disabled: false,\n  text: ''\n}"
+                },
+                {
+                    "name": "DefaultCopyContentInput",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts",
+                    "type": "Story<CopyContentInputComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-copy-content-input\n      [text]=\"text\"\n      [disabled]=\"disabled\"\n    >\n      Conteúdo\n    </pm-copy-content-input>\n  `\n})"
                 }
             ],
             "projects/lib/src/components/inputs/dropdown-actions/dropdown-actions.stories.ts": [
@@ -5491,6 +5566,82 @@
                     "file": "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts",
                     "type": "Story<RadioButtonComponent>",
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-radio-button\n      [orientation]=\"orientation\"\n      [values]=\"values\"\n      [selectedValue]=\"selectedValue\"\n      [disabled]=\"disabled\"\n    >\n    </pm-radio-button>\n  `\n})"
+                }
+            ],
+            "projects/lib/src/components/lists/grid-list/grid-list.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
+                    "type": "object",
+                    "defaultValue": "{\n}"
+                },
+                {
+                    "name": "DefaultGridList",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "getColor",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
+                    "type": "",
+                    "defaultValue": "() => MainColors.primary"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
+                    "type": "Story<GridListComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-grid-list\n      [items]=\"items\"\n      [displayStyle]=\"displayStyle\"\n      [gridHeaderReverse]=\"gridHeaderReverse\"\n      [bodyBackgroundColor]=\"bodyBackgroundColor\"\n      [actionTemplate]=\"undefined\"\n      [overflowGallery]=\"overflowGallery\"\n    >\n    </pm-grid-list>\n  `\n})"
+                }
+            ],
+            "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
+                    "type": "object",
+                    "defaultValue": "{\n  showIndex: true,\n  itemActionLabel: undefined,\n  itemMainLabel: undefined,\n  itemSubLabel: undefined,\n  actions: undefined,\n  itemList: undefined,\n  roundedBorders: true,\n  enableDragging: true,\n  enableSelection: true,\n}"
+                },
+                {
+                    "name": "DefaultDraggableList",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "DisabledDragging",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "NoIndexStringList",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
+                    "type": "Story<DraggableListComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-draggable-list\n      [showIndex]=\"showIndex\"\n      [itemActionLabel]=\"itemActionLabel\"\n      [itemMainLabel]=\"itemMainLabel\"\n      [itemSubLabel]=\"itemSubLabel\"\n      [actions]=\"actions\"\n      [itemList]=\"itemList\"\n      [roundedBorders]=\"roundedBorders\"\n      [enableDragging]=\"enableDragging\"\n      [enableSelection]=\"enableSelection\"\n    >\n    </pm-draggable-list>\n  `\n})"
                 }
             ],
             "projects/lib/src/components/navigation/stepper/stepper.stories.ts": [
@@ -6638,6 +6789,15 @@
                 "status": "low"
             },
             {
+                "filePath": "projects/lib/src/services/command-palette/command-palette-entries.service.ts",
+                "type": "injectable",
+                "linktype": "injectable",
+                "name": "CommandPaletteEntriesService",
+                "coveragePercent": 0,
+                "coverageCount": "0/5",
+                "status": "low"
+            },
+            {
                 "filePath": "projects/lib/src/services/command-palette/command-palette.module.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
@@ -6653,7 +6813,7 @@
                 "linktype": "injectable",
                 "name": "CommandPaletteService",
                 "coveragePercent": 0,
-                "coverageCount": "0/4",
+                "coverageCount": "0/5",
                 "status": "low"
             },
             {
@@ -6704,31 +6864,12 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/lib/src/services/command-palette/dialog/dialog.component.ts",
-                "type": "interface",
-                "linktype": "interface",
-                "name": "PaletteEntry",
-                "coveragePercent": 0,
-                "coverageCount": "0/6",
-                "status": "low"
-            },
-            {
-                "filePath": "projects/lib/src/services/command-palette/dialog/dialog.component.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "deep",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
                 "filePath": "projects/lib/src/services/command-palette/injection.ts",
                 "type": "interface",
                 "linktype": "interface",
                 "name": "CommandPaletteConfig",
                 "coveragePercent": 0,
-                "coverageCount": "0/2",
+                "coverageCount": "0/3",
                 "status": "low"
             },
             {
@@ -6752,12 +6893,30 @@
                 "status": "low"
             },
             {
+                "filePath": "projects/lib/src/services/command-palette/models.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "PaletteEntry",
+                "coveragePercent": 0,
+                "coverageCount": "0/6",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/lib/src/services/command-palette/models.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "PaletteTreeEntry",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
+                "status": "low"
+            },
+            {
                 "filePath": "projects/lib/src/services/command-palette/trigger-button/trigger-button.component.ts",
                 "type": "component",
                 "linktype": "component",
                 "name": "TriggerButtonComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/6",
+                "coverageCount": "0/7",
                 "status": "low"
             },
             {

@@ -33,7 +33,7 @@ export class ColorThemeService {
     this.theme = initialTheme;
   }
 
-  private set theme(theme: string) {
+  public set theme(theme: string) {
     this._theme = theme;
 
     let themeObj;
