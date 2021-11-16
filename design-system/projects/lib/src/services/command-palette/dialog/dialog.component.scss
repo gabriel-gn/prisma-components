@@ -45,6 +45,7 @@
       position: relative;
 
       .search-input-container {
+        background-color: #fff;
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -59,6 +60,13 @@
         pm-button {
           &:not(:first-child) {
             margin-left: 0.3em;
+          }
+        }
+
+        .pm-button {
+          height: 100%;
+          button {
+            height: 100%;
           }
         }
 

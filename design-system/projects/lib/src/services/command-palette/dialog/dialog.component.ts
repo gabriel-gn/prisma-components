@@ -15,8 +15,9 @@ import {isNumeric} from 'rxjs/internal-compatibility';
 export interface PaletteEntry {
   label: string;
   id: string;
+  treeId?: string; // totalmente opcional
   entries?: PaletteEntry[]; // deve obrigatoriamente ter APENAS ou 'entries' ou 'action'
-  action?: () => void | Observable<any>;
+  action?: () => void | Observable<any>; // TODO incluir comportamento com observable
 }
 
 // tslint:disable-next-line:directive-selector directive-class-suffix
@@ -36,7 +37,7 @@ export class DialogComponent implements AfterViewInit, OnDestroy {
   @ViewChildren(ResultSearchElements, { read: ElementRef }) resultEntryElements: QueryList<ElementRef>;
   public searchString = '';
   public placeholderString = 'Digite sua busca...';
-  public searchIdTree = []; // utilizado para navegar entre os ids da lista de entradas
+  public searchIdTree: {id: string, label: string}[] = []; // utilizado para navegar entre os ids da lista de entradas
   public itself: any;
   private currentFocusedElement: ElementRef;
   private unlistener: () => void;
@@ -114,6 +115,14 @@ export class DialogComponent implements AfterViewInit, OnDestroy {
     });
   }
 
+  public ngOnDestroy(): void {
+    document.documentElement.style.removeProperty(`overflow-x`);
+  }
+
+  public destroyItself(): void {
+    this.componentInjectorService.removeComponentFromBody(this.itself);
+  }
+
   private focusSearchInput(): void {
     setTimeout(() => {
       this.currentFocusedElement = this.rootPanelComponent;
@@ -155,12 +164,27 @@ export class DialogComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  public destroyItself(): void {
-    this.componentInjectorService.removeComponentFromBody(this.itself);
-  }
-
-  public ngOnDestroy(): void {
-    document.documentElement.style.removeProperty(`overflow-x`);
+  public rebuildCurrentEntriesFromTree(treeEntryIndex: number, sliceTree: boolean = true): void {
+    let resultEntries = [...this.paletteEntries];
+    if (this.searchIdTree.length > 0) {
+      const slicedTreeEntries = this.searchIdTree.slice(0, treeEntryIndex);
+      // tslint:disable-next-line:prefer-for-of
+      for (let i = 0; i < slicedTreeEntries.length; i++) {
+        const treeEntry = slicedTreeEntries[i];
+        let paletteEntry;
+        if (i === 0) {
+          paletteEntry = resultEntries.find(entry => entry.id === treeEntry.id);
+        } else {
+          paletteEntry = resultEntries[0].entries.find(entry => entry.id === treeEntry.id);
+        }
+        resultEntries = [paletteEntry];
+      }
+    }
+    if (sliceTree) {
+      this.searchIdTree = this.searchIdTree.slice(0, treeEntryIndex);
+    }
+    this.searchPaletteEntries = resultEntries;
+    this.currentPaletteEntries = resultEntries;
   }
 
   public searchAction(searchValue: string): void {
@@ -198,17 +222,31 @@ export class DialogComponent implements AfterViewInit, OnDestroy {
       };
 
       entryToFlat(resultEntry, '');
-      return idTreeArray.slice(1);
+      if (this.searchIdTree.length === 0) {
+        return idTreeArray.slice(1);
+      } else {
+        return idTreeArray.slice(2);
+      }
     };
 
     const flatEntriesToEntries: (flatEntries: string[], entriesToCheck: PaletteEntry[]) => PaletteEntry[] = (flatEntries: string[], entriesToCheck: PaletteEntry[]) => {
       const resultObjToCheck = {results: {entries: [...entriesToCheck]}};
       const entries: PaletteEntry[] = [];
       for (const flatEntry of flatEntries) {
-        const entryToAdd = _.get(resultObjToCheck, flatEntry);
+        const entryToAdd: PaletteEntry = _.get(resultObjToCheck, flatEntry);
+        entryToAdd.treeId = flatEntry;
         entries.push(entryToAdd);
       }
       return _.uniqWith(entries, _.isEqual); // remove objetos iguais
+    };
+
+    const addTreeIds: (paletteEntries: PaletteEntry[]) => PaletteEntry[] = (paletteEntries: PaletteEntry[]) => {
+      const flatEntries = entriesToFlat(paletteEntries[0].entries);
+      for (let i = 1; i < flatEntries.length - 1; i++) {
+        const flatEntry = flatEntries[i];
+        paletteEntries[0].entries[i].treeId = flatEntry;
+      }
+      return paletteEntries;
     };
 
     if (!!searchValue) {
@@ -219,11 +257,13 @@ export class DialogComponent implements AfterViewInit, OnDestroy {
       } else {
         entries = this.searchPaletteEntries;
       }
-      this.searchPaletteEntries = [{
-        label: 'Results',
-        id: 'results',
-        entries: flatEntriesToEntries(entriesToFlat(entries), entries)
-      }];
+      this.searchPaletteEntries = [
+        {
+          label: 'Results',
+          id: 'results',
+          entries: flatEntriesToEntries(entriesToFlat(entries), entries)
+        }
+      ];
     } else {
       if (this.deleteLatestSearchEntryOnDelete) {
         this.goBackOneLevel();
@@ -238,7 +278,7 @@ export class DialogComponent implements AfterViewInit, OnDestroy {
       if (this.searchIdTree.length === 0) {
         this.destroyItself();
       } else {
-        this.searchIdTree.pop();
+        this.rebuildCurrentEntriesFromTree(this.searchIdTree.length - 1);
         this.focusSearchInput();
       }
     } else {
@@ -252,12 +292,21 @@ export class DialogComponent implements AfterViewInit, OnDestroy {
 
   /**
    * caso tenha child entries, atualiza o dialog, senão executa a ação da entry.
+   * TODO REMOVER O PARENT ENTRY E FAZER A ARVORE DE ACORDO COM A ENTRY SELECIONADA
    */
-  public paletteEntryAction(paletteEntry: PaletteEntry): void {
+  public paletteEntryAction(paletteEntry: PaletteEntry, parentEntry: PaletteEntry = undefined): void {
     if (this.hasChildEntries(paletteEntry)) {
-      this.searchIdTree.push(paletteEntry.id);
-      this.searchPaletteEntries = [paletteEntry];
-      this.currentPaletteEntries = [paletteEntry];
+      // if (paletteEntry.hasOwnProperty('treeId')) {
+      //   const splittedTree: string[] = paletteEntry.treeId.split('.');
+      //   for (let i = 1; i < splittedTree.length; i++) {
+      //     const currentTreeId = splittedTree.slice(0, i + 1).join('.');
+      //     const entry = _.get(this.searchPaletteEntries, currentTreeId);
+      //     this.searchIdTree.push({id: entry.id, label: entry.label});
+      //   }
+      // } else {
+      this.searchIdTree.push({id: paletteEntry.id, label: paletteEntry.label});
+      // }
+      this.rebuildCurrentEntriesFromTree(this.searchIdTree.length, false);
       this.searchString = '';
       this.focusSearchInput();
     } else {

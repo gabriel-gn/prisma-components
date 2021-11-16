@@ -8,8 +8,13 @@
     <div #rootPanel tabindex="0" class="card-basic palette-dialog">
       <div class="search-input-container">
         <div class="d-flex search-tag-container">
-          <pm-button *ngFor="let idEntry of searchIdTree" [type]="'primary'" [size]="'sm'">
-            {{idEntry}}
+          <pm-button
+            *ngFor="let treeEntry of searchIdTree; let index = index"
+            (click)="rebuildCurrentEntriesFromTree(index);"
+            [type]="'primary'"
+            [size]="'sm'"
+          >
+            {{treeEntry.label}}
           </pm-button>
         </div>
         <input
@@ -33,9 +38,9 @@
           <p>{{searchEntry.label}}</p>
           <div *ngFor="let childEntry of searchEntry.entries; let index = index;"
                [attr.tabindex]="index"
-               (click)="paletteEntryAction(childEntry)"
-               (keydown.enter)="paletteEntryAction(childEntry)"
-               (keydown.arrowRight)="paletteEntryAction(childEntry)"
+               (click)="paletteEntryAction(childEntry, searchEntry)"
+               (keydown.enter)="paletteEntryAction(childEntry, searchEntry)"
+               (keydown.arrowRight)="paletteEntryAction(childEntry, searchEntry)"
                class="result-entry cursor-pointer"
           >
             <p>{{childEntry.label}}{{hasChildEntries(childEntry) ? '...' : ''}}</p>
