@@ -11,17 +11,11 @@ import {ComponentInjectorService} from '../component-injector.service';
 import {Observable} from 'rxjs';
 import _ from 'lodash';
 import {isNumeric} from 'rxjs/internal-compatibility';
-
-export interface PaletteEntry {
-  label: string;
-  id: string;
-  treeId?: string; // totalmente opcional
-  entries?: PaletteEntry[]; // deve obrigatoriamente ter APENAS ou 'entries' ou 'action'
-  action?: () => void | Observable<any>; // TODO incluir comportamento com observable
-}
+import {PaletteEntry, PaletteTreeEntry} from '../models';
+import {CommandPaletteEntriesService} from '../command-palette-entries.service';
 
 // tslint:disable-next-line:directive-selector directive-class-suffix
-@Directive({selector: '.result-entry'}) export class ResultSearchElements {
+@Directive({selector: '.palette-result-entry'}) export class ResultSearchElements {
   //
 }
 
@@ -37,87 +31,31 @@ export class DialogComponent implements AfterViewInit, OnDestroy {
   @ViewChildren(ResultSearchElements, { read: ElementRef }) resultEntryElements: QueryList<ElementRef>;
   public searchString = '';
   public placeholderString = 'Digite sua busca...';
-  public searchIdTree: {id: string, label: string}[] = []; // utilizado para navegar entre os ids da lista de entradas
+  public searchIdTree: PaletteTreeEntry[] = []; // utilizado para navegar entre os ids da lista de entradas
   public itself: any;
   private currentFocusedElement: ElementRef;
   private unlistener: () => void;
   private deleteLatestSearchEntryOnDelete: boolean = false;
 
-  public paletteEntries: PaletteEntry[] = [
-    {
-      label: 'Pages',
-      id: 'pages',
-      entries: [
-        {
-          label: 'Dashboard',
-          id: 'dashboard',
-          action: () => {
-            console.log('dashboard');
-          }
-        },
-        {
-          label: 'Notifications',
-          id: 'notifications',
-          action: () => {
-            console.log('notifications');
-          }
-        }
-      ]
-    },
-    {
-      label: 'Preferences',
-      id: 'preferences',
-      entries: [
-        {
-          label: 'Change Theme',
-          id: 'theme',
-          entries: [
-            {
-              label: 'Light Themes',
-              id: 'lightThemes',
-              entries: [
-                {
-                  label: 'Light',
-                  id: 'light',
-                  action: () => {
-                    console.log('LIGHT THEME');
-                  }
-                },
-                {
-                  label: 'Light Alternative',
-                  id: 'lightAlt',
-                  action: () => {
-                    console.log('LIGHT THEME ALTERNATIVE');
-                  }
-                },
-              ]
-            },
-            {
-              label: 'Dark',
-              id: 'dark',
-              action: () => {
-                console.log('DARK THEME');
-              }
-            }
-          ]
-        }
-      ]
-    }
-  ];
+  public paletteEntries: PaletteEntry[] = [];
   public currentPaletteEntries: PaletteEntry[];
   public searchPaletteEntries: PaletteEntry[];
 
   constructor(
+    private commandPaletteEntriesService: CommandPaletteEntriesService,
     private componentInjectorService: ComponentInjectorService,
     private renderer2: Renderer2
   ) {
     document.documentElement.style.setProperty(`overflow-x`, `hidden`, 'important');
-    this.currentPaletteEntries = [...this.paletteEntries];
-    this.searchPaletteEntries = [...this.paletteEntries];
+    this.commandPaletteEntriesService.paletteEntries$.subscribe(entries => {
+      this.paletteEntries = [...entries];
+      this.currentPaletteEntries = [...this.paletteEntries];
+      this.searchPaletteEntries = [...this.paletteEntries];
+    });
   }
 
   public ngAfterViewInit(): void {
-    this.focusSearchInput();
+    this.clearAll();
     this.unlistener = this.renderer2.listen('window', 'focusin', event => {
       if (!(
         event.target === this.rootPanelComponent.nativeElement

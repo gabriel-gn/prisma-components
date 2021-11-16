@@ -8,6 +8,7 @@ import {TriggerButtonComponent} from './trigger-button/trigger-button.component'
 import {ButtonModule} from '../../components/inputs/button/button.module';
 import {HotkeyModule} from 'angular2-hotkeys';
 import {FormsModule} from '@angular/forms';
+import {CommandPaletteEntriesService} from './command-palette-entries.service';
 
 const components = [
   DialogComponent,
@@ -31,6 +32,7 @@ export class CommandPaletteModule {
       ngModule: CommandPaletteModule,
       providers: [
         CommandPaletteService,
+        CommandPaletteEntriesService,
         ComponentInjectorService,
         {provide: COMMAND_PALETTE_CONFIG, useValue: options || commandPaletteConfig},
       ]
