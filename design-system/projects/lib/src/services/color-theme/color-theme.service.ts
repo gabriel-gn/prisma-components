@@ -33,6 +33,10 @@ export class ColorThemeService {
     this.theme = initialTheme;
   }
 
+  public get theme(): string {
+    return this._theme;
+  }
+
   public set theme(theme: string) {
     this._theme = theme;
 
