@@ -672,11 +672,11 @@
     "directives": [
         {
             "name": "ResultSearchElements",
-            "id": "directive-ResultSearchElements-82553d6771f4234900c2899ef790e372",
+            "id": "directive-ResultSearchElements-1ba61f2816dc8c7b1a883b2ac1586f1f",
             "file": "projects/lib/src/services/command-palette/dialog/dialog.component.ts",
             "type": "directive",
             "description": "",
-            "sourceCode": "import {\n  Component,\n  ElementRef,\n  AfterViewInit,\n  ViewChild,\n  Renderer2,\n  OnDestroy,\n  ViewChildren, QueryList, Directive\n} from '@angular/core';\nimport {ComponentInjectorService} from '../component-injector.service';\nimport {Observable} from 'rxjs';\nimport _ from 'lodash';\nimport {isNumeric} from 'rxjs/internal-compatibility';\nimport {PaletteEntry, PaletteTreeEntry} from '../models';\nimport {CommandPaletteEntriesService} from '../command-palette-entries.service';\n\n// tslint:disable-next-line:directive-selector directive-class-suffix\n@Directive({selector: '.palette-result-entry'}) export class ResultSearchElements {\n  //\n}\n\n@Component({\n  selector: 'pm-command-palette-dialog',\n  templateUrl: './dialog.component.html',\n  styleUrls: ['./dialog.component.scss']\n})\nexport class DialogComponent implements AfterViewInit, OnDestroy {\n\n  @ViewChild('rootPanel', {static: true}) rootPanelComponent: ElementRef;\n  @ViewChild('searchResultContainer', {static: true}) searchResultContainer: ElementRef;\n  @ViewChildren(ResultSearchElements, { read: ElementRef }) resultEntryElements: QueryList<ElementRef>;\n  public searchString = '';\n  public placeholderString = 'Digite sua busca...';\n  public searchIdTree: PaletteTreeEntry[] = []; // utilizado para navegar entre os ids da lista de entradas\n  public itself: any;\n  private currentFocusedElement: ElementRef;\n  private unlistener: () => void;\n  private deleteLatestSearchEntryOnDelete: boolean = false;\n\n  public paletteEntries: PaletteEntry[] = [];\n  public currentPaletteEntries: PaletteEntry[];\n  public searchPaletteEntries: PaletteEntry[];\n\n  constructor(\n    private commandPaletteEntriesService: CommandPaletteEntriesService,\n    private componentInjectorService: ComponentInjectorService,\n    private renderer2: Renderer2\n  ) {\n    document.documentElement.style.setProperty(`overflow-x`, `hidden`, 'important');\n    this.commandPaletteEntriesService.paletteEntries$.subscribe(entries => {\n      this.paletteEntries = [...entries];\n      this.currentPaletteEntries = [...this.paletteEntries];\n      this.searchPaletteEntries = [...this.paletteEntries];\n    });\n  }\n\n  public ngAfterViewInit(): void {\n    this.clearAll();\n    this.unlistener = this.renderer2.listen('window', 'focusin', event => {\n      if (!(\n        event.target === this.rootPanelComponent.nativeElement\n        || this.rootPanelComponent.nativeElement.contains(event.target)\n      )) {\n        this.destroyItself();\n      }\n    });\n  }\n\n  public ngOnDestroy(): void {\n    document.documentElement.style.removeProperty(`overflow-x`);\n  }\n\n  public destroyItself(): void {\n    this.componentInjectorService.removeComponentFromBody(this.itself);\n  }\n\n  private focusSearchInput(): void {\n    setTimeout(() => {\n      this.currentFocusedElement = this.rootPanelComponent;\n      this.rootPanelComponent.nativeElement.children[0].children[1].focus();\n    }, 50);\n  }\n\n  private isSearchInputFocused(): boolean {\n    return this.currentFocusedElement === this.rootPanelComponent;\n  }\n\n  public focusNext(): void {\n    const arrayResultEntryElements = this.resultEntryElements.toArray();\n    const currentFocusIndex = arrayResultEntryElements.findIndex(item => item === this.currentFocusedElement);\n    const focusNextIndex = currentFocusIndex + 1;\n    if (focusNextIndex >= arrayResultEntryElements.length) {\n      this.focusSearchInput();\n    }\n    else if (isNumeric(focusNextIndex)) {\n      this.currentFocusedElement = arrayResultEntryElements[focusNextIndex];\n      this.currentFocusedElement.nativeElement.focus();\n    } else {\n      this.focusSearchInput();\n    }\n  }\n\n  public focusPrevious(): void {\n    const arrayResultEntryElements = this.resultEntryElements.toArray();\n    const currentFocusIndex = arrayResultEntryElements.findIndex(item => item === this.currentFocusedElement);\n    const focusPreviousIndex = currentFocusIndex - 1;\n    if (focusPreviousIndex < 0) {\n      this.focusSearchInput();\n    }\n    else if (isNumeric(focusPreviousIndex)) {\n      this.currentFocusedElement = arrayResultEntryElements[focusPreviousIndex];\n      this.currentFocusedElement.nativeElement.focus();\n    } else {\n      this.focusSearchInput();\n    }\n  }\n\n  public buildTreeIdEntriesFromPaletteEntry(paletteEntry: PaletteEntry, entriesToVerify: PaletteEntry[]): any {\n    let result;\n    let foundEqual: boolean = false;\n\n    const verifyEqual = (entryToVerify: PaletteEntry) => {\n      result.push({id: entryToVerify.id, label: entryToVerify.label});\n      foundEqual = _.isEqual(entryToVerify, paletteEntry);\n    };\n\n    const verifyChildren = (entryToVerify: PaletteEntry) => {\n      verifyEqual(entryToVerify);\n      if (!foundEqual) {\n        if (this.hasChildEntries(entryToVerify)) {\n          for (const child of entryToVerify.entries) {\n            if (!foundEqual) {\n              verifyChildren(child);\n            } else {\n              break;\n            }\n          }\n        }\n      }\n    };\n\n    for (const entry of entriesToVerify) {\n      if (!foundEqual) {\n        result = []; // toda vez que itera sobre um novo item do array base zera a árvore de results\n        verifyChildren(entry);\n      } else {\n        break;\n      }\n    }\n    return result;\n  }\n\n  public rebuildCurrentEntriesFromTree(treeEntryIndex: number, sliceTree: boolean = true): void {\n    let resultEntries = [...this.paletteEntries];\n    if (this.searchIdTree.length > 0) {\n      const slicedTreeEntries = this.searchIdTree.slice(0, treeEntryIndex);\n      // tslint:disable-next-line:prefer-for-of\n      for (let i = 0; i < slicedTreeEntries.length; i++) {\n        const treeEntry = slicedTreeEntries[i];\n        let paletteEntry;\n        if (i === 0) {\n          paletteEntry = resultEntries.find(entry => entry.id === treeEntry.id);\n        } else {\n          paletteEntry = resultEntries[0].entries.find(entry => entry.id === treeEntry.id);\n        }\n        resultEntries = [paletteEntry];\n      }\n    }\n    if (sliceTree) {\n      this.searchIdTree = this.searchIdTree.slice(0, treeEntryIndex);\n    }\n    this.searchPaletteEntries = resultEntries;\n    this.currentPaletteEntries = resultEntries;\n  }\n\n  public searchAction(searchValue: string): void {\n    const entriesToFlat: (paletteEntries: PaletteEntry[]) => string[] = (paletteEntries: PaletteEntry[]) => {\n      const idTreeArray = [];\n\n      const isSearchValueInEntry: (paletteEntry: PaletteEntry) => boolean = (paletteEntry: PaletteEntry) => {\n        return paletteEntry.label.toLowerCase().includes(searchValue.toLowerCase())\n          || paletteEntry.id.toLowerCase().includes(searchValue.toLowerCase());\n      };\n\n      const entryToFlat: (paletteEntry: PaletteEntry, idPrefix: string) => void = (paletteEntry: PaletteEntry, idPrefix: string = '') => {\n        idPrefix = !!idPrefix ? `${idPrefix}` : `${paletteEntry.id}`;\n        if (this.hasChildEntries(paletteEntry)) {\n          idTreeArray.push(`${idPrefix}`);\n          for (let i = 0; i < paletteEntry.entries.length; i++) {\n            const entry = paletteEntry.entries[i];\n            const idSuffix = `.entries[${i}]`;\n            entryToFlat(entry, `${idPrefix}${idSuffix}`);\n          }\n        } else {\n          if (isSearchValueInEntry(paletteEntry)) {\n            idTreeArray.push(`${idPrefix}`);\n          }\n        }\n      };\n\n      if (paletteEntries.length > 0 && paletteEntries[0].id === 'results') {\n        paletteEntries = paletteEntries[0].entries;\n      }\n      const resultEntry: PaletteEntry = {\n        label: 'Results',\n        id: 'results',\n        entries: paletteEntries\n      };\n\n      entryToFlat(resultEntry, '');\n      if (this.searchIdTree.length === 0) {\n        return idTreeArray.slice(1);\n      } else {\n        return idTreeArray.slice(2);\n      }\n    };\n\n    const flatEntriesToEntries: (flatEntries: string[], entriesToCheck: PaletteEntry[]) => PaletteEntry[] = (flatEntries: string[], entriesToCheck: PaletteEntry[]) => {\n      const resultObjToCheck = {results: {entries: [...entriesToCheck]}};\n      const entries: PaletteEntry[] = [];\n      for (const flatEntry of flatEntries) {\n        const entryToAdd: PaletteEntry = _.get(resultObjToCheck, flatEntry);\n        entryToAdd.treeId = flatEntry;\n        entries.push(entryToAdd);\n      }\n      return _.uniqWith(entries, _.isEqual); // remove objetos iguais\n    };\n\n    if (!!searchValue) {\n      this.deleteLatestSearchEntryOnDelete = false;\n      let entries;\n      if (!!this.searchPaletteEntries && this.searchPaletteEntries.length > 0 && this.searchPaletteEntries[0].id === 'results') {\n        entries = this.searchPaletteEntries[0].entries;\n      } else {\n        entries = this.searchPaletteEntries;\n      }\n      this.searchPaletteEntries = [\n        {\n          label: 'Results',\n          id: 'results',\n          entries: flatEntriesToEntries(entriesToFlat(entries), entries)\n        }\n      ];\n    } else {\n      if (this.deleteLatestSearchEntryOnDelete) {\n        this.goBackOneLevel();\n      }\n      this.deleteLatestSearchEntryOnDelete = true;\n      this.searchPaletteEntries = [...this.currentPaletteEntries];\n    }\n  }\n\n  public goBackOneLevel(): void {\n    if (this.isSearchInputFocused()) {\n      if (this.searchIdTree.length === 0) {\n        this.destroyItself();\n      } else {\n        this.rebuildCurrentEntriesFromTree(this.searchIdTree.length - 1);\n        this.focusSearchInput();\n      }\n    } else {\n      this.focusSearchInput();\n    }\n  }\n\n  public hasChildEntries(paletteEntry: PaletteEntry): boolean {\n    return paletteEntry?.entries && paletteEntry.entries.length > 0;\n  }\n\n  /**\n   * caso tenha child entries, atualiza o dialog, senão executa a ação da entry.\n   */\n  public paletteEntryAction(paletteEntry: PaletteEntry): void {\n    if (this.hasChildEntries(paletteEntry)) {\n      this.searchIdTree = this.buildTreeIdEntriesFromPaletteEntry(paletteEntry, this.paletteEntries);\n      this.rebuildCurrentEntriesFromTree(this.searchIdTree.length, false);\n      this.searchString = '';\n      this.focusSearchInput();\n    } else {\n      paletteEntry.action();\n      this.destroyItself();\n    }\n  }\n\n  public clearAll(): void {\n    this.searchString = '';\n    this.searchIdTree = [];\n    this.searchPaletteEntries = [...this.paletteEntries];\n    this.currentPaletteEntries = [...this.paletteEntries];\n    this.focusSearchInput();\n  }\n\n}\n",
+            "sourceCode": "import {\n  Component,\n  ElementRef,\n  AfterViewInit,\n  ViewChild,\n  Renderer2,\n  OnDestroy,\n  ViewChildren, QueryList, Directive\n} from '@angular/core';\nimport {ComponentInjectorService} from '../component-injector.service';\nimport {Observable} from 'rxjs';\nimport _ from 'lodash';\nimport {isNumeric} from 'rxjs/internal-compatibility';\nimport {PaletteEntry, PaletteTreeEntry} from '../models';\nimport {CommandPaletteEntriesService} from '../command-palette-entries.service';\n\n// tslint:disable-next-line:directive-selector directive-class-suffix\n@Directive({selector: '.palette-result-entry'}) export class ResultSearchElements {\n  //\n}\n\n@Component({\n  selector: 'pm-command-palette-dialog',\n  templateUrl: './dialog.component.html',\n  styleUrls: ['./dialog.component.scss']\n})\nexport class DialogComponent implements AfterViewInit, OnDestroy {\n\n  @ViewChild('rootPanel', {static: true}) rootPanelComponent: ElementRef;\n  @ViewChild('searchResultContainer', {static: true}) searchResultContainer: ElementRef;\n  @ViewChildren(ResultSearchElements, { read: ElementRef }) resultEntryElements: QueryList<ElementRef>;\n  public searchString = '';\n  public placeholderString = 'Digite sua busca...';\n  public searchIdTree: PaletteTreeEntry[] = []; // utilizado para navegar entre os ids da lista de entradas\n  public itself: any;\n  private currentFocusedElement: ElementRef;\n  private unlistener: () => void;\n  private deleteLatestSearchEntryOnDelete: boolean = false;\n\n  public paletteEntries: PaletteEntry[] = [];\n  public currentPaletteEntries: PaletteEntry[];\n  public searchPaletteEntries: PaletteEntry[];\n\n  constructor(\n    private commandPaletteEntriesService: CommandPaletteEntriesService,\n    private componentInjectorService: ComponentInjectorService,\n    private renderer2: Renderer2\n  ) {\n    document.documentElement.style.setProperty(`overflow-x`, `hidden`, 'important');\n    this.commandPaletteEntriesService.paletteEntries$.subscribe(entries => {\n      this.paletteEntries = [...entries];\n      this.currentPaletteEntries = [...this.paletteEntries];\n      this.searchPaletteEntries = [...this.paletteEntries];\n    });\n  }\n\n  public ngAfterViewInit(): void {\n    this.clearAll();\n    this.unlistener = this.renderer2.listen('window', 'focusin', event => {\n      if (!(\n        event.target === this.rootPanelComponent.nativeElement\n        || this.rootPanelComponent.nativeElement.contains(event.target)\n      )) {\n        this.destroyItself();\n      }\n    });\n  }\n\n  public ngOnDestroy(): void {\n    document.documentElement.style.removeProperty(`overflow-x`);\n  }\n\n  public destroyItself(): void {\n    this.componentInjectorService.removeComponentFromBody(this.itself);\n  }\n\n  private focusSearchInput(): void {\n    setTimeout(() => {\n      this.currentFocusedElement = this.rootPanelComponent;\n      this.rootPanelComponent.nativeElement.children[0].children[1].focus();\n    }, 50);\n  }\n\n  private isSearchInputFocused(): boolean {\n    return this.currentFocusedElement === this.rootPanelComponent;\n  }\n\n  public focusNext(): void {\n    const arrayResultEntryElements = this.resultEntryElements.toArray();\n    const currentFocusIndex = arrayResultEntryElements.findIndex(item => item === this.currentFocusedElement);\n    const focusNextIndex = currentFocusIndex + 1;\n    if (focusNextIndex >= arrayResultEntryElements.length) {\n      this.focusSearchInput();\n    }\n    else if (isNumeric(focusNextIndex)) {\n      this.currentFocusedElement = arrayResultEntryElements[focusNextIndex];\n      this.currentFocusedElement.nativeElement.focus();\n    } else {\n      this.focusSearchInput();\n    }\n  }\n\n  public focusPrevious(): void {\n    const arrayResultEntryElements = this.resultEntryElements.toArray();\n    const currentFocusIndex = arrayResultEntryElements.findIndex(item => item === this.currentFocusedElement);\n    const focusPreviousIndex = currentFocusIndex - 1;\n    if (focusPreviousIndex < 0) {\n      this.focusSearchInput();\n    }\n    else if (isNumeric(focusPreviousIndex)) {\n      this.currentFocusedElement = arrayResultEntryElements[focusPreviousIndex];\n      this.currentFocusedElement.nativeElement.focus();\n    } else {\n      this.focusSearchInput();\n    }\n  }\n\n  public buildTreeIdEntriesFromPaletteEntry(paletteEntry: PaletteEntry, entriesToVerify: PaletteEntry[]): any {\n    let result;\n    let foundEqual: boolean = false;\n\n    const verifyEqual = (entryToVerify: PaletteEntry) => {\n      result.push({id: entryToVerify.id, label: entryToVerify.label});\n      foundEqual = _.isEqual(entryToVerify, paletteEntry);\n    };\n\n    const verifyChildren = (entryToVerify: PaletteEntry) => {\n      verifyEqual(entryToVerify);\n      if (!foundEqual) {\n        if (this.hasChildEntries(entryToVerify)) {\n          for (const child of entryToVerify.entries) {\n            if (!foundEqual) {\n              verifyChildren(child);\n            } else {\n              break;\n            }\n          }\n        }\n      }\n    };\n\n    for (const entry of entriesToVerify) {\n      result = []; // toda vez que itera sobre um novo item do array base zera a árvore de results\n      if (!foundEqual) {\n        verifyChildren(entry);\n      } else {\n        break;\n      }\n    }\n    return result;\n  }\n\n  public rebuildCurrentEntriesFromTree(treeEntryIndex: number, sliceTree: boolean = true): void {\n    let resultEntries = [...this.paletteEntries];\n    if (this.searchIdTree.length > 0) {\n      const slicedTreeEntries = this.searchIdTree.slice(0, treeEntryIndex);\n      // tslint:disable-next-line:prefer-for-of\n      for (let i = 0; i < slicedTreeEntries.length; i++) {\n        const treeEntry = slicedTreeEntries[i];\n        let paletteEntry;\n        if (i === 0) {\n          paletteEntry = resultEntries.find(entry => entry.id === treeEntry.id);\n        } else {\n          paletteEntry = resultEntries[0].entries.find(entry => entry.id === treeEntry.id);\n        }\n        resultEntries = [paletteEntry];\n      }\n    }\n    if (sliceTree) {\n      this.searchIdTree = this.searchIdTree.slice(0, treeEntryIndex);\n    }\n    this.searchPaletteEntries = resultEntries;\n    this.currentPaletteEntries = resultEntries;\n  }\n\n  public searchAction(searchValue: string): void {\n    const entriesToFlat: (paletteEntries: PaletteEntry[]) => string[] = (paletteEntries: PaletteEntry[]) => {\n      const idTreeArray = [];\n\n      const isSearchValueInEntry: (paletteEntry: PaletteEntry) => boolean = (paletteEntry: PaletteEntry) => {\n        return paletteEntry.label.toLowerCase().includes(searchValue.toLowerCase())\n          || paletteEntry.id.toLowerCase().includes(searchValue.toLowerCase());\n      };\n\n      const entryToFlat: (paletteEntry: PaletteEntry, idPrefix: string) => void = (paletteEntry: PaletteEntry, idPrefix: string = '') => {\n        idPrefix = !!idPrefix ? `${idPrefix}` : `${paletteEntry.id}`;\n        if (this.hasChildEntries(paletteEntry)) {\n          idTreeArray.push(`${idPrefix}`);\n          for (let i = 0; i < paletteEntry.entries.length; i++) {\n            const entry = paletteEntry.entries[i];\n            const idSuffix = `.entries[${i}]`;\n            entryToFlat(entry, `${idPrefix}${idSuffix}`);\n          }\n        } else {\n          if (isSearchValueInEntry(paletteEntry)) {\n            idTreeArray.push(`${idPrefix}`);\n          }\n        }\n      };\n\n      if (paletteEntries.length > 0 && paletteEntries[0].id === 'results') {\n        paletteEntries = paletteEntries[0].entries;\n      }\n      const resultEntry: PaletteEntry = {\n        label: 'Results',\n        id: 'results',\n        entries: paletteEntries\n      };\n\n      entryToFlat(resultEntry, '');\n      if (this.searchIdTree.length === 0) {\n        return idTreeArray.slice(1);\n      } else {\n        return idTreeArray.slice(2);\n      }\n    };\n\n    const flatEntriesToEntries: (flatEntries: string[], entriesToCheck: PaletteEntry[]) => PaletteEntry[] = (flatEntries: string[], entriesToCheck: PaletteEntry[]) => {\n      const resultObjToCheck = {results: {entries: [...entriesToCheck]}};\n      const entries: PaletteEntry[] = [];\n      for (const flatEntry of flatEntries) {\n        const entryToAdd: PaletteEntry = _.get(resultObjToCheck, flatEntry);\n        entryToAdd.treeId = flatEntry;\n        entries.push(entryToAdd);\n      }\n      return _.uniqWith(entries, _.isEqual); // remove objetos iguais\n    };\n\n    if (!!searchValue) {\n      this.deleteLatestSearchEntryOnDelete = false;\n      let entries;\n      if (!!this.searchPaletteEntries && this.searchPaletteEntries.length > 0 && this.searchPaletteEntries[0].id === 'results') {\n        entries = this.searchPaletteEntries[0].entries;\n      } else {\n        entries = this.searchPaletteEntries;\n      }\n      this.searchPaletteEntries = [\n        {\n          label: 'Results',\n          id: 'results',\n          entries: flatEntriesToEntries(entriesToFlat(entries), entries)\n        }\n      ];\n    } else {\n      if (this.deleteLatestSearchEntryOnDelete) {\n        this.goBackOneLevel();\n      }\n      this.deleteLatestSearchEntryOnDelete = true;\n      this.searchPaletteEntries = [...this.currentPaletteEntries];\n    }\n  }\n\n  public goBackOneLevel(): void {\n    if (this.isSearchInputFocused()) {\n      if (this.searchIdTree.length === 0) {\n        this.destroyItself();\n      } else {\n        this.rebuildCurrentEntriesFromTree(this.searchIdTree.length - 1);\n        this.focusSearchInput();\n      }\n    } else {\n      this.focusSearchInput();\n    }\n  }\n\n  public hasChildEntries(paletteEntry: PaletteEntry): boolean {\n    return paletteEntry?.entries && paletteEntry.entries.length > 0;\n  }\n\n  /**\n   * caso tenha child entries, atualiza o dialog, senão executa a ação da entry.\n   */\n  public paletteEntryAction(paletteEntry: PaletteEntry): void {\n    if (this.hasChildEntries(paletteEntry)) {\n      this.searchIdTree = this.buildTreeIdEntriesFromPaletteEntry(paletteEntry, this.paletteEntries);\n      this.rebuildCurrentEntriesFromTree(this.searchIdTree.length, false);\n      this.searchString = '';\n      this.focusSearchInput();\n    } else {\n      paletteEntry.action();\n      this.destroyItself();\n    }\n  }\n\n  public clearAll(): void {\n    this.searchString = '';\n    this.searchIdTree = [];\n    this.searchPaletteEntries = [...this.paletteEntries];\n    this.currentPaletteEntries = [...this.paletteEntries];\n    this.focusSearchInput();\n  }\n\n}\n",
             "selector": ".palette-result-entry",
             "providers": [],
             "inputsClass": [],
@@ -1238,7 +1238,7 @@
         },
         {
             "name": "DialogComponent",
-            "id": "component-DialogComponent-82553d6771f4234900c2899ef790e372",
+            "id": "component-DialogComponent-1ba61f2816dc8c7b1a883b2ac1586f1f",
             "file": "projects/lib/src/services/command-palette/dialog/dialog.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -1658,7 +1658,7 @@
             "description": "",
             "rawdescription": "",
             "type": "component",
-            "sourceCode": "import {\n  Component,\n  ElementRef,\n  AfterViewInit,\n  ViewChild,\n  Renderer2,\n  OnDestroy,\n  ViewChildren, QueryList, Directive\n} from '@angular/core';\nimport {ComponentInjectorService} from '../component-injector.service';\nimport {Observable} from 'rxjs';\nimport _ from 'lodash';\nimport {isNumeric} from 'rxjs/internal-compatibility';\nimport {PaletteEntry, PaletteTreeEntry} from '../models';\nimport {CommandPaletteEntriesService} from '../command-palette-entries.service';\n\n// tslint:disable-next-line:directive-selector directive-class-suffix\n@Directive({selector: '.palette-result-entry'}) export class ResultSearchElements {\n  //\n}\n\n@Component({\n  selector: 'pm-command-palette-dialog',\n  templateUrl: './dialog.component.html',\n  styleUrls: ['./dialog.component.scss']\n})\nexport class DialogComponent implements AfterViewInit, OnDestroy {\n\n  @ViewChild('rootPanel', {static: true}) rootPanelComponent: ElementRef;\n  @ViewChild('searchResultContainer', {static: true}) searchResultContainer: ElementRef;\n  @ViewChildren(ResultSearchElements, { read: ElementRef }) resultEntryElements: QueryList<ElementRef>;\n  public searchString = '';\n  public placeholderString = 'Digite sua busca...';\n  public searchIdTree: PaletteTreeEntry[] = []; // utilizado para navegar entre os ids da lista de entradas\n  public itself: any;\n  private currentFocusedElement: ElementRef;\n  private unlistener: () => void;\n  private deleteLatestSearchEntryOnDelete: boolean = false;\n\n  public paletteEntries: PaletteEntry[] = [];\n  public currentPaletteEntries: PaletteEntry[];\n  public searchPaletteEntries: PaletteEntry[];\n\n  constructor(\n    private commandPaletteEntriesService: CommandPaletteEntriesService,\n    private componentInjectorService: ComponentInjectorService,\n    private renderer2: Renderer2\n  ) {\n    document.documentElement.style.setProperty(`overflow-x`, `hidden`, 'important');\n    this.commandPaletteEntriesService.paletteEntries$.subscribe(entries => {\n      this.paletteEntries = [...entries];\n      this.currentPaletteEntries = [...this.paletteEntries];\n      this.searchPaletteEntries = [...this.paletteEntries];\n    });\n  }\n\n  public ngAfterViewInit(): void {\n    this.clearAll();\n    this.unlistener = this.renderer2.listen('window', 'focusin', event => {\n      if (!(\n        event.target === this.rootPanelComponent.nativeElement\n        || this.rootPanelComponent.nativeElement.contains(event.target)\n      )) {\n        this.destroyItself();\n      }\n    });\n  }\n\n  public ngOnDestroy(): void {\n    document.documentElement.style.removeProperty(`overflow-x`);\n  }\n\n  public destroyItself(): void {\n    this.componentInjectorService.removeComponentFromBody(this.itself);\n  }\n\n  private focusSearchInput(): void {\n    setTimeout(() => {\n      this.currentFocusedElement = this.rootPanelComponent;\n      this.rootPanelComponent.nativeElement.children[0].children[1].focus();\n    }, 50);\n  }\n\n  private isSearchInputFocused(): boolean {\n    return this.currentFocusedElement === this.rootPanelComponent;\n  }\n\n  public focusNext(): void {\n    const arrayResultEntryElements = this.resultEntryElements.toArray();\n    const currentFocusIndex = arrayResultEntryElements.findIndex(item => item === this.currentFocusedElement);\n    const focusNextIndex = currentFocusIndex + 1;\n    if (focusNextIndex >= arrayResultEntryElements.length) {\n      this.focusSearchInput();\n    }\n    else if (isNumeric(focusNextIndex)) {\n      this.currentFocusedElement = arrayResultEntryElements[focusNextIndex];\n      this.currentFocusedElement.nativeElement.focus();\n    } else {\n      this.focusSearchInput();\n    }\n  }\n\n  public focusPrevious(): void {\n    const arrayResultEntryElements = this.resultEntryElements.toArray();\n    const currentFocusIndex = arrayResultEntryElements.findIndex(item => item === this.currentFocusedElement);\n    const focusPreviousIndex = currentFocusIndex - 1;\n    if (focusPreviousIndex < 0) {\n      this.focusSearchInput();\n    }\n    else if (isNumeric(focusPreviousIndex)) {\n      this.currentFocusedElement = arrayResultEntryElements[focusPreviousIndex];\n      this.currentFocusedElement.nativeElement.focus();\n    } else {\n      this.focusSearchInput();\n    }\n  }\n\n  public buildTreeIdEntriesFromPaletteEntry(paletteEntry: PaletteEntry, entriesToVerify: PaletteEntry[]): any {\n    let result;\n    let foundEqual: boolean = false;\n\n    const verifyEqual = (entryToVerify: PaletteEntry) => {\n      result.push({id: entryToVerify.id, label: entryToVerify.label});\n      foundEqual = _.isEqual(entryToVerify, paletteEntry);\n    };\n\n    const verifyChildren = (entryToVerify: PaletteEntry) => {\n      verifyEqual(entryToVerify);\n      if (!foundEqual) {\n        if (this.hasChildEntries(entryToVerify)) {\n          for (const child of entryToVerify.entries) {\n            if (!foundEqual) {\n              verifyChildren(child);\n            } else {\n              break;\n            }\n          }\n        }\n      }\n    };\n\n    for (const entry of entriesToVerify) {\n      if (!foundEqual) {\n        result = []; // toda vez que itera sobre um novo item do array base zera a árvore de results\n        verifyChildren(entry);\n      } else {\n        break;\n      }\n    }\n    return result;\n  }\n\n  public rebuildCurrentEntriesFromTree(treeEntryIndex: number, sliceTree: boolean = true): void {\n    let resultEntries = [...this.paletteEntries];\n    if (this.searchIdTree.length > 0) {\n      const slicedTreeEntries = this.searchIdTree.slice(0, treeEntryIndex);\n      // tslint:disable-next-line:prefer-for-of\n      for (let i = 0; i < slicedTreeEntries.length; i++) {\n        const treeEntry = slicedTreeEntries[i];\n        let paletteEntry;\n        if (i === 0) {\n          paletteEntry = resultEntries.find(entry => entry.id === treeEntry.id);\n        } else {\n          paletteEntry = resultEntries[0].entries.find(entry => entry.id === treeEntry.id);\n        }\n        resultEntries = [paletteEntry];\n      }\n    }\n    if (sliceTree) {\n      this.searchIdTree = this.searchIdTree.slice(0, treeEntryIndex);\n    }\n    this.searchPaletteEntries = resultEntries;\n    this.currentPaletteEntries = resultEntries;\n  }\n\n  public searchAction(searchValue: string): void {\n    const entriesToFlat: (paletteEntries: PaletteEntry[]) => string[] = (paletteEntries: PaletteEntry[]) => {\n      const idTreeArray = [];\n\n      const isSearchValueInEntry: (paletteEntry: PaletteEntry) => boolean = (paletteEntry: PaletteEntry) => {\n        return paletteEntry.label.toLowerCase().includes(searchValue.toLowerCase())\n          || paletteEntry.id.toLowerCase().includes(searchValue.toLowerCase());\n      };\n\n      const entryToFlat: (paletteEntry: PaletteEntry, idPrefix: string) => void = (paletteEntry: PaletteEntry, idPrefix: string = '') => {\n        idPrefix = !!idPrefix ? `${idPrefix}` : `${paletteEntry.id}`;\n        if (this.hasChildEntries(paletteEntry)) {\n          idTreeArray.push(`${idPrefix}`);\n          for (let i = 0; i < paletteEntry.entries.length; i++) {\n            const entry = paletteEntry.entries[i];\n            const idSuffix = `.entries[${i}]`;\n            entryToFlat(entry, `${idPrefix}${idSuffix}`);\n          }\n        } else {\n          if (isSearchValueInEntry(paletteEntry)) {\n            idTreeArray.push(`${idPrefix}`);\n          }\n        }\n      };\n\n      if (paletteEntries.length > 0 && paletteEntries[0].id === 'results') {\n        paletteEntries = paletteEntries[0].entries;\n      }\n      const resultEntry: PaletteEntry = {\n        label: 'Results',\n        id: 'results',\n        entries: paletteEntries\n      };\n\n      entryToFlat(resultEntry, '');\n      if (this.searchIdTree.length === 0) {\n        return idTreeArray.slice(1);\n      } else {\n        return idTreeArray.slice(2);\n      }\n    };\n\n    const flatEntriesToEntries: (flatEntries: string[], entriesToCheck: PaletteEntry[]) => PaletteEntry[] = (flatEntries: string[], entriesToCheck: PaletteEntry[]) => {\n      const resultObjToCheck = {results: {entries: [...entriesToCheck]}};\n      const entries: PaletteEntry[] = [];\n      for (const flatEntry of flatEntries) {\n        const entryToAdd: PaletteEntry = _.get(resultObjToCheck, flatEntry);\n        entryToAdd.treeId = flatEntry;\n        entries.push(entryToAdd);\n      }\n      return _.uniqWith(entries, _.isEqual); // remove objetos iguais\n    };\n\n    if (!!searchValue) {\n      this.deleteLatestSearchEntryOnDelete = false;\n      let entries;\n      if (!!this.searchPaletteEntries && this.searchPaletteEntries.length > 0 && this.searchPaletteEntries[0].id === 'results') {\n        entries = this.searchPaletteEntries[0].entries;\n      } else {\n        entries = this.searchPaletteEntries;\n      }\n      this.searchPaletteEntries = [\n        {\n          label: 'Results',\n          id: 'results',\n          entries: flatEntriesToEntries(entriesToFlat(entries), entries)\n        }\n      ];\n    } else {\n      if (this.deleteLatestSearchEntryOnDelete) {\n        this.goBackOneLevel();\n      }\n      this.deleteLatestSearchEntryOnDelete = true;\n      this.searchPaletteEntries = [...this.currentPaletteEntries];\n    }\n  }\n\n  public goBackOneLevel(): void {\n    if (this.isSearchInputFocused()) {\n      if (this.searchIdTree.length === 0) {\n        this.destroyItself();\n      } else {\n        this.rebuildCurrentEntriesFromTree(this.searchIdTree.length - 1);\n        this.focusSearchInput();\n      }\n    } else {\n      this.focusSearchInput();\n    }\n  }\n\n  public hasChildEntries(paletteEntry: PaletteEntry): boolean {\n    return paletteEntry?.entries && paletteEntry.entries.length > 0;\n  }\n\n  /**\n   * caso tenha child entries, atualiza o dialog, senão executa a ação da entry.\n   */\n  public paletteEntryAction(paletteEntry: PaletteEntry): void {\n    if (this.hasChildEntries(paletteEntry)) {\n      this.searchIdTree = this.buildTreeIdEntriesFromPaletteEntry(paletteEntry, this.paletteEntries);\n      this.rebuildCurrentEntriesFromTree(this.searchIdTree.length, false);\n      this.searchString = '';\n      this.focusSearchInput();\n    } else {\n      paletteEntry.action();\n      this.destroyItself();\n    }\n  }\n\n  public clearAll(): void {\n    this.searchString = '';\n    this.searchIdTree = [];\n    this.searchPaletteEntries = [...this.paletteEntries];\n    this.currentPaletteEntries = [...this.paletteEntries];\n    this.focusSearchInput();\n  }\n\n}\n",
+            "sourceCode": "import {\n  Component,\n  ElementRef,\n  AfterViewInit,\n  ViewChild,\n  Renderer2,\n  OnDestroy,\n  ViewChildren, QueryList, Directive\n} from '@angular/core';\nimport {ComponentInjectorService} from '../component-injector.service';\nimport {Observable} from 'rxjs';\nimport _ from 'lodash';\nimport {isNumeric} from 'rxjs/internal-compatibility';\nimport {PaletteEntry, PaletteTreeEntry} from '../models';\nimport {CommandPaletteEntriesService} from '../command-palette-entries.service';\n\n// tslint:disable-next-line:directive-selector directive-class-suffix\n@Directive({selector: '.palette-result-entry'}) export class ResultSearchElements {\n  //\n}\n\n@Component({\n  selector: 'pm-command-palette-dialog',\n  templateUrl: './dialog.component.html',\n  styleUrls: ['./dialog.component.scss']\n})\nexport class DialogComponent implements AfterViewInit, OnDestroy {\n\n  @ViewChild('rootPanel', {static: true}) rootPanelComponent: ElementRef;\n  @ViewChild('searchResultContainer', {static: true}) searchResultContainer: ElementRef;\n  @ViewChildren(ResultSearchElements, { read: ElementRef }) resultEntryElements: QueryList<ElementRef>;\n  public searchString = '';\n  public placeholderString = 'Digite sua busca...';\n  public searchIdTree: PaletteTreeEntry[] = []; // utilizado para navegar entre os ids da lista de entradas\n  public itself: any;\n  private currentFocusedElement: ElementRef;\n  private unlistener: () => void;\n  private deleteLatestSearchEntryOnDelete: boolean = false;\n\n  public paletteEntries: PaletteEntry[] = [];\n  public currentPaletteEntries: PaletteEntry[];\n  public searchPaletteEntries: PaletteEntry[];\n\n  constructor(\n    private commandPaletteEntriesService: CommandPaletteEntriesService,\n    private componentInjectorService: ComponentInjectorService,\n    private renderer2: Renderer2\n  ) {\n    document.documentElement.style.setProperty(`overflow-x`, `hidden`, 'important');\n    this.commandPaletteEntriesService.paletteEntries$.subscribe(entries => {\n      this.paletteEntries = [...entries];\n      this.currentPaletteEntries = [...this.paletteEntries];\n      this.searchPaletteEntries = [...this.paletteEntries];\n    });\n  }\n\n  public ngAfterViewInit(): void {\n    this.clearAll();\n    this.unlistener = this.renderer2.listen('window', 'focusin', event => {\n      if (!(\n        event.target === this.rootPanelComponent.nativeElement\n        || this.rootPanelComponent.nativeElement.contains(event.target)\n      )) {\n        this.destroyItself();\n      }\n    });\n  }\n\n  public ngOnDestroy(): void {\n    document.documentElement.style.removeProperty(`overflow-x`);\n  }\n\n  public destroyItself(): void {\n    this.componentInjectorService.removeComponentFromBody(this.itself);\n  }\n\n  private focusSearchInput(): void {\n    setTimeout(() => {\n      this.currentFocusedElement = this.rootPanelComponent;\n      this.rootPanelComponent.nativeElement.children[0].children[1].focus();\n    }, 50);\n  }\n\n  private isSearchInputFocused(): boolean {\n    return this.currentFocusedElement === this.rootPanelComponent;\n  }\n\n  public focusNext(): void {\n    const arrayResultEntryElements = this.resultEntryElements.toArray();\n    const currentFocusIndex = arrayResultEntryElements.findIndex(item => item === this.currentFocusedElement);\n    const focusNextIndex = currentFocusIndex + 1;\n    if (focusNextIndex >= arrayResultEntryElements.length) {\n      this.focusSearchInput();\n    }\n    else if (isNumeric(focusNextIndex)) {\n      this.currentFocusedElement = arrayResultEntryElements[focusNextIndex];\n      this.currentFocusedElement.nativeElement.focus();\n    } else {\n      this.focusSearchInput();\n    }\n  }\n\n  public focusPrevious(): void {\n    const arrayResultEntryElements = this.resultEntryElements.toArray();\n    const currentFocusIndex = arrayResultEntryElements.findIndex(item => item === this.currentFocusedElement);\n    const focusPreviousIndex = currentFocusIndex - 1;\n    if (focusPreviousIndex < 0) {\n      this.focusSearchInput();\n    }\n    else if (isNumeric(focusPreviousIndex)) {\n      this.currentFocusedElement = arrayResultEntryElements[focusPreviousIndex];\n      this.currentFocusedElement.nativeElement.focus();\n    } else {\n      this.focusSearchInput();\n    }\n  }\n\n  public buildTreeIdEntriesFromPaletteEntry(paletteEntry: PaletteEntry, entriesToVerify: PaletteEntry[]): any {\n    let result;\n    let foundEqual: boolean = false;\n\n    const verifyEqual = (entryToVerify: PaletteEntry) => {\n      result.push({id: entryToVerify.id, label: entryToVerify.label});\n      foundEqual = _.isEqual(entryToVerify, paletteEntry);\n    };\n\n    const verifyChildren = (entryToVerify: PaletteEntry) => {\n      verifyEqual(entryToVerify);\n      if (!foundEqual) {\n        if (this.hasChildEntries(entryToVerify)) {\n          for (const child of entryToVerify.entries) {\n            if (!foundEqual) {\n              verifyChildren(child);\n            } else {\n              break;\n            }\n          }\n        }\n      }\n    };\n\n    for (const entry of entriesToVerify) {\n      result = []; // toda vez que itera sobre um novo item do array base zera a árvore de results\n      if (!foundEqual) {\n        verifyChildren(entry);\n      } else {\n        break;\n      }\n    }\n    return result;\n  }\n\n  public rebuildCurrentEntriesFromTree(treeEntryIndex: number, sliceTree: boolean = true): void {\n    let resultEntries = [...this.paletteEntries];\n    if (this.searchIdTree.length > 0) {\n      const slicedTreeEntries = this.searchIdTree.slice(0, treeEntryIndex);\n      // tslint:disable-next-line:prefer-for-of\n      for (let i = 0; i < slicedTreeEntries.length; i++) {\n        const treeEntry = slicedTreeEntries[i];\n        let paletteEntry;\n        if (i === 0) {\n          paletteEntry = resultEntries.find(entry => entry.id === treeEntry.id);\n        } else {\n          paletteEntry = resultEntries[0].entries.find(entry => entry.id === treeEntry.id);\n        }\n        resultEntries = [paletteEntry];\n      }\n    }\n    if (sliceTree) {\n      this.searchIdTree = this.searchIdTree.slice(0, treeEntryIndex);\n    }\n    this.searchPaletteEntries = resultEntries;\n    this.currentPaletteEntries = resultEntries;\n  }\n\n  public searchAction(searchValue: string): void {\n    const entriesToFlat: (paletteEntries: PaletteEntry[]) => string[] = (paletteEntries: PaletteEntry[]) => {\n      const idTreeArray = [];\n\n      const isSearchValueInEntry: (paletteEntry: PaletteEntry) => boolean = (paletteEntry: PaletteEntry) => {\n        return paletteEntry.label.toLowerCase().includes(searchValue.toLowerCase())\n          || paletteEntry.id.toLowerCase().includes(searchValue.toLowerCase());\n      };\n\n      const entryToFlat: (paletteEntry: PaletteEntry, idPrefix: string) => void = (paletteEntry: PaletteEntry, idPrefix: string = '') => {\n        idPrefix = !!idPrefix ? `${idPrefix}` : `${paletteEntry.id}`;\n        if (this.hasChildEntries(paletteEntry)) {\n          idTreeArray.push(`${idPrefix}`);\n          for (let i = 0; i < paletteEntry.entries.length; i++) {\n            const entry = paletteEntry.entries[i];\n            const idSuffix = `.entries[${i}]`;\n            entryToFlat(entry, `${idPrefix}${idSuffix}`);\n          }\n        } else {\n          if (isSearchValueInEntry(paletteEntry)) {\n            idTreeArray.push(`${idPrefix}`);\n          }\n        }\n      };\n\n      if (paletteEntries.length > 0 && paletteEntries[0].id === 'results') {\n        paletteEntries = paletteEntries[0].entries;\n      }\n      const resultEntry: PaletteEntry = {\n        label: 'Results',\n        id: 'results',\n        entries: paletteEntries\n      };\n\n      entryToFlat(resultEntry, '');\n      if (this.searchIdTree.length === 0) {\n        return idTreeArray.slice(1);\n      } else {\n        return idTreeArray.slice(2);\n      }\n    };\n\n    const flatEntriesToEntries: (flatEntries: string[], entriesToCheck: PaletteEntry[]) => PaletteEntry[] = (flatEntries: string[], entriesToCheck: PaletteEntry[]) => {\n      const resultObjToCheck = {results: {entries: [...entriesToCheck]}};\n      const entries: PaletteEntry[] = [];\n      for (const flatEntry of flatEntries) {\n        const entryToAdd: PaletteEntry = _.get(resultObjToCheck, flatEntry);\n        entryToAdd.treeId = flatEntry;\n        entries.push(entryToAdd);\n      }\n      return _.uniqWith(entries, _.isEqual); // remove objetos iguais\n    };\n\n    if (!!searchValue) {\n      this.deleteLatestSearchEntryOnDelete = false;\n      let entries;\n      if (!!this.searchPaletteEntries && this.searchPaletteEntries.length > 0 && this.searchPaletteEntries[0].id === 'results') {\n        entries = this.searchPaletteEntries[0].entries;\n      } else {\n        entries = this.searchPaletteEntries;\n      }\n      this.searchPaletteEntries = [\n        {\n          label: 'Results',\n          id: 'results',\n          entries: flatEntriesToEntries(entriesToFlat(entries), entries)\n        }\n      ];\n    } else {\n      if (this.deleteLatestSearchEntryOnDelete) {\n        this.goBackOneLevel();\n      }\n      this.deleteLatestSearchEntryOnDelete = true;\n      this.searchPaletteEntries = [...this.currentPaletteEntries];\n    }\n  }\n\n  public goBackOneLevel(): void {\n    if (this.isSearchInputFocused()) {\n      if (this.searchIdTree.length === 0) {\n        this.destroyItself();\n      } else {\n        this.rebuildCurrentEntriesFromTree(this.searchIdTree.length - 1);\n        this.focusSearchInput();\n      }\n    } else {\n      this.focusSearchInput();\n    }\n  }\n\n  public hasChildEntries(paletteEntry: PaletteEntry): boolean {\n    return paletteEntry?.entries && paletteEntry.entries.length > 0;\n  }\n\n  /**\n   * caso tenha child entries, atualiza o dialog, senão executa a ação da entry.\n   */\n  public paletteEntryAction(paletteEntry: PaletteEntry): void {\n    if (this.hasChildEntries(paletteEntry)) {\n      this.searchIdTree = this.buildTreeIdEntriesFromPaletteEntry(paletteEntry, this.paletteEntries);\n      this.rebuildCurrentEntriesFromTree(this.searchIdTree.length, false);\n      this.searchString = '';\n      this.focusSearchInput();\n    } else {\n      paletteEntry.action();\n      this.destroyItself();\n    }\n  }\n\n  public clearAll(): void {\n    this.searchString = '';\n    this.searchIdTree = [];\n    this.searchPaletteEntries = [...this.paletteEntries];\n    this.currentPaletteEntries = [...this.paletteEntries];\n    this.focusSearchInput();\n  }\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -1713,7 +1713,7 @@
                 "AfterViewInit",
                 "OnDestroy"
             ],
-            "templateData": "<div\n  tabindex=\"0\" class=\"backdrop\"\n  (keydown.esc)=\"goBackOneLevel()\"\n  (keydown.arrowRight)=\"$event.preventDefault(); goBackOneLevel()\"\n  (keydown.arrowDown)=\"$event.preventDefault(); focusNext()\"\n  (keydown.arrowUp)=\"$event.preventDefault(); focusPrevious()\"\n>\n  <div class=\"palette-dialog-container\">\n    <div #rootPanel tabindex=\"0\" class=\"card-basic palette-dialog\">\n      <div class=\"search-input-container\">\n        <div class=\"d-flex search-tag-container\">\n          <pm-button\n            *ngFor=\"let treeEntry of searchIdTree; let index = index\"\n            (click)=\"rebuildCurrentEntriesFromTree(index);\"\n            [type]=\"'primary'\"\n            [size]=\"'sm'\"\n          >\n            {{treeEntry.label}}\n          </pm-button>\n        </div>\n        <input\n          #searchInput\n          class=\"w-100 flex-fill\"\n          (keydown.delete)=\"searchAction(searchInput.value)\"\n          (keydown.backspace)=\"searchAction(searchInput.value)\"\n          (input)=\"searchAction($event.target['value'])\"\n          [(ngModel)]=\"searchString\"\n          type=\"text\"\n          [attr.placeholder]=\"searchIdTree.length > 0 ? '' : 'Digite sua busca...'\"\n        >\n        <pm-button (click)=\"clearAll()\" [type]=\"'light'\" [size]=\"'sm'\">\n          {{'X'}}\n        </pm-button>\n      </div>\n      <div #searchResultContainer class=\"search-result-container\">\n        <div *ngFor=\"let searchEntry of searchPaletteEntries\"\n             class=\"result-category\"\n        >\n          <p>{{searchEntry.label}}</p>\n          <div *ngFor=\"let childEntry of searchEntry.entries; let index = index;\"\n               [attr.tabindex]=\"index\"\n               (click)=\"paletteEntryAction(childEntry)\"\n               (keydown.enter)=\"$event.preventDefault(); paletteEntryAction(childEntry)\"\n               (keydown.arrowRight)=\"$event.preventDefault(); paletteEntryAction(childEntry)\"\n               class=\"palette-result-entry\"\n          >\n            <p>{{childEntry.label}}{{hasChildEntries(childEntry) ? '...' : ''}}</p>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n"
+            "templateData": "<div\n  tabindex=\"0\" class=\"backdrop\"\n  (keydown.esc)=\"goBackOneLevel()\"\n  (keydown.arrowDown)=\"$event.preventDefault(); focusNext()\"\n  (keydown.arrowUp)=\"$event.preventDefault(); focusPrevious()\"\n>\n  <div class=\"palette-dialog-container\">\n    <div #rootPanel tabindex=\"0\" class=\"card-basic palette-dialog\">\n      <div class=\"search-input-container\">\n        <div class=\"d-flex search-tag-container\">\n          <pm-button\n            *ngFor=\"let treeEntry of searchIdTree; let index = index\"\n            (click)=\"rebuildCurrentEntriesFromTree(index);\"\n            [type]=\"'primary'\"\n            [size]=\"'sm'\"\n          >\n            {{treeEntry.label}}\n          </pm-button>\n        </div>\n        <input\n          #searchInput\n          class=\"w-100 flex-fill\"\n          (keydown.delete)=\"searchAction(searchInput.value)\"\n          (keydown.backspace)=\"searchAction(searchInput.value)\"\n          (input)=\"searchAction($event.target['value'])\"\n          [(ngModel)]=\"searchString\"\n          type=\"text\"\n          [attr.placeholder]=\"searchIdTree.length > 0 ? '' : 'Digite sua busca...'\"\n        >\n        <pm-button (click)=\"clearAll()\" [type]=\"'light'\" [size]=\"'sm'\">\n          {{'X'}}\n        </pm-button>\n      </div>\n      <div #searchResultContainer class=\"search-result-container\">\n        <div *ngFor=\"let searchEntry of searchPaletteEntries\"\n             class=\"result-category\"\n        >\n          <p>{{searchEntry.label}}</p>\n          <div *ngFor=\"let childEntry of searchEntry.entries; let index = index;\"\n               [attr.tabindex]=\"index\"\n               (click)=\"paletteEntryAction(childEntry)\"\n               (keydown.arrowLeft)=\"$event.preventDefault(); goBackOneLevel()\"\n               (keydown.arrowRight)=\"$event.preventDefault(); paletteEntryAction(childEntry)\"\n               (keydown.enter)=\"$event.preventDefault(); paletteEntryAction(childEntry)\"\n               class=\"palette-result-entry\"\n          >\n            <p>{{childEntry.label}}{{hasChildEntries(childEntry) ? '...' : ''}}</p>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n"
         },
         {
             "name": "DraggableListComponent",
@@ -4304,9 +4304,65 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
+                "file": "projects/lib/src/components/containers/expansion-panel/expansion-panel.stories.ts",
+                "type": "object",
+                "defaultValue": "{\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
                 "file": "projects/lib/src/components/cards/basic-card/basic-card.stories.ts",
                 "type": "object",
                 "defaultValue": "{\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/components/inputs/button/button.stories.ts",
+                "type": "object",
+                "defaultValue": "{\n  label: '',\n  type: MainColors.default,\n  busy: false,\n  busyText: '',\n  iconClass: '',\n  iconPosition: 'start',\n  outline: false,\n  disabled: false,\n  size: 'md'\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts",
+                "type": "object",
+                "defaultValue": "{\n  items: [],\n  disabled: false,\n  selectedItem: undefined\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
+                "type": "object",
+                "defaultValue": "{\n  checked: false,\n  disabled: false,\n  selectedItem: undefined,\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts",
+                "type": "object",
+                "defaultValue": "{\n  disabled: false,\n  text: ''\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/components/inputs/dropdown-actions/dropdown-actions.stories.ts",
+                "type": "object",
+                "defaultValue": "{\n  actions: []\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts",
+                "type": "object",
+                "defaultValue": "{\n  orientation: OrientationEnum.Y,\n  values: [],\n  disabled: false,\n  selectedValue: undefined\n}"
             },
             {
                 "name": "defaultArgs",
@@ -4331,62 +4387,6 @@
                 "file": "projects/lib/src/components/lists/table-list/table-list.stories.ts",
                 "type": "object",
                 "defaultValue": "{\n  columns: [],\n  columnNames: [],\n  imageColumns: [],\n  imageHeight: '50px',\n  showHeader: true,\n  numberFormat: '1.2-2',\n  numberPrefix: '',\n  actionsTemplate: undefined,\n  itemList: undefined,\n  borderRadius: undefined,\n  backgroundColor: undefined,\n  expandedDetailTemplate: undefined,\n  disableExpandedOnDisabledRow: true,\n  expandedRow: undefined\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/lib/src/components/containers/expansion-panel/expansion-panel.stories.ts",
-                "type": "object",
-                "defaultValue": "{\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/lib/src/components/inputs/button/button.stories.ts",
-                "type": "object",
-                "defaultValue": "{\n  label: '',\n  type: MainColors.default,\n  busy: false,\n  busyText: '',\n  iconClass: '',\n  iconPosition: 'start',\n  outline: false,\n  disabled: false,\n  size: 'md'\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
-                "type": "object",
-                "defaultValue": "{\n  checked: false,\n  disabled: false,\n  selectedItem: undefined,\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts",
-                "type": "object",
-                "defaultValue": "{\n  items: [],\n  disabled: false,\n  selectedItem: undefined\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts",
-                "type": "object",
-                "defaultValue": "{\n  disabled: false,\n  text: ''\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts",
-                "type": "object",
-                "defaultValue": "{\n  orientation: OrientationEnum.Y,\n  values: [],\n  disabled: false,\n  selectedValue: undefined\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/lib/src/components/inputs/dropdown-actions/dropdown-actions.stories.ts",
-                "type": "object",
-                "defaultValue": "{\n  actions: []\n}"
             },
             {
                 "name": "defaultArgs",
@@ -4703,9 +4703,65 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
+                "file": "projects/lib/src/components/containers/expansion-panel/expansion-panel.stories.ts",
+                "type": "Story<ExpansionPanelComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-expansion-panel\n    >\n        Conteúdo aqui\n    </pm-expansion-panel>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
                 "file": "projects/lib/src/components/cards/basic-card/basic-card.stories.ts",
                 "type": "Story<BasicCardComponent>",
                 "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-basic-card\n    >\n    </pm-basic-card>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/components/inputs/button/button.stories.ts",
+                "type": "Story<ButtonComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-button\n        [label]=\"label\"\n        [type]=\"type\"\n        [busy]=\"busy\"\n        [busyText]=\"busyText\"\n        [iconClass]=\"iconClass\"\n        [iconPosition]=\"iconPosition\"\n        [outline]=\"outline\"\n        [disabled]=\"disabled\"\n        [size]=\"size\"\n    >\n        Button Content\n    </pm-button>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts",
+                "type": "Story<ComboBoxComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-combo-box\n      [items]=\"items\"\n      [disabled]=\"disabled\"\n      [selectedItem]=\"selectedItem\"\n    >\n    </pm-combo-box>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
+                "type": "Story<CheckboxComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-checkbox\n      [checked]=\"checked\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts",
+                "type": "Story<CopyContentInputComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-copy-content-input\n      [text]=\"text\"\n      [disabled]=\"disabled\"\n    >\n      Conteúdo\n    </pm-copy-content-input>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/components/inputs/dropdown-actions/dropdown-actions.stories.ts",
+                "type": "Story<DropdownActionsComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-dropdown-actions\n      [actions]=\"actions\"\n    >\n    </pm-dropdown-actions>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts",
+                "type": "Story<RadioButtonComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-radio-button\n      [orientation]=\"orientation\"\n      [values]=\"values\"\n      [selectedValue]=\"selectedValue\"\n      [disabled]=\"disabled\"\n    >\n    </pm-radio-button>\n  `\n})"
             },
             {
                 "name": "Template",
@@ -4730,62 +4786,6 @@
                 "file": "projects/lib/src/components/lists/table-list/table-list.stories.ts",
                 "type": "Story<TableListComponent>",
                 "defaultValue": "(args) => ({\n  props: args,\n  template: `<pm-table-list\n    [columns]=\"columns\"\n    [columnNames]=\"columnNames\"\n    [imageColumns]=\"imageColumns\"\n    [imageHeight]=\"imageHeight\"\n    [showHeader]=\"showHeader\"\n    [numberFormat]=\"numberFormat\"\n    [numberPrefix]=\"numberPrefix\"\n    [itemList]=\"itemList\"\n    [borderRadius]=\"borderRadius\"\n    [backgroundColor]=\"backgroundColor\"\n    [expandedDetailTemplate]=\"expandedDetailTemplate\"\n    [disableExpandedOnDisabledRow]=\"disableExpandedOnDisabledRow\"\n  ></pm-table-list>`\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/lib/src/components/containers/expansion-panel/expansion-panel.stories.ts",
-                "type": "Story<ExpansionPanelComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-expansion-panel\n    >\n        Conteúdo aqui\n    </pm-expansion-panel>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/lib/src/components/inputs/button/button.stories.ts",
-                "type": "Story<ButtonComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-button\n        [label]=\"label\"\n        [type]=\"type\"\n        [busy]=\"busy\"\n        [busyText]=\"busyText\"\n        [iconClass]=\"iconClass\"\n        [iconPosition]=\"iconPosition\"\n        [outline]=\"outline\"\n        [disabled]=\"disabled\"\n        [size]=\"size\"\n    >\n        Button Content\n    </pm-button>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
-                "type": "Story<CheckboxComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-checkbox\n      [checked]=\"checked\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts",
-                "type": "Story<ComboBoxComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-combo-box\n      [items]=\"items\"\n      [disabled]=\"disabled\"\n      [selectedItem]=\"selectedItem\"\n    >\n    </pm-combo-box>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts",
-                "type": "Story<CopyContentInputComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-copy-content-input\n      [text]=\"text\"\n      [disabled]=\"disabled\"\n    >\n      Conteúdo\n    </pm-copy-content-input>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts",
-                "type": "Story<RadioButtonComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-radio-button\n      [orientation]=\"orientation\"\n      [values]=\"values\"\n      [selectedValue]=\"selectedValue\"\n      [disabled]=\"disabled\"\n    >\n    </pm-radio-button>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/lib/src/components/inputs/dropdown-actions/dropdown-actions.stories.ts",
-                "type": "Story<DropdownActionsComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-dropdown-actions\n      [actions]=\"actions\"\n    >\n    </pm-dropdown-actions>\n  `\n})"
             },
             {
                 "name": "Template",
@@ -5368,6 +5368,32 @@
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-XXXName\n    >\n    </pm-XXXName>\n  `\n})"
                 }
             ],
+            "projects/lib/src/components/containers/expansion-panel/expansion-panel.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/containers/expansion-panel/expansion-panel.stories.ts",
+                    "type": "object",
+                    "defaultValue": "{\n}"
+                },
+                {
+                    "name": "DefaultExpansionPanel",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/containers/expansion-panel/expansion-panel.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/containers/expansion-panel/expansion-panel.stories.ts",
+                    "type": "Story<ExpansionPanelComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-expansion-panel\n    >\n        Conteúdo aqui\n    </pm-expansion-panel>\n  `\n})"
+                }
+            ],
             "projects/lib/src/components/cards/basic-card/basic-card.stories.ts": [
                 {
                     "name": "defaultArgs",
@@ -5392,6 +5418,160 @@
                     "file": "projects/lib/src/components/cards/basic-card/basic-card.stories.ts",
                     "type": "Story<BasicCardComponent>",
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-basic-card\n    >\n    </pm-basic-card>\n  `\n})"
+                }
+            ],
+            "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts",
+                    "type": "object",
+                    "defaultValue": "{\n  items: [],\n  disabled: false,\n  selectedItem: undefined\n}"
+                },
+                {
+                    "name": "DefaultComboBox",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "defaultItems",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts",
+                    "type": "[]",
+                    "defaultValue": "[\n  {\n    label: 'Value 1',\n    value: 1\n  },\n  {\n    label: 'Value 2',\n    value: 2\n  },\n  {\n    label: 'Value 3',\n    value: 3\n  }\n]"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts",
+                    "type": "Story<ComboBoxComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-combo-box\n      [items]=\"items\"\n      [disabled]=\"disabled\"\n      [selectedItem]=\"selectedItem\"\n    >\n    </pm-combo-box>\n  `\n})"
+                }
+            ],
+            "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
+                    "type": "object",
+                    "defaultValue": "{\n  checked: false,\n  disabled: false,\n  selectedItem: undefined,\n}"
+                },
+                {
+                    "name": "DefaultCheckbox",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "DisabledCheckbox",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
+                    "type": "Story<CheckboxComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-checkbox\n      [checked]=\"checked\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>\n  `\n})"
+                }
+            ],
+            "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts",
+                    "type": "object",
+                    "defaultValue": "{\n  disabled: false,\n  text: ''\n}"
+                },
+                {
+                    "name": "DefaultCopyContentInput",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts",
+                    "type": "Story<CopyContentInputComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-copy-content-input\n      [text]=\"text\"\n      [disabled]=\"disabled\"\n    >\n      Conteúdo\n    </pm-copy-content-input>\n  `\n})"
+                }
+            ],
+            "projects/lib/src/components/inputs/dropdown-actions/dropdown-actions.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/dropdown-actions/dropdown-actions.stories.ts",
+                    "type": "object",
+                    "defaultValue": "{\n  actions: []\n}"
+                },
+                {
+                    "name": "DefaultDropdownActions",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/dropdown-actions/dropdown-actions.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/dropdown-actions/dropdown-actions.stories.ts",
+                    "type": "Story<DropdownActionsComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-dropdown-actions\n      [actions]=\"actions\"\n    >\n    </pm-dropdown-actions>\n  `\n})"
+                }
+            ],
+            "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts",
+                    "type": "object",
+                    "defaultValue": "{\n  orientation: OrientationEnum.Y,\n  values: [],\n  disabled: false,\n  selectedValue: undefined\n}"
+                },
+                {
+                    "name": "DefaultRadioButton",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "HorizontalRadioButton",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts",
+                    "type": "Story<RadioButtonComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-radio-button\n      [orientation]=\"orientation\"\n      [values]=\"values\"\n      [selectedValue]=\"selectedValue\"\n      [disabled]=\"disabled\"\n    >\n    </pm-radio-button>\n  `\n})"
                 }
             ],
             "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts": [
@@ -5468,186 +5648,6 @@
                     "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
                     "type": "Story<GridListComponent>",
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-grid-list\n      [items]=\"items\"\n      [displayStyle]=\"displayStyle\"\n      [gridHeaderReverse]=\"gridHeaderReverse\"\n      [bodyBackgroundColor]=\"bodyBackgroundColor\"\n      [actionTemplate]=\"undefined\"\n      [overflowGallery]=\"overflowGallery\"\n    >\n    </pm-grid-list>\n  `\n})"
-                }
-            ],
-            "projects/lib/src/components/containers/expansion-panel/expansion-panel.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/containers/expansion-panel/expansion-panel.stories.ts",
-                    "type": "object",
-                    "defaultValue": "{\n}"
-                },
-                {
-                    "name": "DefaultExpansionPanel",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/containers/expansion-panel/expansion-panel.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/containers/expansion-panel/expansion-panel.stories.ts",
-                    "type": "Story<ExpansionPanelComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-expansion-panel\n    >\n        Conteúdo aqui\n    </pm-expansion-panel>\n  `\n})"
-                }
-            ],
-            "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
-                    "type": "object",
-                    "defaultValue": "{\n  checked: false,\n  disabled: false,\n  selectedItem: undefined,\n}"
-                },
-                {
-                    "name": "DefaultCheckbox",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "DisabledCheckbox",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
-                    "type": "Story<CheckboxComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-checkbox\n      [checked]=\"checked\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>\n  `\n})"
-                }
-            ],
-            "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts",
-                    "type": "object",
-                    "defaultValue": "{\n  items: [],\n  disabled: false,\n  selectedItem: undefined\n}"
-                },
-                {
-                    "name": "DefaultComboBox",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "defaultItems",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts",
-                    "type": "[]",
-                    "defaultValue": "[\n  {\n    label: 'Value 1',\n    value: 1\n  },\n  {\n    label: 'Value 2',\n    value: 2\n  },\n  {\n    label: 'Value 3',\n    value: 3\n  }\n]"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts",
-                    "type": "Story<ComboBoxComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-combo-box\n      [items]=\"items\"\n      [disabled]=\"disabled\"\n      [selectedItem]=\"selectedItem\"\n    >\n    </pm-combo-box>\n  `\n})"
-                }
-            ],
-            "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts",
-                    "type": "object",
-                    "defaultValue": "{\n  disabled: false,\n  text: ''\n}"
-                },
-                {
-                    "name": "DefaultCopyContentInput",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts",
-                    "type": "Story<CopyContentInputComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-copy-content-input\n      [text]=\"text\"\n      [disabled]=\"disabled\"\n    >\n      Conteúdo\n    </pm-copy-content-input>\n  `\n})"
-                }
-            ],
-            "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts",
-                    "type": "object",
-                    "defaultValue": "{\n  orientation: OrientationEnum.Y,\n  values: [],\n  disabled: false,\n  selectedValue: undefined\n}"
-                },
-                {
-                    "name": "DefaultRadioButton",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "HorizontalRadioButton",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts",
-                    "type": "Story<RadioButtonComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-radio-button\n      [orientation]=\"orientation\"\n      [values]=\"values\"\n      [selectedValue]=\"selectedValue\"\n      [disabled]=\"disabled\"\n    >\n    </pm-radio-button>\n  `\n})"
-                }
-            ],
-            "projects/lib/src/components/inputs/dropdown-actions/dropdown-actions.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/inputs/dropdown-actions/dropdown-actions.stories.ts",
-                    "type": "object",
-                    "defaultValue": "{\n  actions: []\n}"
-                },
-                {
-                    "name": "DefaultDropdownActions",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/inputs/dropdown-actions/dropdown-actions.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/inputs/dropdown-actions/dropdown-actions.stories.ts",
-                    "type": "Story<DropdownActionsComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-dropdown-actions\n      [actions]=\"actions\"\n    >\n    </pm-dropdown-actions>\n  `\n})"
                 }
             ],
             "projects/lib/src/components/navigation/stepper/stepper.stories.ts": [

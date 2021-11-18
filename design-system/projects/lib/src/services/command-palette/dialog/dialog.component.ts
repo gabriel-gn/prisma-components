@@ -135,6 +135,8 @@ export class DialogComponent implements AfterViewInit, OnDestroy {
               break;
             }
           }
+        } else {
+          result = result.slice(0, 1);
         }
       }
     };

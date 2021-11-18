@@ -73,6 +73,22 @@ export class TriggerButtonComponent implements AfterViewInit {
                 }
               }
             ]
+          },
+          {
+            id: 'language',
+            label: 'Idioma',
+            entries: [
+              {
+                id: 'ptbr',
+                label: 'Portuguese (BR)',
+                action: () => {console.log('pt-BR'); }
+              },
+              {
+                id: 'en',
+                label: 'English',
+                action: () => {console.log('en'); }
+              }
+            ]
           }
         ]
       }
