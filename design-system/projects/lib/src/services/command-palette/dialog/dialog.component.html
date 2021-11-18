@@ -1,8 +1,8 @@
 <div
   tabindex="0" class="backdrop"
   (keydown.esc)="goBackOneLevel()"
-  (keydown.arrowDown)="focusNext()"
-  (keydown.arrowUp)="focusPrevious()"
+  (keydown.arrowDown)="$event.preventDefault(); focusNext()"
+  (keydown.arrowUp)="$event.preventDefault(); focusPrevious()"
 >
   <div class="palette-dialog-container">
     <div #rootPanel tabindex="0" class="card-basic palette-dialog">
@@ -39,8 +39,9 @@
           <div *ngFor="let childEntry of searchEntry.entries; let index = index;"
                [attr.tabindex]="index"
                (click)="paletteEntryAction(childEntry)"
-               (keydown.enter)="paletteEntryAction(childEntry)"
-               (keydown.arrowRight)="paletteEntryAction(childEntry)"
+               (keydown.arrowLeft)="$event.preventDefault(); goBackOneLevel()"
+               (keydown.arrowRight)="$event.preventDefault(); paletteEntryAction(childEntry)"
+               (keydown.enter)="$event.preventDefault(); paletteEntryAction(childEntry)"
                class="palette-result-entry"
           >
             <p>{{childEntry.label}}{{hasChildEntries(childEntry) ? '...' : ''}}</p>
