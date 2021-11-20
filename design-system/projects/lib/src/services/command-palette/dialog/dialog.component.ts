@@ -8,7 +8,6 @@ import {
   ViewChildren, QueryList, Directive
 } from '@angular/core';
 import {ComponentInjectorService} from '../component-injector.service';
-import {Observable} from 'rxjs';
 import _ from 'lodash';
 import {isNumeric} from 'rxjs/internal-compatibility';
 import {PaletteEntry, PaletteTreeEntry} from '../models';
@@ -30,7 +29,6 @@ export class DialogComponent implements AfterViewInit, OnDestroy {
   @ViewChild('searchResultContainer', {static: true}) searchResultContainer: ElementRef;
   @ViewChildren(ResultSearchElements, { read: ElementRef }) resultEntryElements: QueryList<ElementRef>;
   public searchString = '';
-  public placeholderString = 'Digite sua busca...';
   public searchIdTree: PaletteTreeEntry[] = []; // utilizado para navegar entre os ids da lista de entradas
   public itself: any;
   private currentFocusedElement: ElementRef;

@@ -25,10 +25,10 @@
           (input)="searchAction($event.target['value'])"
           [(ngModel)]="searchString"
           type="text"
-          [attr.placeholder]="searchIdTree.length > 0 ? '' : 'Digite sua busca...'"
+          [attr.placeholder]="searchIdTree.length > 0 ? '' : commandPaletteEntriesService.dialogSearchPlaceholder"
         >
         <pm-button (click)="clearAll()" [type]="'light'" [size]="'sm'">
-          {{'X'}}
+          {{commandPaletteEntriesService.dialogClearButtonLabel}}
         </pm-button>
       </div>
       <div #searchResultContainer class="search-result-container">
