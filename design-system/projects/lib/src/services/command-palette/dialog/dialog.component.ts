@@ -268,14 +268,22 @@ export class DialogComponent implements AfterViewInit, OnDestroy {
   }
 
   /**
+   * Com uma palette entry, cria toda a estrutura baseado na raiz e abre o dialog nela já
+   * @param paletteEntry: Entrada da lista raiz
+   */
+  public initFromPaletteEntry(paletteEntry: PaletteEntry): void {
+    this.searchIdTree = this.buildTreeIdEntriesFromPaletteEntry(paletteEntry, this.paletteEntries);
+    this.rebuildCurrentEntriesFromTree(this.searchIdTree.length, false);
+    this.searchString = '';
+    this.focusSearchInput();
+  }
+
+  /**
    * caso tenha child entries, atualiza o dialog, senão executa a ação da entry.
    */
   public paletteEntryAction(paletteEntry: PaletteEntry): void {
     if (this.hasChildEntries(paletteEntry)) {
-      this.searchIdTree = this.buildTreeIdEntriesFromPaletteEntry(paletteEntry, this.paletteEntries);
-      this.rebuildCurrentEntriesFromTree(this.searchIdTree.length, false);
-      this.searchString = '';
-      this.focusSearchInput();
+      this.initFromPaletteEntry(paletteEntry);
     } else {
       paletteEntry.action();
       this.destroyItself();

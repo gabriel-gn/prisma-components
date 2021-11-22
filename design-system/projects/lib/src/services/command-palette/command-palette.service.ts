@@ -7,6 +7,7 @@ import {DialogComponent} from './dialog/dialog.component';
 import {ComponentInjectorService} from './component-injector.service';
 import {Hotkey, HotkeysService} from 'angular2-hotkeys';
 import {CommandPaletteEntriesService} from './command-palette-entries.service';
+import {PaletteEntry} from './models';
 
 @Injectable()
 export class CommandPaletteService {
@@ -32,10 +33,15 @@ export class CommandPaletteService {
     return this._configs;
   }
 
-  public triggerDialog(): void {
+  public triggerDialog(initialEntry: PaletteEntry = undefined): void {
     this.componentInjectorService.appendComponentToBody(DialogComponent).then(
       (createdComponent) => {
         createdComponent.instance.itself = createdComponent;
+        if (!!initialEntry) {
+          setTimeout(() => {
+            createdComponent.instance.initFromPaletteEntry(initialEntry);
+          }, 0);
+        }
       }
     );
   }
