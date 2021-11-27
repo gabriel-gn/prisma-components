@@ -46,7 +46,7 @@ export class ButtonComponent {
   constructor() { }
 
   public getClassName(): string {
-    let name = 'btn';
+    let name = 'pm-button btn';
     if (this.size !== 'md') {
       name += ` ${this.size}`;
     }

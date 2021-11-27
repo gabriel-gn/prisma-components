@@ -468,7 +468,7 @@
         },
         {
             "name": "CommandPaletteService",
-            "id": "injectable-CommandPaletteService-6f5a7c62a5c55dc1c9ece535a71654e2",
+            "id": "injectable-CommandPaletteService-4b2f037ca0e86ed947573f1ec7db6aa2",
             "file": "projects/lib/src/services/command-palette/command-palette.service.ts",
             "properties": [
                 {
@@ -522,7 +522,7 @@
                 }
             ],
             "description": "",
-            "sourceCode": "import {\n  Inject,\n  Injectable,\n} from '@angular/core';\nimport {COMMAND_PALETTE_CONFIG, CommandPaletteConfig} from './injection';\nimport {DialogComponent} from './dialog/dialog.component';\nimport {ComponentInjectorService} from './component-injector.service';\nimport {Hotkey, HotkeysService} from 'angular2-hotkeys';\nimport {CommandPaletteEntriesService} from './command-palette-entries.service';\nimport {PaletteEntry} from './models';\n\n@Injectable()\nexport class CommandPaletteService {\n  private _configs: CommandPaletteConfig;\n\n  constructor(\n    @Inject(COMMAND_PALETTE_CONFIG) initialConfig: CommandPaletteConfig,\n    public commandPaletteEntriesService: CommandPaletteEntriesService,\n    private componentInjectorService: ComponentInjectorService,\n    private hotkeysService: HotkeysService,\n  ) {\n    this._configs = initialConfig;\n    this.commandPaletteEntriesService.paletteEntries = this._configs.paletteEntries;\n    this.hotkeysService.add(new Hotkey(this._configs.hotkeys, (event: KeyboardEvent, combo: string): boolean => {\n      event.stopPropagation();\n      event.preventDefault();\n      this.triggerDialog();\n      return true;\n    }));\n  }\n\n  public get configs(): CommandPaletteConfig {\n    return this._configs;\n  }\n\n  public triggerDialog(initialEntry: PaletteEntry = undefined): void {\n    this.componentInjectorService.appendComponentToBody(DialogComponent).then(\n      (createdComponent) => {\n        createdComponent.instance.itself = createdComponent;\n      }\n    );\n  }\n}\n",
+            "sourceCode": "import {\n  Inject,\n  Injectable,\n} from '@angular/core';\nimport {COMMAND_PALETTE_CONFIG, CommandPaletteConfig} from './injection';\nimport {DialogComponent} from './dialog/dialog.component';\nimport {ComponentInjectorService} from './component-injector.service';\nimport {Hotkey, HotkeysService} from 'angular2-hotkeys';\nimport {CommandPaletteEntriesService} from './command-palette-entries.service';\nimport {PaletteEntry} from './models';\n\n@Injectable()\nexport class CommandPaletteService {\n  private _configs: CommandPaletteConfig;\n\n  constructor(\n    @Inject(COMMAND_PALETTE_CONFIG) initialConfig: CommandPaletteConfig,\n    public commandPaletteEntriesService: CommandPaletteEntriesService,\n    private componentInjectorService: ComponentInjectorService,\n    private hotkeysService: HotkeysService,\n  ) {\n    this._configs = initialConfig;\n    this.commandPaletteEntriesService.paletteEntries = this._configs.paletteEntries;\n    this.hotkeysService.add(new Hotkey(this._configs.hotkeys, (event: KeyboardEvent, combo: string): boolean => {\n      event.stopPropagation();\n      event.preventDefault();\n      this.triggerDialog();\n      return true;\n    }));\n  }\n\n  public get configs(): CommandPaletteConfig {\n    return this._configs;\n  }\n\n  public triggerDialog(initialEntry: PaletteEntry = undefined): void {\n    this.componentInjectorService.appendComponentToBody(DialogComponent).then(\n      (createdComponent) => {\n        createdComponent.instance.itself = createdComponent;\n        if (!!initialEntry) {\n          setTimeout(() => {\n            createdComponent.instance.initFromPaletteEntry(initialEntry);\n          }, 0);\n        }\n      }\n    );\n  }\n}\n",
             "constructorObj": {
                 "name": "constructor",
                 "description": "",
@@ -710,11 +710,11 @@
     "directives": [
         {
             "name": "ResultSearchElements",
-            "id": "directive-ResultSearchElements-8e7d427e7959c7a60003df1a756c4e58",
+            "id": "directive-ResultSearchElements-f9354be50d181e1b286a81c65aa6d881",
             "file": "projects/lib/src/services/command-palette/dialog/dialog.component.ts",
             "type": "directive",
             "description": "",
-            "sourceCode": "import {\n  Component,\n  ElementRef,\n  AfterViewInit,\n  ViewChild,\n  Renderer2,\n  OnDestroy,\n  ViewChildren, QueryList, Directive\n} from '@angular/core';\nimport {ComponentInjectorService} from '../component-injector.service';\nimport _ from 'lodash';\nimport {isNumeric} from 'rxjs/internal-compatibility';\nimport {PaletteEntry, PaletteTreeEntry} from '../models';\nimport {CommandPaletteEntriesService} from '../command-palette-entries.service';\n\n// tslint:disable-next-line:directive-selector directive-class-suffix\n@Directive({selector: '.palette-result-entry'}) export class ResultSearchElements {\n  //\n}\n\n@Component({\n  selector: 'pm-command-palette-dialog',\n  templateUrl: './dialog.component.html',\n  styleUrls: ['./dialog.component.scss']\n})\nexport class DialogComponent implements AfterViewInit, OnDestroy {\n\n  @ViewChild('rootPanel', {static: true}) rootPanelComponent: ElementRef;\n  @ViewChild('searchResultContainer', {static: true}) searchResultContainer: ElementRef;\n  @ViewChildren(ResultSearchElements, { read: ElementRef }) resultEntryElements: QueryList<ElementRef>;\n  public searchString = '';\n  public searchIdTree: PaletteTreeEntry[] = []; // utilizado para navegar entre os ids da lista de entradas\n  public itself: any;\n  public initialEntry: PaletteEntry;\n  private currentFocusedElement: ElementRef;\n  private unlistener: () => void;\n  private deleteLatestSearchEntryOnDelete: boolean = false;\n\n  public paletteEntries: PaletteEntry[] = [];\n  public currentPaletteEntries: PaletteEntry[];\n  public searchPaletteEntries: PaletteEntry[];\n\n  constructor(\n    private commandPaletteEntriesService: CommandPaletteEntriesService,\n    private componentInjectorService: ComponentInjectorService,\n    private renderer2: Renderer2\n  ) {\n    document.documentElement.style.setProperty(`overflow-x`, `hidden`, 'important');\n    this.commandPaletteEntriesService.paletteEntries$.subscribe(entries => {\n      this.paletteEntries = [...entries];\n      this.currentPaletteEntries = [...this.paletteEntries];\n      this.searchPaletteEntries = [...this.paletteEntries];\n      if (!!this.initialEntry) {\n        this.buildTreeIdEntriesFromPaletteEntry(this.initialEntry, this.paletteEntries);\n        this.initialEntry = undefined;\n      }\n    });\n  }\n\n  public ngAfterViewInit(): void {\n    this.clearAll();\n    this.unlistener = this.renderer2.listen('window', 'focusin', event => {\n      if (!(\n        event.target === this.rootPanelComponent.nativeElement\n        || this.rootPanelComponent.nativeElement.contains(event.target)\n      )) {\n        this.destroyItself();\n      }\n    });\n  }\n\n  public ngOnDestroy(): void {\n    document.documentElement.style.removeProperty(`overflow-x`);\n  }\n\n  public destroyItself(): void {\n    this.componentInjectorService.removeComponentFromBody(this.itself);\n  }\n\n  private focusSearchInput(): void {\n    setTimeout(() => {\n      this.currentFocusedElement = this.rootPanelComponent;\n      this.rootPanelComponent.nativeElement.children[0].children[1].focus();\n    }, 50);\n  }\n\n  private isSearchInputFocused(): boolean {\n    return this.currentFocusedElement === this.rootPanelComponent;\n  }\n\n  public focusNext(): void {\n    const arrayResultEntryElements = this.resultEntryElements.toArray();\n    const currentFocusIndex = arrayResultEntryElements.findIndex(item => item === this.currentFocusedElement);\n    const focusNextIndex = currentFocusIndex + 1;\n    if (focusNextIndex >= arrayResultEntryElements.length) {\n      this.focusSearchInput();\n    }\n    else if (isNumeric(focusNextIndex)) {\n      this.currentFocusedElement = arrayResultEntryElements[focusNextIndex];\n      this.currentFocusedElement.nativeElement.focus();\n    } else {\n      this.focusSearchInput();\n    }\n  }\n\n  public focusPrevious(): void {\n    const arrayResultEntryElements = this.resultEntryElements.toArray();\n    const currentFocusIndex = arrayResultEntryElements.findIndex(item => item === this.currentFocusedElement);\n    const focusPreviousIndex = currentFocusIndex - 1;\n    if (focusPreviousIndex < 0) {\n      this.focusSearchInput();\n    }\n    else if (isNumeric(focusPreviousIndex)) {\n      this.currentFocusedElement = arrayResultEntryElements[focusPreviousIndex];\n      this.currentFocusedElement.nativeElement.focus();\n    } else {\n      this.focusSearchInput();\n    }\n  }\n\n  public buildTreeIdEntriesFromPaletteEntry(paletteEntry: PaletteEntry, entriesToVerify: PaletteEntry[]): any {\n    let result;\n    let foundEqual: boolean = false;\n\n    const verifyEqual = (entryToVerify: PaletteEntry) => {\n      result.push({id: entryToVerify.id, label: entryToVerify.label});\n      foundEqual = _.isEqual(entryToVerify, paletteEntry);\n    };\n\n    const verifyChildren = (entryToVerify: PaletteEntry) => {\n      verifyEqual(entryToVerify);\n      if (!foundEqual) {\n        if (this.hasChildEntries(entryToVerify)) {\n          for (const child of entryToVerify.entries) {\n            if (!foundEqual) {\n              verifyChildren(child);\n            } else {\n              break;\n            }\n          }\n        } else {\n          result = result.slice(0, 1);\n        }\n      }\n    };\n\n    for (const entry of entriesToVerify) {\n      if (!foundEqual) {\n        result = []; // toda vez que itera sobre um novo item do array base zera a árvore de results\n        verifyChildren(entry);\n      } else {\n        break;\n      }\n    }\n    return result;\n  }\n\n  public rebuildCurrentEntriesFromTree(treeEntryIndex: number, sliceTree: boolean = true): void {\n    let resultEntries = [...this.paletteEntries];\n    if (this.searchIdTree.length > 0) {\n      const slicedTreeEntries = this.searchIdTree.slice(0, treeEntryIndex);\n      // tslint:disable-next-line:prefer-for-of\n      for (let i = 0; i < slicedTreeEntries.length; i++) {\n        const treeEntry = slicedTreeEntries[i];\n        let paletteEntry;\n        if (i === 0) {\n          paletteEntry = resultEntries.find(entry => entry.id === treeEntry.id);\n        } else {\n          paletteEntry = resultEntries[0].entries.find(entry => entry.id === treeEntry.id);\n        }\n        resultEntries = [paletteEntry];\n      }\n    }\n    if (sliceTree) {\n      this.searchIdTree = this.searchIdTree.slice(0, treeEntryIndex);\n    }\n    this.searchPaletteEntries = resultEntries;\n    this.currentPaletteEntries = resultEntries;\n  }\n\n  public searchAction(searchValue: string): void {\n    const entriesToFlat: (paletteEntries: PaletteEntry[]) => string[] = (paletteEntries: PaletteEntry[]) => {\n      const idTreeArray = [];\n\n      const isSearchValueInEntry: (paletteEntry: PaletteEntry) => boolean = (paletteEntry: PaletteEntry) => {\n        return paletteEntry.label.toLowerCase().includes(searchValue.toLowerCase())\n          || paletteEntry.id.toLowerCase().includes(searchValue.toLowerCase());\n      };\n\n      const entryToFlat: (paletteEntry: PaletteEntry, idPrefix: string) => void = (paletteEntry: PaletteEntry, idPrefix: string = '') => {\n        idPrefix = !!idPrefix ? `${idPrefix}` : `${paletteEntry.id}`;\n        if (this.hasChildEntries(paletteEntry)) {\n          idTreeArray.push(`${idPrefix}`);\n          for (let i = 0; i < paletteEntry.entries.length; i++) {\n            const entry = paletteEntry.entries[i];\n            const idSuffix = `.entries[${i}]`;\n            entryToFlat(entry, `${idPrefix}${idSuffix}`);\n          }\n        } else {\n          if (isSearchValueInEntry(paletteEntry)) {\n            idTreeArray.push(`${idPrefix}`);\n          }\n        }\n      };\n\n      if (paletteEntries.length > 0 && paletteEntries[0].id === 'results') {\n        paletteEntries = paletteEntries[0].entries;\n      }\n      const resultEntry: PaletteEntry = {\n        label: 'Results',\n        id: 'results',\n        entries: paletteEntries\n      };\n\n      entryToFlat(resultEntry, '');\n      if (this.searchIdTree.length === 0) {\n        return idTreeArray.slice(1);\n      } else {\n        return idTreeArray.slice(2);\n      }\n    };\n\n    const flatEntriesToEntries: (flatEntries: string[], entriesToCheck: PaletteEntry[]) => PaletteEntry[] = (flatEntries: string[], entriesToCheck: PaletteEntry[]) => {\n      const resultObjToCheck = {results: {entries: [...entriesToCheck]}};\n      const entries: PaletteEntry[] = [];\n      for (const flatEntry of flatEntries) {\n        const entryToAdd: PaletteEntry = _.get(resultObjToCheck, flatEntry);\n        entryToAdd.treeId = flatEntry;\n        entries.push(entryToAdd);\n      }\n      return _.uniqWith(entries, _.isEqual); // remove objetos iguais\n    };\n\n    if (!!searchValue) {\n      this.deleteLatestSearchEntryOnDelete = false;\n      let entries;\n      if (!!this.searchPaletteEntries && this.searchPaletteEntries.length > 0 && this.searchPaletteEntries[0].id === 'results') {\n        entries = this.searchPaletteEntries[0].entries;\n      } else {\n        entries = this.searchPaletteEntries;\n      }\n      this.searchPaletteEntries = [\n        {\n          label: 'Results',\n          id: 'results',\n          entries: flatEntriesToEntries(entriesToFlat(entries), entries)\n        }\n      ];\n    } else {\n      if (this.deleteLatestSearchEntryOnDelete) {\n        this.goBackOneLevel();\n      }\n      this.deleteLatestSearchEntryOnDelete = true;\n      this.searchPaletteEntries = [...this.currentPaletteEntries];\n    }\n  }\n\n  public goBackOneLevel(): void {\n    if (this.isSearchInputFocused()) {\n      if (this.searchIdTree.length === 0) {\n        this.destroyItself();\n      } else {\n        this.rebuildCurrentEntriesFromTree(this.searchIdTree.length - 1);\n        this.focusSearchInput();\n      }\n    } else {\n      this.focusSearchInput();\n    }\n  }\n\n  public hasChildEntries(paletteEntry: PaletteEntry): boolean {\n    return paletteEntry?.entries && paletteEntry.entries.length > 0;\n  }\n\n  /**\n   * caso tenha child entries, atualiza o dialog, senão executa a ação da entry.\n   */\n  public paletteEntryAction(paletteEntry: PaletteEntry): void {\n    if (this.hasChildEntries(paletteEntry)) {\n      this.searchIdTree = this.buildTreeIdEntriesFromPaletteEntry(paletteEntry, this.paletteEntries);\n      this.rebuildCurrentEntriesFromTree(this.searchIdTree.length, false);\n      this.searchString = '';\n      this.focusSearchInput();\n    } else {\n      paletteEntry.action();\n      this.destroyItself();\n    }\n  }\n\n  public clearAll(): void {\n    this.searchString = '';\n    this.searchIdTree = [];\n    this.searchPaletteEntries = [...this.paletteEntries];\n    this.currentPaletteEntries = [...this.paletteEntries];\n    this.focusSearchInput();\n  }\n\n}\n",
+            "sourceCode": "import {\n  Component,\n  ElementRef,\n  AfterViewInit,\n  ViewChild,\n  Renderer2,\n  OnDestroy,\n  ViewChildren, QueryList, Directive\n} from '@angular/core';\nimport {ComponentInjectorService} from '../component-injector.service';\nimport _ from 'lodash';\nimport {isNumeric} from 'rxjs/internal-compatibility';\nimport {PaletteEntry, PaletteTreeEntry} from '../models';\nimport {CommandPaletteEntriesService} from '../command-palette-entries.service';\n\n// tslint:disable-next-line:directive-selector directive-class-suffix\n@Directive({selector: '.palette-result-entry'}) export class ResultSearchElements {\n  //\n}\n\n@Component({\n  selector: 'pm-command-palette-dialog',\n  templateUrl: './dialog.component.html',\n  styleUrls: ['./dialog.component.scss']\n})\nexport class DialogComponent implements AfterViewInit, OnDestroy {\n\n  @ViewChild('rootPanel', {static: true}) rootPanelComponent: ElementRef;\n  @ViewChild('searchResultContainer', {static: true}) searchResultContainer: ElementRef;\n  @ViewChildren(ResultSearchElements, { read: ElementRef }) resultEntryElements: QueryList<ElementRef>;\n  public searchString = '';\n  public searchIdTree: PaletteTreeEntry[] = []; // utilizado para navegar entre os ids da lista de entradas\n  public itself: any;\n  private currentFocusedElement: ElementRef;\n  private unlistener: () => void;\n  private deleteLatestSearchEntryOnDelete: boolean = false;\n\n  public paletteEntries: PaletteEntry[] = [];\n  public currentPaletteEntries: PaletteEntry[];\n  public searchPaletteEntries: PaletteEntry[];\n\n  constructor(\n    private commandPaletteEntriesService: CommandPaletteEntriesService,\n    private componentInjectorService: ComponentInjectorService,\n    private renderer2: Renderer2\n  ) {\n    document.documentElement.style.setProperty(`overflow-x`, `hidden`, 'important');\n    this.commandPaletteEntriesService.paletteEntries$.subscribe(entries => {\n      this.paletteEntries = [...entries];\n      this.currentPaletteEntries = [...this.paletteEntries];\n      this.searchPaletteEntries = [...this.paletteEntries];\n    });\n  }\n\n  public ngAfterViewInit(): void {\n    this.clearAll();\n    this.unlistener = this.renderer2.listen('window', 'focusin', event => {\n      if (!(\n        event.target === this.rootPanelComponent.nativeElement\n        || this.rootPanelComponent.nativeElement.contains(event.target)\n      )) {\n        this.destroyItself();\n      }\n    });\n  }\n\n  public ngOnDestroy(): void {\n    document.documentElement.style.removeProperty(`overflow-x`);\n  }\n\n  public destroyItself(): void {\n    this.componentInjectorService.removeComponentFromBody(this.itself);\n  }\n\n  private focusSearchInput(): void {\n    setTimeout(() => {\n      this.currentFocusedElement = this.rootPanelComponent;\n      this.rootPanelComponent.nativeElement.children[0].children[1].focus();\n    }, 50);\n  }\n\n  private isSearchInputFocused(): boolean {\n    return this.currentFocusedElement === this.rootPanelComponent;\n  }\n\n  public focusNext(): void {\n    const arrayResultEntryElements = this.resultEntryElements.toArray();\n    const currentFocusIndex = arrayResultEntryElements.findIndex(item => item === this.currentFocusedElement);\n    const focusNextIndex = currentFocusIndex + 1;\n    if (focusNextIndex >= arrayResultEntryElements.length) {\n      this.focusSearchInput();\n    }\n    else if (isNumeric(focusNextIndex)) {\n      this.currentFocusedElement = arrayResultEntryElements[focusNextIndex];\n      this.currentFocusedElement.nativeElement.focus();\n    } else {\n      this.focusSearchInput();\n    }\n  }\n\n  public focusPrevious(): void {\n    const arrayResultEntryElements = this.resultEntryElements.toArray();\n    const currentFocusIndex = arrayResultEntryElements.findIndex(item => item === this.currentFocusedElement);\n    const focusPreviousIndex = currentFocusIndex - 1;\n    if (focusPreviousIndex < 0) {\n      this.focusSearchInput();\n    }\n    else if (isNumeric(focusPreviousIndex)) {\n      this.currentFocusedElement = arrayResultEntryElements[focusPreviousIndex];\n      this.currentFocusedElement.nativeElement.focus();\n    } else {\n      this.focusSearchInput();\n    }\n  }\n\n  public buildTreeIdEntriesFromPaletteEntry(paletteEntry: PaletteEntry, entriesToVerify: PaletteEntry[]): any {\n    let result;\n    let foundEqual: boolean = false;\n\n    const verifyEqual = (entryToVerify: PaletteEntry) => {\n      result.push({id: entryToVerify.id, label: entryToVerify.label});\n      foundEqual = _.isEqual(entryToVerify, paletteEntry);\n    };\n\n    const verifyChildren = (entryToVerify: PaletteEntry) => {\n      verifyEqual(entryToVerify);\n      if (!foundEqual) {\n        if (this.hasChildEntries(entryToVerify)) {\n          for (const child of entryToVerify.entries) {\n            if (!foundEqual) {\n              verifyChildren(child);\n            } else {\n              break;\n            }\n          }\n        } else {\n          result = result.slice(0, 1);\n        }\n      }\n    };\n\n    for (const entry of entriesToVerify) {\n      if (!foundEqual) {\n        result = []; // toda vez que itera sobre um novo item do array base zera a árvore de results\n        verifyChildren(entry);\n      } else {\n        break;\n      }\n    }\n    return result;\n  }\n\n  public rebuildCurrentEntriesFromTree(treeEntryIndex: number, sliceTree: boolean = true): void {\n    let resultEntries = [...this.paletteEntries];\n    if (this.searchIdTree.length > 0) {\n      const slicedTreeEntries = this.searchIdTree.slice(0, treeEntryIndex);\n      // tslint:disable-next-line:prefer-for-of\n      for (let i = 0; i < slicedTreeEntries.length; i++) {\n        const treeEntry = slicedTreeEntries[i];\n        let paletteEntry;\n        if (i === 0) {\n          paletteEntry = resultEntries.find(entry => entry.id === treeEntry.id);\n        } else {\n          paletteEntry = resultEntries[0].entries.find(entry => entry.id === treeEntry.id);\n        }\n        resultEntries = [paletteEntry];\n      }\n    }\n    if (sliceTree) {\n      this.searchIdTree = this.searchIdTree.slice(0, treeEntryIndex);\n    }\n    this.searchPaletteEntries = resultEntries;\n    this.currentPaletteEntries = resultEntries;\n  }\n\n  public searchAction(searchValue: string): void {\n    const entriesToFlat: (paletteEntries: PaletteEntry[]) => string[] = (paletteEntries: PaletteEntry[]) => {\n      const idTreeArray = [];\n\n      const isSearchValueInEntry: (paletteEntry: PaletteEntry) => boolean = (paletteEntry: PaletteEntry) => {\n        return paletteEntry.label.toLowerCase().includes(searchValue.toLowerCase())\n          || paletteEntry.id.toLowerCase().includes(searchValue.toLowerCase());\n      };\n\n      const entryToFlat: (paletteEntry: PaletteEntry, idPrefix: string) => void = (paletteEntry: PaletteEntry, idPrefix: string = '') => {\n        idPrefix = !!idPrefix ? `${idPrefix}` : `${paletteEntry.id}`;\n        if (this.hasChildEntries(paletteEntry)) {\n          idTreeArray.push(`${idPrefix}`);\n          for (let i = 0; i < paletteEntry.entries.length; i++) {\n            const entry = paletteEntry.entries[i];\n            const idSuffix = `.entries[${i}]`;\n            entryToFlat(entry, `${idPrefix}${idSuffix}`);\n          }\n        } else {\n          if (isSearchValueInEntry(paletteEntry)) {\n            idTreeArray.push(`${idPrefix}`);\n          }\n        }\n      };\n\n      if (paletteEntries.length > 0 && paletteEntries[0].id === 'results') {\n        paletteEntries = paletteEntries[0].entries;\n      }\n      const resultEntry: PaletteEntry = {\n        label: 'Results',\n        id: 'results',\n        entries: paletteEntries\n      };\n\n      entryToFlat(resultEntry, '');\n      if (this.searchIdTree.length === 0) {\n        return idTreeArray.slice(1);\n      } else {\n        return idTreeArray.slice(2);\n      }\n    };\n\n    const flatEntriesToEntries: (flatEntries: string[], entriesToCheck: PaletteEntry[]) => PaletteEntry[] = (flatEntries: string[], entriesToCheck: PaletteEntry[]) => {\n      const resultObjToCheck = {results: {entries: [...entriesToCheck]}};\n      const entries: PaletteEntry[] = [];\n      for (const flatEntry of flatEntries) {\n        const entryToAdd: PaletteEntry = _.get(resultObjToCheck, flatEntry);\n        entryToAdd.treeId = flatEntry;\n        entries.push(entryToAdd);\n      }\n      return _.uniqWith(entries, _.isEqual); // remove objetos iguais\n    };\n\n    if (!!searchValue) {\n      this.deleteLatestSearchEntryOnDelete = false;\n      let entries;\n      if (!!this.searchPaletteEntries && this.searchPaletteEntries.length > 0 && this.searchPaletteEntries[0].id === 'results') {\n        entries = this.searchPaletteEntries[0].entries;\n      } else {\n        entries = this.searchPaletteEntries;\n      }\n      this.searchPaletteEntries = [\n        {\n          label: 'Results',\n          id: 'results',\n          entries: flatEntriesToEntries(entriesToFlat(entries), entries)\n        }\n      ];\n    } else {\n      if (this.deleteLatestSearchEntryOnDelete) {\n        this.goBackOneLevel();\n      }\n      this.deleteLatestSearchEntryOnDelete = true;\n      this.searchPaletteEntries = [...this.currentPaletteEntries];\n    }\n  }\n\n  public goBackOneLevel(): void {\n    if (this.isSearchInputFocused()) {\n      if (this.searchIdTree.length === 0) {\n        this.destroyItself();\n      } else {\n        this.rebuildCurrentEntriesFromTree(this.searchIdTree.length - 1);\n        this.focusSearchInput();\n      }\n    } else {\n      this.focusSearchInput();\n    }\n  }\n\n  public hasChildEntries(paletteEntry: PaletteEntry): boolean {\n    return paletteEntry?.entries && paletteEntry.entries.length > 0;\n  }\n\n  /**\n   * Com uma palette entry, cria toda a estrutura baseado na raiz e abre o dialog nela já\n   * @param paletteEntry: Entrada da lista raiz\n   */\n  public initFromPaletteEntry(paletteEntry: PaletteEntry): void {\n    this.searchIdTree = this.buildTreeIdEntriesFromPaletteEntry(paletteEntry, this.paletteEntries);\n    this.rebuildCurrentEntriesFromTree(this.searchIdTree.length, false);\n    this.searchString = '';\n    this.focusSearchInput();\n  }\n\n  /**\n   * caso tenha child entries, atualiza o dialog, senão executa a ação da entry.\n   */\n  public paletteEntryAction(paletteEntry: PaletteEntry): void {\n    if (this.hasChildEntries(paletteEntry)) {\n      this.initFromPaletteEntry(paletteEntry);\n    } else {\n      paletteEntry.action();\n      this.destroyItself();\n    }\n  }\n\n  public clearAll(): void {\n    this.searchString = '';\n    this.searchIdTree = [];\n    this.searchPaletteEntries = [...this.paletteEntries];\n    this.currentPaletteEntries = [...this.paletteEntries];\n    this.focusSearchInput();\n  }\n\n}\n",
             "selector": ".palette-result-entry",
             "providers": [],
             "inputsClass": [],
@@ -1276,7 +1276,7 @@
         },
         {
             "name": "DialogComponent",
-            "id": "component-DialogComponent-8e7d427e7959c7a60003df1a756c4e58",
+            "id": "component-DialogComponent-f9354be50d181e1b286a81c65aa6d881",
             "file": "projects/lib/src/services/command-palette/dialog/dialog.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -1300,7 +1300,7 @@
                     "type": "ElementRef",
                     "optional": false,
                     "description": "",
-                    "line": 35,
+                    "line": 34,
                     "modifierKind": [
                         112
                     ]
@@ -1310,7 +1310,7 @@
                     "type": "PaletteEntry[]",
                     "optional": false,
                     "description": "",
-                    "line": 40,
+                    "line": 39,
                     "modifierKind": [
                         114
                     ]
@@ -1321,19 +1321,9 @@
                     "type": "boolean",
                     "optional": false,
                     "description": "",
-                    "line": 37,
+                    "line": 36,
                     "modifierKind": [
                         112
-                    ]
-                },
-                {
-                    "name": "initialEntry",
-                    "type": "PaletteEntry",
-                    "optional": false,
-                    "description": "",
-                    "line": 34,
-                    "modifierKind": [
-                        114
                     ]
                 },
                 {
@@ -1352,7 +1342,7 @@
                     "type": "PaletteEntry[]",
                     "optional": false,
                     "description": "",
-                    "line": 39,
+                    "line": 38,
                     "modifierKind": [
                         114
                     ]
@@ -1399,7 +1389,7 @@
                     "type": "PaletteEntry[]",
                     "optional": false,
                     "description": "",
-                    "line": 41,
+                    "line": 40,
                     "modifierKind": [
                         114
                     ]
@@ -1433,7 +1423,7 @@
                     "type": "function",
                     "optional": false,
                     "description": "",
-                    "line": 36,
+                    "line": 35,
                     "modifierKind": [
                         112
                     ]
@@ -1455,7 +1445,7 @@
                     "optional": false,
                     "returnType": "any",
                     "typeParameters": [],
-                    "line": 121,
+                    "line": 116,
                     "modifierKind": [
                         114
                     ],
@@ -1482,7 +1472,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 290,
+                    "line": 293,
                     "modifierKind": [
                         114
                     ]
@@ -1493,7 +1483,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 76,
+                    "line": 71,
                     "modifierKind": [
                         114
                     ]
@@ -1504,7 +1494,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 91,
+                    "line": 86,
                     "modifierKind": [
                         114
                     ]
@@ -1515,7 +1505,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 106,
+                    "line": 101,
                     "modifierKind": [
                         114
                     ]
@@ -1526,7 +1516,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 80,
+                    "line": 75,
                     "modifierKind": [
                         112
                     ]
@@ -1537,7 +1527,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 258,
+                    "line": 253,
                     "modifierKind": [
                         114
                     ]
@@ -1553,7 +1543,7 @@
                     "optional": false,
                     "returnType": "boolean",
                     "typeParameters": [],
-                    "line": 271,
+                    "line": 266,
                     "modifierKind": [
                         114
                     ],
@@ -1568,12 +1558,47 @@
                     ]
                 },
                 {
+                    "name": "initFromPaletteEntry",
+                    "args": [
+                        {
+                            "name": "paletteEntry",
+                            "type": "PaletteEntry"
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 274,
+                    "description": "<p>Com uma palette entry, cria toda a estrutura baseado na raiz e abre o dialog nela já</p>\n",
+                    "modifierKind": [
+                        114
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": {
+                                "pos": 9627,
+                                "end": 9639,
+                                "flags": 0,
+                                "escapedText": "paletteEntry"
+                            },
+                            "type": "PaletteEntry",
+                            "tagName": {
+                                "pos": 9621,
+                                "end": 9626,
+                                "flags": 0,
+                                "escapedText": "param"
+                            },
+                            "comment": "<p>: Entrada da lista raiz</p>\n"
+                        }
+                    ]
+                },
+                {
                     "name": "isSearchInputFocused",
                     "args": [],
                     "optional": false,
                     "returnType": "boolean",
                     "typeParameters": [],
-                    "line": 87,
+                    "line": 82,
                     "modifierKind": [
                         112
                     ]
@@ -1584,7 +1609,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 60,
+                    "line": 55,
                     "modifierKind": [
                         114
                     ]
@@ -1595,7 +1620,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 72,
+                    "line": 67,
                     "modifierKind": [
                         114
                     ]
@@ -1611,7 +1636,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 278,
+                    "line": 284,
                     "description": "<p>caso tenha child entries, atualiza o dialog, senão executa a ação da entry.</p>\n",
                     "modifierKind": [
                         114
@@ -1642,7 +1667,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 158,
+                    "line": 153,
                     "modifierKind": [
                         114
                     ],
@@ -1675,7 +1700,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 181,
+                    "line": 176,
                     "modifierKind": [
                         114
                     ],
@@ -1695,7 +1720,7 @@
             "description": "",
             "rawdescription": "",
             "type": "component",
-            "sourceCode": "import {\n  Component,\n  ElementRef,\n  AfterViewInit,\n  ViewChild,\n  Renderer2,\n  OnDestroy,\n  ViewChildren, QueryList, Directive\n} from '@angular/core';\nimport {ComponentInjectorService} from '../component-injector.service';\nimport _ from 'lodash';\nimport {isNumeric} from 'rxjs/internal-compatibility';\nimport {PaletteEntry, PaletteTreeEntry} from '../models';\nimport {CommandPaletteEntriesService} from '../command-palette-entries.service';\n\n// tslint:disable-next-line:directive-selector directive-class-suffix\n@Directive({selector: '.palette-result-entry'}) export class ResultSearchElements {\n  //\n}\n\n@Component({\n  selector: 'pm-command-palette-dialog',\n  templateUrl: './dialog.component.html',\n  styleUrls: ['./dialog.component.scss']\n})\nexport class DialogComponent implements AfterViewInit, OnDestroy {\n\n  @ViewChild('rootPanel', {static: true}) rootPanelComponent: ElementRef;\n  @ViewChild('searchResultContainer', {static: true}) searchResultContainer: ElementRef;\n  @ViewChildren(ResultSearchElements, { read: ElementRef }) resultEntryElements: QueryList<ElementRef>;\n  public searchString = '';\n  public searchIdTree: PaletteTreeEntry[] = []; // utilizado para navegar entre os ids da lista de entradas\n  public itself: any;\n  public initialEntry: PaletteEntry;\n  private currentFocusedElement: ElementRef;\n  private unlistener: () => void;\n  private deleteLatestSearchEntryOnDelete: boolean = false;\n\n  public paletteEntries: PaletteEntry[] = [];\n  public currentPaletteEntries: PaletteEntry[];\n  public searchPaletteEntries: PaletteEntry[];\n\n  constructor(\n    private commandPaletteEntriesService: CommandPaletteEntriesService,\n    private componentInjectorService: ComponentInjectorService,\n    private renderer2: Renderer2\n  ) {\n    document.documentElement.style.setProperty(`overflow-x`, `hidden`, 'important');\n    this.commandPaletteEntriesService.paletteEntries$.subscribe(entries => {\n      this.paletteEntries = [...entries];\n      this.currentPaletteEntries = [...this.paletteEntries];\n      this.searchPaletteEntries = [...this.paletteEntries];\n      if (!!this.initialEntry) {\n        this.buildTreeIdEntriesFromPaletteEntry(this.initialEntry, this.paletteEntries);\n        this.initialEntry = undefined;\n      }\n    });\n  }\n\n  public ngAfterViewInit(): void {\n    this.clearAll();\n    this.unlistener = this.renderer2.listen('window', 'focusin', event => {\n      if (!(\n        event.target === this.rootPanelComponent.nativeElement\n        || this.rootPanelComponent.nativeElement.contains(event.target)\n      )) {\n        this.destroyItself();\n      }\n    });\n  }\n\n  public ngOnDestroy(): void {\n    document.documentElement.style.removeProperty(`overflow-x`);\n  }\n\n  public destroyItself(): void {\n    this.componentInjectorService.removeComponentFromBody(this.itself);\n  }\n\n  private focusSearchInput(): void {\n    setTimeout(() => {\n      this.currentFocusedElement = this.rootPanelComponent;\n      this.rootPanelComponent.nativeElement.children[0].children[1].focus();\n    }, 50);\n  }\n\n  private isSearchInputFocused(): boolean {\n    return this.currentFocusedElement === this.rootPanelComponent;\n  }\n\n  public focusNext(): void {\n    const arrayResultEntryElements = this.resultEntryElements.toArray();\n    const currentFocusIndex = arrayResultEntryElements.findIndex(item => item === this.currentFocusedElement);\n    const focusNextIndex = currentFocusIndex + 1;\n    if (focusNextIndex >= arrayResultEntryElements.length) {\n      this.focusSearchInput();\n    }\n    else if (isNumeric(focusNextIndex)) {\n      this.currentFocusedElement = arrayResultEntryElements[focusNextIndex];\n      this.currentFocusedElement.nativeElement.focus();\n    } else {\n      this.focusSearchInput();\n    }\n  }\n\n  public focusPrevious(): void {\n    const arrayResultEntryElements = this.resultEntryElements.toArray();\n    const currentFocusIndex = arrayResultEntryElements.findIndex(item => item === this.currentFocusedElement);\n    const focusPreviousIndex = currentFocusIndex - 1;\n    if (focusPreviousIndex < 0) {\n      this.focusSearchInput();\n    }\n    else if (isNumeric(focusPreviousIndex)) {\n      this.currentFocusedElement = arrayResultEntryElements[focusPreviousIndex];\n      this.currentFocusedElement.nativeElement.focus();\n    } else {\n      this.focusSearchInput();\n    }\n  }\n\n  public buildTreeIdEntriesFromPaletteEntry(paletteEntry: PaletteEntry, entriesToVerify: PaletteEntry[]): any {\n    let result;\n    let foundEqual: boolean = false;\n\n    const verifyEqual = (entryToVerify: PaletteEntry) => {\n      result.push({id: entryToVerify.id, label: entryToVerify.label});\n      foundEqual = _.isEqual(entryToVerify, paletteEntry);\n    };\n\n    const verifyChildren = (entryToVerify: PaletteEntry) => {\n      verifyEqual(entryToVerify);\n      if (!foundEqual) {\n        if (this.hasChildEntries(entryToVerify)) {\n          for (const child of entryToVerify.entries) {\n            if (!foundEqual) {\n              verifyChildren(child);\n            } else {\n              break;\n            }\n          }\n        } else {\n          result = result.slice(0, 1);\n        }\n      }\n    };\n\n    for (const entry of entriesToVerify) {\n      if (!foundEqual) {\n        result = []; // toda vez que itera sobre um novo item do array base zera a árvore de results\n        verifyChildren(entry);\n      } else {\n        break;\n      }\n    }\n    return result;\n  }\n\n  public rebuildCurrentEntriesFromTree(treeEntryIndex: number, sliceTree: boolean = true): void {\n    let resultEntries = [...this.paletteEntries];\n    if (this.searchIdTree.length > 0) {\n      const slicedTreeEntries = this.searchIdTree.slice(0, treeEntryIndex);\n      // tslint:disable-next-line:prefer-for-of\n      for (let i = 0; i < slicedTreeEntries.length; i++) {\n        const treeEntry = slicedTreeEntries[i];\n        let paletteEntry;\n        if (i === 0) {\n          paletteEntry = resultEntries.find(entry => entry.id === treeEntry.id);\n        } else {\n          paletteEntry = resultEntries[0].entries.find(entry => entry.id === treeEntry.id);\n        }\n        resultEntries = [paletteEntry];\n      }\n    }\n    if (sliceTree) {\n      this.searchIdTree = this.searchIdTree.slice(0, treeEntryIndex);\n    }\n    this.searchPaletteEntries = resultEntries;\n    this.currentPaletteEntries = resultEntries;\n  }\n\n  public searchAction(searchValue: string): void {\n    const entriesToFlat: (paletteEntries: PaletteEntry[]) => string[] = (paletteEntries: PaletteEntry[]) => {\n      const idTreeArray = [];\n\n      const isSearchValueInEntry: (paletteEntry: PaletteEntry) => boolean = (paletteEntry: PaletteEntry) => {\n        return paletteEntry.label.toLowerCase().includes(searchValue.toLowerCase())\n          || paletteEntry.id.toLowerCase().includes(searchValue.toLowerCase());\n      };\n\n      const entryToFlat: (paletteEntry: PaletteEntry, idPrefix: string) => void = (paletteEntry: PaletteEntry, idPrefix: string = '') => {\n        idPrefix = !!idPrefix ? `${idPrefix}` : `${paletteEntry.id}`;\n        if (this.hasChildEntries(paletteEntry)) {\n          idTreeArray.push(`${idPrefix}`);\n          for (let i = 0; i < paletteEntry.entries.length; i++) {\n            const entry = paletteEntry.entries[i];\n            const idSuffix = `.entries[${i}]`;\n            entryToFlat(entry, `${idPrefix}${idSuffix}`);\n          }\n        } else {\n          if (isSearchValueInEntry(paletteEntry)) {\n            idTreeArray.push(`${idPrefix}`);\n          }\n        }\n      };\n\n      if (paletteEntries.length > 0 && paletteEntries[0].id === 'results') {\n        paletteEntries = paletteEntries[0].entries;\n      }\n      const resultEntry: PaletteEntry = {\n        label: 'Results',\n        id: 'results',\n        entries: paletteEntries\n      };\n\n      entryToFlat(resultEntry, '');\n      if (this.searchIdTree.length === 0) {\n        return idTreeArray.slice(1);\n      } else {\n        return idTreeArray.slice(2);\n      }\n    };\n\n    const flatEntriesToEntries: (flatEntries: string[], entriesToCheck: PaletteEntry[]) => PaletteEntry[] = (flatEntries: string[], entriesToCheck: PaletteEntry[]) => {\n      const resultObjToCheck = {results: {entries: [...entriesToCheck]}};\n      const entries: PaletteEntry[] = [];\n      for (const flatEntry of flatEntries) {\n        const entryToAdd: PaletteEntry = _.get(resultObjToCheck, flatEntry);\n        entryToAdd.treeId = flatEntry;\n        entries.push(entryToAdd);\n      }\n      return _.uniqWith(entries, _.isEqual); // remove objetos iguais\n    };\n\n    if (!!searchValue) {\n      this.deleteLatestSearchEntryOnDelete = false;\n      let entries;\n      if (!!this.searchPaletteEntries && this.searchPaletteEntries.length > 0 && this.searchPaletteEntries[0].id === 'results') {\n        entries = this.searchPaletteEntries[0].entries;\n      } else {\n        entries = this.searchPaletteEntries;\n      }\n      this.searchPaletteEntries = [\n        {\n          label: 'Results',\n          id: 'results',\n          entries: flatEntriesToEntries(entriesToFlat(entries), entries)\n        }\n      ];\n    } else {\n      if (this.deleteLatestSearchEntryOnDelete) {\n        this.goBackOneLevel();\n      }\n      this.deleteLatestSearchEntryOnDelete = true;\n      this.searchPaletteEntries = [...this.currentPaletteEntries];\n    }\n  }\n\n  public goBackOneLevel(): void {\n    if (this.isSearchInputFocused()) {\n      if (this.searchIdTree.length === 0) {\n        this.destroyItself();\n      } else {\n        this.rebuildCurrentEntriesFromTree(this.searchIdTree.length - 1);\n        this.focusSearchInput();\n      }\n    } else {\n      this.focusSearchInput();\n    }\n  }\n\n  public hasChildEntries(paletteEntry: PaletteEntry): boolean {\n    return paletteEntry?.entries && paletteEntry.entries.length > 0;\n  }\n\n  /**\n   * caso tenha child entries, atualiza o dialog, senão executa a ação da entry.\n   */\n  public paletteEntryAction(paletteEntry: PaletteEntry): void {\n    if (this.hasChildEntries(paletteEntry)) {\n      this.searchIdTree = this.buildTreeIdEntriesFromPaletteEntry(paletteEntry, this.paletteEntries);\n      this.rebuildCurrentEntriesFromTree(this.searchIdTree.length, false);\n      this.searchString = '';\n      this.focusSearchInput();\n    } else {\n      paletteEntry.action();\n      this.destroyItself();\n    }\n  }\n\n  public clearAll(): void {\n    this.searchString = '';\n    this.searchIdTree = [];\n    this.searchPaletteEntries = [...this.paletteEntries];\n    this.currentPaletteEntries = [...this.paletteEntries];\n    this.focusSearchInput();\n  }\n\n}\n",
+            "sourceCode": "import {\n  Component,\n  ElementRef,\n  AfterViewInit,\n  ViewChild,\n  Renderer2,\n  OnDestroy,\n  ViewChildren, QueryList, Directive\n} from '@angular/core';\nimport {ComponentInjectorService} from '../component-injector.service';\nimport _ from 'lodash';\nimport {isNumeric} from 'rxjs/internal-compatibility';\nimport {PaletteEntry, PaletteTreeEntry} from '../models';\nimport {CommandPaletteEntriesService} from '../command-palette-entries.service';\n\n// tslint:disable-next-line:directive-selector directive-class-suffix\n@Directive({selector: '.palette-result-entry'}) export class ResultSearchElements {\n  //\n}\n\n@Component({\n  selector: 'pm-command-palette-dialog',\n  templateUrl: './dialog.component.html',\n  styleUrls: ['./dialog.component.scss']\n})\nexport class DialogComponent implements AfterViewInit, OnDestroy {\n\n  @ViewChild('rootPanel', {static: true}) rootPanelComponent: ElementRef;\n  @ViewChild('searchResultContainer', {static: true}) searchResultContainer: ElementRef;\n  @ViewChildren(ResultSearchElements, { read: ElementRef }) resultEntryElements: QueryList<ElementRef>;\n  public searchString = '';\n  public searchIdTree: PaletteTreeEntry[] = []; // utilizado para navegar entre os ids da lista de entradas\n  public itself: any;\n  private currentFocusedElement: ElementRef;\n  private unlistener: () => void;\n  private deleteLatestSearchEntryOnDelete: boolean = false;\n\n  public paletteEntries: PaletteEntry[] = [];\n  public currentPaletteEntries: PaletteEntry[];\n  public searchPaletteEntries: PaletteEntry[];\n\n  constructor(\n    private commandPaletteEntriesService: CommandPaletteEntriesService,\n    private componentInjectorService: ComponentInjectorService,\n    private renderer2: Renderer2\n  ) {\n    document.documentElement.style.setProperty(`overflow-x`, `hidden`, 'important');\n    this.commandPaletteEntriesService.paletteEntries$.subscribe(entries => {\n      this.paletteEntries = [...entries];\n      this.currentPaletteEntries = [...this.paletteEntries];\n      this.searchPaletteEntries = [...this.paletteEntries];\n    });\n  }\n\n  public ngAfterViewInit(): void {\n    this.clearAll();\n    this.unlistener = this.renderer2.listen('window', 'focusin', event => {\n      if (!(\n        event.target === this.rootPanelComponent.nativeElement\n        || this.rootPanelComponent.nativeElement.contains(event.target)\n      )) {\n        this.destroyItself();\n      }\n    });\n  }\n\n  public ngOnDestroy(): void {\n    document.documentElement.style.removeProperty(`overflow-x`);\n  }\n\n  public destroyItself(): void {\n    this.componentInjectorService.removeComponentFromBody(this.itself);\n  }\n\n  private focusSearchInput(): void {\n    setTimeout(() => {\n      this.currentFocusedElement = this.rootPanelComponent;\n      this.rootPanelComponent.nativeElement.children[0].children[1].focus();\n    }, 50);\n  }\n\n  private isSearchInputFocused(): boolean {\n    return this.currentFocusedElement === this.rootPanelComponent;\n  }\n\n  public focusNext(): void {\n    const arrayResultEntryElements = this.resultEntryElements.toArray();\n    const currentFocusIndex = arrayResultEntryElements.findIndex(item => item === this.currentFocusedElement);\n    const focusNextIndex = currentFocusIndex + 1;\n    if (focusNextIndex >= arrayResultEntryElements.length) {\n      this.focusSearchInput();\n    }\n    else if (isNumeric(focusNextIndex)) {\n      this.currentFocusedElement = arrayResultEntryElements[focusNextIndex];\n      this.currentFocusedElement.nativeElement.focus();\n    } else {\n      this.focusSearchInput();\n    }\n  }\n\n  public focusPrevious(): void {\n    const arrayResultEntryElements = this.resultEntryElements.toArray();\n    const currentFocusIndex = arrayResultEntryElements.findIndex(item => item === this.currentFocusedElement);\n    const focusPreviousIndex = currentFocusIndex - 1;\n    if (focusPreviousIndex < 0) {\n      this.focusSearchInput();\n    }\n    else if (isNumeric(focusPreviousIndex)) {\n      this.currentFocusedElement = arrayResultEntryElements[focusPreviousIndex];\n      this.currentFocusedElement.nativeElement.focus();\n    } else {\n      this.focusSearchInput();\n    }\n  }\n\n  public buildTreeIdEntriesFromPaletteEntry(paletteEntry: PaletteEntry, entriesToVerify: PaletteEntry[]): any {\n    let result;\n    let foundEqual: boolean = false;\n\n    const verifyEqual = (entryToVerify: PaletteEntry) => {\n      result.push({id: entryToVerify.id, label: entryToVerify.label});\n      foundEqual = _.isEqual(entryToVerify, paletteEntry);\n    };\n\n    const verifyChildren = (entryToVerify: PaletteEntry) => {\n      verifyEqual(entryToVerify);\n      if (!foundEqual) {\n        if (this.hasChildEntries(entryToVerify)) {\n          for (const child of entryToVerify.entries) {\n            if (!foundEqual) {\n              verifyChildren(child);\n            } else {\n              break;\n            }\n          }\n        } else {\n          result = result.slice(0, 1);\n        }\n      }\n    };\n\n    for (const entry of entriesToVerify) {\n      if (!foundEqual) {\n        result = []; // toda vez que itera sobre um novo item do array base zera a árvore de results\n        verifyChildren(entry);\n      } else {\n        break;\n      }\n    }\n    return result;\n  }\n\n  public rebuildCurrentEntriesFromTree(treeEntryIndex: number, sliceTree: boolean = true): void {\n    let resultEntries = [...this.paletteEntries];\n    if (this.searchIdTree.length > 0) {\n      const slicedTreeEntries = this.searchIdTree.slice(0, treeEntryIndex);\n      // tslint:disable-next-line:prefer-for-of\n      for (let i = 0; i < slicedTreeEntries.length; i++) {\n        const treeEntry = slicedTreeEntries[i];\n        let paletteEntry;\n        if (i === 0) {\n          paletteEntry = resultEntries.find(entry => entry.id === treeEntry.id);\n        } else {\n          paletteEntry = resultEntries[0].entries.find(entry => entry.id === treeEntry.id);\n        }\n        resultEntries = [paletteEntry];\n      }\n    }\n    if (sliceTree) {\n      this.searchIdTree = this.searchIdTree.slice(0, treeEntryIndex);\n    }\n    this.searchPaletteEntries = resultEntries;\n    this.currentPaletteEntries = resultEntries;\n  }\n\n  public searchAction(searchValue: string): void {\n    const entriesToFlat: (paletteEntries: PaletteEntry[]) => string[] = (paletteEntries: PaletteEntry[]) => {\n      const idTreeArray = [];\n\n      const isSearchValueInEntry: (paletteEntry: PaletteEntry) => boolean = (paletteEntry: PaletteEntry) => {\n        return paletteEntry.label.toLowerCase().includes(searchValue.toLowerCase())\n          || paletteEntry.id.toLowerCase().includes(searchValue.toLowerCase());\n      };\n\n      const entryToFlat: (paletteEntry: PaletteEntry, idPrefix: string) => void = (paletteEntry: PaletteEntry, idPrefix: string = '') => {\n        idPrefix = !!idPrefix ? `${idPrefix}` : `${paletteEntry.id}`;\n        if (this.hasChildEntries(paletteEntry)) {\n          idTreeArray.push(`${idPrefix}`);\n          for (let i = 0; i < paletteEntry.entries.length; i++) {\n            const entry = paletteEntry.entries[i];\n            const idSuffix = `.entries[${i}]`;\n            entryToFlat(entry, `${idPrefix}${idSuffix}`);\n          }\n        } else {\n          if (isSearchValueInEntry(paletteEntry)) {\n            idTreeArray.push(`${idPrefix}`);\n          }\n        }\n      };\n\n      if (paletteEntries.length > 0 && paletteEntries[0].id === 'results') {\n        paletteEntries = paletteEntries[0].entries;\n      }\n      const resultEntry: PaletteEntry = {\n        label: 'Results',\n        id: 'results',\n        entries: paletteEntries\n      };\n\n      entryToFlat(resultEntry, '');\n      if (this.searchIdTree.length === 0) {\n        return idTreeArray.slice(1);\n      } else {\n        return idTreeArray.slice(2);\n      }\n    };\n\n    const flatEntriesToEntries: (flatEntries: string[], entriesToCheck: PaletteEntry[]) => PaletteEntry[] = (flatEntries: string[], entriesToCheck: PaletteEntry[]) => {\n      const resultObjToCheck = {results: {entries: [...entriesToCheck]}};\n      const entries: PaletteEntry[] = [];\n      for (const flatEntry of flatEntries) {\n        const entryToAdd: PaletteEntry = _.get(resultObjToCheck, flatEntry);\n        entryToAdd.treeId = flatEntry;\n        entries.push(entryToAdd);\n      }\n      return _.uniqWith(entries, _.isEqual); // remove objetos iguais\n    };\n\n    if (!!searchValue) {\n      this.deleteLatestSearchEntryOnDelete = false;\n      let entries;\n      if (!!this.searchPaletteEntries && this.searchPaletteEntries.length > 0 && this.searchPaletteEntries[0].id === 'results') {\n        entries = this.searchPaletteEntries[0].entries;\n      } else {\n        entries = this.searchPaletteEntries;\n      }\n      this.searchPaletteEntries = [\n        {\n          label: 'Results',\n          id: 'results',\n          entries: flatEntriesToEntries(entriesToFlat(entries), entries)\n        }\n      ];\n    } else {\n      if (this.deleteLatestSearchEntryOnDelete) {\n        this.goBackOneLevel();\n      }\n      this.deleteLatestSearchEntryOnDelete = true;\n      this.searchPaletteEntries = [...this.currentPaletteEntries];\n    }\n  }\n\n  public goBackOneLevel(): void {\n    if (this.isSearchInputFocused()) {\n      if (this.searchIdTree.length === 0) {\n        this.destroyItself();\n      } else {\n        this.rebuildCurrentEntriesFromTree(this.searchIdTree.length - 1);\n        this.focusSearchInput();\n      }\n    } else {\n      this.focusSearchInput();\n    }\n  }\n\n  public hasChildEntries(paletteEntry: PaletteEntry): boolean {\n    return paletteEntry?.entries && paletteEntry.entries.length > 0;\n  }\n\n  /**\n   * Com uma palette entry, cria toda a estrutura baseado na raiz e abre o dialog nela já\n   * @param paletteEntry: Entrada da lista raiz\n   */\n  public initFromPaletteEntry(paletteEntry: PaletteEntry): void {\n    this.searchIdTree = this.buildTreeIdEntriesFromPaletteEntry(paletteEntry, this.paletteEntries);\n    this.rebuildCurrentEntriesFromTree(this.searchIdTree.length, false);\n    this.searchString = '';\n    this.focusSearchInput();\n  }\n\n  /**\n   * caso tenha child entries, atualiza o dialog, senão executa a ação da entry.\n   */\n  public paletteEntryAction(paletteEntry: PaletteEntry): void {\n    if (this.hasChildEntries(paletteEntry)) {\n      this.initFromPaletteEntry(paletteEntry);\n    } else {\n      paletteEntry.action();\n      this.destroyItself();\n    }\n  }\n\n  public clearAll(): void {\n    this.searchString = '';\n    this.searchIdTree = [];\n    this.searchPaletteEntries = [...this.paletteEntries];\n    this.currentPaletteEntries = [...this.paletteEntries];\n    this.focusSearchInput();\n  }\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -1721,7 +1746,7 @@
                         "type": "Renderer2"
                     }
                 ],
-                "line": 41,
+                "line": 40,
                 "jsdoctags": [
                     {
                         "name": "commandPaletteEntriesService",
@@ -4349,6 +4374,14 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
+                "file": "projects/lib/src/components/containers/expansion-panel/expansion-panel.stories.ts",
+                "type": "object",
+                "defaultValue": "{\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
                 "file": "projects/lib/src/components/inputs/button/button.stories.ts",
                 "type": "object",
                 "defaultValue": "{\n  label: '',\n  type: MainColors.default,\n  busy: false,\n  busyText: '',\n  iconClass: '',\n  iconPosition: 'start',\n  outline: false,\n  disabled: false,\n  size: 'md'\n}"
@@ -4360,14 +4393,6 @@
                 "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
                 "type": "object",
                 "defaultValue": "{\n  checked: false,\n  disabled: false,\n  selectedItem: undefined,\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/lib/src/components/containers/expansion-panel/expansion-panel.stories.ts",
-                "type": "object",
-                "defaultValue": "{\n}"
             },
             {
                 "name": "defaultArgs",
@@ -4413,17 +4438,17 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
+                "file": "projects/lib/src/components/lists/table-list/table-list.stories.ts",
                 "type": "object",
-                "defaultValue": "{\n}"
+                "defaultValue": "{\n  columns: [],\n  columnNames: [],\n  imageColumns: [],\n  imageHeight: '50px',\n  showHeader: true,\n  numberFormat: '1.2-2',\n  numberPrefix: '',\n  actionsTemplate: undefined,\n  itemList: undefined,\n  borderRadius: undefined,\n  backgroundColor: undefined,\n  expandedDetailTemplate: undefined,\n  disableExpandedOnDisabledRow: true,\n  expandedRow: undefined\n}"
             },
             {
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/lists/table-list/table-list.stories.ts",
+                "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
                 "type": "object",
-                "defaultValue": "{\n  columns: [],\n  columnNames: [],\n  imageColumns: [],\n  imageHeight: '50px',\n  showHeader: true,\n  numberFormat: '1.2-2',\n  numberPrefix: '',\n  actionsTemplate: undefined,\n  itemList: undefined,\n  borderRadius: undefined,\n  backgroundColor: undefined,\n  expandedDetailTemplate: undefined,\n  disableExpandedOnDisabledRow: true,\n  expandedRow: undefined\n}"
+                "defaultValue": "{\n}"
             },
             {
                 "name": "defaultArgs",
@@ -4748,6 +4773,14 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
+                "file": "projects/lib/src/components/containers/expansion-panel/expansion-panel.stories.ts",
+                "type": "Story<ExpansionPanelComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-expansion-panel\n    >\n        Conteúdo aqui\n    </pm-expansion-panel>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
                 "file": "projects/lib/src/components/inputs/button/button.stories.ts",
                 "type": "Story<ButtonComponent>",
                 "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-button\n        [label]=\"label\"\n        [type]=\"type\"\n        [busy]=\"busy\"\n        [busyText]=\"busyText\"\n        [iconClass]=\"iconClass\"\n        [iconPosition]=\"iconPosition\"\n        [outline]=\"outline\"\n        [disabled]=\"disabled\"\n        [size]=\"size\"\n    >\n        Button Content\n    </pm-button>\n  `\n})"
@@ -4759,14 +4792,6 @@
                 "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
                 "type": "Story<CheckboxComponent>",
                 "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-checkbox\n      [checked]=\"checked\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/lib/src/components/containers/expansion-panel/expansion-panel.stories.ts",
-                "type": "Story<ExpansionPanelComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-expansion-panel\n    >\n        Conteúdo aqui\n    </pm-expansion-panel>\n  `\n})"
             },
             {
                 "name": "Template",
@@ -4812,17 +4837,17 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
-                "type": "Story<GridListComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-grid-list\n      [items]=\"items\"\n      [displayStyle]=\"displayStyle\"\n      [gridHeaderReverse]=\"gridHeaderReverse\"\n      [bodyBackgroundColor]=\"bodyBackgroundColor\"\n      [actionTemplate]=\"undefined\"\n      [overflowGallery]=\"overflowGallery\"\n    >\n    </pm-grid-list>\n  `\n})"
+                "file": "projects/lib/src/components/lists/table-list/table-list.stories.ts",
+                "type": "Story<TableListComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `<pm-table-list\n    [columns]=\"columns\"\n    [columnNames]=\"columnNames\"\n    [imageColumns]=\"imageColumns\"\n    [imageHeight]=\"imageHeight\"\n    [showHeader]=\"showHeader\"\n    [numberFormat]=\"numberFormat\"\n    [numberPrefix]=\"numberPrefix\"\n    [itemList]=\"itemList\"\n    [borderRadius]=\"borderRadius\"\n    [backgroundColor]=\"backgroundColor\"\n    [expandedDetailTemplate]=\"expandedDetailTemplate\"\n    [disableExpandedOnDisabledRow]=\"disableExpandedOnDisabledRow\"\n  ></pm-table-list>`\n})"
             },
             {
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/lists/table-list/table-list.stories.ts",
-                "type": "Story<TableListComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `<pm-table-list\n    [columns]=\"columns\"\n    [columnNames]=\"columnNames\"\n    [imageColumns]=\"imageColumns\"\n    [imageHeight]=\"imageHeight\"\n    [showHeader]=\"showHeader\"\n    [numberFormat]=\"numberFormat\"\n    [numberPrefix]=\"numberPrefix\"\n    [itemList]=\"itemList\"\n    [borderRadius]=\"borderRadius\"\n    [backgroundColor]=\"backgroundColor\"\n    [expandedDetailTemplate]=\"expandedDetailTemplate\"\n    [disableExpandedOnDisabledRow]=\"disableExpandedOnDisabledRow\"\n  ></pm-table-list>`\n})"
+                "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
+                "type": "Story<GridListComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-grid-list\n      [items]=\"items\"\n      [displayStyle]=\"displayStyle\"\n      [gridHeaderReverse]=\"gridHeaderReverse\"\n      [bodyBackgroundColor]=\"bodyBackgroundColor\"\n      [actionTemplate]=\"undefined\"\n      [overflowGallery]=\"overflowGallery\"\n    >\n    </pm-grid-list>\n  `\n})"
             },
             {
                 "name": "Template",
@@ -5431,6 +5456,32 @@
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-basic-card\n    >\n    </pm-basic-card>\n  `\n})"
                 }
             ],
+            "projects/lib/src/components/containers/expansion-panel/expansion-panel.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/containers/expansion-panel/expansion-panel.stories.ts",
+                    "type": "object",
+                    "defaultValue": "{\n}"
+                },
+                {
+                    "name": "DefaultExpansionPanel",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/containers/expansion-panel/expansion-panel.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/containers/expansion-panel/expansion-panel.stories.ts",
+                    "type": "Story<ExpansionPanelComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-expansion-panel\n    >\n        Conteúdo aqui\n    </pm-expansion-panel>\n  `\n})"
+                }
+            ],
             "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts": [
                 {
                     "name": "defaultArgs",
@@ -5463,32 +5514,6 @@
                     "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
                     "type": "Story<CheckboxComponent>",
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-checkbox\n      [checked]=\"checked\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>\n  `\n})"
-                }
-            ],
-            "projects/lib/src/components/containers/expansion-panel/expansion-panel.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/containers/expansion-panel/expansion-panel.stories.ts",
-                    "type": "object",
-                    "defaultValue": "{\n}"
-                },
-                {
-                    "name": "DefaultExpansionPanel",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/containers/expansion-panel/expansion-panel.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/containers/expansion-panel/expansion-panel.stories.ts",
-                    "type": "Story<ExpansionPanelComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-expansion-panel\n    >\n        Conteúdo aqui\n    </pm-expansion-panel>\n  `\n})"
                 }
             ],
             "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts": [
@@ -6893,8 +6918,8 @@
                 "type": "component",
                 "linktype": "component",
                 "name": "DialogComponent",
-                "coveragePercent": 3,
-                "coverageCount": "1/29",
+                "coveragePercent": 6,
+                "coverageCount": "2/29",
                 "status": "low"
             },
             {

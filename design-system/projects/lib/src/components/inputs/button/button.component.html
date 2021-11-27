@@ -1,11 +1,9 @@
-<div class="pm-button">
-  <button [className]="getClassName()" [disabled]="busy || disabled">
-    <ng-container *ngIf="busy; else buttonContent">
-      <span class="spinner-border spinner-border-sm mx-2" role="status" aria-hidden="true"></span>
-      {{busyText ? busyText : ''}}
-    </ng-container>
-  </button>
-</div>
+<button [className]="getClassName()" [disabled]="busy || disabled">
+  <ng-container *ngIf="busy; else buttonContent">
+    <span class="spinner-border spinner-border-sm mx-2" role="status" aria-hidden="true"></span>
+    {{busyText ? busyText : ''}}
+  </ng-container>
+</button>
 
 <ng-template #buttonContent>
   <i *ngIf="iconClass && busy === false && iconPosition === 'start'" class="{{iconClass}}"></i>
