@@ -75,6 +75,12 @@ export const argTypes = {
     },
     control: {type: 'select'}, options: ['sm', 'md'],
   },
+  fillWidth: {
+    table: {
+      defaultValue: { summary: defaultArgs.fillWidth},
+    },
+    control: { type: 'inline-radio'}, options: [true, false],
+  },
 }
 
 <Meta

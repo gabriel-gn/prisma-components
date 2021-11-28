@@ -42,6 +42,10 @@ export class ButtonComponent {
    * Tamanho do botão
    */
   @Input('size') size: 'sm' | 'md' = 'md';
+  /**
+   * Faz ou não o botão preencher a largura do container. (classe w-100)
+   */
+  @Input('fillWidth') fillWidth: boolean = false;
 
   constructor() { }
 
@@ -49,6 +53,9 @@ export class ButtonComponent {
     let name = 'pm-button btn';
     if (this.size !== 'md') {
       name += ` ${this.size}`;
+    }
+    if (this.fillWidth) {
+      name += ' w-100';
     }
     if (this.type) {
       if (this.outline) {

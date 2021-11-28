@@ -21,6 +21,7 @@ export const Template: Story<ButtonComponent> = (args) => ({
         [outline]="outline"
         [disabled]="disabled"
         [size]="size"
+        [fillWidth]="fillWidth"
     >
         Button Content
     </pm-button>
@@ -36,7 +37,8 @@ export const defaultArgs = {
   iconPosition: 'start',
   outline: false,
   disabled: false,
-  size: 'md'
+  size: 'md',
+  fillWidth: false
 };
 
 export const DefaultButton = Template.bind({});
