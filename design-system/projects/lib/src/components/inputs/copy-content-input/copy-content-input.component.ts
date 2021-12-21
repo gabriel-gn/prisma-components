@@ -1,4 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {MainColors} from '../../../models/colors';
+import {Sizes} from '../../../models/sizes';
 
 @Component({
   selector: 'pm-copy-content-input',
@@ -15,24 +17,35 @@ export class CopyContentInputComponent implements OnInit {
    * Desabilita a interação o input.
    */
   @Input() disabled = true;
-  // public readonly notifier: SnotifyService;
+  /**
+   * Executa um comando ao copiar para a área de transferência
+   */
+  @Input() copyCallback: (inputText: string) => void;
+  /**
+   * Faz o input ter altura 100%
+   */
+  @Input() fillHeight: boolean = false;
+  /**
+   * Faz o input ter altura 100%
+   */
+  @Input() btnColor: MainColors = MainColors.primary;
+  /**
+   * Raio da borda
+   */
+  @Input() borderRadius: Sizes = Sizes.md;
+
 
   constructor(
-    // private notifierService: SnotifyService
   ) {
-    // this.notifier = notifierService;
   }
 
   ngOnInit(): void {
   }
 
-  // /**
-  //  * Notifica que o valor foi copiado para a clipboard.
-  //  * O que copia mesmo é a diretiva [cdkCopyToClipboard]="texto"
-  //  * @param inputElement: uma tag input
-  //  */
-  // copyInputMessage(inputElement) {
-  //   this.notifier.info('Link copiado para a área de transferência')
-  // }
+  public copyCallbackExecute(inputText: string): void {
+    if (this.copyCallback) {
+      this.copyCallback(inputText);
+    }
+  }
 
 }

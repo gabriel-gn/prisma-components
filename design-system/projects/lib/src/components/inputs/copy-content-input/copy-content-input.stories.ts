@@ -1,6 +1,8 @@
 import {CopyContentInputComponent} from './copy-content-input.component';
 import {Meta} from '@storybook/angular/types-6-0';
 import {Story} from '@storybook/angular';
+import {MainColors} from '../../../models/colors';
+import {Sizes} from '../../../models/sizes';
 
 export default {
   title: 'Prisma/Stories/CopyContentInput',
@@ -13,15 +15,22 @@ export const Template: Story<CopyContentInputComponent> = (args) => ({
     <pm-copy-content-input
       [text]="text"
       [disabled]="disabled"
+      [copyCallback]="copyCallback"
+      [fillHeight]="fillHeight"
+      [btnColor]="btnColor"
+      [borderRadius]="borderRadius"
     >
-      Conteúdo
     </pm-copy-content-input>
   `
 });
 
 export const defaultArgs = {
   disabled: false,
-  text: ''
+  text: '',
+  copyCallback: undefined,
+  fillHeight: false,
+  btnColor: MainColors.primary,
+  borderRadius: Sizes.md
 };
 
 export const DefaultCopyContentInput = Template.bind({});

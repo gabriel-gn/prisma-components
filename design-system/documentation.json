@@ -786,11 +786,11 @@
                 "args": [],
                 "line": 13
             },
-            "templateData": "<div class=\"pm-basic-card\">\n  <div\n    [ngClass]=\"{'hoverable': hoverable}\"\n    class=\"card-basic {{paddingClass}} {{borderRadius ? 'rad-' + borderRadius : ''}} w-100 p-3\"\n    style=\"height: auto;\">\n    <ng-content></ng-content>\n  </div>\n</div>\n"
+            "templateData": "<div class=\"pm-basic-card\">\n  <div\n    [ngClass]=\"{'hoverable': hoverable}\"\n    class=\"card-basic {{paddingClass}} {{borderRadius ? 'rad-' + borderRadius : ''}} w-100\"\n    style=\"height: auto;\">\n    <ng-content></ng-content>\n  </div>\n</div>\n"
         },
         {
             "name": "ButtonComponent",
-            "id": "component-ButtonComponent-49659faee6154b9bcc4f411fcdc2bda1",
+            "id": "component-ButtonComponent-50edec0166108d84fec1745c9bb5a4c2",
             "file": "projects/lib/src/components/inputs/button/button.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -825,6 +825,13 @@
                     "defaultValue": "false",
                     "description": "<p>Propriedade de habilitado ou desabilitado</p>\n",
                     "line": 40,
+                    "type": "boolean"
+                },
+                {
+                    "name": "fillWidth",
+                    "defaultValue": "false",
+                    "description": "<p>Faz ou não o botão preencher a largura do container. (classe w-100)</p>\n",
+                    "line": 48,
                     "type": "boolean"
                 },
                 {
@@ -877,7 +884,7 @@
                     "optional": false,
                     "returnType": "string",
                     "typeParameters": [],
-                    "line": 48,
+                    "line": 52,
                     "modifierKind": [
                         114
                     ]
@@ -888,11 +895,11 @@
             "description": "",
             "rawdescription": "",
             "type": "component",
-            "sourceCode": "import {Component, Input} from '@angular/core';\nimport {MainColors} from '../../../models/colors';\n\n@Component({\n  selector: 'pm-button',\n  templateUrl: './button.component.html',\n  styleUrls: ['./button.component.scss']\n})\nexport class ButtonComponent {\n  @Input('label') label: string | null = '';  // Usada só pra aparecer no storybook\n  /**\n   * Cor do botão que será exibido.\n   * Utilizar as propriedades do tipo \"MainColors\"\n   */\n  @Input('type') type: MainColors | string = `${MainColors.default}`;\n  /**\n   * Exibe botão de \"carregamento\" e desabilita o botão.\n   * Para alterar o texto, utilizar a propriedade `busyText`\n   */\n  @Input('busy') busy: boolean = false;\n  /**\n   * Texto exibido junto ao botão de \"carregando\" quando a propriedade `busy` está como `true`\n   */\n  @Input('busyText') busyText: string;\n  /**\n   * Ícone que será exibido no botão junto ao texto. Ex: `uil uil-md uil-tabs`\n   */\n  @Input('iconClass') iconClass: string;\n  /**\n   * Caso tenha ícone, indica se o ícone estará no começo ou fim do botão\n   */\n  @Input('iconPosition') iconPosition: 'start' | 'end' = 'start';\n  /**\n   * Se o botão será cheio ou apenas contornado pela borda\n   */\n  @Input('outline') outline: boolean = false;\n  /**\n   * Propriedade de habilitado ou desabilitado\n   */\n  @Input('disabled') disabled: boolean = false;\n  /**\n   * Tamanho do botão\n   */\n  @Input('size') size: 'sm' | 'md' = 'md';\n\n  constructor() { }\n\n  public getClassName(): string {\n    let name = 'btn';\n    if (this.size !== 'md') {\n      name += ` ${this.size}`;\n    }\n    if (this.type) {\n      if (this.outline) {\n        name += ` btn-outline-${this.type}`;\n      } else {\n        name += ` btn-${this.type}`;\n      }\n    }\n    if (this.iconClass) {\n      name += ` d-flex flex-row`;\n    }\n    return name;\n  }\n\n}\n",
+            "sourceCode": "import {Component, Input} from '@angular/core';\nimport {MainColors} from '../../../models/colors';\n\n@Component({\n  selector: 'pm-button',\n  templateUrl: './button.component.html',\n  styleUrls: ['./button.component.scss']\n})\nexport class ButtonComponent {\n  @Input('label') label: string | null = '';  // Usada só pra aparecer no storybook\n  /**\n   * Cor do botão que será exibido.\n   * Utilizar as propriedades do tipo \"MainColors\"\n   */\n  @Input('type') type: MainColors | string = `${MainColors.default}`;\n  /**\n   * Exibe botão de \"carregamento\" e desabilita o botão.\n   * Para alterar o texto, utilizar a propriedade `busyText`\n   */\n  @Input('busy') busy: boolean = false;\n  /**\n   * Texto exibido junto ao botão de \"carregando\" quando a propriedade `busy` está como `true`\n   */\n  @Input('busyText') busyText: string;\n  /**\n   * Ícone que será exibido no botão junto ao texto. Ex: `uil uil-md uil-tabs`\n   */\n  @Input('iconClass') iconClass: string;\n  /**\n   * Caso tenha ícone, indica se o ícone estará no começo ou fim do botão\n   */\n  @Input('iconPosition') iconPosition: 'start' | 'end' = 'start';\n  /**\n   * Se o botão será cheio ou apenas contornado pela borda\n   */\n  @Input('outline') outline: boolean = false;\n  /**\n   * Propriedade de habilitado ou desabilitado\n   */\n  @Input('disabled') disabled: boolean = false;\n  /**\n   * Tamanho do botão\n   */\n  @Input('size') size: 'sm' | 'md' = 'md';\n  /**\n   * Faz ou não o botão preencher a largura do container. (classe w-100)\n   */\n  @Input('fillWidth') fillWidth: boolean = false;\n\n  constructor() { }\n\n  public getClassName(): string {\n    let name = 'pm-button btn';\n    if (this.size !== 'md') {\n      name += ` ${this.size}`;\n    }\n    if (this.fillWidth) {\n      name += ' w-100';\n    }\n    if (this.type) {\n      if (this.outline) {\n        name += ` btn-outline-${this.type}`;\n      } else {\n        name += ` btn-${this.type}`;\n      }\n    }\n    if (this.iconClass) {\n      name += ` d-flex flex-row`;\n    }\n    return name;\n  }\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": ".pm-button {\n  button {\n    &:disabled {\n      cursor: not-allowed;\n      pointer-events: none;\n    }\n\n    &.sm {\n      font-size: 0.7rem !important;\n      padding: 0.2rem 0.5rem !important;\n    }\n  }\n}\n",
+                    "data": "button {\n  &.pm-button {\n    &:disabled {\n      cursor: not-allowed;\n      pointer-events: none;\n    }\n\n    &.sm {\n      font-size: 0.7rem !important;\n      padding: 0.2rem 0.5rem !important;\n    }\n  }\n}\n",
                     "styleUrl": "./button.component.scss"
                 }
             ],
@@ -901,9 +908,9 @@
                 "name": "constructor",
                 "description": "",
                 "args": [],
-                "line": 44
+                "line": 48
             },
-            "templateData": "<div class=\"pm-button\">\n  <button [className]=\"getClassName()\" [disabled]=\"busy || disabled\">\n    <ng-container *ngIf=\"busy; else buttonContent\">\n      <span class=\"spinner-border spinner-border-sm mx-2\" role=\"status\" aria-hidden=\"true\"></span>\n      {{busyText ? busyText : ''}}\n    </ng-container>\n  </button>\n</div>\n\n<ng-template #buttonContent>\n  <i *ngIf=\"iconClass && busy === false && iconPosition === 'start'\" class=\"{{iconClass}}\"></i>\n  <ng-container *ngIf=\"label; else noLabel\">\n    <span class=\"align-self-center\" [ngClass]=\"{'ms-2': !!label && iconPosition === 'start', 'me-2': !!label && iconPosition === 'end'}\">\n      {{label}}\n    </span>\n  </ng-container>\n  <i *ngIf=\"iconClass && busy === false && iconPosition === 'end'\" class=\"{{iconClass}}\"></i>\n</ng-template>\n\n<ng-template #noLabel>\n  <ng-content></ng-content>\n</ng-template>\n\n"
+            "templateData": "<button [className]=\"getClassName()\" [disabled]=\"busy || disabled\">\n  <ng-container *ngIf=\"busy; else buttonContent\">\n    <span class=\"spinner-border spinner-border-sm mx-2\" role=\"status\" aria-hidden=\"true\"></span>\n    {{busyText ? busyText : ''}}\n  </ng-container>\n</button>\n\n<ng-template #buttonContent>\n  <i *ngIf=\"iconClass && busy === false && iconPosition === 'start'\" class=\"{{iconClass}}\"></i>\n  <ng-container *ngIf=\"label; else noLabel\">\n    <span class=\"align-self-center\" [ngClass]=\"{'ms-2': !!label && iconPosition === 'start', 'me-2': !!label && iconPosition === 'end'}\">\n      {{label}}\n    </span>\n  </ng-container>\n  <i *ngIf=\"iconClass && busy === false && iconPosition === 'end'\" class=\"{{iconClass}}\"></i>\n</ng-template>\n\n<ng-template #noLabel>\n  <ng-content></ng-content>\n</ng-template>\n\n"
         },
         {
             "name": "CheckboxComponent",
@@ -1207,7 +1214,7 @@
         },
         {
             "name": "CopyContentInputComponent",
-            "id": "component-CopyContentInputComponent-bfa6a3c1d58c743a61a528776134b1ac",
+            "id": "component-CopyContentInputComponent-36e2b9d3b286bcf6c3659ae8c255ff37",
             "file": "projects/lib/src/components/inputs/copy-content-input/copy-content-input.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -1225,28 +1232,73 @@
             "viewProviders": [],
             "inputsClass": [
                 {
+                    "name": "btnColor",
+                    "defaultValue": "MainColors.primary",
+                    "description": "<p>Faz o input ter altura 100%</p>\n",
+                    "line": 30,
+                    "type": "MainColors"
+                },
+                {
+                    "name": "copyCallback",
+                    "description": "<p>Executa um comando ao copiar para a área de transferência</p>\n",
+                    "line": 22,
+                    "type": "function"
+                },
+                {
                     "name": "disabled",
                     "defaultValue": "true",
                     "description": "<p>Desabilita a interação o input.</p>\n",
-                    "line": 17
+                    "line": 18
+                },
+                {
+                    "name": "fillHeight",
+                    "defaultValue": "false",
+                    "description": "<p>Faz o input ter altura 100%</p>\n",
+                    "line": 26,
+                    "type": "boolean"
                 },
                 {
                     "name": "text",
                     "defaultValue": "''",
                     "description": "<p>texto a ser exibido como conteúdo</p>\n",
-                    "line": 13
+                    "line": 14
                 }
             ],
             "outputsClass": [],
             "propertiesClass": [],
             "methodsClass": [
                 {
+                    "name": "copyCallbackExecute",
+                    "args": [
+                        {
+                            "name": "inputText",
+                            "type": "string"
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 39,
+                    "modifierKind": [
+                        114
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "inputText",
+                            "type": "string",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
                     "name": "ngOnInit",
                     "args": [],
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 26
+                    "line": 36
                 }
             ],
             "hostBindings": [],
@@ -1254,11 +1306,11 @@
             "description": "",
             "rawdescription": "",
             "type": "component",
-            "sourceCode": "import {Component, Input, OnInit} from '@angular/core';\n\n@Component({\n  selector: 'pm-copy-content-input',\n  templateUrl: './copy-content-input.component.html',\n  styleUrls: ['./copy-content-input.component.scss']\n})\nexport class CopyContentInputComponent implements OnInit {\n\n  /**\n   * texto a ser exibido como conteúdo\n   */\n  @Input() text = '';\n  /**\n   * Desabilita a interação o input.\n   */\n  @Input() disabled = true;\n  // public readonly notifier: SnotifyService;\n\n  constructor(\n    // private notifierService: SnotifyService\n  ) {\n    // this.notifier = notifierService;\n  }\n\n  ngOnInit(): void {\n  }\n\n  // /**\n  //  * Notifica que o valor foi copiado para a clipboard.\n  //  * O que copia mesmo é a diretiva [cdkCopyToClipboard]=\"texto\"\n  //  * @param inputElement: uma tag input\n  //  */\n  // copyInputMessage(inputElement) {\n  //   this.notifier.info('Link copiado para a área de transferência')\n  // }\n\n}\n",
+            "sourceCode": "import {Component, Input, OnInit} from '@angular/core';\nimport {MainColors} from '../../../models/colors';\n\n@Component({\n  selector: 'pm-copy-content-input',\n  templateUrl: './copy-content-input.component.html',\n  styleUrls: ['./copy-content-input.component.scss']\n})\nexport class CopyContentInputComponent implements OnInit {\n\n  /**\n   * texto a ser exibido como conteúdo\n   */\n  @Input() text = '';\n  /**\n   * Desabilita a interação o input.\n   */\n  @Input() disabled = true;\n  /**\n   * Executa um comando ao copiar para a área de transferência\n   */\n  @Input() copyCallback: (inputText: string) => void;\n  /**\n   * Faz o input ter altura 100%\n   */\n  @Input() fillHeight: boolean = false;\n  /**\n   * Faz o input ter altura 100%\n   */\n  @Input() btnColor: MainColors = MainColors.primary;\n\n  constructor(\n  ) {\n  }\n\n  ngOnInit(): void {\n  }\n\n  public copyCallbackExecute(inputText: string): void {\n    if (this.copyCallback) {\n      this.copyCallback(inputText);\n    }\n  }\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": "",
+                    "data": ".btn-copy {\n  min-width: 40px !important;\n  max-width: 40px !important;\n  display: flex !important;\n  justify-content: center !important;\n  padding: 3px !important;\n  border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0 !important;\n}\n",
                     "styleUrl": "./copy-content-input.component.scss"
                 }
             ],
@@ -1267,12 +1319,12 @@
                 "name": "constructor",
                 "description": "",
                 "args": [],
-                "line": 17
+                "line": 30
             },
             "implements": [
                 "OnInit"
             ],
-            "templateData": "<ng-container *ngIf=\"text\">\n  <div class=\"d-flex\">\n    <input [attr.readonly]=\"disabled\" [attr.disabled]=\"disabled\" [value]=\"text\" class=\"form-control\" [title]=\"text\"\n           style=\"border-radius: var(--border-radius-md) 0px 0px var(--border-radius-md) !important;\" type=\"text\">\n    <button [cdkCopyToClipboard]=\"text\" class=\"btn-copy\">\n      <i class=\"uil uil-lg uil-copy\"></i>\n    </button>\n  </div>\n</ng-container>\n"
+            "templateData": "<ng-container *ngIf=\"text\">\n  <div class=\"d-flex\" [ngClass]=\"{'h-100': fillHeight}\">\n    <input [attr.disabled]=\"disabled\" [value]=\"text\" class=\"form-control\" [title]=\"text\"\n           style=\"border-radius: var(--border-radius-md) 0px 0px var(--border-radius-md) !important;\" type=\"text\">\n    <button [cdkCopyToClipboard]=\"text\" (click)=\"copyCallbackExecute(text)\" class=\"btn btn-copy btn-{{btnColor}}\">\n      <i class=\"uil uil-lg uil-copy d-flex justify-content-center align-items-center align-self-center\"></i>\n    </button>\n  </div>\n</ng-container>\n"
         },
         {
             "name": "DialogComponent",
@@ -2280,6 +2332,16 @@
                     }
                 },
                 {
+                    "name": "fillWidth",
+                    "defaultValue": "false",
+                    "description": "<p>Faz ou não o botão preencher a largura do container. (classe w-100)</p>\n",
+                    "line": 48,
+                    "type": "boolean",
+                    "inheritance": {
+                        "file": "ButtonComponent"
+                    }
+                },
+                {
                     "name": "iconClass",
                     "description": "<p>Ícone que será exibido no botão junto ao texto. Ex: <code>uil uil-md uil-tabs</code></p>\n",
                     "line": 28,
@@ -2383,7 +2445,7 @@
                     "optional": false,
                     "returnType": "string",
                     "typeParameters": [],
-                    "line": 48,
+                    "line": 52,
                     "modifierKind": [
                         114
                     ],
@@ -4360,7 +4422,7 @@
                 "subtype": "variable",
                 "file": "projects/lib/src/components/cards/basic-card/basic-card.stories.ts",
                 "type": "object",
-                "defaultValue": "{\n}"
+                "defaultValue": "{\n  hoverable: false,\n  borderRadius: Sizes.md,\n  paddingClass: 'p-3'\n}"
             },
             {
                 "name": "defaultArgs",
@@ -4382,17 +4444,17 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/inputs/button/button.stories.ts",
+                "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
                 "type": "object",
-                "defaultValue": "{\n  label: '',\n  type: MainColors.default,\n  busy: false,\n  busyText: '',\n  iconClass: '',\n  iconPosition: 'start',\n  outline: false,\n  disabled: false,\n  size: 'md'\n}"
+                "defaultValue": "{\n  checked: false,\n  disabled: false,\n  selectedItem: undefined,\n}"
             },
             {
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
+                "file": "projects/lib/src/components/inputs/button/button.stories.ts",
                 "type": "object",
-                "defaultValue": "{\n  checked: false,\n  disabled: false,\n  selectedItem: undefined,\n}"
+                "defaultValue": "{\n  label: '',\n  type: MainColors.default,\n  busy: false,\n  busyText: '',\n  iconClass: '',\n  iconPosition: 'start',\n  outline: false,\n  disabled: false,\n  size: 'md',\n  fillWidth: false\n}"
             },
             {
                 "name": "defaultArgs",
@@ -4408,7 +4470,7 @@
                 "subtype": "variable",
                 "file": "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts",
                 "type": "object",
-                "defaultValue": "{\n  disabled: false,\n  text: ''\n}"
+                "defaultValue": "{\n  disabled: false,\n  text: '',\n  copyCallback: undefined,\n  fillHeight: false,\n  btnColor: MainColors.primary\n}"
             },
             {
                 "name": "defaultArgs",
@@ -4438,17 +4500,17 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/lists/table-list/table-list.stories.ts",
+                "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
                 "type": "object",
-                "defaultValue": "{\n  columns: [],\n  columnNames: [],\n  imageColumns: [],\n  imageHeight: '50px',\n  showHeader: true,\n  numberFormat: '1.2-2',\n  numberPrefix: '',\n  actionsTemplate: undefined,\n  itemList: undefined,\n  borderRadius: undefined,\n  backgroundColor: undefined,\n  expandedDetailTemplate: undefined,\n  disableExpandedOnDisabledRow: true,\n  expandedRow: undefined\n}"
+                "defaultValue": "{\n}"
             },
             {
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
+                "file": "projects/lib/src/components/lists/table-list/table-list.stories.ts",
                 "type": "object",
-                "defaultValue": "{\n}"
+                "defaultValue": "{\n  columns: [],\n  columnNames: [],\n  imageColumns: [],\n  imageHeight: '50px',\n  showHeader: true,\n  numberFormat: '1.2-2',\n  numberPrefix: '',\n  actionsTemplate: undefined,\n  itemList: undefined,\n  borderRadius: undefined,\n  backgroundColor: undefined,\n  expandedDetailTemplate: undefined,\n  disableExpandedOnDisabledRow: true,\n  expandedRow: undefined\n}"
             },
             {
                 "name": "defaultArgs",
@@ -4759,7 +4821,7 @@
                 "subtype": "variable",
                 "file": "projects/lib/src/components/cards/basic-card/basic-card.stories.ts",
                 "type": "Story<BasicCardComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-basic-card\n    >\n    </pm-basic-card>\n  `\n})"
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-basic-card\n      [hoverable]=\"hoverable\"\n      [borderRadius]=\"borderRadius\"\n      [paddingClass]=\"paddingClass\"\n    >\n    </pm-basic-card>\n  `\n})"
             },
             {
                 "name": "Template",
@@ -4781,17 +4843,17 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/inputs/button/button.stories.ts",
-                "type": "Story<ButtonComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-button\n        [label]=\"label\"\n        [type]=\"type\"\n        [busy]=\"busy\"\n        [busyText]=\"busyText\"\n        [iconClass]=\"iconClass\"\n        [iconPosition]=\"iconPosition\"\n        [outline]=\"outline\"\n        [disabled]=\"disabled\"\n        [size]=\"size\"\n    >\n        Button Content\n    </pm-button>\n  `\n})"
+                "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
+                "type": "Story<CheckboxComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-checkbox\n      [checked]=\"checked\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>\n  `\n})"
             },
             {
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
-                "type": "Story<CheckboxComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-checkbox\n      [checked]=\"checked\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>\n  `\n})"
+                "file": "projects/lib/src/components/inputs/button/button.stories.ts",
+                "type": "Story<ButtonComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-button\n        [label]=\"label\"\n        [type]=\"type\"\n        [busy]=\"busy\"\n        [busyText]=\"busyText\"\n        [iconClass]=\"iconClass\"\n        [iconPosition]=\"iconPosition\"\n        [outline]=\"outline\"\n        [disabled]=\"disabled\"\n        [size]=\"size\"\n        [fillWidth]=\"fillWidth\"\n    >\n        Button Content\n    </pm-button>\n  `\n})"
             },
             {
                 "name": "Template",
@@ -4807,7 +4869,7 @@
                 "subtype": "variable",
                 "file": "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts",
                 "type": "Story<CopyContentInputComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-copy-content-input\n      [text]=\"text\"\n      [disabled]=\"disabled\"\n    >\n      Conteúdo\n    </pm-copy-content-input>\n  `\n})"
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-copy-content-input\n      [text]=\"text\"\n      [disabled]=\"disabled\"\n      [copyCallback]=\"copyCallback\"\n      [fillHeight]=\"fillHeight\"\n      [btnColor]=\"btnColor\"\n    >\n    </pm-copy-content-input>\n  `\n})"
             },
             {
                 "name": "Template",
@@ -4837,17 +4899,17 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/lists/table-list/table-list.stories.ts",
-                "type": "Story<TableListComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `<pm-table-list\n    [columns]=\"columns\"\n    [columnNames]=\"columnNames\"\n    [imageColumns]=\"imageColumns\"\n    [imageHeight]=\"imageHeight\"\n    [showHeader]=\"showHeader\"\n    [numberFormat]=\"numberFormat\"\n    [numberPrefix]=\"numberPrefix\"\n    [itemList]=\"itemList\"\n    [borderRadius]=\"borderRadius\"\n    [backgroundColor]=\"backgroundColor\"\n    [expandedDetailTemplate]=\"expandedDetailTemplate\"\n    [disableExpandedOnDisabledRow]=\"disableExpandedOnDisabledRow\"\n  ></pm-table-list>`\n})"
+                "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
+                "type": "Story<GridListComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-grid-list\n      [items]=\"items\"\n      [displayStyle]=\"displayStyle\"\n      [gridHeaderReverse]=\"gridHeaderReverse\"\n      [bodyBackgroundColor]=\"bodyBackgroundColor\"\n      [actionTemplate]=\"undefined\"\n      [overflowGallery]=\"overflowGallery\"\n    >\n    </pm-grid-list>\n  `\n})"
             },
             {
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
-                "type": "Story<GridListComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-grid-list\n      [items]=\"items\"\n      [displayStyle]=\"displayStyle\"\n      [gridHeaderReverse]=\"gridHeaderReverse\"\n      [bodyBackgroundColor]=\"bodyBackgroundColor\"\n      [actionTemplate]=\"undefined\"\n      [overflowGallery]=\"overflowGallery\"\n    >\n    </pm-grid-list>\n  `\n})"
+                "file": "projects/lib/src/components/lists/table-list/table-list.stories.ts",
+                "type": "Story<TableListComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `<pm-table-list\n    [columns]=\"columns\"\n    [columnNames]=\"columnNames\"\n    [imageColumns]=\"imageColumns\"\n    [imageHeight]=\"imageHeight\"\n    [showHeader]=\"showHeader\"\n    [numberFormat]=\"numberFormat\"\n    [numberPrefix]=\"numberPrefix\"\n    [itemList]=\"itemList\"\n    [borderRadius]=\"borderRadius\"\n    [backgroundColor]=\"backgroundColor\"\n    [expandedDetailTemplate]=\"expandedDetailTemplate\"\n    [disableExpandedOnDisabledRow]=\"disableExpandedOnDisabledRow\"\n  ></pm-table-list>`\n})"
             },
             {
                 "name": "Template",
@@ -5232,7 +5294,7 @@
                     "subtype": "variable",
                     "file": "projects/lib/src/components/inputs/button/button.stories.ts",
                     "type": "object",
-                    "defaultValue": "{\n  label: '',\n  type: MainColors.default,\n  busy: false,\n  busyText: '',\n  iconClass: '',\n  iconPosition: 'start',\n  outline: false,\n  disabled: false,\n  size: 'md'\n}"
+                    "defaultValue": "{\n  label: '',\n  type: MainColors.default,\n  busy: false,\n  busyText: '',\n  iconClass: '',\n  iconPosition: 'start',\n  outline: false,\n  disabled: false,\n  size: 'md',\n  fillWidth: false\n}"
                 },
                 {
                     "name": "DefaultButton",
@@ -5304,7 +5366,7 @@
                     "subtype": "variable",
                     "file": "projects/lib/src/components/inputs/button/button.stories.ts",
                     "type": "Story<ButtonComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-button\n        [label]=\"label\"\n        [type]=\"type\"\n        [busy]=\"busy\"\n        [busyText]=\"busyText\"\n        [iconClass]=\"iconClass\"\n        [iconPosition]=\"iconPosition\"\n        [outline]=\"outline\"\n        [disabled]=\"disabled\"\n        [size]=\"size\"\n    >\n        Button Content\n    </pm-button>\n  `\n})"
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-button\n        [label]=\"label\"\n        [type]=\"type\"\n        [busy]=\"busy\"\n        [busyText]=\"busyText\"\n        [iconClass]=\"iconClass\"\n        [iconPosition]=\"iconPosition\"\n        [outline]=\"outline\"\n        [disabled]=\"disabled\"\n        [size]=\"size\"\n        [fillWidth]=\"fillWidth\"\n    >\n        Button Content\n    </pm-button>\n  `\n})"
                 },
                 {
                     "name": "WarningButton",
@@ -5437,7 +5499,7 @@
                     "subtype": "variable",
                     "file": "projects/lib/src/components/cards/basic-card/basic-card.stories.ts",
                     "type": "object",
-                    "defaultValue": "{\n}"
+                    "defaultValue": "{\n  hoverable: false,\n  borderRadius: Sizes.md,\n  paddingClass: 'p-3'\n}"
                 },
                 {
                     "name": "DefaultBasicCard",
@@ -5453,7 +5515,7 @@
                     "subtype": "variable",
                     "file": "projects/lib/src/components/cards/basic-card/basic-card.stories.ts",
                     "type": "Story<BasicCardComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-basic-card\n    >\n    </pm-basic-card>\n  `\n})"
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-basic-card\n      [hoverable]=\"hoverable\"\n      [borderRadius]=\"borderRadius\"\n      [paddingClass]=\"paddingClass\"\n    >\n    </pm-basic-card>\n  `\n})"
                 }
             ],
             "projects/lib/src/components/containers/expansion-panel/expansion-panel.stories.ts": [
@@ -5557,7 +5619,7 @@
                     "subtype": "variable",
                     "file": "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts",
                     "type": "object",
-                    "defaultValue": "{\n  disabled: false,\n  text: ''\n}"
+                    "defaultValue": "{\n  disabled: false,\n  text: '',\n  copyCallback: undefined,\n  fillHeight: false,\n  btnColor: MainColors.primary\n}"
                 },
                 {
                     "name": "DefaultCopyContentInput",
@@ -5573,7 +5635,7 @@
                     "subtype": "variable",
                     "file": "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts",
                     "type": "Story<CopyContentInputComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-copy-content-input\n      [text]=\"text\"\n      [disabled]=\"disabled\"\n    >\n      Conteúdo\n    </pm-copy-content-input>\n  `\n})"
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-copy-content-input\n      [text]=\"text\"\n      [disabled]=\"disabled\"\n      [copyCallback]=\"copyCallback\"\n      [fillHeight]=\"fillHeight\"\n      [btnColor]=\"btnColor\"\n    >\n    </pm-copy-content-input>\n  `\n})"
                 }
             ],
             "projects/lib/src/components/inputs/dropdown-actions/dropdown-actions.stories.ts": [
@@ -6146,8 +6208,8 @@
                 "type": "component",
                 "linktype": "component",
                 "name": "ButtonComponent",
-                "coveragePercent": 66,
-                "coverageCount": "8/12",
+                "coveragePercent": 69,
+                "coverageCount": "9/13",
                 "status": "good"
             },
             {
@@ -6392,9 +6454,9 @@
                 "type": "component",
                 "linktype": "component",
                 "name": "CopyContentInputComponent",
-                "coveragePercent": 40,
-                "coverageCount": "2/5",
-                "status": "medium"
+                "coveragePercent": 55,
+                "coverageCount": "5/9",
+                "status": "good"
             },
             {
                 "filePath": "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts",
@@ -6431,8 +6493,8 @@
                 "type": "component",
                 "linktype": "component",
                 "name": "DropdownActionsComponent",
-                "coveragePercent": 44,
-                "coverageCount": "8/18",
+                "coveragePercent": 47,
+                "coverageCount": "9/19",
                 "status": "medium"
             },
             {

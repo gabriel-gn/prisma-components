@@ -44,16 +44,6 @@
   border: none;
 }
 
-.btn-copy {
-  @extend .btn-primary;
-  min-width: 40px !important;
-  max-width: 40px !important;
-  display: flex !important;
-  justify-content: center !important;
-  padding: 3px !important;
-  border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0 !important;
-}
-
 .btn-icon-action {
   box-shadow: none !important;
   outline: none !important;

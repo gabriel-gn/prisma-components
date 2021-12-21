@@ -6,7 +6,7 @@ import SourceStory from '!!raw-loader!./copy-content-input.stories';
 import {
   defaultArgs,
   DefaultCopyContentInput,
-} from "./copy-content-input.stories";
+} from "./copy-content-input.stories"; import {MainColors} from "../../../models/colors"; import {Sizes} from "../../../models/sizes";
 
 export const argTypes = {
   disabled: {
@@ -21,6 +21,18 @@ export const argTypes = {
       defaultValue: { summary: defaultArgs.text},
     },
     control: { type: 'text'}
+  },
+  btnColor: {
+    table: {
+      defaultValue: { summary: defaultArgs.btnColor},
+    },
+    control: {type: 'select'}, options: Object.values(MainColors),
+  },
+  borderRadius: {
+    table: {
+      defaultValue: { summary: defaultArgs.borderRadius},
+    },
+    control: {type: 'select'}, options: Object.values(Sizes),
   },
 }
 
