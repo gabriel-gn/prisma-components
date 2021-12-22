@@ -202,6 +202,32 @@
             "methods": []
         },
         {
+            "name": "ItemData",
+            "id": "interface-ItemData-6c76789d709294db815bafe43fbcb0d0",
+            "file": "projects/lib/src/components/inputs/multi-select/multi-select.component.ts",
+            "type": "interface",
+            "sourceCode": "import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';\nimport {FormControl} from '@angular/forms';\nimport {Observable} from 'rxjs';\nimport {map, startWith} from 'rxjs/operators';\n\nexport interface ItemData {\n  item: string;\n  selected: boolean;\n}\n\n@Component({\n  selector: 'pm-multi-select',\n  templateUrl: './multi-select.component.html',\n  styleUrls: ['./multi-select.component.scss']\n})\nexport class MultiSelectComponent implements OnInit {\n\n  constructor() {\n    this.filteredData = this.selectControl.valueChanges.pipe(\n      startWith<string>(''),\n      map(value => typeof value === 'string' ? value : this.filterString),\n      map(filter => this.filter(filter))\n    );\n  }\n\n  @Output() result = new EventEmitter<{ key: string, data: Array<string> }>();\n  @Input() placeholder: string = 'Select Data';\n  @Input() data: Array<string> = [];\n  @Input() key: string = '';\n  selectControl = new FormControl();\n  rawData: Array<ItemData> = [];\n  selectData: Array<ItemData> = [];\n  filteredData: Observable<Array<ItemData>>;\n  filterString: string = '';\n  displayFn: string = '';\n\n  ngOnInit(): void {\n    this.data.forEach((item: string) => {\n      this.rawData.push({item, selected: false});\n    });\n  }\n\n  filter(filter: string): Array<ItemData> {\n    this.filterString = filter;\n    if (filter.length > 0) {\n      return this.rawData.filter(option => {\n        return option.item.toLowerCase().indexOf(filter.toLowerCase()) >= 0;\n      });\n    } else {\n      return this.rawData.slice();\n    }\n  }\n\n  optionClicked(event: Event, data: ItemData): void {\n    event.stopPropagation();\n    this.toggleSelection(data);\n  }\n\n  toggleSelection(data: ItemData): void {\n    data.selected = !data.selected;\n    if (data.selected === true) {\n      this.selectData.push(data);\n    } else {\n      const i = this.selectData.findIndex(value => value.item === data.item);\n      this.selectData.splice(i, 1);\n    }\n    this.selectControl.setValue(this.selectData);\n    this.emitAdjustedData();\n  }\n\n  public emitAdjustedData(): void {\n    const results: Array<string> = [];\n    this.selectData.forEach((data: ItemData) => {\n      results.push(data.item);\n    });\n    this.result.emit({key: this.key, data: results});\n  }\n\n  public removeChip(data: ItemData): void {\n    this.toggleSelection(data);\n  }\n\n}\n",
+            "properties": [
+                {
+                    "name": "item",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 7
+                },
+                {
+                    "name": "selected",
+                    "type": "boolean",
+                    "optional": false,
+                    "description": "",
+                    "line": 8
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 150,
+            "methods": []
+        },
+        {
             "name": "PaletteEntry",
             "id": "interface-PaletteEntry-7dec8570bb6b358e4bae69ce9fd94112",
             "file": "projects/lib/src/services/command-palette/models.ts",
@@ -1214,7 +1240,7 @@
         },
         {
             "name": "CopyContentInputComponent",
-            "id": "component-CopyContentInputComponent-36e2b9d3b286bcf6c3659ae8c255ff37",
+            "id": "component-CopyContentInputComponent-b77355542866ff84f9195ca18fec4e17",
             "file": "projects/lib/src/components/inputs/copy-content-input/copy-content-input.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -1232,36 +1258,43 @@
             "viewProviders": [],
             "inputsClass": [
                 {
+                    "name": "borderRadius",
+                    "defaultValue": "Sizes.md",
+                    "description": "<p>Raio da borda</p>\n",
+                    "line": 35,
+                    "type": "Sizes"
+                },
+                {
                     "name": "btnColor",
                     "defaultValue": "MainColors.primary",
                     "description": "<p>Faz o input ter altura 100%</p>\n",
-                    "line": 30,
+                    "line": 31,
                     "type": "MainColors"
                 },
                 {
                     "name": "copyCallback",
                     "description": "<p>Executa um comando ao copiar para a área de transferência</p>\n",
-                    "line": 22,
+                    "line": 23,
                     "type": "function"
                 },
                 {
                     "name": "disabled",
                     "defaultValue": "true",
                     "description": "<p>Desabilita a interação o input.</p>\n",
-                    "line": 18
+                    "line": 19
                 },
                 {
                     "name": "fillHeight",
                     "defaultValue": "false",
                     "description": "<p>Faz o input ter altura 100%</p>\n",
-                    "line": 26,
+                    "line": 27,
                     "type": "boolean"
                 },
                 {
                     "name": "text",
                     "defaultValue": "''",
                     "description": "<p>texto a ser exibido como conteúdo</p>\n",
-                    "line": 14
+                    "line": 15
                 }
             ],
             "outputsClass": [],
@@ -1278,7 +1311,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 39,
+                    "line": 45,
                     "modifierKind": [
                         114
                     ],
@@ -1298,7 +1331,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 36
+                    "line": 42
                 }
             ],
             "hostBindings": [],
@@ -1306,11 +1339,11 @@
             "description": "",
             "rawdescription": "",
             "type": "component",
-            "sourceCode": "import {Component, Input, OnInit} from '@angular/core';\nimport {MainColors} from '../../../models/colors';\n\n@Component({\n  selector: 'pm-copy-content-input',\n  templateUrl: './copy-content-input.component.html',\n  styleUrls: ['./copy-content-input.component.scss']\n})\nexport class CopyContentInputComponent implements OnInit {\n\n  /**\n   * texto a ser exibido como conteúdo\n   */\n  @Input() text = '';\n  /**\n   * Desabilita a interação o input.\n   */\n  @Input() disabled = true;\n  /**\n   * Executa um comando ao copiar para a área de transferência\n   */\n  @Input() copyCallback: (inputText: string) => void;\n  /**\n   * Faz o input ter altura 100%\n   */\n  @Input() fillHeight: boolean = false;\n  /**\n   * Faz o input ter altura 100%\n   */\n  @Input() btnColor: MainColors = MainColors.primary;\n\n  constructor(\n  ) {\n  }\n\n  ngOnInit(): void {\n  }\n\n  public copyCallbackExecute(inputText: string): void {\n    if (this.copyCallback) {\n      this.copyCallback(inputText);\n    }\n  }\n\n}\n",
+            "sourceCode": "import {Component, Input, OnInit} from '@angular/core';\nimport {MainColors} from '../../../models/colors';\nimport {Sizes} from '../../../models/sizes';\n\n@Component({\n  selector: 'pm-copy-content-input',\n  templateUrl: './copy-content-input.component.html',\n  styleUrls: ['./copy-content-input.component.scss']\n})\nexport class CopyContentInputComponent implements OnInit {\n\n  /**\n   * texto a ser exibido como conteúdo\n   */\n  @Input() text = '';\n  /**\n   * Desabilita a interação o input.\n   */\n  @Input() disabled = true;\n  /**\n   * Executa um comando ao copiar para a área de transferência\n   */\n  @Input() copyCallback: (inputText: string) => void;\n  /**\n   * Faz o input ter altura 100%\n   */\n  @Input() fillHeight: boolean = false;\n  /**\n   * Faz o input ter altura 100%\n   */\n  @Input() btnColor: MainColors = MainColors.primary;\n  /**\n   * Raio da borda\n   */\n  @Input() borderRadius: Sizes = Sizes.md;\n\n\n  constructor(\n  ) {\n  }\n\n  ngOnInit(): void {\n  }\n\n  public copyCallbackExecute(inputText: string): void {\n    if (this.copyCallback) {\n      this.copyCallback(inputText);\n    }\n  }\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": ".btn-copy {\n  min-width: 40px !important;\n  max-width: 40px !important;\n  display: flex !important;\n  justify-content: center !important;\n  padding: 3px !important;\n  border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0 !important;\n}\n",
+                    "data": ".btn-copy {\n  min-width: 40px !important;\n  max-width: 40px !important;\n  display: flex !important;\n  justify-content: center !important;\n  padding: 3px !important;\n}\n",
                     "styleUrl": "./copy-content-input.component.scss"
                 }
             ],
@@ -1319,12 +1352,12 @@
                 "name": "constructor",
                 "description": "",
                 "args": [],
-                "line": 30
+                "line": 35
             },
             "implements": [
                 "OnInit"
             ],
-            "templateData": "<ng-container *ngIf=\"text\">\n  <div class=\"d-flex\" [ngClass]=\"{'h-100': fillHeight}\">\n    <input [attr.disabled]=\"disabled\" [value]=\"text\" class=\"form-control\" [title]=\"text\"\n           style=\"border-radius: var(--border-radius-md) 0px 0px var(--border-radius-md) !important;\" type=\"text\">\n    <button [cdkCopyToClipboard]=\"text\" (click)=\"copyCallbackExecute(text)\" class=\"btn btn-copy btn-{{btnColor}}\">\n      <i class=\"uil uil-lg uil-copy d-flex justify-content-center align-items-center align-self-center\"></i>\n    </button>\n  </div>\n</ng-container>\n"
+            "templateData": "<ng-container *ngIf=\"text\">\n  <div class=\"d-flex\" [ngClass]=\"{'h-100': fillHeight}\">\n    <input [attr.disabled]=\"disabled\" [attr.readonly]=\"disabled\" [value]=\"text\" class=\"form-control\" [title]=\"text\"\n           style=\"border-radius: var(--border-radius-{{borderRadius}}) 0px 0px var(--border-radius-{{borderRadius}}) !important;\"\n           type=\"text\"\n    >\n    <button\n      [cdkCopyToClipboard]=\"text\"\n      (click)=\"copyCallbackExecute(text)\"\n      class=\"btn btn-copy btn-{{btnColor}}\"\n      style=\"border-radius: 0 var(--border-radius-{{borderRadius}}) var(--border-radius-{{borderRadius}}) 0 !important;\"\n    >\n      <i class=\"uil uil-lg uil-copy d-flex justify-content-center align-items-center align-self-center\"></i>\n    </button>\n  </div>\n</ng-container>\n"
         },
         {
             "name": "DialogComponent",
@@ -2896,6 +2929,249 @@
             "templateData": "<ng-container *ngTemplateOutlet=\"buttonTemplate ? buttonTemplate : defaultButtonTemplate; context: {$implicit: actionsSelect}\"></ng-container>\n\n<mat-select #actionsSelect class=\"mat-select-btn-sm\">\n  <mat-option [hidden]=\"true\"></mat-option>\n  <mat-option *ngFor=\"let action of actions\" (click)=\"callMethod(action, actionsSelect)\">{{action.label}}</mat-option>\n</mat-select>\n\n<ng-template #defaultButtonTemplate let-select>\n  <pm-button (click)=\"select.toggle()\"\n             [type]=\"type\"\n             [busy]=\"busy\"\n             [busyText]=\"busyText\"\n             [iconClass]=\"iconClass\"\n             [outline]=\"outline\"\n             [disabled]=\"disabled\"\n  >\n  </pm-button>\n</ng-template>\n"
         },
         {
+            "name": "MultiSelectComponent",
+            "id": "component-MultiSelectComponent-6c76789d709294db815bafe43fbcb0d0",
+            "file": "projects/lib/src/components/inputs/multi-select/multi-select.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "pm-multi-select",
+            "styleUrls": [
+                "./multi-select.component.scss"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./multi-select.component.html"
+            ],
+            "viewProviders": [],
+            "inputsClass": [
+                {
+                    "name": "data",
+                    "defaultValue": "[]",
+                    "line": 28,
+                    "type": "Array<string>"
+                },
+                {
+                    "name": "key",
+                    "defaultValue": "''",
+                    "line": 29,
+                    "type": "string"
+                },
+                {
+                    "name": "placeholder",
+                    "defaultValue": "'Select Data'",
+                    "line": 27,
+                    "type": "string"
+                }
+            ],
+            "outputsClass": [
+                {
+                    "name": "result",
+                    "defaultValue": "new EventEmitter<{ key: string, data: Array<string> }>()",
+                    "line": 26,
+                    "type": "EventEmitter"
+                }
+            ],
+            "propertiesClass": [
+                {
+                    "name": "displayFn",
+                    "defaultValue": "''",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 35
+                },
+                {
+                    "name": "filteredData",
+                    "type": "Observable<Array<ItemData>>",
+                    "optional": false,
+                    "description": "",
+                    "line": 33
+                },
+                {
+                    "name": "filterString",
+                    "defaultValue": "''",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 34
+                },
+                {
+                    "name": "rawData",
+                    "defaultValue": "[]",
+                    "type": "Array<ItemData>",
+                    "optional": false,
+                    "description": "",
+                    "line": 31
+                },
+                {
+                    "name": "selectControl",
+                    "defaultValue": "new FormControl()",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 30
+                },
+                {
+                    "name": "selectData",
+                    "defaultValue": "[]",
+                    "type": "Array<ItemData>",
+                    "optional": false,
+                    "description": "",
+                    "line": 32
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "emitAdjustedData",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 71,
+                    "modifierKind": [
+                        114
+                    ]
+                },
+                {
+                    "name": "filter",
+                    "args": [
+                        {
+                            "name": "filter",
+                            "type": "string"
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "Array<ItemData>",
+                    "typeParameters": [],
+                    "line": 43,
+                    "jsdoctags": [
+                        {
+                            "name": "filter",
+                            "type": "string",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "ngOnInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 37
+                },
+                {
+                    "name": "optionClicked",
+                    "args": [
+                        {
+                            "name": "event",
+                            "type": "Event"
+                        },
+                        {
+                            "name": "data",
+                            "type": "ItemData"
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 54,
+                    "jsdoctags": [
+                        {
+                            "name": "event",
+                            "type": "Event",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        },
+                        {
+                            "name": "data",
+                            "type": "ItemData",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "removeChip",
+                    "args": [
+                        {
+                            "name": "data",
+                            "type": "ItemData"
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 79,
+                    "modifierKind": [
+                        114
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "data",
+                            "type": "ItemData",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "toggleSelection",
+                    "args": [
+                        {
+                            "name": "data",
+                            "type": "ItemData"
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 59,
+                    "jsdoctags": [
+                        {
+                            "name": "data",
+                            "type": "ItemData",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "",
+            "type": "component",
+            "sourceCode": "import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';\nimport {FormControl} from '@angular/forms';\nimport {Observable} from 'rxjs';\nimport {map, startWith} from 'rxjs/operators';\n\nexport interface ItemData {\n  item: string;\n  selected: boolean;\n}\n\n@Component({\n  selector: 'pm-multi-select',\n  templateUrl: './multi-select.component.html',\n  styleUrls: ['./multi-select.component.scss']\n})\nexport class MultiSelectComponent implements OnInit {\n\n  constructor() {\n    this.filteredData = this.selectControl.valueChanges.pipe(\n      startWith<string>(''),\n      map(value => typeof value === 'string' ? value : this.filterString),\n      map(filter => this.filter(filter))\n    );\n  }\n\n  @Output() result = new EventEmitter<{ key: string, data: Array<string> }>();\n  @Input() placeholder: string = 'Select Data';\n  @Input() data: Array<string> = [];\n  @Input() key: string = '';\n  selectControl = new FormControl();\n  rawData: Array<ItemData> = [];\n  selectData: Array<ItemData> = [];\n  filteredData: Observable<Array<ItemData>>;\n  filterString: string = '';\n  displayFn: string = '';\n\n  ngOnInit(): void {\n    this.data.forEach((item: string) => {\n      this.rawData.push({item, selected: false});\n    });\n  }\n\n  filter(filter: string): Array<ItemData> {\n    this.filterString = filter;\n    if (filter.length > 0) {\n      return this.rawData.filter(option => {\n        return option.item.toLowerCase().indexOf(filter.toLowerCase()) >= 0;\n      });\n    } else {\n      return this.rawData.slice();\n    }\n  }\n\n  optionClicked(event: Event, data: ItemData): void {\n    event.stopPropagation();\n    this.toggleSelection(data);\n  }\n\n  toggleSelection(data: ItemData): void {\n    data.selected = !data.selected;\n    if (data.selected === true) {\n      this.selectData.push(data);\n    } else {\n      const i = this.selectData.findIndex(value => value.item === data.item);\n      this.selectData.splice(i, 1);\n    }\n    this.selectControl.setValue(this.selectData);\n    this.emitAdjustedData();\n  }\n\n  public emitAdjustedData(): void {\n    const results: Array<string> = [];\n    this.selectData.forEach((data: ItemData) => {\n      results.push(data.item);\n    });\n    this.result.emit({key: this.key, data: results});\n  }\n\n  public removeChip(data: ItemData): void {\n    this.toggleSelection(data);\n  }\n\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": ".pm-multi-select {\n  .mat-chip.mat-standard-chip {\n    background-color: red;\n    color: white;\n  }\n\n  .full-width {\n    width: 100%;\n  }\n  .chip-list-wrapper {\n    min-height: 3em;\n  }\n}\n",
+                    "styleUrl": "./multi-select.component.scss"
+                }
+            ],
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "args": [],
+                "line": 16
+            },
+            "implements": [
+                "OnInit"
+            ],
+            "templateData": "<div class=\"pm-multi-select\">\n  <div class=\"chip-list-wrapper\">\n    <mat-chip-list #chipList>\n      <ng-container *ngFor=\"let select of selectData\">\n        <mat-chip class=\"cardinal-colors\" (click)=\"removeChip(select)\">\n          {{ select.item }}\n          <mat-icon class=\"mat-chip-remove\">cancel</mat-icon>\n        </mat-chip>\n      </ng-container>\n    </mat-chip-list>\n  </div>\n\n  <mat-form-field class=\"full-width\">\n    <input matInput type=\"text\"\n           [placeholder]=\"placeholder\"\n           [matAutocomplete]=\"auto\"\n           [formControl]=\"selectControl\">\n  </mat-form-field>\n\n  <mat-autocomplete #auto=\"matAutocomplete\" [displayWith]=\"displayFn\">\n    <mat-option *ngFor=\"let data of filteredData | async\">\n      <div (click)=\"optionClicked($event, data)\">\n        <mat-checkbox [checked]=\"data.selected\"\n                      (change)=\"toggleSelection(data)\"\n                      (click)=\"$event.stopPropagation()\">\n          {{ data.item }}\n        </mat-checkbox>\n      </div>\n    </mat-option>\n  </mat-autocomplete>\n</div>\n"
+        },
+        {
             "name": "RadioButtonComponent",
             "id": "component-RadioButtonComponent-e083ccd549e2c400eb8f30c1102c4f5d",
             "file": "projects/lib/src/components/inputs/radio-button/radio-button.component.ts",
@@ -3519,6 +3795,50 @@
             "templateData": "<mat-table #table [dataSource]=\"itemList\" class=\"pm-table-list\"\n           [ngStyle]=\"{'border-radius': borderRadius ? 'var(--border-radius-' + borderRadius + ')' : null, 'background-color': backgroundColor ? backgroundColor : null}\"\n>\n\n  <ng-container *ngFor=\"let column of columns; let i = index;\">\n    <ng-container matColumnDef=\"{{column}}\">\n      <mat-header-cell *matHeaderCellDef>{{columnNames ? columnNames[i] : column}}</mat-header-cell>\n      <mat-cell *matCellDef=\"let item\" [ngClass]=\"{'disabled': item?.disabled === true}\">\n        <ng-container\n          *ngTemplateOutlet=\"getCellTemplate(item, column);\n          context: {$implicit: item, column: column}\">\n        </ng-container>\n      </mat-cell>\n    </ng-container>\n  </ng-container>\n\n  <ng-container matColumnDef=\"expandedDetail\">\n    <mat-cell *matCellDef=\"let item\" [ngClass]=\"{'disabled': item?.disabled === true}\">\n      <ng-container *ngTemplateOutlet=\"expandedDetailTemplate; context: {$implicit: item.element}\"></ng-container>\n    </mat-cell>\n  </ng-container>\n\n  <mat-header-row *matHeaderRowDef=\"columns\" [ngClass]=\"{'d-none': !showHeader}\"></mat-header-row>\n  <mat-row *matRowDef=\"let row; columns: columns\"\n           [ngClass]=\"{'element-row': expandedDetailTemplate}\"\n           [class.expanded]=\"expandedRow == row\"\n           (click)=\"setSelectedRow(row)\"\n  ></mat-row>\n  <mat-row *matRowDef=\"let row; columns: ['expandedDetail']; when: isExpansionDetailRow\"\n           [@detailExpand]=\"isSelectedRow(row) ? 'expanded' : 'collapsed'\"\n           (click)=\"setSelectedRow(row)\"\n           style=\"overflow: hidden\"\n  >\n  </mat-row>\n</mat-table>\n\n<ng-template #imageCell let-item let-column=\"column\">\n  <img [attr.src]=\"item[column]\" [attr.alt]=\"item[column]\"\n       class=\"img-fluid my-2\" [ngStyle]=\"{'height': imageHeight ? imageHeight : '50px', 'max-height': imageHeight ? imageHeight : '50px'}\">\n</ng-template>\n\n<ng-template #singleLabelCell let-item let-column=\"column\">\n  <p class=\"main-label\">{{item[column]}}</p>\n</ng-template>\n\n<ng-template #doubleLabelCell let-item let-column=\"column\">\n  <div class=\"d-block\">\n    <p class=\"main-label\">{{item[column][0]}}</p>\n    <p class=\"sub-label\">{{item[column][1]}}</p>\n  </div>\n</ng-template>\n\n<ng-template #formattedNumberCell let-item let-column=\"column\">\n  <p class=\"main-label\">{{numberPrefix}}{{item[column] | number: numberFormat}}</p>\n</ng-template>\n"
         },
         {
+            "name": "TabsComponent",
+            "id": "component-TabsComponent-ed069abd78db589b06dda3b6afd0b5d2",
+            "file": "projects/lib/src/components/containers/tabs/tabs.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "pm-tabs",
+            "styleUrls": [
+                "./tabs.component.scss"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./tabs.component.html"
+            ],
+            "viewProviders": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [],
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "",
+            "type": "component",
+            "sourceCode": "import { Component } from '@angular/core';\nimport {MatTabGroup} from '@angular/material/tabs';\n\n@Component({\n  selector: 'pm-tabs',\n  templateUrl: './tabs.component.html',\n  styleUrls: ['./tabs.component.scss']\n})\nexport class TabsComponent {\n\n  constructor() {\n  }\n\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": ".pm-tabs {\n  &.horizontal-tabs {\n\n    .mat-tab-label {\n      margin-right: 0.5rem;\n    }\n\n    .mat-tab-label:last-child {\n      margin-right: 0px;\n    }\n\n    .mat-tab-label {\n      font-size: 15px;\n      background-color: transparent;\n      border-radius: var(--border-radius-xxl);\n      height: 45px;\n      min-width: 25px !important;\n      padding: 5px;\n      color: var(--color-default);\n      font-weight: 500;\n      width: 120px !important;\n\n      &:hover {\n        background-color: rgba(0, 0, 0, 0.03);\n      }\n\n      &.mat-tab-label-active {\n        background-color: rgba(var(--color-primary-states-rgb), 0.1);\n        color: var(--color-primary-states);\n        font-weight: 600;\n      }\n    }\n\n    .mat-tab-header {\n      border-bottom: none;\n    }\n\n    .mat-tab-header-pagination {\n      display: none !important;\n    }\n\n    .mat-ink-bar {\n      height: 100%;\n      left: 100% !important;\n      background-color: #51cbce33 !important;\n    }\n\n    .mat-tab-body-wrapper {\n      flex: 1 1 auto;\n      padding: 0px;\n      overflow-y: auto;\n      overflow-x: hidden;\n\n      label {\n        margin-top: 12px;\n        margin-bottom: 5px;\n        color: var(--color-default);\n      }\n\n      .btn-tooltip-sm {\n        height: 20px;\n        width: 20px;\n        border-radius: 50%;\n        padding: 0px;\n      }\n\n      .bool-div-container {\n        margin-top: 12px;\n        margin-bottom: 5px;\n      }\n    }\n  }\n\n  .vertical-tabs {\n    @extend .horizontal-tabs;\n\n    .mat-tab-label {\n      margin-top: 5px;\n    }\n\n    .mat-tab-group {\n      flex-direction: row;\n    }\n\n    .mat-tab-labels {\n      flex-direction: column;\n    }\n\n    .mat-tab-body-wrapper {\n      padding-left: 10px;\n    }\n\n    .mat-tab-label-container {\n      overflow-y: auto;\n    }\n\n    mat-tab-body {\n      min-height: 100px;\n    }\n  }\n}\n",
+                    "styleUrl": "./tabs.component.scss"
+                }
+            ],
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "args": [],
+                "line": 9
+            },
+            "templateData": "<div class=\"pm-tabs horizontal-tabs\">\n  <ng-content></ng-content>\n</div>\n"
+        },
+        {
             "name": "TriggerButtonComponent",
             "id": "component-TriggerButtonComponent-c865b9e31acb5a6e02c60440d58f0275",
             "file": "projects/lib/src/services/command-palette/trigger-button/trigger-button.component.ts",
@@ -4133,6 +4453,43 @@
             ]
         },
         {
+            "name": "MultiSelectModule",
+            "children": [
+                {
+                    "type": "providers",
+                    "elements": []
+                },
+                {
+                    "type": "declarations",
+                    "elements": [
+                        {
+                            "name": "MultiSelectComponent"
+                        }
+                    ]
+                },
+                {
+                    "type": "imports",
+                    "elements": []
+                },
+                {
+                    "type": "exports",
+                    "elements": [
+                        {
+                            "name": "MultiSelectComponent"
+                        }
+                    ]
+                },
+                {
+                    "type": "bootstrap",
+                    "elements": []
+                },
+                {
+                    "type": "classes",
+                    "elements": []
+                }
+            ]
+        },
+        {
             "name": "PrismaComponentsModule",
             "children": [
                 {
@@ -4308,6 +4665,43 @@
                     "elements": []
                 }
             ]
+        },
+        {
+            "name": "TabsModule",
+            "children": [
+                {
+                    "type": "providers",
+                    "elements": []
+                },
+                {
+                    "type": "declarations",
+                    "elements": [
+                        {
+                            "name": "TabsComponent"
+                        }
+                    ]
+                },
+                {
+                    "type": "imports",
+                    "elements": []
+                },
+                {
+                    "type": "exports",
+                    "elements": [
+                        {
+                            "name": "TabsComponent"
+                        }
+                    ]
+                },
+                {
+                    "type": "bootstrap",
+                    "elements": []
+                },
+                {
+                    "type": "classes",
+                    "elements": []
+                }
+            ]
         }
     ],
     "miscellaneous": {
@@ -4444,9 +4838,9 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
+                "file": "projects/lib/src/components/containers/tabs/tabs.stories.ts",
                 "type": "object",
-                "defaultValue": "{\n  checked: false,\n  disabled: false,\n  selectedItem: undefined,\n}"
+                "defaultValue": "{\n}"
             },
             {
                 "name": "defaultArgs",
@@ -4468,9 +4862,9 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts",
+                "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
                 "type": "object",
-                "defaultValue": "{\n  disabled: false,\n  text: '',\n  copyCallback: undefined,\n  fillHeight: false,\n  btnColor: MainColors.primary\n}"
+                "defaultValue": "{\n  checked: false,\n  disabled: false,\n  selectedItem: undefined,\n}"
             },
             {
                 "name": "defaultArgs",
@@ -4484,9 +4878,25 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
+                "file": "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts",
+                "type": "object",
+                "defaultValue": "{\n  disabled: false,\n  text: '',\n  copyCallback: undefined,\n  fillHeight: false,\n  btnColor: MainColors.primary,\n  borderRadius: Sizes.md\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
                 "file": "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts",
                 "type": "object",
                 "defaultValue": "{\n  orientation: OrientationEnum.Y,\n  values: [],\n  disabled: false,\n  selectedValue: undefined\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/components/inputs/multi-select/multi-select.stories.ts",
+                "type": "object",
+                "defaultValue": "{\n  data: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],\n  placeholder: 'Select Items Here ...',\n  key: 'options',\n}"
             },
             {
                 "name": "defaultArgs",
@@ -4625,6 +5035,14 @@
                 "defaultValue": "Template.bind({})"
             },
             {
+                "name": "DefaultMultiSelect",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/components/inputs/multi-select/multi-select.stories.ts",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
                 "name": "DefaultRadioButton",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -4645,6 +5063,14 @@
                 "ctype": "miscellaneous",
                 "subtype": "variable",
                 "file": "projects/lib/src/components/lists/table-list/table-list.stories.ts",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "DefaultTabs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/components/containers/tabs/tabs.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             },
@@ -4843,9 +5269,9 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
-                "type": "Story<CheckboxComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-checkbox\n      [checked]=\"checked\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>\n  `\n})"
+                "file": "projects/lib/src/components/containers/tabs/tabs.stories.ts",
+                "type": "Story<TabsComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-tabs\n    >\n    </pm-tabs>\n  `\n})"
             },
             {
                 "name": "Template",
@@ -4867,9 +5293,9 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts",
-                "type": "Story<CopyContentInputComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-copy-content-input\n      [text]=\"text\"\n      [disabled]=\"disabled\"\n      [copyCallback]=\"copyCallback\"\n      [fillHeight]=\"fillHeight\"\n      [btnColor]=\"btnColor\"\n    >\n    </pm-copy-content-input>\n  `\n})"
+                "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
+                "type": "Story<CheckboxComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-checkbox\n      [checked]=\"checked\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>\n  `\n})"
             },
             {
                 "name": "Template",
@@ -4883,9 +5309,25 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
+                "file": "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts",
+                "type": "Story<CopyContentInputComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-copy-content-input\n      [text]=\"text\"\n      [disabled]=\"disabled\"\n      [copyCallback]=\"copyCallback\"\n      [fillHeight]=\"fillHeight\"\n      [btnColor]=\"btnColor\"\n      [borderRadius]=\"borderRadius\"\n    >\n    </pm-copy-content-input>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
                 "file": "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts",
                 "type": "Story<RadioButtonComponent>",
                 "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-radio-button\n      [orientation]=\"orientation\"\n      [values]=\"values\"\n      [selectedValue]=\"selectedValue\"\n      [disabled]=\"disabled\"\n    >\n    </pm-radio-button>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/components/inputs/multi-select/multi-select.stories.ts",
+                "type": "Story<MultiSelectComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-multi-select\n      [placeholder]=\"placeholder\"\n      [key]=\"key\"\n      [data]=\"data\"\n    >\n    </pm-multi-select>\n  `\n})"
             },
             {
                 "name": "Template",
@@ -5544,28 +5986,20 @@
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-expansion-panel\n    >\n        Conteúdo aqui\n    </pm-expansion-panel>\n  `\n})"
                 }
             ],
-            "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts": [
+            "projects/lib/src/components/containers/tabs/tabs.stories.ts": [
                 {
                     "name": "defaultArgs",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
+                    "file": "projects/lib/src/components/containers/tabs/tabs.stories.ts",
                     "type": "object",
-                    "defaultValue": "{\n  checked: false,\n  disabled: false,\n  selectedItem: undefined,\n}"
+                    "defaultValue": "{\n}"
                 },
                 {
-                    "name": "DefaultCheckbox",
+                    "name": "DefaultTabs",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "DisabledCheckbox",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
+                    "file": "projects/lib/src/components/containers/tabs/tabs.stories.ts",
                     "type": "",
                     "defaultValue": "Template.bind({})"
                 },
@@ -5573,9 +6007,9 @@
                     "name": "Template",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
-                    "type": "Story<CheckboxComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-checkbox\n      [checked]=\"checked\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>\n  `\n})"
+                    "file": "projects/lib/src/components/containers/tabs/tabs.stories.ts",
+                    "type": "Story<TabsComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-tabs\n    >\n    </pm-tabs>\n  `\n})"
                 }
             ],
             "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts": [
@@ -5612,20 +6046,28 @@
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-combo-box\n      [items]=\"items\"\n      [disabled]=\"disabled\"\n      [selectedItem]=\"selectedItem\"\n    >\n    </pm-combo-box>\n  `\n})"
                 }
             ],
-            "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts": [
+            "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts": [
                 {
                     "name": "defaultArgs",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts",
+                    "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
                     "type": "object",
-                    "defaultValue": "{\n  disabled: false,\n  text: '',\n  copyCallback: undefined,\n  fillHeight: false,\n  btnColor: MainColors.primary\n}"
+                    "defaultValue": "{\n  checked: false,\n  disabled: false,\n  selectedItem: undefined,\n}"
                 },
                 {
-                    "name": "DefaultCopyContentInput",
+                    "name": "DefaultCheckbox",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts",
+                    "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "DisabledCheckbox",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
                     "type": "",
                     "defaultValue": "Template.bind({})"
                 },
@@ -5633,9 +6075,9 @@
                     "name": "Template",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts",
-                    "type": "Story<CopyContentInputComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-copy-content-input\n      [text]=\"text\"\n      [disabled]=\"disabled\"\n      [copyCallback]=\"copyCallback\"\n      [fillHeight]=\"fillHeight\"\n      [btnColor]=\"btnColor\"\n    >\n    </pm-copy-content-input>\n  `\n})"
+                    "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
+                    "type": "Story<CheckboxComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-checkbox\n      [checked]=\"checked\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>\n  `\n})"
                 }
             ],
             "projects/lib/src/components/inputs/dropdown-actions/dropdown-actions.stories.ts": [
@@ -5662,6 +6104,32 @@
                     "file": "projects/lib/src/components/inputs/dropdown-actions/dropdown-actions.stories.ts",
                     "type": "Story<DropdownActionsComponent>",
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-dropdown-actions\n      [actions]=\"actions\"\n    >\n    </pm-dropdown-actions>\n  `\n})"
+                }
+            ],
+            "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts",
+                    "type": "object",
+                    "defaultValue": "{\n  disabled: false,\n  text: '',\n  copyCallback: undefined,\n  fillHeight: false,\n  btnColor: MainColors.primary,\n  borderRadius: Sizes.md\n}"
+                },
+                {
+                    "name": "DefaultCopyContentInput",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts",
+                    "type": "Story<CopyContentInputComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-copy-content-input\n      [text]=\"text\"\n      [disabled]=\"disabled\"\n      [copyCallback]=\"copyCallback\"\n      [fillHeight]=\"fillHeight\"\n      [btnColor]=\"btnColor\"\n      [borderRadius]=\"borderRadius\"\n    >\n    </pm-copy-content-input>\n  `\n})"
                 }
             ],
             "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts": [
@@ -5696,6 +6164,32 @@
                     "file": "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts",
                     "type": "Story<RadioButtonComponent>",
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-radio-button\n      [orientation]=\"orientation\"\n      [values]=\"values\"\n      [selectedValue]=\"selectedValue\"\n      [disabled]=\"disabled\"\n    >\n    </pm-radio-button>\n  `\n})"
+                }
+            ],
+            "projects/lib/src/components/inputs/multi-select/multi-select.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/multi-select/multi-select.stories.ts",
+                    "type": "object",
+                    "defaultValue": "{\n  data: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],\n  placeholder: 'Select Items Here ...',\n  key: 'options',\n}"
+                },
+                {
+                    "name": "DefaultMultiSelect",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/multi-select/multi-select.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/multi-select/multi-select.stories.ts",
+                    "type": "Story<MultiSelectComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-multi-select\n      [placeholder]=\"placeholder\"\n      [key]=\"key\"\n      [data]=\"data\"\n    >\n    </pm-multi-select>\n  `\n})"
                 }
             ],
             "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts": [
@@ -6204,6 +6698,45 @@
                 "status": "low"
             },
             {
+                "filePath": "projects/lib/src/components/containers/tabs/tabs.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "TabsComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/2",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/lib/src/components/containers/tabs/tabs.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "defaultArgs",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/lib/src/components/containers/tabs/tabs.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "DefaultTabs",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/lib/src/components/containers/tabs/tabs.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
                 "filePath": "projects/lib/src/components/inputs/button/button.component.ts",
                 "type": "component",
                 "linktype": "component",
@@ -6454,8 +6987,8 @@
                 "type": "component",
                 "linktype": "component",
                 "name": "CopyContentInputComponent",
-                "coveragePercent": 55,
-                "coverageCount": "5/9",
+                "coveragePercent": 60,
+                "coverageCount": "6/10",
                 "status": "good"
             },
             {
@@ -6519,6 +7052,54 @@
             },
             {
                 "filePath": "projects/lib/src/components/inputs/dropdown-actions/dropdown-actions.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/lib/src/components/inputs/multi-select/multi-select.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "MultiSelectComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/18",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/lib/src/components/inputs/multi-select/multi-select.component.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "ItemData",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/lib/src/components/inputs/multi-select/multi-select.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "defaultArgs",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/lib/src/components/inputs/multi-select/multi-select.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "DefaultMultiSelect",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/lib/src/components/inputs/multi-select/multi-select.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
