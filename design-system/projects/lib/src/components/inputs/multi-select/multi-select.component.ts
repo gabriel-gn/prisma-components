@@ -1,4 +1,4 @@
-import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {map, startWith, filter} from 'rxjs/operators';
@@ -32,7 +32,9 @@ export class MultiSelectComponent implements OnInit {
   _selectedOptions: User[] = [];
   filteredOptions: Observable<User[]>;
 
-  constructor() {
+  constructor(
+    private cdr: ChangeDetectorRef
+  ) {
   }
 
   ngOnInit(): void {
@@ -57,11 +59,24 @@ export class MultiSelectComponent implements OnInit {
   }
 
   public selectOption(option: any): void {
+    this.clearInput();
     this._selectedOptions.push(option);
+    this._selectedOptions = _.uniqBy(this._selectedOptions, 'name');
     this.searchString = '';
     console.log(this._selectedOptions);
     this.selectedOptions.emit(this._selectedOptions);
+    this.clearInput();
+  }
+
+  private clearInput(): void {
+    this.myControl.setValue('');
     this.inputBox.nativeElement.blur();
+    this.cdr.detectChanges();
+  }
+
+  public removeSelectedOption(option: any): void {
+    _.remove(this._selectedOptions, option);
+    this.clearInput();
   }
 
 }

@@ -1,4 +1,12 @@
 <div class="pm-multi-select">
+  <div class="d-flex flex-row justify-content-start">
+    <div *ngFor="let selected of _selectedOptions">
+      <div class="d-flex flex-row">
+        <p>{{selected.name}}</p>
+        <p (click)="removeSelectedOption(selected)">x</p>
+      </div>
+    </div>
+  </div>
   <form class="example-form">
     <input #inputBox matInput class="form-control"
            type="text"
