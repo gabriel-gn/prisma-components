@@ -202,32 +202,6 @@
             "methods": []
         },
         {
-            "name": "ItemData",
-            "id": "interface-ItemData-6c76789d709294db815bafe43fbcb0d0",
-            "file": "projects/lib/src/components/inputs/multi-select/multi-select.component.ts",
-            "type": "interface",
-            "sourceCode": "import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';\nimport {FormControl} from '@angular/forms';\nimport {Observable} from 'rxjs';\nimport {map, startWith} from 'rxjs/operators';\n\nexport interface ItemData {\n  item: string;\n  selected: boolean;\n}\n\n@Component({\n  selector: 'pm-multi-select',\n  templateUrl: './multi-select.component.html',\n  styleUrls: ['./multi-select.component.scss']\n})\nexport class MultiSelectComponent implements OnInit {\n\n  constructor() {\n    this.filteredData = this.selectControl.valueChanges.pipe(\n      startWith<string>(''),\n      map(value => typeof value === 'string' ? value : this.filterString),\n      map(filter => this.filter(filter))\n    );\n  }\n\n  @Output() result = new EventEmitter<{ key: string, data: Array<string> }>();\n  @Input() placeholder: string = 'Select Data';\n  @Input() data: Array<string> = [];\n  @Input() key: string = '';\n  selectControl = new FormControl();\n  rawData: Array<ItemData> = [];\n  selectData: Array<ItemData> = [];\n  filteredData: Observable<Array<ItemData>>;\n  filterString: string = '';\n  displayFn: string = '';\n\n  ngOnInit(): void {\n    this.data.forEach((item: string) => {\n      this.rawData.push({item, selected: false});\n    });\n  }\n\n  filter(filter: string): Array<ItemData> {\n    this.filterString = filter;\n    if (filter.length > 0) {\n      return this.rawData.filter(option => {\n        return option.item.toLowerCase().indexOf(filter.toLowerCase()) >= 0;\n      });\n    } else {\n      return this.rawData.slice();\n    }\n  }\n\n  optionClicked(event: Event, data: ItemData): void {\n    event.stopPropagation();\n    this.toggleSelection(data);\n  }\n\n  toggleSelection(data: ItemData): void {\n    data.selected = !data.selected;\n    if (data.selected === true) {\n      this.selectData.push(data);\n    } else {\n      const i = this.selectData.findIndex(value => value.item === data.item);\n      this.selectData.splice(i, 1);\n    }\n    this.selectControl.setValue(this.selectData);\n    this.emitAdjustedData();\n  }\n\n  public emitAdjustedData(): void {\n    const results: Array<string> = [];\n    this.selectData.forEach((data: ItemData) => {\n      results.push(data.item);\n    });\n    this.result.emit({key: this.key, data: results});\n  }\n\n  public removeChip(data: ItemData): void {\n    this.toggleSelection(data);\n  }\n\n}\n",
-            "properties": [
-                {
-                    "name": "item",
-                    "type": "string",
-                    "optional": false,
-                    "description": "",
-                    "line": 7
-                },
-                {
-                    "name": "selected",
-                    "type": "boolean",
-                    "optional": false,
-                    "description": "",
-                    "line": 8
-                }
-            ],
-            "indexSignatures": [],
-            "kind": 150,
-            "methods": []
-        },
-        {
             "name": "PaletteEntry",
             "id": "interface-PaletteEntry-7dec8570bb6b358e4bae69ce9fd94112",
             "file": "projects/lib/src/services/command-palette/models.ts",
@@ -294,6 +268,25 @@
                     "optional": false,
                     "description": "",
                     "line": 12
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 150,
+            "methods": []
+        },
+        {
+            "name": "User",
+            "id": "interface-User-f95279942414f6fa8dc746534d12a536",
+            "file": "projects/lib/src/components/inputs/multi-select/multi-select.component.ts",
+            "type": "interface",
+            "sourceCode": "import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';\nimport {FormControl} from '@angular/forms';\nimport {Observable} from 'rxjs';\nimport {map, startWith, filter} from 'rxjs/operators';\nimport _ from 'lodash';\n\nexport interface User {\n  name: string;\n}\n\n@Component({\n  selector: 'pm-multi-select',\n  templateUrl: './multi-select.component.html',\n  styleUrls: ['./multi-select.component.scss']\n})\nexport class MultiSelectComponent implements OnInit {\n\n  @Input() placeholder: string = 'Busque algo';\n  @Output() selectedOptions = new EventEmitter<User[]>();\n  @ViewChild('inputBox') inputBox: ElementRef;\n  myControl = new FormControl();\n  searchString: string = '';\n  options: User[] = [\n    {name: 'Mary'},\n    {name: 'Shelley'},\n    {name: 'Gabs'},\n    {name: 'Pedrocs'},\n    {name: 'Rics'},\n    {name: 'Ana'},\n    {name: 'Igor'}\n  ];\n  _selectedOptions: User[] = [];\n  filteredOptions: Observable<User[]>;\n\n  constructor() {\n  }\n\n  ngOnInit(): void {\n    this.filteredOptions = this.myControl.valueChanges.pipe(\n      map(option => (typeof option === 'string' ? option : option.name)),\n      map(name => this._filter(name)),\n    );\n  }\n\n  displayFn(user: User): string {\n    return user && user.name ? user.name : '';\n  }\n\n  private _filter(name: string): User[] {\n    const filterValue = name.toLowerCase();\n\n    return this.options\n    .filter(option => option.name.toLowerCase().includes(filterValue))\n    .filter(option => this._selectedOptions.includes(option) === false)\n    ;\n  }\n\n  public selectOption(option: any): void {\n    this._selectedOptions.push(option);\n    this.searchString = '';\n    console.log(this._selectedOptions);\n    this.selectedOptions.emit(this._selectedOptions);\n    this.inputBox.nativeElement.blur();\n  }\n\n}\n",
+            "properties": [
+                {
+                    "name": "name",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 8
                 }
             ],
             "indexSignatures": [],
@@ -2930,7 +2923,7 @@
         },
         {
             "name": "MultiSelectComponent",
-            "id": "component-MultiSelectComponent-6c76789d709294db815bafe43fbcb0d0",
+            "id": "component-MultiSelectComponent-f95279942414f6fa8dc746534d12a536",
             "file": "projects/lib/src/components/inputs/multi-select/multi-select.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -2948,109 +2941,116 @@
             "viewProviders": [],
             "inputsClass": [
                 {
-                    "name": "data",
-                    "defaultValue": "[]",
-                    "line": 28,
-                    "type": "Array<string>"
-                },
-                {
-                    "name": "key",
-                    "defaultValue": "''",
-                    "line": 29,
-                    "type": "string"
-                },
-                {
                     "name": "placeholder",
-                    "defaultValue": "'Select Data'",
-                    "line": 27,
+                    "defaultValue": "'Busque algo'",
+                    "line": 18,
                     "type": "string"
                 }
             ],
             "outputsClass": [
                 {
-                    "name": "result",
-                    "defaultValue": "new EventEmitter<{ key: string, data: Array<string> }>()",
-                    "line": 26,
+                    "name": "selectedOptions",
+                    "defaultValue": "new EventEmitter<User[]>()",
+                    "line": 19,
                     "type": "EventEmitter"
                 }
             ],
             "propertiesClass": [
                 {
-                    "name": "displayFn",
-                    "defaultValue": "''",
-                    "type": "string",
+                    "name": "_selectedOptions",
+                    "defaultValue": "[]",
+                    "type": "User[]",
                     "optional": false,
                     "description": "",
-                    "line": 35
+                    "line": 32
                 },
                 {
-                    "name": "filteredData",
-                    "type": "Observable<Array<ItemData>>",
+                    "name": "filteredOptions",
+                    "type": "Observable<User[]>",
                     "optional": false,
                     "description": "",
                     "line": 33
                 },
                 {
-                    "name": "filterString",
-                    "defaultValue": "''",
-                    "type": "string",
+                    "name": "inputBox",
+                    "type": "ElementRef",
                     "optional": false,
                     "description": "",
-                    "line": 34
+                    "line": 20,
+                    "decorators": [
+                        {
+                            "name": "ViewChild",
+                            "stringifiedArguments": "'inputBox'"
+                        }
+                    ]
                 },
                 {
-                    "name": "rawData",
-                    "defaultValue": "[]",
-                    "type": "Array<ItemData>",
-                    "optional": false,
-                    "description": "",
-                    "line": 31
-                },
-                {
-                    "name": "selectControl",
+                    "name": "myControl",
                     "defaultValue": "new FormControl()",
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 30
+                    "line": 21
                 },
                 {
-                    "name": "selectData",
-                    "defaultValue": "[]",
-                    "type": "Array<ItemData>",
+                    "name": "options",
+                    "defaultValue": "[\n    {name: 'Mary'},\n    {name: 'Shelley'},\n    {name: 'Gabs'},\n    {name: 'Pedrocs'},\n    {name: 'Rics'},\n    {name: 'Ana'},\n    {name: 'Igor'}\n  ]",
+                    "type": "User[]",
                     "optional": false,
                     "description": "",
-                    "line": 32
+                    "line": 23
+                },
+                {
+                    "name": "searchString",
+                    "defaultValue": "''",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 22
                 }
             ],
             "methodsClass": [
                 {
-                    "name": "emitAdjustedData",
-                    "args": [],
-                    "optional": false,
-                    "returnType": "void",
-                    "typeParameters": [],
-                    "line": 71,
-                    "modifierKind": [
-                        114
-                    ]
-                },
-                {
-                    "name": "filter",
+                    "name": "_filter",
                     "args": [
                         {
-                            "name": "filter",
+                            "name": "name",
                             "type": "string"
                         }
                     ],
                     "optional": false,
-                    "returnType": "Array<ItemData>",
+                    "returnType": "User[]",
                     "typeParameters": [],
-                    "line": 43,
+                    "line": 49,
+                    "modifierKind": [
+                        112
+                    ],
                     "jsdoctags": [
                         {
-                            "name": "filter",
+                            "name": "name",
                             "type": "string",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "displayFn",
+                    "args": [
+                        {
+                            "name": "user",
+                            "type": "User"
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "string",
+                    "typeParameters": [],
+                    "line": 45,
+                    "jsdoctags": [
+                        {
+                            "name": "user",
+                            "type": "User",
                             "tagName": {
                                 "text": "param"
                             }
@@ -3063,82 +3063,27 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 37
+                    "line": 38
                 },
                 {
-                    "name": "optionClicked",
+                    "name": "selectOption",
                     "args": [
                         {
-                            "name": "event",
-                            "type": "Event"
-                        },
-                        {
-                            "name": "data",
-                            "type": "ItemData"
+                            "name": "option",
+                            "type": "any"
                         }
                     ],
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 54,
-                    "jsdoctags": [
-                        {
-                            "name": "event",
-                            "type": "Event",
-                            "tagName": {
-                                "text": "param"
-                            }
-                        },
-                        {
-                            "name": "data",
-                            "type": "ItemData",
-                            "tagName": {
-                                "text": "param"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "name": "removeChip",
-                    "args": [
-                        {
-                            "name": "data",
-                            "type": "ItemData"
-                        }
-                    ],
-                    "optional": false,
-                    "returnType": "void",
-                    "typeParameters": [],
-                    "line": 79,
+                    "line": 58,
                     "modifierKind": [
                         114
                     ],
                     "jsdoctags": [
                         {
-                            "name": "data",
-                            "type": "ItemData",
-                            "tagName": {
-                                "text": "param"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "name": "toggleSelection",
-                    "args": [
-                        {
-                            "name": "data",
-                            "type": "ItemData"
-                        }
-                    ],
-                    "optional": false,
-                    "returnType": "void",
-                    "typeParameters": [],
-                    "line": 59,
-                    "jsdoctags": [
-                        {
-                            "name": "data",
-                            "type": "ItemData",
+                            "name": "option",
+                            "type": "any",
                             "tagName": {
                                 "text": "param"
                             }
@@ -3151,7 +3096,7 @@
             "description": "",
             "rawdescription": "",
             "type": "component",
-            "sourceCode": "import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';\nimport {FormControl} from '@angular/forms';\nimport {Observable} from 'rxjs';\nimport {map, startWith} from 'rxjs/operators';\n\nexport interface ItemData {\n  item: string;\n  selected: boolean;\n}\n\n@Component({\n  selector: 'pm-multi-select',\n  templateUrl: './multi-select.component.html',\n  styleUrls: ['./multi-select.component.scss']\n})\nexport class MultiSelectComponent implements OnInit {\n\n  constructor() {\n    this.filteredData = this.selectControl.valueChanges.pipe(\n      startWith<string>(''),\n      map(value => typeof value === 'string' ? value : this.filterString),\n      map(filter => this.filter(filter))\n    );\n  }\n\n  @Output() result = new EventEmitter<{ key: string, data: Array<string> }>();\n  @Input() placeholder: string = 'Select Data';\n  @Input() data: Array<string> = [];\n  @Input() key: string = '';\n  selectControl = new FormControl();\n  rawData: Array<ItemData> = [];\n  selectData: Array<ItemData> = [];\n  filteredData: Observable<Array<ItemData>>;\n  filterString: string = '';\n  displayFn: string = '';\n\n  ngOnInit(): void {\n    this.data.forEach((item: string) => {\n      this.rawData.push({item, selected: false});\n    });\n  }\n\n  filter(filter: string): Array<ItemData> {\n    this.filterString = filter;\n    if (filter.length > 0) {\n      return this.rawData.filter(option => {\n        return option.item.toLowerCase().indexOf(filter.toLowerCase()) >= 0;\n      });\n    } else {\n      return this.rawData.slice();\n    }\n  }\n\n  optionClicked(event: Event, data: ItemData): void {\n    event.stopPropagation();\n    this.toggleSelection(data);\n  }\n\n  toggleSelection(data: ItemData): void {\n    data.selected = !data.selected;\n    if (data.selected === true) {\n      this.selectData.push(data);\n    } else {\n      const i = this.selectData.findIndex(value => value.item === data.item);\n      this.selectData.splice(i, 1);\n    }\n    this.selectControl.setValue(this.selectData);\n    this.emitAdjustedData();\n  }\n\n  public emitAdjustedData(): void {\n    const results: Array<string> = [];\n    this.selectData.forEach((data: ItemData) => {\n      results.push(data.item);\n    });\n    this.result.emit({key: this.key, data: results});\n  }\n\n  public removeChip(data: ItemData): void {\n    this.toggleSelection(data);\n  }\n\n}\n",
+            "sourceCode": "import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';\nimport {FormControl} from '@angular/forms';\nimport {Observable} from 'rxjs';\nimport {map, startWith, filter} from 'rxjs/operators';\nimport _ from 'lodash';\n\nexport interface User {\n  name: string;\n}\n\n@Component({\n  selector: 'pm-multi-select',\n  templateUrl: './multi-select.component.html',\n  styleUrls: ['./multi-select.component.scss']\n})\nexport class MultiSelectComponent implements OnInit {\n\n  @Input() placeholder: string = 'Busque algo';\n  @Output() selectedOptions = new EventEmitter<User[]>();\n  @ViewChild('inputBox') inputBox: ElementRef;\n  myControl = new FormControl();\n  searchString: string = '';\n  options: User[] = [\n    {name: 'Mary'},\n    {name: 'Shelley'},\n    {name: 'Gabs'},\n    {name: 'Pedrocs'},\n    {name: 'Rics'},\n    {name: 'Ana'},\n    {name: 'Igor'}\n  ];\n  _selectedOptions: User[] = [];\n  filteredOptions: Observable<User[]>;\n\n  constructor() {\n  }\n\n  ngOnInit(): void {\n    this.filteredOptions = this.myControl.valueChanges.pipe(\n      map(option => (typeof option === 'string' ? option : option.name)),\n      map(name => this._filter(name)),\n    );\n  }\n\n  displayFn(user: User): string {\n    return user && user.name ? user.name : '';\n  }\n\n  private _filter(name: string): User[] {\n    const filterValue = name.toLowerCase();\n\n    return this.options\n    .filter(option => option.name.toLowerCase().includes(filterValue))\n    .filter(option => this._selectedOptions.includes(option) === false)\n    ;\n  }\n\n  public selectOption(option: any): void {\n    this._selectedOptions.push(option);\n    this.searchString = '';\n    console.log(this._selectedOptions);\n    this.selectedOptions.emit(this._selectedOptions);\n    this.inputBox.nativeElement.blur();\n  }\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -3164,12 +3109,12 @@
                 "name": "constructor",
                 "description": "",
                 "args": [],
-                "line": 16
+                "line": 33
             },
             "implements": [
                 "OnInit"
             ],
-            "templateData": "<div class=\"pm-multi-select\">\n  <div class=\"chip-list-wrapper\">\n    <mat-chip-list #chipList>\n      <ng-container *ngFor=\"let select of selectData\">\n        <mat-chip class=\"cardinal-colors\" (click)=\"removeChip(select)\">\n          {{ select.item }}\n          <mat-icon class=\"mat-chip-remove\">cancel</mat-icon>\n        </mat-chip>\n      </ng-container>\n    </mat-chip-list>\n  </div>\n\n  <mat-form-field class=\"full-width\">\n    <input matInput type=\"text\"\n           [placeholder]=\"placeholder\"\n           [matAutocomplete]=\"auto\"\n           [formControl]=\"selectControl\">\n  </mat-form-field>\n\n  <mat-autocomplete #auto=\"matAutocomplete\" [displayWith]=\"displayFn\">\n    <mat-option *ngFor=\"let data of filteredData | async\">\n      <div (click)=\"optionClicked($event, data)\">\n        <mat-checkbox [checked]=\"data.selected\"\n                      (change)=\"toggleSelection(data)\"\n                      (click)=\"$event.stopPropagation()\">\n          {{ data.item }}\n        </mat-checkbox>\n      </div>\n    </mat-option>\n  </mat-autocomplete>\n</div>\n"
+            "templateData": "<div class=\"pm-multi-select\">\n  <form class=\"example-form\">\n    <input #inputBox matInput class=\"form-control\"\n           type=\"text\"\n           [formControl]=\"myControl\"\n           [placeholder]=\"placeholder\"\n           [matAutocomplete]=\"auto\"\n    >\n\n    <mat-autocomplete #auto=\"matAutocomplete\" [displayWith]=\"''\">\n      <mat-option *ngFor=\"let option of filteredOptions | async\" [value]=\"option\" (click)=\"selectOption(option)\">\n        {{option.name}}\n      </mat-option>\n    </mat-autocomplete>\n  </form>\n</div>\n"
         },
         {
             "name": "RadioButtonComponent",
@@ -4854,14 +4799,6 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts",
-                "type": "object",
-                "defaultValue": "{\n  items: [],\n  disabled: false,\n  selectedItem: undefined\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
                 "type": "object",
                 "defaultValue": "{\n  checked: false,\n  disabled: false,\n  selectedItem: undefined,\n}"
@@ -4870,9 +4807,9 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/inputs/dropdown-actions/dropdown-actions.stories.ts",
+                "file": "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts",
                 "type": "object",
-                "defaultValue": "{\n  actions: []\n}"
+                "defaultValue": "{\n  items: [],\n  disabled: false,\n  selectedItem: undefined\n}"
             },
             {
                 "name": "defaultArgs",
@@ -4886,9 +4823,9 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts",
+                "file": "projects/lib/src/components/inputs/dropdown-actions/dropdown-actions.stories.ts",
                 "type": "object",
-                "defaultValue": "{\n  orientation: OrientationEnum.Y,\n  values: [],\n  disabled: false,\n  selectedValue: undefined\n}"
+                "defaultValue": "{\n  actions: []\n}"
             },
             {
                 "name": "defaultArgs",
@@ -4896,7 +4833,7 @@
                 "subtype": "variable",
                 "file": "projects/lib/src/components/inputs/multi-select/multi-select.stories.ts",
                 "type": "object",
-                "defaultValue": "{\n  data: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],\n  placeholder: 'Select Items Here ...',\n  key: 'options',\n}"
+                "defaultValue": "{\n}"
             },
             {
                 "name": "defaultArgs",
@@ -4910,9 +4847,9 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
+                "file": "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts",
                 "type": "object",
-                "defaultValue": "{\n}"
+                "defaultValue": "{\n  orientation: OrientationEnum.Y,\n  values: [],\n  disabled: false,\n  selectedValue: undefined\n}"
             },
             {
                 "name": "defaultArgs",
@@ -4921,6 +4858,14 @@
                 "file": "projects/lib/src/components/lists/table-list/table-list.stories.ts",
                 "type": "object",
                 "defaultValue": "{\n  columns: [],\n  columnNames: [],\n  imageColumns: [],\n  imageHeight: '50px',\n  showHeader: true,\n  numberFormat: '1.2-2',\n  numberPrefix: '',\n  actionsTemplate: undefined,\n  itemList: undefined,\n  borderRadius: undefined,\n  backgroundColor: undefined,\n  expandedDetailTemplate: undefined,\n  disableExpandedOnDisabledRow: true,\n  expandedRow: undefined\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
+                "type": "object",
+                "defaultValue": "{\n}"
             },
             {
                 "name": "defaultArgs",
@@ -5285,14 +5230,6 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts",
-                "type": "Story<ComboBoxComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-combo-box\n      [items]=\"items\"\n      [disabled]=\"disabled\"\n      [selectedItem]=\"selectedItem\"\n    >\n    </pm-combo-box>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
                 "type": "Story<CheckboxComponent>",
                 "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-checkbox\n      [checked]=\"checked\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>\n  `\n})"
@@ -5301,9 +5238,9 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/inputs/dropdown-actions/dropdown-actions.stories.ts",
-                "type": "Story<DropdownActionsComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-dropdown-actions\n      [actions]=\"actions\"\n    >\n    </pm-dropdown-actions>\n  `\n})"
+                "file": "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts",
+                "type": "Story<ComboBoxComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-combo-box\n      [items]=\"items\"\n      [disabled]=\"disabled\"\n      [selectedItem]=\"selectedItem\"\n    >\n    </pm-combo-box>\n  `\n})"
             },
             {
                 "name": "Template",
@@ -5317,9 +5254,9 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts",
-                "type": "Story<RadioButtonComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-radio-button\n      [orientation]=\"orientation\"\n      [values]=\"values\"\n      [selectedValue]=\"selectedValue\"\n      [disabled]=\"disabled\"\n    >\n    </pm-radio-button>\n  `\n})"
+                "file": "projects/lib/src/components/inputs/dropdown-actions/dropdown-actions.stories.ts",
+                "type": "Story<DropdownActionsComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-dropdown-actions\n      [actions]=\"actions\"\n    >\n    </pm-dropdown-actions>\n  `\n})"
             },
             {
                 "name": "Template",
@@ -5327,7 +5264,7 @@
                 "subtype": "variable",
                 "file": "projects/lib/src/components/inputs/multi-select/multi-select.stories.ts",
                 "type": "Story<MultiSelectComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-multi-select\n      [placeholder]=\"placeholder\"\n      [key]=\"key\"\n      [data]=\"data\"\n    >\n    </pm-multi-select>\n  `\n})"
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-multi-select\n    >\n    </pm-multi-select>\n  `\n})"
             },
             {
                 "name": "Template",
@@ -5341,9 +5278,9 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
-                "type": "Story<GridListComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-grid-list\n      [items]=\"items\"\n      [displayStyle]=\"displayStyle\"\n      [gridHeaderReverse]=\"gridHeaderReverse\"\n      [bodyBackgroundColor]=\"bodyBackgroundColor\"\n      [actionTemplate]=\"undefined\"\n      [overflowGallery]=\"overflowGallery\"\n    >\n    </pm-grid-list>\n  `\n})"
+                "file": "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts",
+                "type": "Story<RadioButtonComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-radio-button\n      [orientation]=\"orientation\"\n      [values]=\"values\"\n      [selectedValue]=\"selectedValue\"\n      [disabled]=\"disabled\"\n    >\n    </pm-radio-button>\n  `\n})"
             },
             {
                 "name": "Template",
@@ -5352,6 +5289,14 @@
                 "file": "projects/lib/src/components/lists/table-list/table-list.stories.ts",
                 "type": "Story<TableListComponent>",
                 "defaultValue": "(args) => ({\n  props: args,\n  template: `<pm-table-list\n    [columns]=\"columns\"\n    [columnNames]=\"columnNames\"\n    [imageColumns]=\"imageColumns\"\n    [imageHeight]=\"imageHeight\"\n    [showHeader]=\"showHeader\"\n    [numberFormat]=\"numberFormat\"\n    [numberPrefix]=\"numberPrefix\"\n    [itemList]=\"itemList\"\n    [borderRadius]=\"borderRadius\"\n    [backgroundColor]=\"backgroundColor\"\n    [expandedDetailTemplate]=\"expandedDetailTemplate\"\n    [disableExpandedOnDisabledRow]=\"disableExpandedOnDisabledRow\"\n  ></pm-table-list>`\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
+                "type": "Story<GridListComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-grid-list\n      [items]=\"items\"\n      [displayStyle]=\"displayStyle\"\n      [gridHeaderReverse]=\"gridHeaderReverse\"\n      [bodyBackgroundColor]=\"bodyBackgroundColor\"\n      [actionTemplate]=\"undefined\"\n      [overflowGallery]=\"overflowGallery\"\n    >\n    </pm-grid-list>\n  `\n})"
             },
             {
                 "name": "Template",
@@ -6012,40 +5957,6 @@
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-tabs\n    >\n    </pm-tabs>\n  `\n})"
                 }
             ],
-            "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts",
-                    "type": "object",
-                    "defaultValue": "{\n  items: [],\n  disabled: false,\n  selectedItem: undefined\n}"
-                },
-                {
-                    "name": "DefaultComboBox",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "defaultItems",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts",
-                    "type": "[]",
-                    "defaultValue": "[\n  {\n    label: 'Value 1',\n    value: 1\n  },\n  {\n    label: 'Value 2',\n    value: 2\n  },\n  {\n    label: 'Value 3',\n    value: 3\n  }\n]"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts",
-                    "type": "Story<ComboBoxComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-combo-box\n      [items]=\"items\"\n      [disabled]=\"disabled\"\n      [selectedItem]=\"selectedItem\"\n    >\n    </pm-combo-box>\n  `\n})"
-                }
-            ],
             "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts": [
                 {
                     "name": "defaultArgs",
@@ -6080,30 +5991,38 @@
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-checkbox\n      [checked]=\"checked\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>\n  `\n})"
                 }
             ],
-            "projects/lib/src/components/inputs/dropdown-actions/dropdown-actions.stories.ts": [
+            "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts": [
                 {
                     "name": "defaultArgs",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/lib/src/components/inputs/dropdown-actions/dropdown-actions.stories.ts",
+                    "file": "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts",
                     "type": "object",
-                    "defaultValue": "{\n  actions: []\n}"
+                    "defaultValue": "{\n  items: [],\n  disabled: false,\n  selectedItem: undefined\n}"
                 },
                 {
-                    "name": "DefaultDropdownActions",
+                    "name": "DefaultComboBox",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/lib/src/components/inputs/dropdown-actions/dropdown-actions.stories.ts",
+                    "file": "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts",
                     "type": "",
                     "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "defaultItems",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts",
+                    "type": "[]",
+                    "defaultValue": "[\n  {\n    label: 'Value 1',\n    value: 1\n  },\n  {\n    label: 'Value 2',\n    value: 2\n  },\n  {\n    label: 'Value 3',\n    value: 3\n  }\n]"
                 },
                 {
                     "name": "Template",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/lib/src/components/inputs/dropdown-actions/dropdown-actions.stories.ts",
-                    "type": "Story<DropdownActionsComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-dropdown-actions\n      [actions]=\"actions\"\n    >\n    </pm-dropdown-actions>\n  `\n})"
+                    "file": "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts",
+                    "type": "Story<ComboBoxComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-combo-box\n      [items]=\"items\"\n      [disabled]=\"disabled\"\n      [selectedItem]=\"selectedItem\"\n    >\n    </pm-combo-box>\n  `\n})"
                 }
             ],
             "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts": [
@@ -6132,28 +6051,20 @@
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-copy-content-input\n      [text]=\"text\"\n      [disabled]=\"disabled\"\n      [copyCallback]=\"copyCallback\"\n      [fillHeight]=\"fillHeight\"\n      [btnColor]=\"btnColor\"\n      [borderRadius]=\"borderRadius\"\n    >\n    </pm-copy-content-input>\n  `\n})"
                 }
             ],
-            "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts": [
+            "projects/lib/src/components/inputs/dropdown-actions/dropdown-actions.stories.ts": [
                 {
                     "name": "defaultArgs",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts",
+                    "file": "projects/lib/src/components/inputs/dropdown-actions/dropdown-actions.stories.ts",
                     "type": "object",
-                    "defaultValue": "{\n  orientation: OrientationEnum.Y,\n  values: [],\n  disabled: false,\n  selectedValue: undefined\n}"
+                    "defaultValue": "{\n  actions: []\n}"
                 },
                 {
-                    "name": "DefaultRadioButton",
+                    "name": "DefaultDropdownActions",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "HorizontalRadioButton",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts",
+                    "file": "projects/lib/src/components/inputs/dropdown-actions/dropdown-actions.stories.ts",
                     "type": "",
                     "defaultValue": "Template.bind({})"
                 },
@@ -6161,9 +6072,9 @@
                     "name": "Template",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts",
-                    "type": "Story<RadioButtonComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-radio-button\n      [orientation]=\"orientation\"\n      [values]=\"values\"\n      [selectedValue]=\"selectedValue\"\n      [disabled]=\"disabled\"\n    >\n    </pm-radio-button>\n  `\n})"
+                    "file": "projects/lib/src/components/inputs/dropdown-actions/dropdown-actions.stories.ts",
+                    "type": "Story<DropdownActionsComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-dropdown-actions\n      [actions]=\"actions\"\n    >\n    </pm-dropdown-actions>\n  `\n})"
                 }
             ],
             "projects/lib/src/components/inputs/multi-select/multi-select.stories.ts": [
@@ -6173,7 +6084,7 @@
                     "subtype": "variable",
                     "file": "projects/lib/src/components/inputs/multi-select/multi-select.stories.ts",
                     "type": "object",
-                    "defaultValue": "{\n  data: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],\n  placeholder: 'Select Items Here ...',\n  key: 'options',\n}"
+                    "defaultValue": "{\n}"
                 },
                 {
                     "name": "DefaultMultiSelect",
@@ -6189,7 +6100,7 @@
                     "subtype": "variable",
                     "file": "projects/lib/src/components/inputs/multi-select/multi-select.stories.ts",
                     "type": "Story<MultiSelectComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-multi-select\n      [placeholder]=\"placeholder\"\n      [key]=\"key\"\n      [data]=\"data\"\n    >\n    </pm-multi-select>\n  `\n})"
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-multi-select\n    >\n    </pm-multi-select>\n  `\n})"
                 }
             ],
             "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts": [
@@ -6232,6 +6143,40 @@
                     "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
                     "type": "Story<DraggableListComponent>",
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-draggable-list\n      [showIndex]=\"showIndex\"\n      [itemActionLabel]=\"itemActionLabel\"\n      [itemMainLabel]=\"itemMainLabel\"\n      [itemSubLabel]=\"itemSubLabel\"\n      [actions]=\"actions\"\n      [itemList]=\"itemList\"\n      [roundedBorders]=\"roundedBorders\"\n      [enableDragging]=\"enableDragging\"\n      [enableSelection]=\"enableSelection\"\n    >\n    </pm-draggable-list>\n  `\n})"
+                }
+            ],
+            "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts",
+                    "type": "object",
+                    "defaultValue": "{\n  orientation: OrientationEnum.Y,\n  values: [],\n  disabled: false,\n  selectedValue: undefined\n}"
+                },
+                {
+                    "name": "DefaultRadioButton",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "HorizontalRadioButton",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts",
+                    "type": "Story<RadioButtonComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-radio-button\n      [orientation]=\"orientation\"\n      [values]=\"values\"\n      [selectedValue]=\"selectedValue\"\n      [disabled]=\"disabled\"\n    >\n    </pm-radio-button>\n  `\n})"
                 }
             ],
             "projects/lib/src/components/lists/grid-list/grid-list.stories.ts": [
@@ -7066,16 +7011,16 @@
                 "linktype": "component",
                 "name": "MultiSelectComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/18",
+                "coverageCount": "0/14",
                 "status": "low"
             },
             {
                 "filePath": "projects/lib/src/components/inputs/multi-select/multi-select.component.ts",
                 "type": "interface",
                 "linktype": "interface",
-                "name": "ItemData",
+                "name": "User",
                 "coveragePercent": 0,
-                "coverageCount": "0/3",
+                "coverageCount": "0/2",
                 "status": "low"
             },
             {

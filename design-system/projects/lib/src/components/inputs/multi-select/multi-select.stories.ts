@@ -10,21 +10,13 @@ export default {
 export const Template: Story<MultiSelectComponent> = (args) => ({
   props: args,
   template: `
-    <mat-card class="card-wrapper">
     <pm-multi-select
-      [placeholder]="placeholder"
-      [key]="key"
-      [data]="data"
     >
     </pm-multi-select>
-    </mat-card>
   `
 });
 
 export const defaultArgs = {
-  data: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
-  placeholder: 'Select Items Here ...',
-  key: 'options',
 };
 
 export const DefaultMultiSelect = Template.bind({});
