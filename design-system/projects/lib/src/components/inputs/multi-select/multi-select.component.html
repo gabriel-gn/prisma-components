@@ -1,32 +1,34 @@
 <div class="pm-multi-select">
-  <div class="d-flex flex-row justify-content-start">
-    <div *ngFor="let selected of _selectedOptions">
-      <div class="d-flex flex-row align-items-center">
-        <p class="m-0 me-3">{{selected.label}}</p>
-        <button class="btn btn-primary" (click)="removeSelectedOption(selected)">x</button>
+  <div class="d-flex flex-wrap p-1 rad-md" style="border: 1px solid var(--color-primary)">
+    <div class="d-flex flex-row justify-content-start flex-wrap">
+      <div *ngFor="let selected of _selectedOptions">
+        <div class="d-flex flex-row align-items-center">
+          <p class="m-0 me-3">{{selected.label}}</p>
+          <button class="btn btn-primary" (click)="removeSelectedOption(selected)">x</button>
+        </div>
       </div>
     </div>
-  </div>
-  <form>
-    <input #inputBox matInput class="form-control"
-           type="text"
-           [formControl]="myControl"
-           [placeholder]="placeholder"
-           [matAutocomplete]="auto"
-    >
+    <form>
+      <input #inputBox matInput class="form-control h-100 border-0"
+             type="text"
+             [formControl]="myControl"
+             [placeholder]="placeholder"
+             [matAutocomplete]="auto"
+      >
 
-    <mat-autocomplete #auto="matAutocomplete"
-                      (optionSelected)="selectOption($event.option.value);"
-                      [autoActiveFirstOption]="false"
-    >
-      <ng-container *ngFor="let option of filteredOptions | async">
-        <mat-option
-          [hidden]="isOptionSelected(option)"
-          [value]="option"
-        >
-          {{option.label}}
-        </mat-option>
-      </ng-container>
-    </mat-autocomplete>
-  </form>
+      <mat-autocomplete #auto="matAutocomplete"
+                        (optionSelected)="selectOption($event.option.value);"
+                        [autoActiveFirstOption]="false"
+      >
+        <ng-container *ngFor="let option of filteredOptions | async">
+          <mat-option
+            [hidden]="isOptionSelected(option)"
+            [value]="option"
+          >
+            {{option.label}}
+          </mat-option>
+        </ng-container>
+      </mat-autocomplete>
+    </form>
+  </div>
 </div>
