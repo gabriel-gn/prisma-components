@@ -19,6 +19,7 @@ import {Sizes} from '../../../models/sizes';
 export interface MultiSelectOption {
   label: string;
   value: any;
+  thumbnail: string;
 }
 
 @Component({
@@ -94,6 +95,12 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       try { this.inputBoxEl.nativeElement.focus(); } catch (e) {}
     }, 50);
+  }
+
+  public clearSelected(): void {
+    this._selectedOptions = [];
+    this.selectedOptions.emit(this._selectedOptions);
+    this.clearInput();
   }
 
 }

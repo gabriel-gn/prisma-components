@@ -1,9 +1,10 @@
-<div #multiselect class="pm-multi-select border-radius-{{borderRadius}}" (click)="$event.stopPropagation(); openSelect()">
+<div #multiselect class="pm-multi-select cursor-pointer border-radius-{{borderRadius}}" (click)="$event.stopPropagation(); openSelect()">
   <div class="d-flex flex-wrap p-1 rad-md position-relative">
     <div class="d-flex flex-row justify-content-start flex-wrap">
       <div *ngFor="let selected of _selectedOptions; let first = first" [ngClass]="{'m-1 chip-container': true}">
         <div class="d-flex flex-row align-items-center">
-          <p class="m-0 px-1">{{selected.label}}</p>
+          <ng-container *ngTemplateOutlet="thumbnailContainer; context: {$implicit: selected, marginStart: true}"></ng-container>
+          <p class="m-0 ms-1">{{selected.label}}</p>
           <button class="btn btn-light" (click)="removeSelectedOption(selected)">x</button>
         </div>
       </div>
@@ -30,7 +31,10 @@
             [hidden]="isOptionSelected(option)"
             [value]="option"
           >
-            {{option.label}}
+            <div class="d-flex flex-row align-items-center">
+              <ng-container *ngTemplateOutlet="thumbnailContainer; context: {$implicit: option}"></ng-container>
+              <span [ngClass]="{'ms-2': option?.thumbnail}">{{option.label}}</span>
+            </div>
           </mat-option>
         </ng-container>
       </mat-autocomplete>
@@ -38,3 +42,13 @@
     <i class="position-absolute uil uil-lg uil-angle-down"></i>
   </div>
 </div>
+
+<ng-template #thumbnailContainer let-option let-marginStart="marginStart">
+  <div *ngIf="option?.thumbnail" class="thumbnail-container" [ngClass]="{'ms-1': marginStart}">
+    <img
+      aria-hidden
+      [src]="option.thumbnail"
+      height="25"
+    >
+  </div>
+</ng-template>
