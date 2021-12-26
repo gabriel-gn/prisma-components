@@ -13,6 +13,8 @@ import {FormControl} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import _ from 'lodash';
+import {MatAutocompleteTrigger} from '@angular/material/autocomplete';
+import {Sizes} from '../../../models/sizes';
 
 export interface MultiSelectOption {
   label: string;
@@ -26,18 +28,12 @@ export interface MultiSelectOption {
 })
 export class MultiSelectComponent implements OnInit, AfterViewInit {
 
-  @ViewChild('inputBox') inputBox: ElementRef;
+  @ViewChild('inputBox') inputBoxEl: ElementRef;
+  @ViewChild('trigger') trigger: MatAutocompleteTrigger;
   @Output() selectedOptions = new EventEmitter<MultiSelectOption[]>();
-  @Input() placeholder: string = 'Busque algo';
-  @Input() options: MultiSelectOption[] = [
-    {label: 'Mary', value: {}},
-    {label: 'Shelley', value: {}},
-    {label: 'Gabs', value: {}},
-    {label: 'Pedrocs', value: {}},
-    {label: 'Rics', value: {}},
-    {label: 'Ana', value: {}},
-    {label: 'Igor', value: {}}
-  ];
+  @Input() placeholder: string = '';
+  @Input() options: MultiSelectOption[] = [];
+  @Input() borderRadius: Sizes = Sizes.md;
   myControl = new FormControl();
   _selectedOptions: MultiSelectOption[] = [];
   filteredOptions: Observable<MultiSelectOption[]>;
@@ -80,7 +76,7 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
 
   private clearInput(): void {
     this.myControl.setValue('');
-    this.inputBox.nativeElement.blur();
+    try { this.inputBoxEl.nativeElement.blur(); } catch (e) {}
     this.cdr.detectChanges();
   }
 
@@ -91,6 +87,13 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
 
   public isOptionSelected(option: MultiSelectOption): boolean {
     return !!this._selectedOptions.find(sOptions => _.isEqual(sOptions, option));
+  }
+
+  public openSelect(): void {
+    this.trigger.openPanel();
+    setTimeout(() => {
+      try { this.inputBoxEl.nativeElement.focus(); } catch (e) {}
+    }, 50);
   }
 
 }

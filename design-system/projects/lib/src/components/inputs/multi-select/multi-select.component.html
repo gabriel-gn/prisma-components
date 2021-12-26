@@ -1,15 +1,19 @@
-<div class="pm-multi-select">
-  <div class="d-flex flex-wrap p-1 rad-md" style="border: 1px solid var(--color-primary)">
+<div #multiselect class="pm-multi-select border-radius-{{borderRadius}}" (click)="$event.stopPropagation(); openSelect()">
+  <div class="d-flex flex-wrap p-1 rad-md position-relative">
     <div class="d-flex flex-row justify-content-start flex-wrap">
-      <div *ngFor="let selected of _selectedOptions">
+      <div *ngFor="let selected of _selectedOptions; let first = first" [ngClass]="{'m-1 chip-container': true}">
         <div class="d-flex flex-row align-items-center">
-          <p class="m-0 me-3">{{selected.label}}</p>
-          <button class="btn btn-primary" (click)="removeSelectedOption(selected)">x</button>
+          <p class="m-0 px-1">{{selected.label}}</p>
+          <button class="btn btn-light" (click)="removeSelectedOption(selected)">x</button>
         </div>
       </div>
     </div>
     <form>
-      <input #inputBox matInput class="form-control h-100 border-0"
+      <input #inputBox
+             #trigger="matAutocompleteTrigger"
+             [hidden]="trigger.panelOpen === false && _selectedOptions.length !== 0"
+             matInput
+             class="form-control h-100 border-0"
              type="text"
              [formControl]="myControl"
              [placeholder]="placeholder"
@@ -19,6 +23,7 @@
       <mat-autocomplete #auto="matAutocomplete"
                         (optionSelected)="selectOption($event.option.value);"
                         [autoActiveFirstOption]="false"
+                        [panelWidth]="multiselect.offsetWidth"
       >
         <ng-container *ngFor="let option of filteredOptions | async">
           <mat-option
@@ -30,5 +35,6 @@
         </ng-container>
       </mat-autocomplete>
     </form>
+    <i class="position-absolute uil uil-lg uil-angle-down"></i>
   </div>
 </div>
