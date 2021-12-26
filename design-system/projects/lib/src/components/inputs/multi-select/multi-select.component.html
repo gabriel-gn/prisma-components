@@ -21,7 +21,7 @@
     >
       <ng-container *ngFor="let option of filteredOptions | async">
         <mat-option
-          (show)="!_selectedOptions.includes(option)"
+          [hidden]="isOptionSelected(option)"
           [value]="option"
         >
           {{option.name}}

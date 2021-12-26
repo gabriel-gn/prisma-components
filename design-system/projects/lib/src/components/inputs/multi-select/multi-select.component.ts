@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {Observable} from 'rxjs';
-import {map, startWith} from 'rxjs/operators';
+import {map, startWith, filter, tap} from 'rxjs/operators';
 import _ from 'lodash';
 
 export interface User {
@@ -88,6 +88,10 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
   public removeSelectedOption(option: any): void {
     _.remove(this._selectedOptions, option);
     this.clearInput();
+  }
+
+  public isOptionSelected(option: any): boolean {
+    return !!this._selectedOptions.find(sOptions => _.isEqual(sOptions, option));
   }
 
 }
