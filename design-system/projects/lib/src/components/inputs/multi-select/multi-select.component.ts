@@ -11,13 +11,12 @@ import {
 } from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {Observable} from 'rxjs';
-import {map, startWith, filter, tap} from 'rxjs/operators';
+import {map, startWith} from 'rxjs/operators';
 import _ from 'lodash';
 
-export interface User {
-  id?: string;
-  label?: string;
-  name: string;
+export interface MultiSelectOption {
+  label: string;
+  value: any;
 }
 
 @Component({
@@ -27,21 +26,21 @@ export interface User {
 })
 export class MultiSelectComponent implements OnInit, AfterViewInit {
 
-  @Input() placeholder: string = 'Busque algo';
-  @Output() selectedOptions = new EventEmitter<User[]>();
   @ViewChild('inputBox') inputBox: ElementRef;
-  myControl = new FormControl();
-  options: User[] = [
-    {name: 'Mary'},
-    {name: 'Shelley'},
-    {name: 'Gabs'},
-    {name: 'Pedrocs'},
-    {name: 'Rics'},
-    {name: 'Ana'},
-    {name: 'Igor'}
+  @Output() selectedOptions = new EventEmitter<MultiSelectOption[]>();
+  @Input() placeholder: string = 'Busque algo';
+  @Input() options: MultiSelectOption[] = [
+    {label: 'Mary', value: {}},
+    {label: 'Shelley', value: {}},
+    {label: 'Gabs', value: {}},
+    {label: 'Pedrocs', value: {}},
+    {label: 'Rics', value: {}},
+    {label: 'Ana', value: {}},
+    {label: 'Igor', value: {}}
   ];
-  _selectedOptions: User[] = [];
-  filteredOptions: Observable<User[]>;
+  myControl = new FormControl();
+  _selectedOptions: MultiSelectOption[] = [];
+  filteredOptions: Observable<MultiSelectOption[]>;
 
   constructor(
     private cdr: ChangeDetectorRef
@@ -51,8 +50,8 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.filteredOptions = this.myControl.valueChanges.pipe(
       startWith(''),
-      map(value => (typeof value === 'string' ? value : value.name)),
-      map(name => this._filter(name)),
+      map(value => (typeof value === 'string' ? value : `${value.label}`)),
+      map(label => this._filter(label)),
     );
   }
 
@@ -60,15 +59,15 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
     this.clearInput();
   }
 
-  displayFn(user: User): string {
-    return user && user.name ? user.name : '';
+  displayFn(user: MultiSelectOption): string {
+    return user && user.label ? user.label : '';
   }
 
-  private _filter(name: string): User[] {
-    const filterValue = name.toLowerCase();
+  private _filter(label: string): MultiSelectOption[] {
+    const filterValue = label.toLowerCase();
 
     return _.difference(
-      this.options.filter(option => option.name.toLowerCase().includes(filterValue)),
+      this.options.filter(option => option.label.toLowerCase().includes(filterValue)),
       this._selectedOptions
     );
   }
@@ -85,12 +84,12 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
     this.cdr.detectChanges();
   }
 
-  public removeSelectedOption(option: any): void {
+  public removeSelectedOption(option: MultiSelectOption): void {
     _.remove(this._selectedOptions, option);
     this.clearInput();
   }
 
-  public isOptionSelected(option: any): boolean {
+  public isOptionSelected(option: MultiSelectOption): boolean {
     return !!this._selectedOptions.find(sOptions => _.isEqual(sOptions, option));
   }
 

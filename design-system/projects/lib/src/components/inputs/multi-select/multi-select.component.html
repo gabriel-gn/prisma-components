@@ -2,7 +2,7 @@
   <div class="d-flex flex-row justify-content-start">
     <div *ngFor="let selected of _selectedOptions">
       <div class="d-flex flex-row align-items-center">
-        <p class="m-0 me-3">{{selected.name}}</p>
+        <p class="m-0 me-3">{{selected.label}}</p>
         <button class="btn btn-primary" (click)="removeSelectedOption(selected)">x</button>
       </div>
     </div>
@@ -24,7 +24,7 @@
           [hidden]="isOptionSelected(option)"
           [value]="option"
         >
-          {{option.name}}
+          {{option.label}}
         </mat-option>
       </ng-container>
     </mat-autocomplete>
