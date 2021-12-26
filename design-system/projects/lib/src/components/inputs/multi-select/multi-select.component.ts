@@ -1,10 +1,22 @@
-import {ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild
+} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {Observable} from 'rxjs';
-import {map, startWith, filter} from 'rxjs/operators';
+import {map, startWith} from 'rxjs/operators';
 import _ from 'lodash';
 
 export interface User {
+  id?: string;
+  label?: string;
   name: string;
 }
 
@@ -13,13 +25,12 @@ export interface User {
   templateUrl: './multi-select.component.html',
   styleUrls: ['./multi-select.component.scss']
 })
-export class MultiSelectComponent implements OnInit {
+export class MultiSelectComponent implements OnInit, AfterViewInit {
 
   @Input() placeholder: string = 'Busque algo';
   @Output() selectedOptions = new EventEmitter<User[]>();
   @ViewChild('inputBox') inputBox: ElementRef;
   myControl = new FormControl();
-  searchString: string = '';
   options: User[] = [
     {name: 'Mary'},
     {name: 'Shelley'},
@@ -45,6 +56,10 @@ export class MultiSelectComponent implements OnInit {
     );
   }
 
+  ngAfterViewInit(): void {
+    this.clearInput();
+  }
+
   displayFn(user: User): string {
     return user && user.name ? user.name : '';
   }
@@ -52,18 +67,14 @@ export class MultiSelectComponent implements OnInit {
   private _filter(name: string): User[] {
     const filterValue = name.toLowerCase();
 
-    return this.options
-    .filter(option => this._selectedOptions.includes(option) === false)
-    .filter(option => option.name.toLowerCase().includes(filterValue))
-    ;
+    return _.difference(
+      this.options.filter(option => option.name.toLowerCase().includes(filterValue)),
+      this._selectedOptions
+    );
   }
 
   public selectOption(option: any): void {
-    this.clearInput();
     this._selectedOptions.push(option);
-    this._selectedOptions = _.uniqBy(this._selectedOptions, 'name');
-    this.searchString = '';
-    console.log(this._selectedOptions);
     this.selectedOptions.emit(this._selectedOptions);
     this.clearInput();
   }

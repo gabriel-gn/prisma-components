@@ -1,13 +1,13 @@
 <div class="pm-multi-select">
   <div class="d-flex flex-row justify-content-start">
     <div *ngFor="let selected of _selectedOptions">
-      <div class="d-flex flex-row">
-        <p>{{selected.name}}</p>
-        <p (click)="removeSelectedOption(selected)">x</p>
+      <div class="d-flex flex-row align-items-center">
+        <p class="m-0 me-3">{{selected.name}}</p>
+        <button class="btn btn-primary" (click)="removeSelectedOption(selected)">x</button>
       </div>
     </div>
   </div>
-  <form class="example-form">
+  <form>
     <input #inputBox matInput class="form-control"
            type="text"
            [formControl]="myControl"
@@ -16,15 +16,17 @@
     >
 
     <mat-autocomplete #auto="matAutocomplete"
-                      [displayWith]="''"
-                      (optionSelected)="selectOption($event.option.value)"
+                      (optionSelected)="selectOption($event.option.value);"
+                      [autoActiveFirstOption]="false"
     >
-      <mat-option
-        *ngFor="let option of filteredOptions | async"
-        [value]="option"
-      >
-        {{option.name}}
-      </mat-option>
+      <ng-container *ngFor="let option of filteredOptions | async">
+        <mat-option
+          (show)="!_selectedOptions.includes(option)"
+          [value]="option"
+        >
+          {{option.name}}
+        </mat-option>
+      </ng-container>
     </mat-autocomplete>
   </form>
 </div>
