@@ -12,6 +12,7 @@
     <form>
       <input #inputBox
              #trigger="matAutocompleteTrigger"
+             [hidden]="this._selectedOptions.length === this.options.length"
              matInput
              class="form-control h-100 border-0"
              type="text"
