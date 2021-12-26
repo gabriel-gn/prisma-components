@@ -1,6 +1,7 @@
 import {MultiSelectComponent} from './multi-select.component';
 import {Meta} from '@storybook/angular/types-6-0';
 import {Story} from '@storybook/angular';
+import {Sizes} from '../../../models/sizes';
 
 export default {
   title: 'Prisma/Stories/MultiSelect',
@@ -10,24 +11,62 @@ export default {
 export const Template: Story<MultiSelectComponent> = (args) => ({
   props: args,
   template: `
-    <mat-card class="card-wrapper">
     <pm-multi-select
-      [placeholder]="placeholder"
-      [key]="key"
-      [data]="data"
+        [options]="options"
+        [placeholder]="placeholder"
+        [borderRadius]="borderRadius"
+        [roundedThumbnail]="roundedThumbnail"
     >
     </pm-multi-select>
-    </mat-card>
   `
 });
 
 export const defaultArgs = {
-  data: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
-  placeholder: 'Select Items Here ...',
-  key: 'options',
+  options: [],
+  placeholder: '',
+  borderRadius: Sizes.md,
+  roundedThumbnail: true
 };
 
 export const DefaultMultiSelect = Template.bind({});
 DefaultMultiSelect.args = {
-  ...defaultArgs
+  ...defaultArgs,
+  placeholder: 'Busque algo',
+  options: [
+    {label: 'Mary', value: {} },
+    {label: 'Shelley', value: {} },
+    {label: 'Gabs', value: {} },
+    {label: 'Pedrocs', value: {} },
+    {label: 'Rics', value: {} },
+    {label: 'Ana', value: {} },
+    {label: 'Igor', value: {} }
+  ]
+};
+
+export const ThumbnailMultiSelect = Template.bind({});
+ThumbnailMultiSelect.args = {
+  ...defaultArgs,
+  placeholder: 'Busque algo',
+  options: [
+    {
+      label: 'Arkansas',
+      value: '2.978M',
+      thumbnail: 'https://upload.wikimedia.org/wikipedia/commons/9/9d/Flag_of_Arkansas.svg',
+    },
+    {
+      label: 'California',
+      value: '39.14M',
+      thumbnail: 'https://upload.wikimedia.org/wikipedia/commons/0/01/Flag_of_California.svg',
+    },
+    {
+      label: 'Florida',
+      value: '20.27M',
+      thumbnail: 'https://upload.wikimedia.org/wikipedia/commons/f/f7/Flag_of_Florida.svg',
+    },
+    {
+      label: 'Texas',
+      value: '27.47M',
+      thumbnail: 'https://upload.wikimedia.org/wikipedia/commons/f/f7/Flag_of_Texas.svg',
+    },
+  ]
 };

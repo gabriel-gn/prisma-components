@@ -1,83 +1,116 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild
+} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
+import _ from 'lodash';
+import {MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, MatAutocompleteTrigger} from '@angular/material/autocomplete';
+import {Sizes} from '../../../models/sizes';
 
-export interface ItemData {
-  item: string;
-  selected: boolean;
+export interface MultiSelectOption {
+  label: string;
+  value: any;
+  thumbnail: string;
 }
 
 @Component({
   selector: 'pm-multi-select',
   templateUrl: './multi-select.component.html',
-  styleUrls: ['./multi-select.component.scss']
+  styleUrls: ['./multi-select.component.scss'],
+  providers: [
+    {
+      provide: MAT_AUTOCOMPLETE_DEFAULT_OPTIONS,
+      useValue: {
+        autoActiveFirstOption: false,
+        overlayPanelClass: 'pm-multi-select-autocomplete-panel'
+      }
+    }
+  ]
 })
-export class MultiSelectComponent implements OnInit {
+export class MultiSelectComponent implements OnInit, AfterViewInit {
 
-  constructor() {
-    this.filteredData = this.selectControl.valueChanges.pipe(
-      startWith<string>(''),
-      map(value => typeof value === 'string' ? value : this.filterString),
-      map(filter => this.filter(filter))
+  @ViewChild('inputBox') inputBoxEl: ElementRef;
+  @ViewChild('trigger') trigger: MatAutocompleteTrigger;
+  @Output() selectedOptions = new EventEmitter<MultiSelectOption[]>();
+  @Input() placeholder: string = '';
+  @Input() options: MultiSelectOption[] = [];
+  @Input() borderRadius: Sizes = Sizes.md;
+  @Input() roundedThumbnail: boolean = true;
+  myControl = new FormControl();
+  _selectedOptions: MultiSelectOption[] = [];
+  filteredOptions: Observable<MultiSelectOption[]>;
+
+  constructor(
+    private cdr: ChangeDetectorRef
+  ) {
+  }
+
+  ngOnInit(): void {
+    this.filteredOptions = this.myControl.valueChanges.pipe(
+      startWith(''),
+      map(value => (typeof value === 'string' ? value : `${value.label}`)),
+      map(label => this._filter(label)),
     );
   }
 
-  @Output() result = new EventEmitter<{ key: string, data: Array<string> }>();
-  @Input() placeholder: string = 'Select Data';
-  @Input() data: Array<string> = [];
-  @Input() key: string = '';
-  selectControl = new FormControl();
-  rawData: Array<ItemData> = [];
-  selectData: Array<ItemData> = [];
-  filteredData: Observable<Array<ItemData>>;
-  filterString: string = '';
-  displayFn: string = '';
-
-  ngOnInit(): void {
-    this.data.forEach((item: string) => {
-      this.rawData.push({item, selected: false});
-    });
+  ngAfterViewInit(): void {
+    this.clearInput();
   }
 
-  filter(filter: string): Array<ItemData> {
-    this.filterString = filter;
-    if (filter.length > 0) {
-      return this.rawData.filter(option => {
-        return option.item.toLowerCase().indexOf(filter.toLowerCase()) >= 0;
-      });
-    } else {
-      return this.rawData.slice();
-    }
+  displayFn(user: MultiSelectOption): string {
+    return user && user.label ? user.label : '';
   }
 
-  optionClicked(event: Event, data: ItemData): void {
-    event.stopPropagation();
-    this.toggleSelection(data);
+  private _filter(label: string): MultiSelectOption[] {
+    const filterValue = label.toLowerCase();
+
+    return _.difference(
+      this.options.filter(option => option.label.toLowerCase().includes(filterValue)),
+      this._selectedOptions
+    );
   }
 
-  toggleSelection(data: ItemData): void {
-    data.selected = !data.selected;
-    if (data.selected === true) {
-      this.selectData.push(data);
-    } else {
-      const i = this.selectData.findIndex(value => value.item === data.item);
-      this.selectData.splice(i, 1);
-    }
-    this.selectControl.setValue(this.selectData);
-    this.emitAdjustedData();
+  public selectOption(option: any): void {
+    this._selectedOptions.push(option);
+    this.selectedOptions.emit(this._selectedOptions);
+    this.clearInput();
   }
 
-  public emitAdjustedData(): void {
-    const results: Array<string> = [];
-    this.selectData.forEach((data: ItemData) => {
-      results.push(data.item);
-    });
-    this.result.emit({key: this.key, data: results});
+  private clearInput(): void {
+    this.myControl.setValue('');
+    try { this.inputBoxEl.nativeElement.blur(); } catch (e) {}
+    this.cdr.detectChanges();
   }
 
-  public removeChip(data: ItemData): void {
-    this.toggleSelection(data);
+  public removeSelectedOption(option: MultiSelectOption): void {
+    _.remove(this._selectedOptions, option);
+    this.clearInput();
+  }
+
+  public isOptionSelected(option: MultiSelectOption): boolean {
+    return !!this._selectedOptions.find(sOptions => _.isEqual(sOptions, option));
+  }
+
+  public openSelect(): void {
+    this.trigger.openPanel();
+    setTimeout(() => {
+      try { this.inputBoxEl.nativeElement.focus(); } catch (e) {}
+    }, 50);
+  }
+
+  public clearSelected(): void {
+    this._selectedOptions = [];
+    this.selectedOptions.emit(this._selectedOptions);
+    this.clearInput();
   }
 
 }
