@@ -203,10 +203,10 @@
         },
         {
             "name": "MultiSelectOption",
-            "id": "interface-MultiSelectOption-6de4f9efc2ccd766c000f480e29c7c89",
+            "id": "interface-MultiSelectOption-85fa84fe3b889aff6412f73da8cc4a39",
             "file": "projects/lib/src/components/inputs/multi-select/multi-select.component.ts",
             "type": "interface",
-            "sourceCode": "import {\n  AfterViewInit,\n  ChangeDetectorRef,\n  Component,\n  ElementRef,\n  EventEmitter,\n  Input,\n  OnInit,\n  Output,\n  ViewChild\n} from '@angular/core';\nimport {FormControl} from '@angular/forms';\nimport {Observable} from 'rxjs';\nimport {map, startWith} from 'rxjs/operators';\nimport _ from 'lodash';\nimport {MatAutocompleteTrigger} from '@angular/material/autocomplete';\nimport {Sizes} from \"../../../models/sizes\";\n\nexport interface MultiSelectOption {\n  label: string;\n  value: any;\n}\n\n@Component({\n  selector: 'pm-multi-select',\n  templateUrl: './multi-select.component.html',\n  styleUrls: ['./multi-select.component.scss']\n})\nexport class MultiSelectComponent implements OnInit, AfterViewInit {\n\n  @ViewChild('inputBox') inputBoxEl: ElementRef;\n  @ViewChild('trigger') trigger: MatAutocompleteTrigger;\n  @Output() selectedOptions = new EventEmitter<MultiSelectOption[]>();\n  @Input() placeholder: string = '';\n  @Input() options: MultiSelectOption[] = [];\n  @Input() borderRadius: Sizes = Sizes.md;\n  myControl = new FormControl();\n  _selectedOptions: MultiSelectOption[] = [];\n  filteredOptions: Observable<MultiSelectOption[]>;\n\n  constructor(\n    private cdr: ChangeDetectorRef\n  ) {\n  }\n\n  ngOnInit(): void {\n    this.filteredOptions = this.myControl.valueChanges.pipe(\n      startWith(''),\n      map(value => (typeof value === 'string' ? value : `${value.label}`)),\n      map(label => this._filter(label)),\n    );\n  }\n\n  ngAfterViewInit(): void {\n    this.clearInput();\n  }\n\n  displayFn(user: MultiSelectOption): string {\n    return user && user.label ? user.label : '';\n  }\n\n  private _filter(label: string): MultiSelectOption[] {\n    const filterValue = label.toLowerCase();\n\n    return _.difference(\n      this.options.filter(option => option.label.toLowerCase().includes(filterValue)),\n      this._selectedOptions\n    );\n  }\n\n  public selectOption(option: any): void {\n    this._selectedOptions.push(option);\n    this.selectedOptions.emit(this._selectedOptions);\n    this.clearInput();\n  }\n\n  private clearInput(): void {\n    this.myControl.setValue('');\n    try { this.inputBoxEl.nativeElement.blur(); } catch (e) {}\n    this.cdr.detectChanges();\n  }\n\n  public removeSelectedOption(option: MultiSelectOption): void {\n    _.remove(this._selectedOptions, option);\n    this.clearInput();\n  }\n\n  public isOptionSelected(option: MultiSelectOption): boolean {\n    return !!this._selectedOptions.find(sOptions => _.isEqual(sOptions, option));\n  }\n\n  public openSelect(): void {\n    this.trigger.openPanel();\n  }\n\n}\n",
+            "sourceCode": "import {\n  AfterViewInit,\n  ChangeDetectorRef,\n  Component,\n  ElementRef,\n  EventEmitter,\n  Input,\n  OnInit,\n  Output,\n  ViewChild\n} from '@angular/core';\nimport {FormControl} from '@angular/forms';\nimport {Observable} from 'rxjs';\nimport {map, startWith} from 'rxjs/operators';\nimport _ from 'lodash';\nimport {MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, MatAutocompleteTrigger} from '@angular/material/autocomplete';\nimport {Sizes} from '../../../models/sizes';\n\nexport interface MultiSelectOption {\n  label: string;\n  value: any;\n  thumbnail: string;\n}\n\n@Component({\n  selector: 'pm-multi-select',\n  templateUrl: './multi-select.component.html',\n  styleUrls: ['./multi-select.component.scss'],\n  providers: [\n    {\n      provide: MAT_AUTOCOMPLETE_DEFAULT_OPTIONS,\n      useValue: {\n        autoActiveFirstOption: false,\n        overlayPanelClass: 'pm-multi-select-autocomplete-panel'\n      }\n    }\n  ]\n})\nexport class MultiSelectComponent implements OnInit, AfterViewInit {\n\n  @ViewChild('inputBox') inputBoxEl: ElementRef;\n  @ViewChild('trigger') trigger: MatAutocompleteTrigger;\n  @Output() selectedOptions = new EventEmitter<MultiSelectOption[]>();\n  @Input() placeholder: string = '';\n  @Input() options: MultiSelectOption[] = [];\n  @Input() borderRadius: Sizes = Sizes.md;\n  @Input() roundedThumbnail: boolean = true;\n  myControl = new FormControl();\n  _selectedOptions: MultiSelectOption[] = [];\n  filteredOptions: Observable<MultiSelectOption[]>;\n\n  constructor(\n    private cdr: ChangeDetectorRef\n  ) {\n  }\n\n  ngOnInit(): void {\n    this.filteredOptions = this.myControl.valueChanges.pipe(\n      startWith(''),\n      map(value => (typeof value === 'string' ? value : `${value.label}`)),\n      map(label => this._filter(label)),\n    );\n  }\n\n  ngAfterViewInit(): void {\n    this.clearInput();\n  }\n\n  displayFn(user: MultiSelectOption): string {\n    return user && user.label ? user.label : '';\n  }\n\n  private _filter(label: string): MultiSelectOption[] {\n    const filterValue = label.toLowerCase();\n\n    return _.difference(\n      this.options.filter(option => option.label.toLowerCase().includes(filterValue)),\n      this._selectedOptions\n    );\n  }\n\n  public selectOption(option: any): void {\n    this._selectedOptions.push(option);\n    this.selectedOptions.emit(this._selectedOptions);\n    this.clearInput();\n  }\n\n  private clearInput(): void {\n    this.myControl.setValue('');\n    try { this.inputBoxEl.nativeElement.blur(); } catch (e) {}\n    this.cdr.detectChanges();\n  }\n\n  public removeSelectedOption(option: MultiSelectOption): void {\n    _.remove(this._selectedOptions, option);\n    this.clearInput();\n  }\n\n  public isOptionSelected(option: MultiSelectOption): boolean {\n    return !!this._selectedOptions.find(sOptions => _.isEqual(sOptions, option));\n  }\n\n  public openSelect(): void {\n    this.trigger.openPanel();\n    setTimeout(() => {\n      try { this.inputBoxEl.nativeElement.focus(); } catch (e) {}\n    }, 50);\n  }\n\n  public clearSelected(): void {\n    this._selectedOptions = [];\n    this.selectedOptions.emit(this._selectedOptions);\n    this.clearInput();\n  }\n\n}\n",
             "properties": [
                 {
                     "name": "label",
@@ -214,6 +214,13 @@
                     "optional": false,
                     "description": "",
                     "line": 20
+                },
+                {
+                    "name": "thumbnail",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 22
                 },
                 {
                     "name": "value",
@@ -2930,13 +2937,17 @@
         },
         {
             "name": "MultiSelectComponent",
-            "id": "component-MultiSelectComponent-6de4f9efc2ccd766c000f480e29c7c89",
+            "id": "component-MultiSelectComponent-85fa84fe3b889aff6412f73da8cc4a39",
             "file": "projects/lib/src/components/inputs/multi-select/multi-select.component.ts",
             "encapsulation": [],
             "entryComponents": [],
             "inputs": [],
             "outputs": [],
-            "providers": [],
+            "providers": [
+                {
+                    "name": "{\n    provide: MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, useValue: {\n        autoActiveFirstOption: false, overlayPanelClass: \n    }\n}"
+                }
+            ],
             "selector": "pm-multi-select",
             "styleUrls": [
                 "./multi-select.component.scss"
@@ -2950,27 +2961,33 @@
                 {
                     "name": "borderRadius",
                     "defaultValue": "Sizes.md",
-                    "line": 36,
+                    "line": 46,
                     "type": "Sizes"
                 },
                 {
                     "name": "options",
                     "defaultValue": "[]",
-                    "line": 35,
+                    "line": 45,
                     "type": "MultiSelectOption[]"
                 },
                 {
                     "name": "placeholder",
                     "defaultValue": "''",
-                    "line": 34,
+                    "line": 44,
                     "type": "string"
+                },
+                {
+                    "name": "roundedThumbnail",
+                    "defaultValue": "true",
+                    "line": 47,
+                    "type": "boolean"
                 }
             ],
             "outputsClass": [
                 {
                     "name": "selectedOptions",
                     "defaultValue": "new EventEmitter<MultiSelectOption[]>()",
-                    "line": 33,
+                    "line": 43,
                     "type": "EventEmitter"
                 }
             ],
@@ -2981,21 +2998,21 @@
                     "type": "MultiSelectOption[]",
                     "optional": false,
                     "description": "",
-                    "line": 38
+                    "line": 49
                 },
                 {
                     "name": "filteredOptions",
                     "type": "Observable<MultiSelectOption[]>",
                     "optional": false,
                     "description": "",
-                    "line": 39
+                    "line": 50
                 },
                 {
                     "name": "inputBoxEl",
                     "type": "ElementRef",
                     "optional": false,
                     "description": "",
-                    "line": 31,
+                    "line": 41,
                     "decorators": [
                         {
                             "name": "ViewChild",
@@ -3009,14 +3026,14 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 37
+                    "line": 48
                 },
                 {
                     "name": "trigger",
                     "type": "MatAutocompleteTrigger",
                     "optional": false,
                     "description": "",
-                    "line": 32,
+                    "line": 42,
                     "decorators": [
                         {
                             "name": "ViewChild",
@@ -3037,7 +3054,7 @@
                     "optional": false,
                     "returnType": "MultiSelectOption[]",
                     "typeParameters": [],
-                    "line": 62,
+                    "line": 73,
                     "modifierKind": [
                         112
                     ],
@@ -3057,9 +3074,20 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 77,
+                    "line": 88,
                     "modifierKind": [
                         112
+                    ]
+                },
+                {
+                    "name": "clearSelected",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 110,
+                    "modifierKind": [
+                        114
                     ]
                 },
                 {
@@ -3073,7 +3101,7 @@
                     "optional": false,
                     "returnType": "string",
                     "typeParameters": [],
-                    "line": 58,
+                    "line": 69,
                     "jsdoctags": [
                         {
                             "name": "user",
@@ -3095,7 +3123,7 @@
                     "optional": false,
                     "returnType": "boolean",
                     "typeParameters": [],
-                    "line": 88,
+                    "line": 99,
                     "modifierKind": [
                         114
                     ],
@@ -3115,7 +3143,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 54
+                    "line": 65
                 },
                 {
                     "name": "ngOnInit",
@@ -3123,7 +3151,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 46
+                    "line": 57
                 },
                 {
                     "name": "openSelect",
@@ -3131,7 +3159,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 92,
+                    "line": 103,
                     "modifierKind": [
                         114
                     ]
@@ -3147,7 +3175,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 83,
+                    "line": 94,
                     "modifierKind": [
                         114
                     ],
@@ -3172,7 +3200,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 71,
+                    "line": 82,
                     "modifierKind": [
                         114
                     ],
@@ -3192,11 +3220,11 @@
             "description": "",
             "rawdescription": "",
             "type": "component",
-            "sourceCode": "import {\n  AfterViewInit,\n  ChangeDetectorRef,\n  Component,\n  ElementRef,\n  EventEmitter,\n  Input,\n  OnInit,\n  Output,\n  ViewChild\n} from '@angular/core';\nimport {FormControl} from '@angular/forms';\nimport {Observable} from 'rxjs';\nimport {map, startWith} from 'rxjs/operators';\nimport _ from 'lodash';\nimport {MatAutocompleteTrigger} from '@angular/material/autocomplete';\nimport {Sizes} from \"../../../models/sizes\";\n\nexport interface MultiSelectOption {\n  label: string;\n  value: any;\n}\n\n@Component({\n  selector: 'pm-multi-select',\n  templateUrl: './multi-select.component.html',\n  styleUrls: ['./multi-select.component.scss']\n})\nexport class MultiSelectComponent implements OnInit, AfterViewInit {\n\n  @ViewChild('inputBox') inputBoxEl: ElementRef;\n  @ViewChild('trigger') trigger: MatAutocompleteTrigger;\n  @Output() selectedOptions = new EventEmitter<MultiSelectOption[]>();\n  @Input() placeholder: string = '';\n  @Input() options: MultiSelectOption[] = [];\n  @Input() borderRadius: Sizes = Sizes.md;\n  myControl = new FormControl();\n  _selectedOptions: MultiSelectOption[] = [];\n  filteredOptions: Observable<MultiSelectOption[]>;\n\n  constructor(\n    private cdr: ChangeDetectorRef\n  ) {\n  }\n\n  ngOnInit(): void {\n    this.filteredOptions = this.myControl.valueChanges.pipe(\n      startWith(''),\n      map(value => (typeof value === 'string' ? value : `${value.label}`)),\n      map(label => this._filter(label)),\n    );\n  }\n\n  ngAfterViewInit(): void {\n    this.clearInput();\n  }\n\n  displayFn(user: MultiSelectOption): string {\n    return user && user.label ? user.label : '';\n  }\n\n  private _filter(label: string): MultiSelectOption[] {\n    const filterValue = label.toLowerCase();\n\n    return _.difference(\n      this.options.filter(option => option.label.toLowerCase().includes(filterValue)),\n      this._selectedOptions\n    );\n  }\n\n  public selectOption(option: any): void {\n    this._selectedOptions.push(option);\n    this.selectedOptions.emit(this._selectedOptions);\n    this.clearInput();\n  }\n\n  private clearInput(): void {\n    this.myControl.setValue('');\n    try { this.inputBoxEl.nativeElement.blur(); } catch (e) {}\n    this.cdr.detectChanges();\n  }\n\n  public removeSelectedOption(option: MultiSelectOption): void {\n    _.remove(this._selectedOptions, option);\n    this.clearInput();\n  }\n\n  public isOptionSelected(option: MultiSelectOption): boolean {\n    return !!this._selectedOptions.find(sOptions => _.isEqual(sOptions, option));\n  }\n\n  public openSelect(): void {\n    this.trigger.openPanel();\n  }\n\n}\n",
+            "sourceCode": "import {\n  AfterViewInit,\n  ChangeDetectorRef,\n  Component,\n  ElementRef,\n  EventEmitter,\n  Input,\n  OnInit,\n  Output,\n  ViewChild\n} from '@angular/core';\nimport {FormControl} from '@angular/forms';\nimport {Observable} from 'rxjs';\nimport {map, startWith} from 'rxjs/operators';\nimport _ from 'lodash';\nimport {MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, MatAutocompleteTrigger} from '@angular/material/autocomplete';\nimport {Sizes} from '../../../models/sizes';\n\nexport interface MultiSelectOption {\n  label: string;\n  value: any;\n  thumbnail: string;\n}\n\n@Component({\n  selector: 'pm-multi-select',\n  templateUrl: './multi-select.component.html',\n  styleUrls: ['./multi-select.component.scss'],\n  providers: [\n    {\n      provide: MAT_AUTOCOMPLETE_DEFAULT_OPTIONS,\n      useValue: {\n        autoActiveFirstOption: false,\n        overlayPanelClass: 'pm-multi-select-autocomplete-panel'\n      }\n    }\n  ]\n})\nexport class MultiSelectComponent implements OnInit, AfterViewInit {\n\n  @ViewChild('inputBox') inputBoxEl: ElementRef;\n  @ViewChild('trigger') trigger: MatAutocompleteTrigger;\n  @Output() selectedOptions = new EventEmitter<MultiSelectOption[]>();\n  @Input() placeholder: string = '';\n  @Input() options: MultiSelectOption[] = [];\n  @Input() borderRadius: Sizes = Sizes.md;\n  @Input() roundedThumbnail: boolean = true;\n  myControl = new FormControl();\n  _selectedOptions: MultiSelectOption[] = [];\n  filteredOptions: Observable<MultiSelectOption[]>;\n\n  constructor(\n    private cdr: ChangeDetectorRef\n  ) {\n  }\n\n  ngOnInit(): void {\n    this.filteredOptions = this.myControl.valueChanges.pipe(\n      startWith(''),\n      map(value => (typeof value === 'string' ? value : `${value.label}`)),\n      map(label => this._filter(label)),\n    );\n  }\n\n  ngAfterViewInit(): void {\n    this.clearInput();\n  }\n\n  displayFn(user: MultiSelectOption): string {\n    return user && user.label ? user.label : '';\n  }\n\n  private _filter(label: string): MultiSelectOption[] {\n    const filterValue = label.toLowerCase();\n\n    return _.difference(\n      this.options.filter(option => option.label.toLowerCase().includes(filterValue)),\n      this._selectedOptions\n    );\n  }\n\n  public selectOption(option: any): void {\n    this._selectedOptions.push(option);\n    this.selectedOptions.emit(this._selectedOptions);\n    this.clearInput();\n  }\n\n  private clearInput(): void {\n    this.myControl.setValue('');\n    try { this.inputBoxEl.nativeElement.blur(); } catch (e) {}\n    this.cdr.detectChanges();\n  }\n\n  public removeSelectedOption(option: MultiSelectOption): void {\n    _.remove(this._selectedOptions, option);\n    this.clearInput();\n  }\n\n  public isOptionSelected(option: MultiSelectOption): boolean {\n    return !!this._selectedOptions.find(sOptions => _.isEqual(sOptions, option));\n  }\n\n  public openSelect(): void {\n    this.trigger.openPanel();\n    setTimeout(() => {\n      try { this.inputBoxEl.nativeElement.focus(); } catch (e) {}\n    }, 50);\n  }\n\n  public clearSelected(): void {\n    this._selectedOptions = [];\n    this.selectedOptions.emit(this._selectedOptions);\n    this.clearInput();\n  }\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": ".pm-multi-select {\n  background-color: #00A0EE;\n  border-radius: ;\n\n  form, input {\n    width: -webkit-fill-available;\n  }\n\n  form {\n    padding-top: 1px;\n  }\n\n  input {\n    padding: 0.5em;\n    background-color: transparent;\n  }\n\n  .chip-container {\n    background-color: var(--color-light);\n    border: 1px solid var(--color-light-states);\n    border-radius: var(--border-radius-md);\n    padding: 3px;\n    color: var(--color-gray-dark);\n\n    button {\n      border: none !important;\n    }\n  }\n\n  i {\n    right: 0.5em;\n    height: 100%;\n    display: flex;\n    flex-direction: row;\n    align-content: center;\n    justify-content: center;\n\n    &:before {\n      align-self: center;\n    }\n  }\n}\n",
+                    "data": "@import '../../../styles/default/mixins/buttons';\n\n.pm-multi-select {\n  @include btn-styles(var(--color-light), var(--color-light-sat), false);\n\n  form, input {\n    width: -webkit-fill-available;\n  }\n\n  form {\n    padding-top: 1px;\n  }\n\n  input {\n    padding: 0.5em;\n    background-color: transparent;\n  }\n\n  .chip-container {\n    background-color: var(--color-light);\n    border: 1px solid var(--color-light-states);\n    border-radius: var(--border-radius-md);\n    padding: 3px;\n    color: var(--color-gray-dark);\n\n    button {\n      border: none !important;\n    }\n  }\n\n  i {\n    color: var(--color-light-states);\n    right: 0.5em;\n    height: 100%;\n    display: flex;\n    flex-direction: row;\n    align-content: center;\n    justify-content: center;\n\n    &:before {\n      align-self: center;\n    }\n  }\n\n  .thumbnail-container {\n    width: 25px;\n    height: 25px;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    box-sizing: border-box;\n    outline: none;\n    flex: 0 0 auto;\n\n    &.circular {\n      border-radius: 50%;\n      margin: 0;\n      overflow: hidden;\n      border: 1px solid var(--color-light-states);\n    }\n\n    img {\n      object-fit: cover;\n    }\n  }\n\n}\n\n::ng-deep {\n  .pm-multi-select-autocomplete-panel {\n    margin-left: -4px;\n\n    * {\n      box-shadow: none !important;\n    }\n\n    .mat-autocomplete-panel {\n      background-color: var(--color-light);\n      margin-top: -2px;\n    }\n  }\n}\n",
                     "styleUrl": "./multi-select.component.scss"
                 }
             ],
@@ -3210,7 +3238,7 @@
                         "type": "ChangeDetectorRef"
                     }
                 ],
-                "line": 39,
+                "line": 50,
                 "jsdoctags": [
                     {
                         "name": "cdr",
@@ -3225,7 +3253,7 @@
                 "OnInit",
                 "AfterViewInit"
             ],
-            "templateData": "<div class=\"pm-multi-select\">\n  <div class=\"d-flex flex-wrap p-1 rad-md position-relative\">\n    <div class=\"d-flex flex-row justify-content-start flex-wrap\">\n      <div *ngFor=\"let selected of _selectedOptions; let first = first\" [ngClass]=\"{'m-1 chip-container': true}\">\n        <div class=\"d-flex flex-row align-items-center\">\n          <p class=\"m-0 px-1\">{{selected.label}}</p>\n          <button class=\"btn btn-light\" (click)=\"removeSelectedOption(selected)\">x</button>\n        </div>\n      </div>\n    </div>\n    <form>\n      <input #inputBox\n             #trigger=\"matAutocompleteTrigger\"\n             matInput\n             class=\"form-control h-100 border-0\"\n             type=\"text\"\n             [formControl]=\"myControl\"\n             [placeholder]=\"placeholder\"\n             [matAutocomplete]=\"auto\"\n      >\n\n      <mat-autocomplete #auto=\"matAutocomplete\"\n                        (optionSelected)=\"selectOption($event.option.value);\"\n                        [autoActiveFirstOption]=\"false\"\n                        [panelWidth]=\"inputBox.offsetWidth\"\n      >\n        <ng-container *ngFor=\"let option of filteredOptions | async\">\n          <mat-option\n            [hidden]=\"isOptionSelected(option)\"\n            [value]=\"option\"\n          >\n            {{option.label}}\n          </mat-option>\n        </ng-container>\n      </mat-autocomplete>\n    </form>\n    <i class=\"position-absolute color-primary uil uil-lg uil-angle-down\"></i>\n  </div>\n</div>\n"
+            "templateData": "<div #multiselect class=\"pm-multi-select cursor-pointer border-radius-{{borderRadius}}\" (click)=\"$event.stopPropagation(); openSelect()\">\n  <div class=\"d-flex flex-wrap p-1 rad-md position-relative\">\n    <div class=\"d-flex flex-row justify-content-start flex-wrap\">\n      <div *ngFor=\"let selected of _selectedOptions; let first = first\" [ngClass]=\"{'m-1 chip-container': true}\">\n        <div class=\"d-flex flex-row align-items-center\">\n          <ng-container *ngTemplateOutlet=\"thumbnailContainer; context: {$implicit: selected, marginStart: true}\"></ng-container>\n          <p class=\"m-0 ms-1\">{{selected.label}}</p>\n          <button class=\"btn btn-light\" (click)=\"removeSelectedOption(selected)\">x</button>\n        </div>\n      </div>\n    </div>\n    <form>\n      <input #inputBox\n             #trigger=\"matAutocompleteTrigger\"\n             matInput\n             class=\"form-control h-100 border-0\"\n             type=\"text\"\n             [formControl]=\"myControl\"\n             [placeholder]=\"placeholder\"\n             [matAutocomplete]=\"auto\"\n      >\n\n      <mat-autocomplete #auto=\"matAutocomplete\"\n                        (optionSelected)=\"selectOption($event.option.value);\"\n                        [panelWidth]=\"multiselect.offsetWidth\"\n      >\n        <ng-container *ngFor=\"let option of filteredOptions | async\">\n          <mat-option\n            [hidden]=\"isOptionSelected(option)\"\n            [value]=\"option\"\n          >\n            <div class=\"d-flex flex-row align-items-center\">\n              <ng-container *ngTemplateOutlet=\"thumbnailContainer; context: {$implicit: option}\"></ng-container>\n              <span [ngClass]=\"{'ms-2': option?.thumbnail}\">{{option.label}}</span>\n            </div>\n          </mat-option>\n        </ng-container>\n      </mat-autocomplete>\n    </form>\n    <i class=\"position-absolute uil uil-lg uil-angle-down\"></i>\n  </div>\n</div>\n\n<ng-template #thumbnailContainer let-option let-marginStart=\"marginStart\">\n  <div *ngIf=\"option?.thumbnail\" class=\"thumbnail-container\" [ngClass]=\"{'ms-1': marginStart, 'circular': roundedThumbnail, 'px-2': !roundedThumbnail}\">\n    <img\n      aria-hidden\n      [src]=\"option.thumbnail\"\n      height=\"25\"\n    >\n  </div>\n</ng-template>\n"
         },
         {
             "name": "RadioButtonComponent",
@@ -4870,17 +4898,17 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/cards/icon-card/icon-card.stories.ts",
+                "file": "projects/lib/src/components/cards/basic-card/basic-card.stories.ts",
                 "type": "object",
-                "defaultValue": "{\n  textPosition: 'center',\n  paddingClass: 'p-3',\n  hoverable: true,\n  orientation: OrientationEnum.Y,\n  iconClass: 'uil uil-star',\n  title: '',\n  subtitle: '',\n  iconCardArray: [],\n}"
+                "defaultValue": "{\n  hoverable: false,\n  borderRadius: Sizes.md,\n  paddingClass: 'p-3'\n}"
             },
             {
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/cards/basic-card/basic-card.stories.ts",
+                "file": "projects/lib/src/components/cards/icon-card/icon-card.stories.ts",
                 "type": "object",
-                "defaultValue": "{\n  hoverable: false,\n  borderRadius: Sizes.md,\n  paddingClass: 'p-3'\n}"
+                "defaultValue": "{\n  textPosition: 'center',\n  paddingClass: 'p-3',\n  hoverable: true,\n  orientation: OrientationEnum.Y,\n  iconClass: 'uil uil-star',\n  title: '',\n  subtitle: '',\n  iconCardArray: [],\n}"
             },
             {
                 "name": "defaultArgs",
@@ -4902,30 +4930,6 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
-                "type": "object",
-                "defaultValue": "{\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
-                "type": "object",
-                "defaultValue": "{\n  showIndex: true,\n  itemActionLabel: undefined,\n  itemMainLabel: undefined,\n  itemSubLabel: undefined,\n  actions: undefined,\n  itemList: undefined,\n  roundedBorders: true,\n  enableDragging: true,\n  enableSelection: true,\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/lib/src/components/lists/table-list/table-list.stories.ts",
-                "type": "object",
-                "defaultValue": "{\n  columns: [],\n  columnNames: [],\n  imageColumns: [],\n  imageHeight: '50px',\n  showHeader: true,\n  numberFormat: '1.2-2',\n  numberPrefix: '',\n  actionsTemplate: undefined,\n  itemList: undefined,\n  borderRadius: undefined,\n  backgroundColor: undefined,\n  expandedDetailTemplate: undefined,\n  disableExpandedOnDisabledRow: true,\n  expandedRow: undefined\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "projects/lib/src/components/inputs/button/button.stories.ts",
                 "type": "object",
                 "defaultValue": "{\n  label: '',\n  type: MainColors.default,\n  busy: false,\n  busyText: '',\n  iconClass: '',\n  iconPosition: 'start',\n  outline: false,\n  disabled: false,\n  size: 'md',\n  fillWidth: false\n}"
@@ -4934,17 +4938,17 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts",
+                "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
                 "type": "object",
-                "defaultValue": "{\n  items: [],\n  disabled: false,\n  selectedItem: undefined\n}"
+                "defaultValue": "{\n  checked: false,\n  disabled: false,\n  selectedItem: undefined,\n}"
             },
             {
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
+                "file": "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts",
                 "type": "object",
-                "defaultValue": "{\n  checked: false,\n  disabled: false,\n  selectedItem: undefined,\n}"
+                "defaultValue": "{\n  items: [],\n  disabled: false,\n  selectedItem: undefined\n}"
             },
             {
                 "name": "defaultArgs",
@@ -4968,7 +4972,7 @@
                 "subtype": "variable",
                 "file": "projects/lib/src/components/inputs/multi-select/multi-select.stories.ts",
                 "type": "object",
-                "defaultValue": "{\n  options: [],\n  placeholder: '',\n  borderRadius: Sizes.md\n}"
+                "defaultValue": "{\n  options: [],\n  placeholder: '',\n  borderRadius: Sizes.md,\n  roundedThumbnail: true\n}"
             },
             {
                 "name": "defaultArgs",
@@ -4977,6 +4981,30 @@
                 "file": "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts",
                 "type": "object",
                 "defaultValue": "{\n  orientation: OrientationEnum.Y,\n  values: [],\n  disabled: false,\n  selectedValue: undefined\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
+                "type": "object",
+                "defaultValue": "{\n  showIndex: true,\n  itemActionLabel: undefined,\n  itemMainLabel: undefined,\n  itemSubLabel: undefined,\n  actions: undefined,\n  itemList: undefined,\n  roundedBorders: true,\n  enableDragging: true,\n  enableSelection: true,\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
+                "type": "object",
+                "defaultValue": "{\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/components/lists/table-list/table-list.stories.ts",
+                "type": "object",
+                "defaultValue": "{\n  columns: [],\n  columnNames: [],\n  imageColumns: [],\n  imageHeight: '50px',\n  showHeader: true,\n  numberFormat: '1.2-2',\n  numberPrefix: '',\n  actionsTemplate: undefined,\n  itemList: undefined,\n  borderRadius: undefined,\n  backgroundColor: undefined,\n  expandedDetailTemplate: undefined,\n  disableExpandedOnDisabledRow: true,\n  expandedRow: undefined\n}"
             },
             {
                 "name": "defaultArgs",
@@ -5301,17 +5329,17 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/cards/icon-card/icon-card.stories.ts",
-                "type": "Story<IconCardComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-icon-card\n      [textPosition]=\"textPosition\"\n      [paddingClass]=\"paddingClass\"\n      [hoverable]=\"hoverable\"\n      [orientation]=\"orientation\"\n      [iconClass]=\"iconClass\"\n      [title]=\"title\"\n      [subtitle]=\"subtitle\"\n      [iconCardArray]=\"iconCardArray\"\n    >\n    </pm-icon-card>\n  `\n})"
+                "file": "projects/lib/src/components/cards/basic-card/basic-card.stories.ts",
+                "type": "Story<BasicCardComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-basic-card\n      [hoverable]=\"hoverable\"\n      [borderRadius]=\"borderRadius\"\n      [paddingClass]=\"paddingClass\"\n    >\n    </pm-basic-card>\n  `\n})"
             },
             {
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/cards/basic-card/basic-card.stories.ts",
-                "type": "Story<BasicCardComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-basic-card\n      [hoverable]=\"hoverable\"\n      [borderRadius]=\"borderRadius\"\n      [paddingClass]=\"paddingClass\"\n    >\n    </pm-basic-card>\n  `\n})"
+                "file": "projects/lib/src/components/cards/icon-card/icon-card.stories.ts",
+                "type": "Story<IconCardComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-icon-card\n      [textPosition]=\"textPosition\"\n      [paddingClass]=\"paddingClass\"\n      [hoverable]=\"hoverable\"\n      [orientation]=\"orientation\"\n      [iconClass]=\"iconClass\"\n      [title]=\"title\"\n      [subtitle]=\"subtitle\"\n      [iconCardArray]=\"iconCardArray\"\n    >\n    </pm-icon-card>\n  `\n})"
             },
             {
                 "name": "Template",
@@ -5333,30 +5361,6 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
-                "type": "Story<GridListComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-grid-list\n      [items]=\"items\"\n      [displayStyle]=\"displayStyle\"\n      [gridHeaderReverse]=\"gridHeaderReverse\"\n      [bodyBackgroundColor]=\"bodyBackgroundColor\"\n      [actionTemplate]=\"undefined\"\n      [overflowGallery]=\"overflowGallery\"\n    >\n    </pm-grid-list>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
-                "type": "Story<DraggableListComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-draggable-list\n      [showIndex]=\"showIndex\"\n      [itemActionLabel]=\"itemActionLabel\"\n      [itemMainLabel]=\"itemMainLabel\"\n      [itemSubLabel]=\"itemSubLabel\"\n      [actions]=\"actions\"\n      [itemList]=\"itemList\"\n      [roundedBorders]=\"roundedBorders\"\n      [enableDragging]=\"enableDragging\"\n      [enableSelection]=\"enableSelection\"\n    >\n    </pm-draggable-list>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/lib/src/components/lists/table-list/table-list.stories.ts",
-                "type": "Story<TableListComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `<pm-table-list\n    [columns]=\"columns\"\n    [columnNames]=\"columnNames\"\n    [imageColumns]=\"imageColumns\"\n    [imageHeight]=\"imageHeight\"\n    [showHeader]=\"showHeader\"\n    [numberFormat]=\"numberFormat\"\n    [numberPrefix]=\"numberPrefix\"\n    [itemList]=\"itemList\"\n    [borderRadius]=\"borderRadius\"\n    [backgroundColor]=\"backgroundColor\"\n    [expandedDetailTemplate]=\"expandedDetailTemplate\"\n    [disableExpandedOnDisabledRow]=\"disableExpandedOnDisabledRow\"\n  ></pm-table-list>`\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "projects/lib/src/components/inputs/button/button.stories.ts",
                 "type": "Story<ButtonComponent>",
                 "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-button\n        [label]=\"label\"\n        [type]=\"type\"\n        [busy]=\"busy\"\n        [busyText]=\"busyText\"\n        [iconClass]=\"iconClass\"\n        [iconPosition]=\"iconPosition\"\n        [outline]=\"outline\"\n        [disabled]=\"disabled\"\n        [size]=\"size\"\n        [fillWidth]=\"fillWidth\"\n    >\n        Button Content\n    </pm-button>\n  `\n})"
@@ -5365,17 +5369,17 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts",
-                "type": "Story<ComboBoxComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-combo-box\n      [items]=\"items\"\n      [disabled]=\"disabled\"\n      [selectedItem]=\"selectedItem\"\n    >\n    </pm-combo-box>\n  `\n})"
+                "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
+                "type": "Story<CheckboxComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-checkbox\n      [checked]=\"checked\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>\n  `\n})"
             },
             {
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
-                "type": "Story<CheckboxComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-checkbox\n      [checked]=\"checked\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>\n  `\n})"
+                "file": "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts",
+                "type": "Story<ComboBoxComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-combo-box\n      [items]=\"items\"\n      [disabled]=\"disabled\"\n      [selectedItem]=\"selectedItem\"\n    >\n    </pm-combo-box>\n  `\n})"
             },
             {
                 "name": "Template",
@@ -5399,7 +5403,7 @@
                 "subtype": "variable",
                 "file": "projects/lib/src/components/inputs/multi-select/multi-select.stories.ts",
                 "type": "Story<MultiSelectComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-multi-select\n        [options]=\"options\"\n        [placeholder]=\"placeholder\"\n        [borderRadius]=\"borderRadius\"\n    >\n    </pm-multi-select>\n  `\n})"
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-multi-select\n        [options]=\"options\"\n        [placeholder]=\"placeholder\"\n        [borderRadius]=\"borderRadius\"\n        [roundedThumbnail]=\"roundedThumbnail\"\n    >\n    </pm-multi-select>\n  `\n})"
             },
             {
                 "name": "Template",
@@ -5413,9 +5417,41 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
+                "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
+                "type": "Story<DraggableListComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-draggable-list\n      [showIndex]=\"showIndex\"\n      [itemActionLabel]=\"itemActionLabel\"\n      [itemMainLabel]=\"itemMainLabel\"\n      [itemSubLabel]=\"itemSubLabel\"\n      [actions]=\"actions\"\n      [itemList]=\"itemList\"\n      [roundedBorders]=\"roundedBorders\"\n      [enableDragging]=\"enableDragging\"\n      [enableSelection]=\"enableSelection\"\n    >\n    </pm-draggable-list>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
+                "type": "Story<GridListComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-grid-list\n      [items]=\"items\"\n      [displayStyle]=\"displayStyle\"\n      [gridHeaderReverse]=\"gridHeaderReverse\"\n      [bodyBackgroundColor]=\"bodyBackgroundColor\"\n      [actionTemplate]=\"undefined\"\n      [overflowGallery]=\"overflowGallery\"\n    >\n    </pm-grid-list>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/components/lists/table-list/table-list.stories.ts",
+                "type": "Story<TableListComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `<pm-table-list\n    [columns]=\"columns\"\n    [columnNames]=\"columnNames\"\n    [imageColumns]=\"imageColumns\"\n    [imageHeight]=\"imageHeight\"\n    [showHeader]=\"showHeader\"\n    [numberFormat]=\"numberFormat\"\n    [numberPrefix]=\"numberPrefix\"\n    [itemList]=\"itemList\"\n    [borderRadius]=\"borderRadius\"\n    [backgroundColor]=\"backgroundColor\"\n    [expandedDetailTemplate]=\"expandedDetailTemplate\"\n    [disableExpandedOnDisabledRow]=\"disableExpandedOnDisabledRow\"\n  ></pm-table-list>`\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
                 "file": "projects/lib/src/components/navigation/stepper/stepper.stories.ts",
                 "type": "Story<StepperComponent>",
                 "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-stepper>\n      <cdk-step> <p>This is any content of \"Step 1\"</p> </cdk-step>\n      <cdk-step> <p>This is any content of \"Step 2\"</p> </cdk-step>\n    </pm-stepper>\n  `\n})"
+            },
+            {
+                "name": "ThumbnailMultiSelect",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/components/inputs/multi-select/multi-select.stories.ts",
+                "type": "",
+                "defaultValue": "Template.bind({})"
             },
             {
                 "name": "ThumbnailTable",
@@ -6068,70 +6104,28 @@
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-tabs\n    >\n    </pm-tabs>\n  `\n})"
                 }
             ],
-            "projects/lib/src/components/lists/grid-list/grid-list.stories.ts": [
+            "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts": [
                 {
                     "name": "defaultArgs",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
+                    "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
                     "type": "object",
-                    "defaultValue": "{\n}"
+                    "defaultValue": "{\n  checked: false,\n  disabled: false,\n  selectedItem: undefined,\n}"
                 },
                 {
-                    "name": "DefaultGridList",
+                    "name": "DefaultCheckbox",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
+                    "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
                     "type": "",
                     "defaultValue": "Template.bind({})"
                 },
                 {
-                    "name": "getColor",
+                    "name": "DisabledCheckbox",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
-                    "type": "",
-                    "defaultValue": "() => MainColors.primary"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
-                    "type": "Story<GridListComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-grid-list\n      [items]=\"items\"\n      [displayStyle]=\"displayStyle\"\n      [gridHeaderReverse]=\"gridHeaderReverse\"\n      [bodyBackgroundColor]=\"bodyBackgroundColor\"\n      [actionTemplate]=\"undefined\"\n      [overflowGallery]=\"overflowGallery\"\n    >\n    </pm-grid-list>\n  `\n})"
-                }
-            ],
-            "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
-                    "type": "object",
-                    "defaultValue": "{\n  showIndex: true,\n  itemActionLabel: undefined,\n  itemMainLabel: undefined,\n  itemSubLabel: undefined,\n  actions: undefined,\n  itemList: undefined,\n  roundedBorders: true,\n  enableDragging: true,\n  enableSelection: true,\n}"
-                },
-                {
-                    "name": "DefaultDraggableList",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "DisabledDragging",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "NoIndexStringList",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
+                    "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
                     "type": "",
                     "defaultValue": "Template.bind({})"
                 },
@@ -6139,9 +6133,9 @@
                     "name": "Template",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
-                    "type": "Story<DraggableListComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-draggable-list\n      [showIndex]=\"showIndex\"\n      [itemActionLabel]=\"itemActionLabel\"\n      [itemMainLabel]=\"itemMainLabel\"\n      [itemSubLabel]=\"itemSubLabel\"\n      [actions]=\"actions\"\n      [itemList]=\"itemList\"\n      [roundedBorders]=\"roundedBorders\"\n      [enableDragging]=\"enableDragging\"\n      [enableSelection]=\"enableSelection\"\n    >\n    </pm-draggable-list>\n  `\n})"
+                    "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
+                    "type": "Story<CheckboxComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-checkbox\n      [checked]=\"checked\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>\n  `\n})"
                 }
             ],
             "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts": [
@@ -6176,40 +6170,6 @@
                     "file": "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts",
                     "type": "Story<ComboBoxComponent>",
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-combo-box\n      [items]=\"items\"\n      [disabled]=\"disabled\"\n      [selectedItem]=\"selectedItem\"\n    >\n    </pm-combo-box>\n  `\n})"
-                }
-            ],
-            "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
-                    "type": "object",
-                    "defaultValue": "{\n  checked: false,\n  disabled: false,\n  selectedItem: undefined,\n}"
-                },
-                {
-                    "name": "DefaultCheckbox",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "DisabledCheckbox",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts",
-                    "type": "Story<CheckboxComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-checkbox\n      [checked]=\"checked\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>\n  `\n})"
                 }
             ],
             "projects/lib/src/components/inputs/copy-content-input/copy-content-input.stories.ts": [
@@ -6271,7 +6231,7 @@
                     "subtype": "variable",
                     "file": "projects/lib/src/components/inputs/multi-select/multi-select.stories.ts",
                     "type": "object",
-                    "defaultValue": "{\n  options: [],\n  placeholder: '',\n  borderRadius: Sizes.md\n}"
+                    "defaultValue": "{\n  options: [],\n  placeholder: '',\n  borderRadius: Sizes.md,\n  roundedThumbnail: true\n}"
                 },
                 {
                     "name": "DefaultMultiSelect",
@@ -6287,7 +6247,15 @@
                     "subtype": "variable",
                     "file": "projects/lib/src/components/inputs/multi-select/multi-select.stories.ts",
                     "type": "Story<MultiSelectComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-multi-select\n        [options]=\"options\"\n        [placeholder]=\"placeholder\"\n        [borderRadius]=\"borderRadius\"\n    >\n    </pm-multi-select>\n  `\n})"
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-multi-select\n        [options]=\"options\"\n        [placeholder]=\"placeholder\"\n        [borderRadius]=\"borderRadius\"\n        [roundedThumbnail]=\"roundedThumbnail\"\n    >\n    </pm-multi-select>\n  `\n})"
+                },
+                {
+                    "name": "ThumbnailMultiSelect",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/inputs/multi-select/multi-select.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
                 }
             ],
             "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts": [
@@ -6322,6 +6290,82 @@
                     "file": "projects/lib/src/components/inputs/radio-button/radio-button.stories.ts",
                     "type": "Story<RadioButtonComponent>",
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-radio-button\n      [orientation]=\"orientation\"\n      [values]=\"values\"\n      [selectedValue]=\"selectedValue\"\n      [disabled]=\"disabled\"\n    >\n    </pm-radio-button>\n  `\n})"
+                }
+            ],
+            "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
+                    "type": "object",
+                    "defaultValue": "{\n  showIndex: true,\n  itemActionLabel: undefined,\n  itemMainLabel: undefined,\n  itemSubLabel: undefined,\n  actions: undefined,\n  itemList: undefined,\n  roundedBorders: true,\n  enableDragging: true,\n  enableSelection: true,\n}"
+                },
+                {
+                    "name": "DefaultDraggableList",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "DisabledDragging",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "NoIndexStringList",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
+                    "type": "Story<DraggableListComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-draggable-list\n      [showIndex]=\"showIndex\"\n      [itemActionLabel]=\"itemActionLabel\"\n      [itemMainLabel]=\"itemMainLabel\"\n      [itemSubLabel]=\"itemSubLabel\"\n      [actions]=\"actions\"\n      [itemList]=\"itemList\"\n      [roundedBorders]=\"roundedBorders\"\n      [enableDragging]=\"enableDragging\"\n      [enableSelection]=\"enableSelection\"\n    >\n    </pm-draggable-list>\n  `\n})"
+                }
+            ],
+            "projects/lib/src/components/lists/grid-list/grid-list.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
+                    "type": "object",
+                    "defaultValue": "{\n}"
+                },
+                {
+                    "name": "DefaultGridList",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "getColor",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
+                    "type": "",
+                    "defaultValue": "() => MainColors.primary"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
+                    "type": "Story<GridListComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-grid-list\n      [items]=\"items\"\n      [displayStyle]=\"displayStyle\"\n      [gridHeaderReverse]=\"gridHeaderReverse\"\n      [bodyBackgroundColor]=\"bodyBackgroundColor\"\n      [actionTemplate]=\"undefined\"\n      [overflowGallery]=\"overflowGallery\"\n    >\n    </pm-grid-list>\n  `\n})"
                 }
             ],
             "projects/lib/src/components/navigation/stepper/stepper.stories.ts": [
@@ -7122,7 +7166,7 @@
                 "linktype": "component",
                 "name": "MultiSelectComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/20",
+                "coverageCount": "0/22",
                 "status": "low"
             },
             {
@@ -7131,7 +7175,7 @@
                 "linktype": "interface",
                 "name": "MultiSelectOption",
                 "coveragePercent": 0,
-                "coverageCount": "0/3",
+                "coverageCount": "0/4",
                 "status": "low"
             },
             {
@@ -7160,6 +7204,16 @@
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
                 "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/lib/src/components/inputs/multi-select/multi-select.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "ThumbnailMultiSelect",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"

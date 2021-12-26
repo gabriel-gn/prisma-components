@@ -12,7 +12,6 @@
     <form>
       <input #inputBox
              #trigger="matAutocompleteTrigger"
-             [hidden]="trigger.panelOpen === false && _selectedOptions.length !== 0"
              matInput
              class="form-control h-100 border-0"
              type="text"
@@ -23,7 +22,6 @@
 
       <mat-autocomplete #auto="matAutocomplete"
                         (optionSelected)="selectOption($event.option.value);"
-                        [autoActiveFirstOption]="false"
                         [panelWidth]="multiselect.offsetWidth"
       >
         <ng-container *ngFor="let option of filteredOptions | async">
@@ -33,7 +31,7 @@
           >
             <div class="d-flex flex-row align-items-center">
               <ng-container *ngTemplateOutlet="thumbnailContainer; context: {$implicit: option}"></ng-container>
-              <span [ngClass]="{'ms-2': option?.thumbnail}">{{option.label}}</span>
+              <span class="color-gray-dark" [ngClass]="{'ms-2': option?.thumbnail}">{{option.label}}</span>
             </div>
           </mat-option>
         </ng-container>
@@ -44,7 +42,7 @@
 </div>
 
 <ng-template #thumbnailContainer let-option let-marginStart="marginStart">
-  <div *ngIf="option?.thumbnail" class="thumbnail-container" [ngClass]="{'ms-1': marginStart}">
+  <div *ngIf="option?.thumbnail" class="pm-multi-select-thumbnail-container" [ngClass]="{'ms-2': marginStart, 'circular': !roundedThumbnail, 'mx-2': roundedThumbnail}">
     <img
       aria-hidden
       [src]="option.thumbnail"

@@ -13,7 +13,7 @@ import {FormControl} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import _ from 'lodash';
-import {MatAutocompleteTrigger} from '@angular/material/autocomplete';
+import {MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, MatAutocompleteTrigger} from '@angular/material/autocomplete';
 import {Sizes} from '../../../models/sizes';
 
 export interface MultiSelectOption {
@@ -25,7 +25,16 @@ export interface MultiSelectOption {
 @Component({
   selector: 'pm-multi-select',
   templateUrl: './multi-select.component.html',
-  styleUrls: ['./multi-select.component.scss']
+  styleUrls: ['./multi-select.component.scss'],
+  providers: [
+    {
+      provide: MAT_AUTOCOMPLETE_DEFAULT_OPTIONS,
+      useValue: {
+        autoActiveFirstOption: false,
+        overlayPanelClass: 'pm-multi-select-autocomplete-panel'
+      }
+    }
+  ]
 })
 export class MultiSelectComponent implements OnInit, AfterViewInit {
 
@@ -35,6 +44,7 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
   @Input() placeholder: string = '';
   @Input() options: MultiSelectOption[] = [];
   @Input() borderRadius: Sizes = Sizes.md;
+  @Input() roundedThumbnail: boolean = true;
   myControl = new FormControl();
   _selectedOptions: MultiSelectOption[] = [];
   filteredOptions: Observable<MultiSelectOption[]>;
