@@ -3,10 +3,6 @@
 .pm-multi-select {
   @include btn-styles(var(--color-light), var(--color-light-sat), false);
 
-  form, input {
-    width: -webkit-fill-available;
-  }
-
   form {
     padding-top: 1px;
   }
@@ -50,6 +46,7 @@
 ::ng-deep {
   .pm-multi-select-autocomplete-panel {
     margin-left: -4px;
+    left: 20px !important;
 
     * {
       box-shadow: none !important;
