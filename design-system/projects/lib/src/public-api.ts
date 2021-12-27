@@ -66,3 +66,9 @@ export * from './components/containers/expansion-panel/expansion-panel.module';
 
 export * from './components/navigation/stepper/stepper.component';
 export * from './components/navigation/stepper/stepper.module';
+
+export * from './components/containers/tabs/tabs.component';
+export * from './components/containers/tabs/tabs.module';
+
+export * from './components/inputs/multi-select/multi-select.component';
+export * from './components/inputs/multi-select/multi-select.module';

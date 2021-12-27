@@ -1,0 +1,80 @@
+import {Meta, Story, ArgsTable, Canvas, Source} from '@storybook/addon-docs';
+import {TabsComponent} from './tabs.component';
+import {moduleMetadata} from "@storybook/angular";
+import {TabsModule} from "./tabs.module";
+import SourceStory from '!!raw-loader!./tabs.stories';
+import {
+  defaultArgs,
+  DefaultTabs,
+} from "./tabs.stories"; import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+
+export const argTypes = {
+  // XXXArg1: {
+  //   // description: 'CRIAR A DESCRIÇÃO COMO COMENTÁRIO MULTILINHA ACIMA DOS INPUTS NO COMPONENTE',
+  //   table: {
+  //     defaultValue: { summary: defaultArgs.XXXArg1},
+  //   },
+  //   control: { type: 'inline-radio'}, options: [true, false],
+  // },
+}
+
+<Meta
+  title='Components/Containers/Tabs'
+  component={TabsComponent}
+  argTypes={argTypes}
+  parameters={{ badges: [ 'beta' ] }}
+  decorators={[
+    moduleMetadata({
+      imports: [TabsModule, BrowserAnimationsModule]
+    })
+  ]}
+/>
+
+export const Template = (args) => <TabsComponent {...args} />
+
+# Tabs
+
+#### Descrição do componente Tabs
+
+<br/>
+<br/>
+
+## Tabs padrão
+
+Descrição do componente Tabs padrão
+
+Deve ser usado da seguinte forma:
+
+```
+<pm-tabs>
+</pm-tabs>
+```
+
+<Canvas>
+  <Story name='Default' story={DefaultTabs} />
+</Canvas>
+
+## Module Config
+
+```
+import {TabsModule} from '@mprisma/components';
+
+@NgModule({
+  imports: [
+    ...,
+    TabsModule,
+    ...,
+  ]
+})
+```
+
+## Args Table
+
+<ArgsTable story='Default'/>
+
+## Source
+
+<details>
+  <summary>The source stories on file <code>tabs.stories.ts</code></summary>
+  <Source code={SourceStory} language='ts' />
+</details>

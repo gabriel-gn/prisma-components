@@ -1,0 +1,86 @@
+import {Meta, Story, ArgsTable, Canvas, Source} from '@storybook/addon-docs';
+import {MultiSelectComponent} from './multi-select.component';
+import {moduleMetadata} from "@storybook/angular";
+import {MultiSelectModule} from "./multi-select.module";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import SourceStory from '!!raw-loader!./multi-select.stories';
+import {
+  defaultArgs,
+  DefaultMultiSelect,
+  ThumbnailMultiSelect
+} from "./multi-select.stories";
+
+export const argTypes = {
+  // XXXArg1: {
+  //   // description: 'CRIAR A DESCRIÇÃO COMO COMENTÁRIO MULTILINHA ACIMA DOS INPUTS NO COMPONENTE',
+  //   table: {
+  //     defaultValue: { summary: defaultArgs.XXXArg1},
+  //   },
+  //   control: { type: 'inline-radio'}, options: [true, false],
+  // },
+}
+
+<Meta
+  title='Components/Inputs/Multi Select'
+  component={MultiSelectComponent}
+  argTypes={argTypes}
+  parameters={{ badges: [ 'beta' ] }}
+  decorators={[
+    moduleMetadata({
+      imports: [
+        MultiSelectModule,
+        BrowserAnimationsModule
+      ]
+    })
+  ]}
+/>
+
+export const Template = (args) => <MultiSelectComponent {...args} />
+
+# MultiSelect
+
+#### Descrição do componente MultiSelect
+
+<br/>
+<br/>
+
+## MultiSelect padrão
+
+Descrição do componente MultiSelect padrão
+
+Deve ser usado da seguinte forma:
+
+```
+<pm-multi-select>
+</pm-multi-select>
+```
+
+<Canvas>
+  <Story name='Default' story={DefaultMultiSelect} />
+  <Story name='Thumbnail' story={ThumbnailMultiSelect} />
+</Canvas>
+
+## Module Config
+
+```
+import {MultiSelectModule} from '@mprisma/components';
+
+@NgModule({
+  imports: [
+    ...,
+    MultiSelectModule,
+    ...,
+  ]
+})
+```
+
+## Args Table
+
+<ArgsTable story='Default'/>
+
+## Source
+
+<details>
+  <summary>The source stories on file <code>multi-select.stories.ts</code></summary>
+  <Source code={SourceStory} language='ts' />
+</details>
