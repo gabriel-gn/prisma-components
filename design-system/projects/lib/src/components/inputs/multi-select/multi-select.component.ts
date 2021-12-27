@@ -101,10 +101,9 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
   }
 
   public openSelect(): void {
-    this.trigger.openPanel();
     setTimeout(() => {
       try { this.inputBoxEl.nativeElement.focus(); } catch (e) {}
-    }, 50);
+    }, 0);
   }
 
   public clearSelected(): void {

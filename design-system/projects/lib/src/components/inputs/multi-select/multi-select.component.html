@@ -1,18 +1,18 @@
-<div #multiselect class="pm-multi-select cursor-pointer border-radius-{{borderRadius}}" (click)="$event.stopPropagation(); openSelect()">
+<div #multiselect class="pm-multi-select cursor-pointer border-radius-{{borderRadius}}" (click)="openSelect();">
   <div class="d-flex flex-wrap p-1 rad-md position-relative">
     <div class="d-flex flex-row justify-content-start flex-wrap">
       <div *ngFor="let selected of _selectedOptions; let first = first" [ngClass]="{'m-1 chip-container': true}">
         <div class="d-flex flex-row align-items-center">
           <ng-container *ngTemplateOutlet="thumbnailContainer; context: {$implicit: selected, marginStart: true}"></ng-container>
           <p class="m-0 ms-1">{{selected.label}}</p>
-          <button class="btn btn-light" (click)="removeSelectedOption(selected)">x</button>
+          <button class="btn btn-light" (click)="$event.stopPropagation(); removeSelectedOption(selected)">x</button>
         </div>
       </div>
     </div>
     <form>
       <input #inputBox
              #trigger="matAutocompleteTrigger"
-             [hidden]="this._selectedOptions.length === this.options.length"
+             [hidden]="_selectedOptions.length === options.length"
              matInput
              class="form-control h-100 border-0"
              type="text"
@@ -43,7 +43,7 @@
 </div>
 
 <ng-template #thumbnailContainer let-option let-marginStart="marginStart">
-  <div *ngIf="option?.thumbnail" class="pm-multi-select-thumbnail-container" [ngClass]="{'ms-2': marginStart, 'circular': !roundedThumbnail, 'mx-2': roundedThumbnail}">
+  <div *ngIf="option?.thumbnail" class="pm-multi-select-thumbnail-container" [ngClass]="{'ms-2': marginStart, 'circular': roundedThumbnail, 'mx-2': roundedThumbnail}">
     <img
       aria-hidden
       [src]="option.thumbnail"
