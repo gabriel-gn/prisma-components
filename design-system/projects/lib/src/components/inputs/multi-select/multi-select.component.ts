@@ -40,11 +40,27 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
 
   @ViewChild('inputBox') inputBoxEl: ElementRef;
   @ViewChild('trigger') trigger: MatAutocompleteTrigger;
+  /**
+   * Ao ser selecionada uma opção nova, emite
+   */
   @Output() selectedOptions = new EventEmitter<MultiSelectOption[]>();
+  /**
+   * Texto a ser exibido no input
+   */
   @Input() placeholder: string = '';
+  /**
+   * opções a serem exibidas no input
+   */
   @Input() options: MultiSelectOption[] = [];
   @Input() borderRadius: Sizes = Sizes.md;
+  /**
+   * se as thumbnails serão arredondadas
+   */
   @Input() roundedThumbnail: boolean = true;
+  /**
+   * limite máximo de seleções de itens
+   */
+  @Input() limit: number = 0;
   myControl = new FormControl();
   _selectedOptions: MultiSelectOption[] = [];
   filteredOptions: Observable<MultiSelectOption[]>;

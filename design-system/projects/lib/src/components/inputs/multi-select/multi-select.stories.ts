@@ -16,6 +16,7 @@ export const Template: Story<MultiSelectComponent> = (args) => ({
         [placeholder]="placeholder"
         [borderRadius]="borderRadius"
         [roundedThumbnail]="roundedThumbnail"
+        [limit]="limit"
     >
     </pm-multi-select>
   `
@@ -25,7 +26,8 @@ export const defaultArgs = {
   options: [],
   placeholder: '',
   borderRadius: Sizes.md,
-  roundedThumbnail: true
+  roundedThumbnail: true,
+  limit: 0
 };
 
 export const DefaultMultiSelect = Template.bind({});
