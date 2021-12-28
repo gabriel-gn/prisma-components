@@ -1,0 +1,81 @@
+import {Meta, Story, ArgsTable, Canvas, Source} from '@storybook/addon-docs';
+import {SpinnerComponent} from './spinner.component';
+import {moduleMetadata} from "@storybook/angular";
+import {NgIfLoadedModule} from "../ng-if-loaded.module";
+import SourceStory from '!!raw-loader!./spinner.stories';
+import {
+  defaultArgs,
+  DefaultSpinner,
+} from "./spinner.stories";
+
+export const argTypes = {
+  // XXXArg1: {
+  //   // description: 'CRIAR A DESCRIÇÃO COMO COMENTÁRIO MULTILINHA ACIMA DOS INPUTS NO COMPONENTE',
+  //   table: {
+  //     defaultValue: { summary: defaultArgs.XXXArg1},
+  //   },
+  //   control: { type: 'inline-radio'}, options: [true, false],
+  // },
+}
+
+<Meta
+  title='Directives/ngIfLoaded'
+  component={SpinnerComponent}
+  argTypes={argTypes}
+  parameters={{ badges: [ 'beta' ] }}
+  decorators={[
+    moduleMetadata({
+      imports: [NgIfLoadedModule.forRoot()]
+    })
+  ]}
+/>
+
+export const Template = (args) => <SpinnerComponent {...args} />
+
+# Spinner
+
+#### Descrição do componente Spinner
+
+<br/>
+<br/>
+
+## Spinner padrão
+
+Descrição do componente Spinner padrão
+
+Deve ser usado da seguinte forma:
+
+```
+<div *ngIfLoaded="flag">
+  Conteúdo normal
+</div>
+```
+
+<Canvas>
+  <Story name='Default' story={DefaultSpinner} />
+</Canvas>
+
+## Module Config
+
+```
+import {SpinnerModule} from '@mprisma/components';
+
+@NgModule({
+  imports: [
+    ...,
+    NgIfLoadedModule.forRoot()
+    ...,
+  ]
+})
+```
+
+## Args Table
+
+<ArgsTable story='Default'/>
+
+## Source
+
+<details>
+  <summary>The source stories on file <code>spinner.stories.ts</code></summary>
+  <Source code={SourceStory} language='ts' />
+</details>

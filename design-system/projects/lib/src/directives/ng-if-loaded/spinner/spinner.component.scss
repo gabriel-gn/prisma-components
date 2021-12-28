@@ -1,0 +1,211 @@
+.pm-spinner {
+  // Cube parameters
+  $colorBorder: #f5f5f5;
+  $colorMin: #dddddd;
+  //$colorMax: #505050;
+  $colorMax: #dddddd;
+  $size: 30px;
+  // Time parameters
+  $duration: 1s;
+  $wait: 20%;
+  $borderSize: $size * 0.1;
+
+  .spinner-wrap {
+    perspective: 2 * $size;
+    perspective-origin: 50% 0px;
+    min-height: 50px;
+    padding-top: 3px;
+    align-self: center;
+  }
+
+  .spinner-cube {
+    position: relative;
+    width: $size;
+    transform-style: preserve-3d;
+  }
+
+  .spinner-cube div {
+    position: absolute;
+    width: $size;
+    height: $size;
+  }
+
+  .spinner-front {
+    background: $colorMin;
+    border: $borderSize solid $colorBorder;
+    transform: translateZ($size * 0.5);
+    animation: colorsf $duration ease-in-out infinite;
+    -moz-animation: colorsf $duration ease-in-out infinite;
+    -webkit-animation: colorsf $duration ease-in-out infinite;
+    -o-animation: colorsf $duration ease-in-out infinite;
+    -ms-animation: colorsf $duration ease-in-out infinite;
+  }
+
+  .spinner-left {
+    background: $colorMax;
+    border: $borderSize solid $colorBorder;
+    transform: rotateY(270deg) translateX(-$size * 0.5);
+    transform-origin: center left;
+    animation: colorsl $duration ease-in-out infinite;
+    -moz-animation: colorsl $duration ease-in-out infinite;
+    -webkit-animation: colorsl $duration ease-in-out infinite;
+    -o-animation: colorsl $duration ease-in-out infinite;
+    -ms-animation: colorsl $duration ease-in-out infinite;
+  }
+
+  .spinner-top {
+    background: $colorMax;
+    border: $borderSize solid $colorBorder;
+    transform: rotateX(90deg) translateZ($size * 0.5);
+    animation: colorsl $duration ease-in-out infinite;
+    -moz-animation: colorsl $duration ease-in-out infinite;
+    -webkit-animation: colorsl $duration ease-in-out infinite;
+    -o-animation: colorsl $duration ease-in-out infinite;
+    -ms-animation: colorsl $duration ease-in-out infinite;
+  }
+
+  @keyframes colorsf {
+    #{$wait} {
+      background: $colorMin;
+    }
+    100% {
+      background: $colorMax;
+    }
+  }
+
+  @keyframes colorsl {
+    #{$wait} {
+      background: $colorMax;
+    }
+    100% {
+      background: $colorMin;
+    }
+  }
+
+  @keyframes cube {
+    #{$wait} {
+      transform: rotateY(0deg);
+    }
+    100% {
+      transform: rotateY(90deg);
+    }
+  }
+
+  @-webkit-keyframes colorsf {
+    #{$wait} {
+      background: $colorMin;
+    }
+    100% {
+      background: $colorMax;
+    }
+  }
+
+  @-webkit-keyframes colorsl {
+    #{$wait} {
+      background: $colorMax;
+    }
+    100% {
+      background: $colorMin;
+    }
+  }
+
+  @-webkit-keyframes cube {
+    #{$wait} {
+      transform: rotateY(0deg);
+    }
+    100% {
+      transform: rotateY(90deg);
+    }
+  }
+
+
+  @-o-keyframes colorsf {
+    #{$wait} {
+      background: $colorMin;
+    }
+    100% {
+      background: $colorMax;
+    }
+  }
+
+  @-o-keyframes colorsl {
+    #{$wait} {
+      background: $colorMax;
+    }
+    100% {
+      background: $colorMin;
+    }
+  }
+
+  @-o-keyframes cube {
+    #{$wait} {
+      transform: rotateY(0deg);
+    }
+    100% {
+      transform: rotateY(90deg);
+    }
+  }
+
+  @-ms-keyframes colorsf {
+    #{$wait} {
+      background: $colorMin;
+    }
+    100% {
+      background: $colorMax;
+    }
+  }
+
+  @-ms-keyframes colorsl {
+    #{$wait} {
+      background: $colorMax;
+    }
+    100% {
+      background: $colorMin;
+    }
+  }
+
+  @-ms-keyframes cube {
+    #{$wait} {
+      transform: rotateY(0deg);
+    }
+    100% {
+      transform: rotateY(90deg);
+    }
+  }
+
+  @-ms-keyframes colorsf {
+    #{$wait} {
+      background: $colorMin;
+    }
+    100% {
+      background: $colorMax;
+    }
+  }
+
+  @-moz-keyframes colorsl {
+    #{$wait} {
+      background: $colorMax;
+    }
+    100% {
+      background: $colorMin;
+    }
+  }
+
+  @-moz-keyframes cube {
+    #{$wait} {
+      transform: rotateY(0deg);
+    }
+    100% {
+      transform: rotateY(90deg);
+    }
+  }
+
+  .spinner-cube {
+    z-index: 999;
+    animation: cube $duration ease-in-out infinite;
+    -moz-animation: cube $duration ease-in-out infinite;
+    -webkit-animation: cube $duration ease-in-out infinite;
+    -o-animation: cube $duration ease-in-out infinite;
+    -ms-animation: cube $duration ease-in-out infinite;
+  }
+}

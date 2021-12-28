@@ -203,10 +203,10 @@
         },
         {
             "name": "MultiSelectOption",
-            "id": "interface-MultiSelectOption-4f8173d2946f3d4bb3ef55d5f99b78c0",
+            "id": "interface-MultiSelectOption-42a26a2cb5f3b43a2989786162fdb7c9",
             "file": "projects/lib/src/components/inputs/multi-select/multi-select.component.ts",
             "type": "interface",
-            "sourceCode": "import {\n  AfterViewInit,\n  ChangeDetectorRef,\n  Component,\n  ElementRef,\n  EventEmitter,\n  Input,\n  OnInit,\n  Output,\n  ViewChild\n} from '@angular/core';\nimport {FormControl} from '@angular/forms';\nimport {Observable} from 'rxjs';\nimport {map, startWith} from 'rxjs/operators';\nimport _ from 'lodash';\nimport {MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, MatAutocompleteTrigger} from '@angular/material/autocomplete';\nimport {Sizes} from '../../../models/sizes';\n\nexport interface MultiSelectOption {\n  label: string;\n  value: any;\n  thumbnail: string;\n}\n\n@Component({\n  selector: 'pm-multi-select',\n  templateUrl: './multi-select.component.html',\n  styleUrls: ['./multi-select.component.scss'],\n  providers: [\n    {\n      provide: MAT_AUTOCOMPLETE_DEFAULT_OPTIONS,\n      useValue: {\n        autoActiveFirstOption: false,\n        overlayPanelClass: 'pm-multi-select-autocomplete-panel'\n      }\n    }\n  ]\n})\nexport class MultiSelectComponent implements OnInit, AfterViewInit {\n\n  @ViewChild('inputBox') inputBoxEl: ElementRef;\n  @ViewChild('trigger') trigger: MatAutocompleteTrigger;\n  @Output() selectedOptions = new EventEmitter<MultiSelectOption[]>();\n  @Input() placeholder: string = '';\n  @Input() options: MultiSelectOption[] = [];\n  @Input() borderRadius: Sizes = Sizes.md;\n  @Input() roundedThumbnail: boolean = true;\n  myControl = new FormControl();\n  _selectedOptions: MultiSelectOption[] = [];\n  filteredOptions: Observable<MultiSelectOption[]>;\n\n  constructor(\n    private cdr: ChangeDetectorRef\n  ) {\n  }\n\n  ngOnInit(): void {\n    this.filteredOptions = this.myControl.valueChanges.pipe(\n      startWith(''),\n      map(value => (typeof value === 'string' ? value : `${value.label}`)),\n      map(label => this._filter(label)),\n    );\n  }\n\n  ngAfterViewInit(): void {\n    this.clearInput();\n  }\n\n  displayFn(user: MultiSelectOption): string {\n    return user && user.label ? user.label : '';\n  }\n\n  private _filter(label: string): MultiSelectOption[] {\n    const filterValue = label.toLowerCase();\n\n    return _.difference(\n      this.options.filter(option => option.label.toLowerCase().includes(filterValue)),\n      this._selectedOptions\n    );\n  }\n\n  public selectOption(option: any): void {\n    this._selectedOptions.push(option);\n    this.selectedOptions.emit(this._selectedOptions);\n    this.clearInput();\n  }\n\n  private clearInput(): void {\n    this.myControl.setValue('');\n    try { this.inputBoxEl.nativeElement.blur(); } catch (e) {}\n    this.cdr.detectChanges();\n  }\n\n  public removeSelectedOption(option: MultiSelectOption): void {\n    _.remove(this._selectedOptions, option);\n    this.clearInput();\n  }\n\n  public isOptionSelected(option: MultiSelectOption): boolean {\n    return !!this._selectedOptions.find(sOptions => _.isEqual(sOptions, option));\n  }\n\n  public openSelect(): void {\n    setTimeout(() => {\n      try { this.inputBoxEl.nativeElement.focus(); } catch (e) {}\n    }, 0);\n  }\n\n  public clearSelected(): void {\n    this._selectedOptions = [];\n    this.selectedOptions.emit(this._selectedOptions);\n    this.clearInput();\n  }\n\n}\n",
+            "sourceCode": "import {\n  AfterViewInit,\n  ChangeDetectorRef,\n  Component,\n  ElementRef,\n  EventEmitter,\n  Input,\n  OnInit,\n  Output,\n  ViewChild\n} from '@angular/core';\nimport {FormControl} from '@angular/forms';\nimport {Observable} from 'rxjs';\nimport {map, startWith} from 'rxjs/operators';\nimport _ from 'lodash';\nimport {MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, MatAutocompleteTrigger} from '@angular/material/autocomplete';\nimport {Sizes} from '../../../models/sizes';\n\nexport interface MultiSelectOption {\n  label: string;\n  value: any;\n  thumbnail: string;\n}\n\n@Component({\n  selector: 'pm-multi-select',\n  templateUrl: './multi-select.component.html',\n  styleUrls: ['./multi-select.component.scss'],\n  providers: [\n    {\n      provide: MAT_AUTOCOMPLETE_DEFAULT_OPTIONS,\n      useValue: {\n        autoActiveFirstOption: false,\n        overlayPanelClass: 'pm-multi-select-autocomplete-panel'\n      }\n    }\n  ]\n})\nexport class MultiSelectComponent implements OnInit, AfterViewInit {\n\n  @ViewChild('inputBox') inputBoxEl: ElementRef;\n  @ViewChild('trigger') trigger: MatAutocompleteTrigger;\n  /**\n   * Ao ser selecionada uma opção nova, emite\n   */\n  @Output() selectedOptions = new EventEmitter<MultiSelectOption[]>();\n  /**\n   * Texto a ser exibido no input\n   */\n  @Input() placeholder: string = '';\n  /**\n   * opções a serem exibidas no input\n   */\n  @Input() options: MultiSelectOption[] = [];\n  @Input() borderRadius: Sizes = Sizes.md;\n  /**\n   * se as thumbnails serão arredondadas\n   */\n  @Input() roundedThumbnail: boolean = true;\n  /**\n   * limite máximo de seleções de itens\n   */\n  @Input() limit: number = 0;\n  myControl = new FormControl();\n  _selectedOptions: MultiSelectOption[] = [];\n  filteredOptions: Observable<MultiSelectOption[]>;\n\n  constructor(\n    private cdr: ChangeDetectorRef\n  ) {\n  }\n\n  ngOnInit(): void {\n    this.filteredOptions = this.myControl.valueChanges.pipe(\n      startWith(''),\n      map(value => (typeof value === 'string' ? value : `${value.label}`)),\n      map(label => this._filter(label)),\n    );\n  }\n\n  ngAfterViewInit(): void {\n    this.clearInput();\n  }\n\n  displayFn(user: MultiSelectOption): string {\n    return user && user.label ? user.label : '';\n  }\n\n  private _filter(label: string): MultiSelectOption[] {\n    const filterValue = label.toLowerCase();\n\n    return _.difference(\n      this.options.filter(option => option.label.toLowerCase().includes(filterValue)),\n      this._selectedOptions\n    );\n  }\n\n  public selectOption(option: any): void {\n    this._selectedOptions.push(option);\n    this.selectedOptions.emit(this._selectedOptions);\n    this.clearInput();\n  }\n\n  private clearInput(): void {\n    this.myControl.setValue('');\n    try { this.inputBoxEl.nativeElement.blur(); } catch (e) {}\n    this.cdr.detectChanges();\n  }\n\n  public removeSelectedOption(option: MultiSelectOption): void {\n    _.remove(this._selectedOptions, option);\n    this.clearInput();\n  }\n\n  public isOptionSelected(option: MultiSelectOption): boolean {\n    return !!this._selectedOptions.find(sOptions => _.isEqual(sOptions, option));\n  }\n\n  public openSelect(): void {\n    setTimeout(() => {\n      try { this.inputBoxEl.nativeElement.focus(); } catch (e) {}\n    }, 0);\n  }\n\n  public clearSelected(): void {\n    this._selectedOptions = [];\n    this.selectedOptions.emit(this._selectedOptions);\n    this.clearInput();\n  }\n\n}\n",
             "properties": [
                 {
                     "name": "label",
@@ -741,6 +741,114 @@
     ],
     "classes": [],
     "directives": [
+        {
+            "name": "NgIfLoadedDirective",
+            "id": "directive-NgIfLoadedDirective-30cc31fbd7bff9edadec5796d889ca74",
+            "file": "projects/lib/src/directives/ng-if-loaded/ng-if-loaded.directive.ts",
+            "type": "directive",
+            "description": "",
+            "sourceCode": "import {\n  ComponentFactoryResolver,\n  Directive,\n  Inject,\n  Input,\n  TemplateRef,\n  ViewContainerRef\n} from '@angular/core';\nimport {IF_LOADED_SPINNER} from './injection';\nimport {ComponentType} from '@angular/cdk/overlay';\n\n@Directive({\n  // tslint:disable-next-line:directive-selector\n  selector: '[ngIfLoaded]'\n})\nexport class NgIfLoadedDirective {\n\n  spinner: ComponentType<any>;\n\n  constructor(\n    @Inject(IF_LOADED_SPINNER) spinnerComponent: ComponentType<any>,\n    private templateRef: TemplateRef<any>,\n    private viewContainer: ViewContainerRef,\n    private resolver: ComponentFactoryResolver\n  ) {\n    this.spinner = spinnerComponent;\n  }\n\n\n  @Input()\n  set ngIfLoaded(value) {\n    if (value) {\n      this.viewContainer.clear();\n      this.viewContainer.createEmbeddedView(this.templateRef);\n    } else {\n      this.viewContainer.clear();\n      const factory = this.resolver.resolveComponentFactory(this.spinner);\n      this.viewContainer.createComponent(factory);\n    }\n  }\n\n}\n",
+            "selector": "[ngIfLoaded]",
+            "providers": [],
+            "inputsClass": [
+                {
+                    "name": "ngIfLoaded",
+                    "line": 31
+                }
+            ],
+            "outputsClass": [],
+            "hostBindings": [],
+            "hostListeners": [],
+            "propertiesClass": [
+                {
+                    "name": "spinner",
+                    "type": "ComponentType<any>",
+                    "optional": false,
+                    "description": "",
+                    "line": 18
+                }
+            ],
+            "methodsClass": [],
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "args": [
+                    {
+                        "name": "spinnerComponent",
+                        "type": "ComponentType<any>"
+                    },
+                    {
+                        "name": "templateRef",
+                        "type": "TemplateRef<any>"
+                    },
+                    {
+                        "name": "viewContainer",
+                        "type": "ViewContainerRef"
+                    },
+                    {
+                        "name": "resolver",
+                        "type": "ComponentFactoryResolver"
+                    }
+                ],
+                "line": 18,
+                "jsdoctags": [
+                    {
+                        "name": "spinnerComponent",
+                        "type": "ComponentType<any>",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "templateRef",
+                        "type": "TemplateRef<any>",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "viewContainer",
+                        "type": "ViewContainerRef",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "resolver",
+                        "type": "ComponentFactoryResolver",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            "accessors": {
+                "ngIfLoaded": {
+                    "name": "ngIfLoaded",
+                    "setSignature": {
+                        "name": "ngIfLoaded",
+                        "type": "void",
+                        "args": [
+                            {
+                                "name": "value",
+                                "type": ""
+                            }
+                        ],
+                        "returnType": "void",
+                        "line": 31,
+                        "jsdoctags": [
+                            {
+                                "name": "value",
+                                "type": "",
+                                "tagName": {
+                                    "text": "param"
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
+        },
         {
             "name": "ResultSearchElements",
             "id": "directive-ResultSearchElements-f9354be50d181e1b286a81c65aa6d881",
@@ -2937,7 +3045,7 @@
         },
         {
             "name": "MultiSelectComponent",
-            "id": "component-MultiSelectComponent-4f8173d2946f3d4bb3ef55d5f99b78c0",
+            "id": "component-MultiSelectComponent-42a26a2cb5f3b43a2989786162fdb7c9",
             "file": "projects/lib/src/components/inputs/multi-select/multi-select.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -2961,25 +3069,35 @@
                 {
                     "name": "borderRadius",
                     "defaultValue": "Sizes.md",
-                    "line": 46,
+                    "line": 55,
                     "type": "Sizes"
+                },
+                {
+                    "name": "limit",
+                    "defaultValue": "0",
+                    "description": "<p>limite máximo de seleções de itens</p>\n",
+                    "line": 63,
+                    "type": "number"
                 },
                 {
                     "name": "options",
                     "defaultValue": "[]",
-                    "line": 45,
+                    "description": "<p>opções a serem exibidas no input</p>\n",
+                    "line": 54,
                     "type": "MultiSelectOption[]"
                 },
                 {
                     "name": "placeholder",
                     "defaultValue": "''",
-                    "line": 44,
+                    "description": "<p>Texto a ser exibido no input</p>\n",
+                    "line": 50,
                     "type": "string"
                 },
                 {
                     "name": "roundedThumbnail",
                     "defaultValue": "true",
-                    "line": 47,
+                    "description": "<p>se as thumbnails serão arredondadas</p>\n",
+                    "line": 59,
                     "type": "boolean"
                 }
             ],
@@ -2987,7 +3105,8 @@
                 {
                     "name": "selectedOptions",
                     "defaultValue": "new EventEmitter<MultiSelectOption[]>()",
-                    "line": 43,
+                    "description": "<p>Ao ser selecionada uma opção nova, emite</p>\n",
+                    "line": 46,
                     "type": "EventEmitter"
                 }
             ],
@@ -2998,14 +3117,14 @@
                     "type": "MultiSelectOption[]",
                     "optional": false,
                     "description": "",
-                    "line": 49
+                    "line": 65
                 },
                 {
                     "name": "filteredOptions",
                     "type": "Observable<MultiSelectOption[]>",
                     "optional": false,
                     "description": "",
-                    "line": 50
+                    "line": 66
                 },
                 {
                     "name": "inputBoxEl",
@@ -3026,7 +3145,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 48
+                    "line": 64
                 },
                 {
                     "name": "trigger",
@@ -3054,7 +3173,7 @@
                     "optional": false,
                     "returnType": "MultiSelectOption[]",
                     "typeParameters": [],
-                    "line": 73,
+                    "line": 89,
                     "modifierKind": [
                         112
                     ],
@@ -3074,7 +3193,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 88,
+                    "line": 104,
                     "modifierKind": [
                         112
                     ]
@@ -3085,7 +3204,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 109,
+                    "line": 125,
                     "modifierKind": [
                         114
                     ]
@@ -3101,7 +3220,7 @@
                     "optional": false,
                     "returnType": "string",
                     "typeParameters": [],
-                    "line": 69,
+                    "line": 85,
                     "jsdoctags": [
                         {
                             "name": "user",
@@ -3123,7 +3242,7 @@
                     "optional": false,
                     "returnType": "boolean",
                     "typeParameters": [],
-                    "line": 99,
+                    "line": 115,
                     "modifierKind": [
                         114
                     ],
@@ -3143,7 +3262,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 65
+                    "line": 81
                 },
                 {
                     "name": "ngOnInit",
@@ -3151,7 +3270,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 57
+                    "line": 73
                 },
                 {
                     "name": "openSelect",
@@ -3159,7 +3278,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 103,
+                    "line": 119,
                     "modifierKind": [
                         114
                     ]
@@ -3175,7 +3294,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 94,
+                    "line": 110,
                     "modifierKind": [
                         114
                     ],
@@ -3200,7 +3319,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 82,
+                    "line": 98,
                     "modifierKind": [
                         114
                     ],
@@ -3220,11 +3339,11 @@
             "description": "",
             "rawdescription": "",
             "type": "component",
-            "sourceCode": "import {\n  AfterViewInit,\n  ChangeDetectorRef,\n  Component,\n  ElementRef,\n  EventEmitter,\n  Input,\n  OnInit,\n  Output,\n  ViewChild\n} from '@angular/core';\nimport {FormControl} from '@angular/forms';\nimport {Observable} from 'rxjs';\nimport {map, startWith} from 'rxjs/operators';\nimport _ from 'lodash';\nimport {MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, MatAutocompleteTrigger} from '@angular/material/autocomplete';\nimport {Sizes} from '../../../models/sizes';\n\nexport interface MultiSelectOption {\n  label: string;\n  value: any;\n  thumbnail: string;\n}\n\n@Component({\n  selector: 'pm-multi-select',\n  templateUrl: './multi-select.component.html',\n  styleUrls: ['./multi-select.component.scss'],\n  providers: [\n    {\n      provide: MAT_AUTOCOMPLETE_DEFAULT_OPTIONS,\n      useValue: {\n        autoActiveFirstOption: false,\n        overlayPanelClass: 'pm-multi-select-autocomplete-panel'\n      }\n    }\n  ]\n})\nexport class MultiSelectComponent implements OnInit, AfterViewInit {\n\n  @ViewChild('inputBox') inputBoxEl: ElementRef;\n  @ViewChild('trigger') trigger: MatAutocompleteTrigger;\n  @Output() selectedOptions = new EventEmitter<MultiSelectOption[]>();\n  @Input() placeholder: string = '';\n  @Input() options: MultiSelectOption[] = [];\n  @Input() borderRadius: Sizes = Sizes.md;\n  @Input() roundedThumbnail: boolean = true;\n  myControl = new FormControl();\n  _selectedOptions: MultiSelectOption[] = [];\n  filteredOptions: Observable<MultiSelectOption[]>;\n\n  constructor(\n    private cdr: ChangeDetectorRef\n  ) {\n  }\n\n  ngOnInit(): void {\n    this.filteredOptions = this.myControl.valueChanges.pipe(\n      startWith(''),\n      map(value => (typeof value === 'string' ? value : `${value.label}`)),\n      map(label => this._filter(label)),\n    );\n  }\n\n  ngAfterViewInit(): void {\n    this.clearInput();\n  }\n\n  displayFn(user: MultiSelectOption): string {\n    return user && user.label ? user.label : '';\n  }\n\n  private _filter(label: string): MultiSelectOption[] {\n    const filterValue = label.toLowerCase();\n\n    return _.difference(\n      this.options.filter(option => option.label.toLowerCase().includes(filterValue)),\n      this._selectedOptions\n    );\n  }\n\n  public selectOption(option: any): void {\n    this._selectedOptions.push(option);\n    this.selectedOptions.emit(this._selectedOptions);\n    this.clearInput();\n  }\n\n  private clearInput(): void {\n    this.myControl.setValue('');\n    try { this.inputBoxEl.nativeElement.blur(); } catch (e) {}\n    this.cdr.detectChanges();\n  }\n\n  public removeSelectedOption(option: MultiSelectOption): void {\n    _.remove(this._selectedOptions, option);\n    this.clearInput();\n  }\n\n  public isOptionSelected(option: MultiSelectOption): boolean {\n    return !!this._selectedOptions.find(sOptions => _.isEqual(sOptions, option));\n  }\n\n  public openSelect(): void {\n    setTimeout(() => {\n      try { this.inputBoxEl.nativeElement.focus(); } catch (e) {}\n    }, 0);\n  }\n\n  public clearSelected(): void {\n    this._selectedOptions = [];\n    this.selectedOptions.emit(this._selectedOptions);\n    this.clearInput();\n  }\n\n}\n",
+            "sourceCode": "import {\n  AfterViewInit,\n  ChangeDetectorRef,\n  Component,\n  ElementRef,\n  EventEmitter,\n  Input,\n  OnInit,\n  Output,\n  ViewChild\n} from '@angular/core';\nimport {FormControl} from '@angular/forms';\nimport {Observable} from 'rxjs';\nimport {map, startWith} from 'rxjs/operators';\nimport _ from 'lodash';\nimport {MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, MatAutocompleteTrigger} from '@angular/material/autocomplete';\nimport {Sizes} from '../../../models/sizes';\n\nexport interface MultiSelectOption {\n  label: string;\n  value: any;\n  thumbnail: string;\n}\n\n@Component({\n  selector: 'pm-multi-select',\n  templateUrl: './multi-select.component.html',\n  styleUrls: ['./multi-select.component.scss'],\n  providers: [\n    {\n      provide: MAT_AUTOCOMPLETE_DEFAULT_OPTIONS,\n      useValue: {\n        autoActiveFirstOption: false,\n        overlayPanelClass: 'pm-multi-select-autocomplete-panel'\n      }\n    }\n  ]\n})\nexport class MultiSelectComponent implements OnInit, AfterViewInit {\n\n  @ViewChild('inputBox') inputBoxEl: ElementRef;\n  @ViewChild('trigger') trigger: MatAutocompleteTrigger;\n  /**\n   * Ao ser selecionada uma opção nova, emite\n   */\n  @Output() selectedOptions = new EventEmitter<MultiSelectOption[]>();\n  /**\n   * Texto a ser exibido no input\n   */\n  @Input() placeholder: string = '';\n  /**\n   * opções a serem exibidas no input\n   */\n  @Input() options: MultiSelectOption[] = [];\n  @Input() borderRadius: Sizes = Sizes.md;\n  /**\n   * se as thumbnails serão arredondadas\n   */\n  @Input() roundedThumbnail: boolean = true;\n  /**\n   * limite máximo de seleções de itens\n   */\n  @Input() limit: number = 0;\n  myControl = new FormControl();\n  _selectedOptions: MultiSelectOption[] = [];\n  filteredOptions: Observable<MultiSelectOption[]>;\n\n  constructor(\n    private cdr: ChangeDetectorRef\n  ) {\n  }\n\n  ngOnInit(): void {\n    this.filteredOptions = this.myControl.valueChanges.pipe(\n      startWith(''),\n      map(value => (typeof value === 'string' ? value : `${value.label}`)),\n      map(label => this._filter(label)),\n    );\n  }\n\n  ngAfterViewInit(): void {\n    this.clearInput();\n  }\n\n  displayFn(user: MultiSelectOption): string {\n    return user && user.label ? user.label : '';\n  }\n\n  private _filter(label: string): MultiSelectOption[] {\n    const filterValue = label.toLowerCase();\n\n    return _.difference(\n      this.options.filter(option => option.label.toLowerCase().includes(filterValue)),\n      this._selectedOptions\n    );\n  }\n\n  public selectOption(option: any): void {\n    this._selectedOptions.push(option);\n    this.selectedOptions.emit(this._selectedOptions);\n    this.clearInput();\n  }\n\n  private clearInput(): void {\n    this.myControl.setValue('');\n    try { this.inputBoxEl.nativeElement.blur(); } catch (e) {}\n    this.cdr.detectChanges();\n  }\n\n  public removeSelectedOption(option: MultiSelectOption): void {\n    _.remove(this._selectedOptions, option);\n    this.clearInput();\n  }\n\n  public isOptionSelected(option: MultiSelectOption): boolean {\n    return !!this._selectedOptions.find(sOptions => _.isEqual(sOptions, option));\n  }\n\n  public openSelect(): void {\n    setTimeout(() => {\n      try { this.inputBoxEl.nativeElement.focus(); } catch (e) {}\n    }, 0);\n  }\n\n  public clearSelected(): void {\n    this._selectedOptions = [];\n    this.selectedOptions.emit(this._selectedOptions);\n    this.clearInput();\n  }\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": "@import '../../../styles/default/mixins/buttons';\n\n.pm-multi-select {\n  @include btn-styles(var(--color-light), var(--color-light-sat), false);\n\n  form {\n    padding-top: 1px;\n  }\n\n  input {\n    padding: 0.5em;\n    background-color: transparent;\n\n    color: var(--color-gray-darker) !important;\n  }\n\n  .chip-container {\n    background-color: var(--color-light);\n    border: 1px solid var(--color-light-states);\n    border-radius: var(--border-radius-md);\n    padding: 3px;\n    color: var(--color-gray-dark);\n\n    button {\n      border: none !important;\n    }\n  }\n\n  i {\n    color: var(--color-light-states);\n    right: 0.5em;\n    height: 100%;\n    display: flex;\n    flex-direction: row;\n    align-content: center;\n    justify-content: center;\n    margin-top: -4px;\n\n    &:before {\n      align-self: center;\n    }\n  }\n\n}\n\n::ng-deep {\n  .pm-multi-select-autocomplete-panel {\n    margin-left: -4px;\n    left: 20px !important;\n\n    * {\n      box-shadow: none !important;\n    }\n\n    .mat-autocomplete-panel {\n      background-color: var(--color-light);\n      margin-top: -2px;\n    }\n  }\n\n  .pm-multi-select-thumbnail-container {\n    width: 25px;\n    height: 25px;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    box-sizing: border-box;\n    outline: none;\n    flex: 0 0 auto;\n\n    &.circular {\n      border-radius: 50%;\n      margin: 0;\n      overflow: hidden;\n      border: 1px solid var(--color-light-states);\n    }\n\n    img {\n      object-fit: cover;\n    }\n  }\n}\n",
+                    "data": "@import '../../../styles/default/mixins/buttons';\n\n.pm-multi-select {\n  @include btn-styles(var(--color-light), var(--color-light-sat), false);\n\n  form, input {\n    width: -webkit-fill-available;\n  }\n\n  form {\n    padding-top: 1px;\n  }\n\n  input {\n    padding: 0.5em;\n    background-color: transparent;\n\n    color: var(--color-gray-darker) !important;\n  }\n\n  .chip-container {\n    background-color: var(--color-light);\n    border: 1px solid var(--color-light-states);\n    border-radius: var(--border-radius-md);\n    padding: 3px;\n    color: var(--color-gray-dark);\n\n    button {\n      border: none !important;\n    }\n  }\n\n  i {\n    color: var(--color-light-states);\n    right: 0.5em;\n    height: 100%;\n    display: flex;\n    flex-direction: row;\n    align-content: center;\n    justify-content: center;\n    margin-top: -4px;\n\n    &:before {\n      align-self: center;\n    }\n  }\n\n}\n\n::ng-deep {\n  .pm-multi-select-autocomplete-panel {\n    margin-left: -4px;\n\n    * {\n      box-shadow: none !important;\n    }\n\n    .mat-autocomplete-panel {\n      background-color: var(--color-light);\n      margin-top: -2px;\n    }\n  }\n\n  .pm-multi-select-thumbnail-container {\n    width: 25px;\n    height: 25px;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    box-sizing: border-box;\n    outline: none;\n    flex: 0 0 auto;\n\n    &.circular {\n      border-radius: 50%;\n      margin: 0;\n      overflow: hidden;\n      border: 1px solid var(--color-light-states);\n    }\n\n    img {\n      object-fit: cover;\n    }\n  }\n}\n",
                     "styleUrl": "./multi-select.component.scss"
                 }
             ],
@@ -3238,7 +3357,7 @@
                         "type": "ChangeDetectorRef"
                     }
                 ],
-                "line": 50,
+                "line": 66,
                 "jsdoctags": [
                     {
                         "name": "cdr",
@@ -3253,7 +3372,7 @@
                 "OnInit",
                 "AfterViewInit"
             ],
-            "templateData": "<div #multiselect class=\"pm-multi-select cursor-pointer border-radius-{{borderRadius}}\" (click)=\"$event.stopPropagation(); openSelect();\">\n  <div class=\"d-flex flex-wrap p-1 rad-md position-relative\">\n    <div class=\"d-flex flex-row justify-content-start flex-wrap\">\n      <div *ngFor=\"let selected of _selectedOptions; let first = first\" [ngClass]=\"{'m-1 chip-container': true}\">\n        <div class=\"d-flex flex-row align-items-center\">\n          <ng-container *ngTemplateOutlet=\"thumbnailContainer; context: {$implicit: selected, marginStart: true}\"></ng-container>\n          <p class=\"m-0 ms-1\">{{selected.label}}</p>\n          <button class=\"btn btn-light\" (click)=\"$event.stopPropagation(); removeSelectedOption(selected)\">x</button>\n        </div>\n      </div>\n    </div>\n    <form>\n      <input #inputBox\n             #trigger=\"matAutocompleteTrigger\"\n             [hidden]=\"_selectedOptions.length === options.length\"\n             matInput\n             class=\"form-control h-100 border-0\"\n             type=\"text\"\n             [formControl]=\"myControl\"\n             [placeholder]=\"placeholder\"\n             [matAutocomplete]=\"auto\"\n      >\n\n      <mat-autocomplete #auto=\"matAutocomplete\"\n                        (optionSelected)=\"selectOption($event.option.value);\"\n                        [panelWidth]=\"multiselect.offsetWidth\"\n      >\n        <ng-container *ngFor=\"let option of filteredOptions | async\">\n          <mat-option\n            [hidden]=\"isOptionSelected(option)\"\n            [value]=\"option\"\n          >\n            <div class=\"d-flex flex-row align-items-center\">\n              <ng-container *ngTemplateOutlet=\"thumbnailContainer; context: {$implicit: option}\"></ng-container>\n              <span class=\"color-gray-dark\" [ngClass]=\"{'ms-2': option?.thumbnail}\">{{option.label}}</span>\n            </div>\n          </mat-option>\n        </ng-container>\n      </mat-autocomplete>\n    </form>\n    <i class=\"position-absolute uil uil-lg uil-angle-down\"></i>\n  </div>\n</div>\n\n<ng-template #thumbnailContainer let-option let-marginStart=\"marginStart\">\n  <div *ngIf=\"option?.thumbnail\" class=\"pm-multi-select-thumbnail-container\" [ngClass]=\"{'ms-2': marginStart, 'circular': roundedThumbnail, 'mx-2': roundedThumbnail}\">\n    <img\n      aria-hidden\n      [src]=\"option.thumbnail\"\n      height=\"25\"\n    >\n  </div>\n</ng-template>\n"
+            "templateData": "<div #multiselect class=\"pm-multi-select cursor-pointer border-radius-{{borderRadius}}\" (click)=\"$event.stopPropagation(); openSelect();\">\n  <div class=\"d-flex flex-wrap p-1 rad-md position-relative\">\n    <div class=\"d-flex flex-row justify-content-start flex-wrap\">\n      <div *ngFor=\"let selected of _selectedOptions; let first = first\" [ngClass]=\"{'m-1 chip-container': true}\">\n        <div class=\"d-flex flex-row align-items-center\">\n          <ng-container *ngTemplateOutlet=\"thumbnailContainer; context: {$implicit: selected, marginStart: true}\"></ng-container>\n          <p class=\"m-0 ms-1\">{{selected.label}}</p>\n          <button class=\"btn btn-light\" (click)=\"$event.stopPropagation(); removeSelectedOption(selected)\">x</button>\n        </div>\n      </div>\n    </div>\n    <form>\n      <input #inputBox\n             #trigger=\"matAutocompleteTrigger\"\n             [hidden]=\"_selectedOptions.length === options.length || (!!limit && _selectedOptions.length >= limit)\"\n             matInput\n             class=\"form-control h-100 border-0\"\n             type=\"text\"\n             [formControl]=\"myControl\"\n             [placeholder]=\"placeholder\"\n             [matAutocomplete]=\"auto\"\n      >\n\n      <mat-autocomplete #auto=\"matAutocomplete\"\n                        (optionSelected)=\"selectOption($event.option.value);\"\n                        [panelWidth]=\"multiselect.offsetWidth\"\n      >\n        <ng-container *ngFor=\"let option of filteredOptions | async\">\n          <mat-option\n            [hidden]=\"isOptionSelected(option)\"\n            [value]=\"option\"\n          >\n            <div class=\"d-flex flex-row align-items-center\">\n              <ng-container *ngTemplateOutlet=\"thumbnailContainer; context: {$implicit: option}\"></ng-container>\n              <span class=\"color-gray-dark\" [ngClass]=\"{'ms-2': option?.thumbnail}\">{{option.label}}</span>\n            </div>\n          </mat-option>\n        </ng-container>\n      </mat-autocomplete>\n    </form>\n    <i class=\"position-absolute uil uil-lg uil-angle-down\"></i>\n  </div>\n</div>\n\n<ng-template #thumbnailContainer let-option let-marginStart=\"marginStart\">\n  <div *ngIf=\"option?.thumbnail\" class=\"pm-multi-select-thumbnail-container\" [ngClass]=\"{'ms-2': marginStart, 'circular': roundedThumbnail, 'mx-2': roundedThumbnail}\">\n    <img\n      aria-hidden\n      [src]=\"option.thumbnail\"\n      height=\"25\"\n    >\n  </div>\n</ng-template>\n"
         },
         {
             "name": "RadioButtonComponent",
@@ -3359,6 +3478,62 @@
                 "line": 31
             },
             "templateData": "<div class=\"pm-radio-button\">\n  <mat-radio-group\n    [(ngModel)]=\"selectedValue\"\n    [disabled]=\"disabled\"\n    (change)=\"setValue($event.value)\"\n    [ngClass]=\"{'d-flex flex-column': orientation === 'vertical', 'horizontal': orientation === 'horizontal'}\">\n    <mat-radio-button *ngFor=\"let value of values\" [value]=\"value\">\n      {{value}}\n    </mat-radio-button>\n  </mat-radio-group>\n</div>\n"
+        },
+        {
+            "name": "SpinnerComponent",
+            "id": "component-SpinnerComponent-ce3a3f486d1d19fefeea8af5c834bea6",
+            "file": "projects/lib/src/directives/ng-if-loaded/spinner/spinner.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "pm-spinner",
+            "styleUrls": [
+                "./spinner.component.scss"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./spinner.component.html"
+            ],
+            "viewProviders": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [
+                {
+                    "name": "ngOnInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 13
+                }
+            ],
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "",
+            "type": "component",
+            "sourceCode": "import {Component, OnInit} from '@angular/core';\n\n@Component({\n  selector: 'pm-spinner',\n  templateUrl: './spinner.component.html',\n  styleUrls: ['./spinner.component.scss']\n})\nexport class SpinnerComponent implements OnInit {\n\n  constructor() {\n  }\n\n  ngOnInit(): void {\n  }\n\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": ".pm-spinner {\n\n}\n",
+                    "styleUrl": "./spinner.component.scss"
+                }
+            ],
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "args": [],
+                "line": 8
+            },
+            "implements": [
+                "OnInit"
+            ],
+            "templateData": "<div class=\"pm-spinner\">\n  Spinner component created successfully!\n</div>\n"
         },
         {
             "name": "StepperComponent",
@@ -4574,6 +4749,49 @@
             ]
         },
         {
+            "name": "NgIfLoadedModule",
+            "children": [
+                {
+                    "type": "providers",
+                    "elements": []
+                },
+                {
+                    "type": "declarations",
+                    "elements": [
+                        {
+                            "name": "NgIfLoadedDirective"
+                        },
+                        {
+                            "name": "SpinnerComponent"
+                        }
+                    ]
+                },
+                {
+                    "type": "imports",
+                    "elements": []
+                },
+                {
+                    "type": "exports",
+                    "elements": [
+                        {
+                            "name": "NgIfLoadedDirective"
+                        },
+                        {
+                            "name": "SpinnerComponent"
+                        }
+                    ]
+                },
+                {
+                    "type": "bootstrap",
+                    "elements": []
+                },
+                {
+                    "type": "classes",
+                    "elements": []
+                }
+            ]
+        },
+        {
             "name": "PrismaComponentsModule",
             "children": [
                 {
@@ -4898,9 +5116,9 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/cards/basic-card/basic-card.stories.ts",
+                "file": "projects/lib/src/directives/ng-if-loaded/spinner/spinner.stories.ts",
                 "type": "object",
-                "defaultValue": "{\n  hoverable: false,\n  borderRadius: Sizes.md,\n  paddingClass: 'p-3'\n}"
+                "defaultValue": "{\n  flag: true\n}"
             },
             {
                 "name": "defaultArgs",
@@ -4922,15 +5140,15 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/containers/tabs/tabs.stories.ts",
+                "file": "projects/lib/src/components/cards/basic-card/basic-card.stories.ts",
                 "type": "object",
-                "defaultValue": "{\n}"
+                "defaultValue": "{\n  hoverable: false,\n  borderRadius: Sizes.md,\n  paddingClass: 'p-3'\n}"
             },
             {
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
+                "file": "projects/lib/src/components/containers/tabs/tabs.stories.ts",
                 "type": "object",
                 "defaultValue": "{\n}"
             },
@@ -4941,6 +5159,14 @@
                 "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
                 "type": "object",
                 "defaultValue": "{\n  showIndex: true,\n  itemActionLabel: undefined,\n  itemMainLabel: undefined,\n  itemSubLabel: undefined,\n  actions: undefined,\n  itemList: undefined,\n  roundedBorders: true,\n  enableDragging: true,\n  enableSelection: true,\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
+                "type": "object",
+                "defaultValue": "{\n}"
             },
             {
                 "name": "defaultArgs",
@@ -4962,6 +5188,14 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
+                "file": "projects/lib/src/components/inputs/button/button.stories.ts",
+                "type": "object",
+                "defaultValue": "{\n  label: '',\n  type: MainColors.default,\n  busy: false,\n  busyText: '',\n  iconClass: '',\n  iconPosition: 'start',\n  outline: false,\n  disabled: false,\n  size: 'md',\n  fillWidth: false\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
                 "file": "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts",
                 "type": "object",
                 "defaultValue": "{\n  items: [],\n  disabled: false,\n  selectedItem: undefined\n}"
@@ -4978,14 +5212,6 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/inputs/button/button.stories.ts",
-                "type": "object",
-                "defaultValue": "{\n  label: '',\n  type: MainColors.default,\n  busy: false,\n  busyText: '',\n  iconClass: '',\n  iconPosition: 'start',\n  outline: false,\n  disabled: false,\n  size: 'md',\n  fillWidth: false\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "projects/lib/src/components/inputs/dropdown-actions/dropdown-actions.stories.ts",
                 "type": "object",
                 "defaultValue": "{\n  actions: []\n}"
@@ -4996,7 +5222,7 @@
                 "subtype": "variable",
                 "file": "projects/lib/src/components/inputs/multi-select/multi-select.stories.ts",
                 "type": "object",
-                "defaultValue": "{\n  options: [],\n  placeholder: '',\n  borderRadius: Sizes.md,\n  roundedThumbnail: true\n}"
+                "defaultValue": "{\n  options: [],\n  placeholder: '',\n  borderRadius: Sizes.md,\n  roundedThumbnail: true,\n  limit: 0\n}"
             },
             {
                 "name": "defaultArgs",
@@ -5135,6 +5361,22 @@
                 "defaultValue": "Template.bind({})"
             },
             {
+                "name": "defaultSpinner",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/directives/ng-if-loaded/injection.ts",
+                "type": "ComponentType<any>",
+                "defaultValue": "SpinnerComponent"
+            },
+            {
+                "name": "DefaultSpinner",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/directives/ng-if-loaded/spinner/spinner.stories.ts",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
                 "name": "DefaultStepper",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -5173,6 +5415,14 @@
                 "file": "stories/default.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "directives",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/directives/ng-if-loaded/ng-if-loaded.module.ts",
+                "type": "[]",
+                "defaultValue": "[\n  NgIfLoadedDirective,\n  SpinnerComponent\n]"
             },
             {
                 "name": "DisabledButton",
@@ -5237,6 +5487,14 @@
                 "file": "projects/lib/src/components/inputs/button/button.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "IF_LOADED_SPINNER",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/lib/src/directives/ng-if-loaded/injection.ts",
+                "type": "",
+                "defaultValue": "new InjectionToken<ComponentType<any>>('defaultSpinner')"
             },
             {
                 "name": "InfoButton",
@@ -5329,9 +5587,9 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/cards/basic-card/basic-card.stories.ts",
-                "type": "Story<BasicCardComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-basic-card\n      [hoverable]=\"hoverable\"\n      [borderRadius]=\"borderRadius\"\n      [paddingClass]=\"paddingClass\"\n    >\n    </pm-basic-card>\n  `\n})"
+                "file": "projects/lib/src/directives/ng-if-loaded/spinner/spinner.stories.ts",
+                "type": "Story<SpinnerComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <div *ngIfLoaded=\"flag\">\n        Conteúdo normal\n    </div>\n  `\n})"
             },
             {
                 "name": "Template",
@@ -5353,6 +5611,14 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
+                "file": "projects/lib/src/components/cards/basic-card/basic-card.stories.ts",
+                "type": "Story<BasicCardComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-basic-card\n      [hoverable]=\"hoverable\"\n      [borderRadius]=\"borderRadius\"\n      [paddingClass]=\"paddingClass\"\n    >\n    </pm-basic-card>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
                 "file": "projects/lib/src/components/containers/tabs/tabs.stories.ts",
                 "type": "Story<TabsComponent>",
                 "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-tabs\n    >\n    </pm-tabs>\n  `\n})"
@@ -5361,17 +5627,17 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
-                "type": "Story<GridListComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-grid-list\n      [items]=\"items\"\n      [displayStyle]=\"displayStyle\"\n      [gridHeaderReverse]=\"gridHeaderReverse\"\n      [bodyBackgroundColor]=\"bodyBackgroundColor\"\n      [actionTemplate]=\"undefined\"\n      [overflowGallery]=\"overflowGallery\"\n    >\n    </pm-grid-list>\n  `\n})"
+                "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
+                "type": "Story<DraggableListComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-draggable-list\n      [showIndex]=\"showIndex\"\n      [itemActionLabel]=\"itemActionLabel\"\n      [itemMainLabel]=\"itemMainLabel\"\n      [itemSubLabel]=\"itemSubLabel\"\n      [actions]=\"actions\"\n      [itemList]=\"itemList\"\n      [roundedBorders]=\"roundedBorders\"\n      [enableDragging]=\"enableDragging\"\n      [enableSelection]=\"enableSelection\"\n    >\n    </pm-draggable-list>\n  `\n})"
             },
             {
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
-                "type": "Story<DraggableListComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-draggable-list\n      [showIndex]=\"showIndex\"\n      [itemActionLabel]=\"itemActionLabel\"\n      [itemMainLabel]=\"itemMainLabel\"\n      [itemSubLabel]=\"itemSubLabel\"\n      [actions]=\"actions\"\n      [itemList]=\"itemList\"\n      [roundedBorders]=\"roundedBorders\"\n      [enableDragging]=\"enableDragging\"\n      [enableSelection]=\"enableSelection\"\n    >\n    </pm-draggable-list>\n  `\n})"
+                "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
+                "type": "Story<GridListComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-grid-list\n      [items]=\"items\"\n      [displayStyle]=\"displayStyle\"\n      [gridHeaderReverse]=\"gridHeaderReverse\"\n      [bodyBackgroundColor]=\"bodyBackgroundColor\"\n      [actionTemplate]=\"undefined\"\n      [overflowGallery]=\"overflowGallery\"\n    >\n    </pm-grid-list>\n  `\n})"
             },
             {
                 "name": "Template",
@@ -5393,6 +5659,14 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
+                "file": "projects/lib/src/components/inputs/button/button.stories.ts",
+                "type": "Story<ButtonComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-button\n        [label]=\"label\"\n        [type]=\"type\"\n        [busy]=\"busy\"\n        [busyText]=\"busyText\"\n        [iconClass]=\"iconClass\"\n        [iconPosition]=\"iconPosition\"\n        [outline]=\"outline\"\n        [disabled]=\"disabled\"\n        [size]=\"size\"\n        [fillWidth]=\"fillWidth\"\n    >\n        Button Content\n    </pm-button>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
                 "file": "projects/lib/src/components/inputs/combo-box/combo-box.stories.ts",
                 "type": "Story<ComboBoxComponent>",
                 "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-combo-box\n      [items]=\"items\"\n      [disabled]=\"disabled\"\n      [selectedItem]=\"selectedItem\"\n    >\n    </pm-combo-box>\n  `\n})"
@@ -5409,14 +5683,6 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/lib/src/components/inputs/button/button.stories.ts",
-                "type": "Story<ButtonComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-button\n        [label]=\"label\"\n        [type]=\"type\"\n        [busy]=\"busy\"\n        [busyText]=\"busyText\"\n        [iconClass]=\"iconClass\"\n        [iconPosition]=\"iconPosition\"\n        [outline]=\"outline\"\n        [disabled]=\"disabled\"\n        [size]=\"size\"\n        [fillWidth]=\"fillWidth\"\n    >\n        Button Content\n    </pm-button>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "projects/lib/src/components/inputs/dropdown-actions/dropdown-actions.stories.ts",
                 "type": "Story<DropdownActionsComponent>",
                 "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-dropdown-actions\n      [actions]=\"actions\"\n    >\n    </pm-dropdown-actions>\n  `\n})"
@@ -5427,7 +5693,7 @@
                 "subtype": "variable",
                 "file": "projects/lib/src/components/inputs/multi-select/multi-select.stories.ts",
                 "type": "Story<MultiSelectComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-multi-select\n        [options]=\"options\"\n        [placeholder]=\"placeholder\"\n        [borderRadius]=\"borderRadius\"\n        [roundedThumbnail]=\"roundedThumbnail\"\n    >\n    </pm-multi-select>\n  `\n})"
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-multi-select\n        [options]=\"options\"\n        [placeholder]=\"placeholder\"\n        [borderRadius]=\"borderRadius\"\n        [roundedThumbnail]=\"roundedThumbnail\"\n        [limit]=\"limit\"\n    >\n    </pm-multi-select>\n  `\n})"
             },
             {
                 "name": "Template",
@@ -6026,20 +6292,20 @@
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-XXXName\n    >\n    </pm-XXXName>\n  `\n})"
                 }
             ],
-            "projects/lib/src/components/cards/basic-card/basic-card.stories.ts": [
+            "projects/lib/src/directives/ng-if-loaded/spinner/spinner.stories.ts": [
                 {
                     "name": "defaultArgs",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/lib/src/components/cards/basic-card/basic-card.stories.ts",
+                    "file": "projects/lib/src/directives/ng-if-loaded/spinner/spinner.stories.ts",
                     "type": "object",
-                    "defaultValue": "{\n  hoverable: false,\n  borderRadius: Sizes.md,\n  paddingClass: 'p-3'\n}"
+                    "defaultValue": "{\n  flag: true\n}"
                 },
                 {
-                    "name": "DefaultBasicCard",
+                    "name": "DefaultSpinner",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/lib/src/components/cards/basic-card/basic-card.stories.ts",
+                    "file": "projects/lib/src/directives/ng-if-loaded/spinner/spinner.stories.ts",
                     "type": "",
                     "defaultValue": "Template.bind({})"
                 },
@@ -6047,9 +6313,9 @@
                     "name": "Template",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/lib/src/components/cards/basic-card/basic-card.stories.ts",
-                    "type": "Story<BasicCardComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-basic-card\n      [hoverable]=\"hoverable\"\n      [borderRadius]=\"borderRadius\"\n      [paddingClass]=\"paddingClass\"\n    >\n    </pm-basic-card>\n  `\n})"
+                    "file": "projects/lib/src/directives/ng-if-loaded/spinner/spinner.stories.ts",
+                    "type": "Story<SpinnerComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <div *ngIfLoaded=\"flag\">\n        Conteúdo normal\n    </div>\n  `\n})"
                 }
             ],
             "projects/lib/src/components/containers/expansion-panel/expansion-panel.stories.ts": [
@@ -6078,6 +6344,32 @@
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-expansion-panel\n    >\n        Conteúdo aqui\n    </pm-expansion-panel>\n  `\n})"
                 }
             ],
+            "projects/lib/src/components/cards/basic-card/basic-card.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/cards/basic-card/basic-card.stories.ts",
+                    "type": "object",
+                    "defaultValue": "{\n  hoverable: false,\n  borderRadius: Sizes.md,\n  paddingClass: 'p-3'\n}"
+                },
+                {
+                    "name": "DefaultBasicCard",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/cards/basic-card/basic-card.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/cards/basic-card/basic-card.stories.ts",
+                    "type": "Story<BasicCardComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-basic-card\n      [hoverable]=\"hoverable\"\n      [borderRadius]=\"borderRadius\"\n      [paddingClass]=\"paddingClass\"\n    >\n    </pm-basic-card>\n  `\n})"
+                }
+            ],
             "projects/lib/src/components/containers/tabs/tabs.stories.ts": [
                 {
                     "name": "defaultArgs",
@@ -6102,40 +6394,6 @@
                     "file": "projects/lib/src/components/containers/tabs/tabs.stories.ts",
                     "type": "Story<TabsComponent>",
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-tabs\n    >\n    </pm-tabs>\n  `\n})"
-                }
-            ],
-            "projects/lib/src/components/lists/grid-list/grid-list.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
-                    "type": "object",
-                    "defaultValue": "{\n}"
-                },
-                {
-                    "name": "DefaultGridList",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "getColor",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
-                    "type": "",
-                    "defaultValue": "() => MainColors.primary"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
-                    "type": "Story<GridListComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-grid-list\n      [items]=\"items\"\n      [displayStyle]=\"displayStyle\"\n      [gridHeaderReverse]=\"gridHeaderReverse\"\n      [bodyBackgroundColor]=\"bodyBackgroundColor\"\n      [actionTemplate]=\"undefined\"\n      [overflowGallery]=\"overflowGallery\"\n    >\n    </pm-grid-list>\n  `\n})"
                 }
             ],
             "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts": [
@@ -6178,6 +6436,40 @@
                     "file": "projects/lib/src/components/lists/draggable-list/draggable-list.stories.ts",
                     "type": "Story<DraggableListComponent>",
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-draggable-list\n      [showIndex]=\"showIndex\"\n      [itemActionLabel]=\"itemActionLabel\"\n      [itemMainLabel]=\"itemMainLabel\"\n      [itemSubLabel]=\"itemSubLabel\"\n      [actions]=\"actions\"\n      [itemList]=\"itemList\"\n      [roundedBorders]=\"roundedBorders\"\n      [enableDragging]=\"enableDragging\"\n      [enableSelection]=\"enableSelection\"\n    >\n    </pm-draggable-list>\n  `\n})"
+                }
+            ],
+            "projects/lib/src/components/lists/grid-list/grid-list.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
+                    "type": "object",
+                    "defaultValue": "{\n}"
+                },
+                {
+                    "name": "DefaultGridList",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "getColor",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
+                    "type": "",
+                    "defaultValue": "() => MainColors.primary"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/components/lists/grid-list/grid-list.stories.ts",
+                    "type": "Story<GridListComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-grid-list\n      [items]=\"items\"\n      [displayStyle]=\"displayStyle\"\n      [gridHeaderReverse]=\"gridHeaderReverse\"\n      [bodyBackgroundColor]=\"bodyBackgroundColor\"\n      [actionTemplate]=\"undefined\"\n      [overflowGallery]=\"overflowGallery\"\n    >\n    </pm-grid-list>\n  `\n})"
                 }
             ],
             "projects/lib/src/components/inputs/checkbox/checkbox.stories.ts": [
@@ -6307,7 +6599,7 @@
                     "subtype": "variable",
                     "file": "projects/lib/src/components/inputs/multi-select/multi-select.stories.ts",
                     "type": "object",
-                    "defaultValue": "{\n  options: [],\n  placeholder: '',\n  borderRadius: Sizes.md,\n  roundedThumbnail: true\n}"
+                    "defaultValue": "{\n  options: [],\n  placeholder: '',\n  borderRadius: Sizes.md,\n  roundedThumbnail: true,\n  limit: 0\n}"
                 },
                 {
                     "name": "DefaultMultiSelect",
@@ -6323,7 +6615,7 @@
                     "subtype": "variable",
                     "file": "projects/lib/src/components/inputs/multi-select/multi-select.stories.ts",
                     "type": "Story<MultiSelectComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-multi-select\n        [options]=\"options\"\n        [placeholder]=\"placeholder\"\n        [borderRadius]=\"borderRadius\"\n        [roundedThumbnail]=\"roundedThumbnail\"\n    >\n    </pm-multi-select>\n  `\n})"
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-multi-select\n        [options]=\"options\"\n        [placeholder]=\"placeholder\"\n        [borderRadius]=\"borderRadius\"\n        [roundedThumbnail]=\"roundedThumbnail\"\n        [limit]=\"limit\"\n    >\n    </pm-multi-select>\n  `\n})"
                 },
                 {
                     "name": "ThumbnailMultiSelect",
@@ -6410,6 +6702,34 @@
                     "file": "projects/lib/src/services/command-palette/command-palette.stories.ts",
                     "type": "Story<TriggerButtonComponent>",
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-palette-trigger-button\n        [label]=\"label\"\n        [iconClass]=\"iconClass\"\n    >\n    </pm-palette-trigger-button>\n  `\n})"
+                }
+            ],
+            "projects/lib/src/directives/ng-if-loaded/injection.ts": [
+                {
+                    "name": "defaultSpinner",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/directives/ng-if-loaded/injection.ts",
+                    "type": "ComponentType<any>",
+                    "defaultValue": "SpinnerComponent"
+                },
+                {
+                    "name": "IF_LOADED_SPINNER",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/directives/ng-if-loaded/injection.ts",
+                    "type": "",
+                    "defaultValue": "new InjectionToken<ComponentType<any>>('defaultSpinner')"
+                }
+            ],
+            "projects/lib/src/directives/ng-if-loaded/ng-if-loaded.module.ts": [
+                {
+                    "name": "directives",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/lib/src/directives/ng-if-loaded/ng-if-loaded.module.ts",
+                    "type": "[]",
+                    "defaultValue": "[\n  NgIfLoadedDirective,\n  SpinnerComponent\n]"
                 }
             ]
         },
@@ -7165,8 +7485,8 @@
                 "type": "component",
                 "linktype": "component",
                 "name": "MultiSelectComponent",
-                "coveragePercent": 0,
-                "coverageCount": "0/22",
+                "coveragePercent": 21,
+                "coverageCount": "5/23",
                 "status": "low"
             },
             {
@@ -7533,6 +7853,84 @@
             },
             {
                 "filePath": "projects/lib/src/components/navigation/stepper/stepper.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/lib/src/directives/ng-if-loaded/injection.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "defaultSpinner",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/lib/src/directives/ng-if-loaded/injection.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "IF_LOADED_SPINNER",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/lib/src/directives/ng-if-loaded/ng-if-loaded.directive.ts",
+                "type": "directive",
+                "linktype": "directive",
+                "name": "NgIfLoadedDirective",
+                "coveragePercent": 0,
+                "coverageCount": "0/4",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/lib/src/directives/ng-if-loaded/ng-if-loaded.module.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "directives",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/lib/src/directives/ng-if-loaded/spinner/spinner.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "SpinnerComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/lib/src/directives/ng-if-loaded/spinner/spinner.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "defaultArgs",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/lib/src/directives/ng-if-loaded/spinner/spinner.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "DefaultSpinner",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/lib/src/directives/ng-if-loaded/spinner/spinner.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",

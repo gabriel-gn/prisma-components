@@ -21,6 +21,12 @@ export * from './services/command-palette/command-palette.service';
 export * from './services/command-palette/command-palette.module';
 
 /******************
+ * DIRECTIVES
+ ******************/
+
+export * from './directives/ng-if-loaded/ng-if-loaded.module';
+
+/******************
  * COMPONENTS
  ******************/
 
