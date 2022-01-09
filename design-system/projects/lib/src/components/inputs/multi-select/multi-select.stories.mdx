@@ -7,7 +7,8 @@ import SourceStory from '!!raw-loader!./multi-select.stories';
 import {
   defaultArgs,
   DefaultMultiSelect,
-  ThumbnailMultiSelect
+  ThumbnailMultiSelect,
+  PreSelectedOptions
 } from "./multi-select.stories";
 
 export const argTypes = {
@@ -58,6 +59,7 @@ Deve ser usado da seguinte forma:
 <Canvas>
   <Story name='Default' story={DefaultMultiSelect} />
   <Story name='Thumbnail' story={ThumbnailMultiSelect} />
+  <Story name='Pre Selected' story={PreSelectedOptions} />
 </Canvas>
 
 ## Module Config

@@ -17,6 +17,7 @@ export const Template: Story<MultiSelectComponent> = (args) => ({
         [borderRadius]="borderRadius"
         [roundedThumbnail]="roundedThumbnail"
         [limit]="limit"
+        [selectedOptions]="selectedOptions"
     >
     </pm-multi-select>
   `
@@ -27,7 +28,8 @@ export const defaultArgs = {
   placeholder: '',
   borderRadius: Sizes.md,
   roundedThumbnail: true,
-  limit: 0
+  limit: 0,
+  selectedOptions: []
 };
 
 export const DefaultMultiSelect = Template.bind({});
@@ -71,4 +73,21 @@ ThumbnailMultiSelect.args = {
       thumbnail: 'https://upload.wikimedia.org/wikipedia/commons/f/f7/Flag_of_Texas.svg',
     },
   ]
+};
+
+export const PreSelectedOptions = Template.bind({});
+// const preSelectedOptionsArgs = DefaultMultiSelect.args;
+PreSelectedOptions.args = {
+  ...defaultArgs,
+  placeholder: 'Busque algo',
+  options: [
+    {label: 'Mary', value: {} },
+    {label: 'Shelley', value: {} },
+    {label: 'Gabs', value: {} },
+    {label: 'Pedrocs', value: {} },
+    {label: 'Rics', value: {} },
+    {label: 'Ana', value: {} },
+    {label: 'Igor', value: {} }
+  ],
+  selectedOptions: [{label: 'Mary', value: {} }]
 };

@@ -43,7 +43,7 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
   /**
    * Ao ser selecionada uma opção nova, emite
    */
-  @Output() selectedOptions = new EventEmitter<MultiSelectOption[]>();
+  @Output() selectedOptionsChanged = new EventEmitter<MultiSelectOption[]>();
   /**
    * Texto a ser exibido no input
    */
@@ -61,8 +61,11 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
    * limite máximo de seleções de itens
    */
   @Input() limit: number = 0;
+  /**
+   * Opções que ja vem selecionadas
+   */
+  @Input() selectedOptions: MultiSelectOption[] = [];
   myControl = new FormControl();
-  _selectedOptions: MultiSelectOption[] = [];
   filteredOptions: Observable<MultiSelectOption[]>;
 
   constructor(
@@ -91,13 +94,13 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
 
     return _.difference(
       this.options.filter(option => option.label.toLowerCase().includes(filterValue)),
-      this._selectedOptions
+      this.selectedOptions
     );
   }
 
   public selectOption(option: any): void {
-    this._selectedOptions.push(option);
-    this.selectedOptions.emit(this._selectedOptions);
+    this.selectedOptions.push(option);
+    this.selectedOptionsChanged.emit(this.selectedOptions);
     this.clearInput();
   }
 
@@ -108,12 +111,12 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
   }
 
   public removeSelectedOption(option: MultiSelectOption): void {
-    _.remove(this._selectedOptions, option);
+    _.remove(this.selectedOptions, option);
     this.clearInput();
   }
 
   public isOptionSelected(option: MultiSelectOption): boolean {
-    return !!this._selectedOptions.find(sOptions => _.isEqual(sOptions, option));
+    return !!this.selectedOptions.find(sOptions => _.isEqual(sOptions, option));
   }
 
   public openSelect(): void {
@@ -123,8 +126,8 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
   }
 
   public clearSelected(): void {
-    this._selectedOptions = [];
-    this.selectedOptions.emit(this._selectedOptions);
+    this.selectedOptions = [];
+    this.selectedOptionsChanged.emit(this.selectedOptions);
     this.clearInput();
   }
 

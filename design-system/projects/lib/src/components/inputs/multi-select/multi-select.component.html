@@ -1,7 +1,7 @@
 <div #multiselect class="pm-multi-select cursor-pointer border-radius-{{borderRadius}}" (click)="$event.stopPropagation(); openSelect();">
   <div class="d-flex flex-wrap p-1 rad-md position-relative">
     <div class="d-flex flex-row justify-content-start flex-wrap">
-      <div *ngFor="let selected of _selectedOptions; let first = first" [ngClass]="{'m-1 chip-container': true}">
+      <div *ngFor="let selected of selectedOptions; let first = first" [ngClass]="{'m-1 chip-container': true}">
         <div class="d-flex flex-row align-items-center">
           <ng-container *ngTemplateOutlet="thumbnailContainer; context: {$implicit: selected, marginStart: true}"></ng-container>
           <p class="m-0 ms-1">{{selected.label}}</p>
@@ -12,7 +12,7 @@
     <form>
       <input #inputBox
              #trigger="matAutocompleteTrigger"
-             [hidden]="_selectedOptions.length === options.length || (!!limit && _selectedOptions.length >= limit)"
+             [hidden]="selectedOptions.length === options.length || (!!limit && selectedOptions.length >= limit)"
              matInput
              class="form-control h-100 border-0"
              type="text"
