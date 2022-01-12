@@ -1,7 +1,7 @@
 @mixin btn-styles($btn-color, $btn-states-color, $force-uppercase: false) {
 
   color: #fff;
-  $hover-color: #fff;
+  $hover-text-color: #fff;
 
   @if type_of($btn-states-color) == 'color' {
     $btn-states-color: rgb(red($btn-states-color), green($btn-states-color), blue($btn-states-color));
@@ -12,8 +12,8 @@
     }
 
     @if str-index($btn-states-color, 'light') != null {
-      color: #a6b4c5;
-      $hover-color: #a6b4c5;
+      color: var(--color-gray-medium);
+      $hover-text-color: var(--color-gray-dark-rgb);
     }
   }
 
@@ -49,7 +49,7 @@
   &.active:hover {
     background-color: rgba($btn-states-color, 1);
     border-color: rgba($btn-states-color, 0.3);
-    color: rgba($hover-color, 1);
+    color: rgba($hover-text-color, 1);
     box-shadow: none !important;
   }
 }
@@ -85,9 +85,9 @@
     }
 
     @if str-index($btn-states-color, 'light') != null {
-      color: #a6b4c5 !important;
+      color: var(--color-gray-medium) !important;
       * {
-        color: #a6b4c5 !important;
+        color: var(--color-gray-medium) !important;
       }
     }
 

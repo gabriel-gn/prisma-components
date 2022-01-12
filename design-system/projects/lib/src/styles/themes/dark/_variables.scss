@@ -3,13 +3,13 @@
 ********************************/
 
 // CORES DE TEMA
-$color-primary:                                 #efa76c !default;
-$color-secondary:                               #6F5897 !default;
+$color-primary:                                 #a57cde !default;
+$color-secondary:                               #4f878b !default;
 $color-success:                                 #6bd098 !default;
 $color-info:                                    #51bcda !default;
 $color-warning:                                 #fbc658 !default;
 $color-danger:                                  #ef8157 !default;
-$color-light:                                   #eff3f8 !default;
+$color-light:                                   #3a3a3a !default;
 
 $color-default:                                 $color-secondary !default;
 
@@ -26,14 +26,15 @@ $main-colors: (  // cores que gerarão sub-cores states, pale, etc
 );
 
 // CORES GERAIS
-$bg-default:                                    #F3F4F6 !default;
+$bg-default:                                    #212121 !default;  // plano de fundo geral
+$bg-default-1:                                  #292929 !default;  // primeiro nivel acima do fundo
 $bg-pale:                                       #f5f5f5 !default;
 $color-font-default:                            #5B5F67 !default;
 
-$color-gray-light:                              #EEEEEE !default;
-$color-gray-medium:                             #CCCCCC !default;
-$color-gray-dark:                               #9A9A9A !default;
-$color-gray-darker:                             #505050 !default;
+$color-gray-light:                              #333333 !default;
+$color-gray-medium:                             #525252 !default;
+$color-gray-dark:                               #727272 !default;
+$color-gray-darker:                             #919191 !default;
 
 
 $colors: (  // Cores em geral
