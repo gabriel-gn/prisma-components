@@ -26,7 +26,8 @@ $main-colors: (  // cores que gerarão sub-cores states, pale, etc
 );
 
 // CORES GERAIS
-$bg-default:                                    #F3F4F6 !default;
+$bg-default:                                    #212121 !default;  // plano de fundo geral
+$bg-default-1:                                  #292929 !default;  // primeiro nivel acima do fundo
 $bg-pale:                                       #f5f5f5 !default;
 $color-font-default:                            #5B5F67 !default;
 

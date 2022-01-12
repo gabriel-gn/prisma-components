@@ -65,7 +65,7 @@ $navbar-padding: 1.5rem;
 
   &.navbar-scrolled {
     // background: var(--gradient-default);
-    background-color: #f2f3f4;
+    background-color: var(--bg-default-1);
     border: none;
     box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 10px 0px;
 
@@ -118,7 +118,7 @@ $navbar-padding: 1.5rem;
       .navbar-collapse {
         border-bottom: 1px solid #ddd;
 
-        background-color: #f2f3f4;
+        background-color: var(--bg-default-1);
         box-shadow: rgba(0, 0, 0, 0.2) 0px 15px 20px 0px;
       }
 
