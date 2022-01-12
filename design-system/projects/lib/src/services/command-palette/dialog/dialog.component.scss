@@ -45,7 +45,7 @@
       position: relative;
 
       .search-input-container {
-        background-color: #fff;
+        background-color: var(--bg-default);
         display: flex;
         flex-direction: row;
         align-items: center;
