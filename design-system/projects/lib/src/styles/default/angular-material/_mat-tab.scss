@@ -39,6 +39,8 @@
   }
 
   .mat-ink-bar {
+    visibility: hidden !important;
+    display: none !important;
     height: 100%;
     left: 100% !important;
     background-color: #51cbce33 !important;
