@@ -57,6 +57,38 @@
             "methods": []
         },
         {
+            "name": "CommandPaletteConfig",
+            "id": "interface-CommandPaletteConfig-472ee3c7368c62938b5615f9620d005c9cbaf43becca13f2a32de9e9e43b5f0fadaa237595a4fe2f3782942966bdc3bba69f6c0e33d5cc0a5f60e98221ec9093",
+            "file": "src/services/command-palette/injection.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "import {InjectionToken} from '@angular/core';\nimport {PaletteEntry} from './models';\n\nexport interface CommandPaletteConfig {\n  hotkeys: string[];\n  paletteEntries: PaletteEntry[];\n}\n\nexport const commandPaletteConfig: CommandPaletteConfig = {\n  hotkeys: ['meta+k', 'ctrl+k'],\n  paletteEntries: []\n};\n\nexport const COMMAND_PALETTE_CONFIG = new InjectionToken<CommandPaletteConfig>('commandPaletteConfig');\n",
+            "properties": [
+                {
+                    "name": "hotkeys",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string[]",
+                    "optional": false,
+                    "description": "",
+                    "line": 5
+                },
+                {
+                    "name": "paletteEntries",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "PaletteEntry[]",
+                    "optional": false,
+                    "description": "",
+                    "line": 6
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 165,
+            "methods": []
+        },
+        {
             "name": "GridListItem",
             "id": "interface-GridListItem-a7ba2302da3bc5706771661a31a8290a6a330d143953414f702a45a08bb636da215a9b259f0ba96187cf872f32ec2a97a7cbe9cdfb33d9131f8dd9662f99c819",
             "file": "src/components/lists/grid-list/grid-list.component.ts",
@@ -259,6 +291,97 @@
             "indexSignatures": [],
             "kind": 165,
             "methods": []
+        },
+        {
+            "name": "PaletteEntry",
+            "id": "interface-PaletteEntry-1e0b154796a839b2a9f1413adad4f4eaf8795e811e353c23c80e0dce1784dd9c66a8be09abb6f11e07f5dc8718a65db652c02a3c59144c82740f8b45a67ed7e9",
+            "file": "src/services/command-palette/models.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "import {Observable} from 'rxjs';\n\nexport interface PaletteEntry {\n  label: string;\n  id: string;\n  treeId?: string; // totalmente opcional\n  entries?: PaletteEntry[]; // deve obrigatoriamente ter APENAS ou 'entries' ou 'action'\n  action?: () => void | Observable<any>; // TODO incluir comportamento com observable\n}\n\nexport interface PaletteTreeEntry {\n  label: string;\n  id: string;\n}\n",
+            "properties": [
+                {
+                    "name": "action",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "function",
+                    "optional": true,
+                    "description": "",
+                    "line": 8
+                },
+                {
+                    "name": "entries",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "PaletteEntry[]",
+                    "optional": true,
+                    "description": "",
+                    "line": 7
+                },
+                {
+                    "name": "id",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 5
+                },
+                {
+                    "name": "label",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 4
+                },
+                {
+                    "name": "treeId",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": true,
+                    "description": "",
+                    "line": 6
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 165,
+            "methods": []
+        },
+        {
+            "name": "PaletteTreeEntry",
+            "id": "interface-PaletteTreeEntry-1e0b154796a839b2a9f1413adad4f4eaf8795e811e353c23c80e0dce1784dd9c66a8be09abb6f11e07f5dc8718a65db652c02a3c59144c82740f8b45a67ed7e9",
+            "file": "src/services/command-palette/models.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "import {Observable} from 'rxjs';\n\nexport interface PaletteEntry {\n  label: string;\n  id: string;\n  treeId?: string; // totalmente opcional\n  entries?: PaletteEntry[]; // deve obrigatoriamente ter APENAS ou 'entries' ou 'action'\n  action?: () => void | Observable<any>; // TODO incluir comportamento com observable\n}\n\nexport interface PaletteTreeEntry {\n  label: string;\n  id: string;\n}\n",
+            "properties": [
+                {
+                    "name": "id",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 13
+                },
+                {
+                    "name": "label",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 12
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 165,
+            "methods": []
         }
     ],
     "injectables": [
@@ -363,6 +486,415 @@
                         "line": 36
                     }
                 }
+            },
+            "type": "injectable"
+        },
+        {
+            "name": "CommandPaletteEntriesService",
+            "id": "injectable-CommandPaletteEntriesService-30ea206123e44d97dd7575ae57138d83a837cd862a3952350915752f81dafbfbda9588a4869ee6b4b4c79d869e202b722aab5788649ba6338e72b8378c8791c3",
+            "file": "src/services/command-palette/command-palette-entries.service.ts",
+            "properties": [
+                {
+                    "name": "_paletteEntries",
+                    "defaultValue": "[]",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "PaletteEntry[]",
+                    "optional": false,
+                    "description": "",
+                    "line": 11,
+                    "modifierKind": [
+                        121
+                    ]
+                },
+                {
+                    "name": "dialogClearButtonLabel",
+                    "defaultValue": "'CLEAR'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 9,
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
+                    "name": "dialogSearchPlaceholder",
+                    "defaultValue": "'...'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 8,
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
+                    "name": "paletteEntries$",
+                    "defaultValue": "this.paletteEntries$$.asObservable()",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Observable<PaletteEntry[]>",
+                    "optional": false,
+                    "description": "",
+                    "line": 13,
+                    "modifierKind": [
+                        123,
+                        144
+                    ]
+                },
+                {
+                    "name": "paletteEntries$$",
+                    "defaultValue": "new BehaviorSubject<PaletteEntry[]>(this._paletteEntries)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "BehaviorSubject<PaletteEntry[]>",
+                    "optional": false,
+                    "description": "",
+                    "line": 12,
+                    "modifierKind": [
+                        121
+                    ]
+                }
+            ],
+            "methods": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "description": "",
+            "rawdescription": "\n",
+            "sourceCode": "import { Injectable } from '@angular/core';\nimport {PaletteEntry} from './models';\nimport {BehaviorSubject, Observable} from 'rxjs';\n\n@Injectable()\nexport class CommandPaletteEntriesService {\n\n  public dialogSearchPlaceholder = '...';\n  public dialogClearButtonLabel = 'CLEAR';\n\n  private _paletteEntries: PaletteEntry[] = [];\n  private paletteEntries$$: BehaviorSubject<PaletteEntry[]> = new BehaviorSubject<PaletteEntry[]>(this._paletteEntries);\n  public readonly paletteEntries$: Observable<PaletteEntry[]> = this.paletteEntries$$.asObservable();\n\n  constructor() { }\n\n  public get paletteEntries(): PaletteEntry[] {\n    return this._paletteEntries;\n  }\n\n  public set paletteEntries(paletteEntries: PaletteEntry[]) {\n    this._paletteEntries = paletteEntries;\n    this.paletteEntries$$.next(this._paletteEntries);\n  }\n}\n",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [],
+                "line": 13
+            },
+            "accessors": {
+                "paletteEntries": {
+                    "name": "paletteEntries",
+                    "setSignature": {
+                        "name": "paletteEntries",
+                        "type": "void",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "args": [
+                            {
+                                "name": "paletteEntries",
+                                "type": "PaletteEntry[]",
+                                "deprecated": false,
+                                "deprecationMessage": ""
+                            }
+                        ],
+                        "returnType": "void",
+                        "line": 21,
+                        "jsdoctags": [
+                            {
+                                "name": "paletteEntries",
+                                "type": "PaletteEntry[]",
+                                "deprecated": false,
+                                "deprecationMessage": "",
+                                "tagName": {
+                                    "text": "param"
+                                }
+                            }
+                        ]
+                    },
+                    "getSignature": {
+                        "name": "paletteEntries",
+                        "type": "[]",
+                        "returnType": "PaletteEntry[]",
+                        "line": 17
+                    }
+                }
+            },
+            "type": "injectable"
+        },
+        {
+            "name": "CommandPaletteService",
+            "id": "injectable-CommandPaletteService-86c981c964a3a87c117a2dd4636b0f28dcb486e2008730dc3f5ae7570f9b4d531146825833e0a0da8670cfbc9036751bdbb5d119cf639dfca35778704b4ca71c",
+            "file": "src/services/command-palette/command-palette.service.ts",
+            "properties": [
+                {
+                    "name": "_configs",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "CommandPaletteConfig",
+                    "optional": false,
+                    "description": "",
+                    "line": 14,
+                    "modifierKind": [
+                        121
+                    ]
+                },
+                {
+                    "name": "commandPaletteEntriesService",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "CommandPaletteEntriesService",
+                    "optional": false,
+                    "description": "",
+                    "line": 18,
+                    "modifierKind": [
+                        123
+                    ]
+                }
+            ],
+            "methods": [
+                {
+                    "name": "triggerDialog",
+                    "args": [
+                        {
+                            "name": "initialEntry",
+                            "type": "PaletteEntry",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "defaultValue": "undefined"
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 37,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        123
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "initialEntry",
+                            "type": "PaletteEntry",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "defaultValue": "undefined",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "description": "",
+            "rawdescription": "\n",
+            "sourceCode": "import {\n  Inject,\n  Injectable,\n} from '@angular/core';\nimport {COMMAND_PALETTE_CONFIG, CommandPaletteConfig} from './injection';\nimport {DialogComponent} from './dialog/dialog.component';\nimport {ComponentInjectorService} from './component-injector.service';\nimport {Hotkey, HotkeysService} from 'angular2-hotkeys';\nimport {CommandPaletteEntriesService} from './command-palette-entries.service';\nimport {PaletteEntry} from './models';\n\n@Injectable()\nexport class CommandPaletteService {\n  private _configs: CommandPaletteConfig;\n\n  constructor(\n    @Inject(COMMAND_PALETTE_CONFIG) initialConfig: CommandPaletteConfig,\n    public commandPaletteEntriesService: CommandPaletteEntriesService,\n    private componentInjectorService: ComponentInjectorService,\n    private hotkeysService: HotkeysService,\n  ) {\n    this._configs = initialConfig;\n    this.commandPaletteEntriesService.paletteEntries = this._configs.paletteEntries;\n    this.hotkeysService.add(new Hotkey(this._configs.hotkeys, (event: KeyboardEvent, combo: string): boolean => {\n      event.stopPropagation();\n      event.preventDefault();\n      this.triggerDialog();\n      return true;\n    }));\n  }\n\n  public get configs(): CommandPaletteConfig {\n    return this._configs;\n  }\n\n  //@ts-ignore\n  public triggerDialog(initialEntry: PaletteEntry = undefined): void {\n    this.componentInjectorService.appendComponentToBody(DialogComponent).then(\n      (createdComponent) => {\n        createdComponent.instance.itself = createdComponent;\n        if (!!initialEntry) {\n          setTimeout(() => {\n            createdComponent.instance.initFromPaletteEntry(initialEntry);\n          }, 0);\n        }\n      }\n    );\n  }\n}\n",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "initialConfig",
+                        "type": "CommandPaletteConfig",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    },
+                    {
+                        "name": "commandPaletteEntriesService",
+                        "type": "CommandPaletteEntriesService",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    },
+                    {
+                        "name": "componentInjectorService",
+                        "type": "ComponentInjectorService",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    },
+                    {
+                        "name": "hotkeysService",
+                        "type": "HotkeysService",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 14,
+                "jsdoctags": [
+                    {
+                        "name": "initialConfig",
+                        "type": "CommandPaletteConfig",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "commandPaletteEntriesService",
+                        "type": "CommandPaletteEntriesService",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "componentInjectorService",
+                        "type": "ComponentInjectorService",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "hotkeysService",
+                        "type": "HotkeysService",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            "accessors": {
+                "configs": {
+                    "name": "configs",
+                    "getSignature": {
+                        "name": "configs",
+                        "type": "",
+                        "returnType": "CommandPaletteConfig",
+                        "line": 32
+                    }
+                }
+            },
+            "type": "injectable"
+        },
+        {
+            "name": "ComponentInjectorService",
+            "id": "injectable-ComponentInjectorService-0791bad618478c989f91f9de1cf7483177427aeb87fb64489d5355c6181453b576d8b95a108af93a385204c847427e7d8f29abb6c0b2245b298b153f78ceb7db",
+            "file": "src/services/command-palette/component-injector.service.ts",
+            "properties": [],
+            "methods": [
+                {
+                    "name": "appendComponentToBody",
+                    "args": [
+                        {
+                            "name": "component",
+                            "type": "any",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "Promise<ComponentRef<any>>",
+                    "typeParameters": [],
+                    "line": 19,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        131
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "component",
+                            "type": "any",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "removeComponentFromBody",
+                    "args": [
+                        {
+                            "name": "componentRef",
+                            "type": "ComponentRef<any>",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 37,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "componentRef",
+                            "type": "ComponentRef<any>",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "description": "",
+            "rawdescription": "\n",
+            "sourceCode": "import {\n  ApplicationRef,\n  ComponentFactoryResolver,\n  ComponentRef,\n  EmbeddedViewRef,\n  Injectable,\n  Injector\n} from '@angular/core';\n\n@Injectable()\nexport class ComponentInjectorService {\n\n  constructor(\n    private componentFactoryResolver: ComponentFactoryResolver,\n    private applicationRef: ApplicationRef,\n    private injector: Injector\n  ) { }\n\n  async appendComponentToBody(component: any): Promise<ComponentRef<any>> {\n    return await new Promise((resolve) => {\n      // create a component reference\n      const componentRef = this.componentFactoryResolver\n        .resolveComponentFactory(component)\n        .create(this.injector);\n\n      // attach component to the appRef so that so that it will be dirty checked.\n      this.applicationRef.attachView(componentRef.hostView);\n\n      // get DOM element from component\n      const domElem = (componentRef.hostView as EmbeddedViewRef<any>)\n        .rootNodes[0] as HTMLElement;\n      document.body.appendChild(domElem);\n      resolve(componentRef);\n    });\n  }\n\n  removeComponentFromBody(componentRef: ComponentRef<any>): void {\n    this.applicationRef.detachView(componentRef.hostView);\n    componentRef.destroy();\n  }\n}\n",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "componentFactoryResolver",
+                        "type": "ComponentFactoryResolver",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    },
+                    {
+                        "name": "applicationRef",
+                        "type": "ApplicationRef",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    },
+                    {
+                        "name": "injector",
+                        "type": "Injector",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 11,
+                "jsdoctags": [
+                    {
+                        "name": "componentFactoryResolver",
+                        "type": "ComponentFactoryResolver",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "applicationRef",
+                        "type": "ApplicationRef",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "injector",
+                        "type": "Injector",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
             },
             "type": "injectable"
         }
@@ -511,6 +1043,25 @@
                     }
                 }
             }
+        },
+        {
+            "name": "ResultSearchElements",
+            "id": "directive-ResultSearchElements-d78979022f95e87aa76b283bb26548b210afbfb1107f425cc36d96e6cc4db4e0a907202dabfc2ac80a23937d633f86bc587fdc3c780e9a32b345683778b5c54a",
+            "file": "src/services/command-palette/dialog/dialog.component.ts",
+            "type": "directive",
+            "description": "",
+            "rawdescription": "\n",
+            "sourceCode": "import {\n  Component,\n  ElementRef,\n  AfterViewInit,\n  ViewChild,\n  Renderer2,\n  OnDestroy,\n  ViewChildren, QueryList, Directive\n} from '@angular/core';\nimport {ComponentInjectorService} from '../component-injector.service';\nimport _ from 'lodash';\nimport {PaletteEntry, PaletteTreeEntry} from '../models';\nimport {CommandPaletteEntriesService} from '../command-palette-entries.service';\n\n// tslint:disable-next-line:directive-selector directive-class-suffix\n@Directive({selector: '.palette-result-entry'}) export class ResultSearchElements {\n  //\n}\n\n@Component({\n  selector: 'pm-command-palette-dialog',\n  templateUrl: './dialog.component.html',\n  styleUrls: ['./dialog.component.scss']\n})\nexport class DialogComponent implements AfterViewInit, OnDestroy {\n\n  @ViewChild('rootPanel', {static: true}) rootPanelComponent: ElementRef;\n  @ViewChild('searchResultContainer', {static: true}) searchResultContainer: ElementRef;\n  @ViewChildren(ResultSearchElements, { read: ElementRef }) resultEntryElements: QueryList<ElementRef>;\n  public searchString = '';\n  public searchIdTree: PaletteTreeEntry[] = []; // utilizado para navegar entre os ids da lista de entradas\n  public itself: any;\n  private currentFocusedElement: ElementRef;\n  private unlistener: () => void;\n  private deleteLatestSearchEntryOnDelete: boolean = false;\n\n  public paletteEntries: PaletteEntry[] = [];\n  public currentPaletteEntries: PaletteEntry[];\n  public searchPaletteEntries: PaletteEntry[];\n\n  constructor(\n    private commandPaletteEntriesService: CommandPaletteEntriesService,\n    private componentInjectorService: ComponentInjectorService,\n    private renderer2: Renderer2\n  ) {\n    document.documentElement.style.setProperty(`overflow-x`, `hidden`, 'important');\n    this.commandPaletteEntriesService.paletteEntries$.subscribe(entries => {\n      this.paletteEntries = [...entries];\n      this.currentPaletteEntries = [...this.paletteEntries];\n      this.searchPaletteEntries = [...this.paletteEntries];\n    });\n  }\n\n  public ngAfterViewInit(): void {\n    this.clearAll();\n    this.unlistener = this.renderer2.listen('window', 'focusin', event => {\n      if (!(\n        event.target === this.rootPanelComponent.nativeElement\n        || this.rootPanelComponent.nativeElement.contains(event.target)\n      )) {\n        this.destroyItself();\n      }\n    });\n  }\n\n  public ngOnDestroy(): void {\n    document.documentElement.style.removeProperty(`overflow-x`);\n  }\n\n  public destroyItself(): void {\n    this.componentInjectorService.removeComponentFromBody(this.itself);\n  }\n\n  private focusSearchInput(): void {\n    setTimeout(() => {\n      this.currentFocusedElement = this.rootPanelComponent;\n      this.rootPanelComponent.nativeElement.children[0].children[1].focus();\n    }, 50);\n  }\n\n  private isSearchInputFocused(): boolean {\n    return this.currentFocusedElement === this.rootPanelComponent;\n  }\n\n  public focusNext(): void {\n    const arrayResultEntryElements = this.resultEntryElements.toArray();\n    const currentFocusIndex = arrayResultEntryElements.findIndex(item => item === this.currentFocusedElement);\n    const focusNextIndex = currentFocusIndex + 1;\n    if (focusNextIndex >= arrayResultEntryElements.length) {\n      this.focusSearchInput();\n    }\n    else if (isNaN(focusNextIndex)) {\n      this.currentFocusedElement = arrayResultEntryElements[focusNextIndex];\n      this.currentFocusedElement.nativeElement.focus();\n    } else {\n      this.focusSearchInput();\n    }\n  }\n\n  public focusPrevious(): void {\n    const arrayResultEntryElements = this.resultEntryElements.toArray();\n    const currentFocusIndex = arrayResultEntryElements.findIndex(item => item === this.currentFocusedElement);\n    const focusPreviousIndex = currentFocusIndex - 1;\n    if (focusPreviousIndex < 0) {\n      this.focusSearchInput();\n    }\n    else if (isNaN(focusPreviousIndex)) {\n      this.currentFocusedElement = arrayResultEntryElements[focusPreviousIndex];\n      this.currentFocusedElement.nativeElement.focus();\n    } else {\n      this.focusSearchInput();\n    }\n  }\n\n  public buildTreeIdEntriesFromPaletteEntry(paletteEntry: PaletteEntry, entriesToVerify: PaletteEntry[]): any {\n    let result;\n    let foundEqual: boolean = false;\n\n    const verifyEqual = (entryToVerify: PaletteEntry) => {\n      result.push({id: entryToVerify.id, label: entryToVerify.label});\n      foundEqual = _.isEqual(entryToVerify, paletteEntry);\n    };\n\n    const verifyChildren = (entryToVerify: PaletteEntry) => {\n      verifyEqual(entryToVerify);\n      if (!foundEqual) {\n        if (this.hasChildEntries(entryToVerify)) {\n          //@ts-ignore\n          for (const child of entryToVerify.entries) {\n            if (!foundEqual) {\n              verifyChildren(child);\n            } else {\n              break;\n            }\n          }\n        } else {\n          result = result.slice(0, 1);\n        }\n      }\n    };\n\n    for (const entry of entriesToVerify) {\n      if (!foundEqual) {\n        result = []; // toda vez que itera sobre um novo item do array base zera a árvore de results\n        verifyChildren(entry);\n      } else {\n        break;\n      }\n    }\n    return result;\n  }\n\n  public rebuildCurrentEntriesFromTree(treeEntryIndex: number, sliceTree: boolean = true): void {\n    let resultEntries = [...this.paletteEntries];\n    if (this.searchIdTree.length > 0) {\n      const slicedTreeEntries = this.searchIdTree.slice(0, treeEntryIndex);\n      // tslint:disable-next-line:prefer-for-of\n      for (let i = 0; i < slicedTreeEntries.length; i++) {\n        const treeEntry = slicedTreeEntries[i];\n        let paletteEntry;\n        if (i === 0) {\n          paletteEntry = resultEntries.find(entry => entry.id === treeEntry.id);\n        } else {\n          //@ts-ignore\n          paletteEntry = resultEntries[0].entries.find(entry => entry.id === treeEntry.id);\n        }\n        resultEntries = [paletteEntry];\n      }\n    }\n    if (sliceTree) {\n      this.searchIdTree = this.searchIdTree.slice(0, treeEntryIndex);\n    }\n    this.searchPaletteEntries = resultEntries;\n    this.currentPaletteEntries = resultEntries;\n  }\n\n  public searchAction(searchValue: string): void {\n    const entriesToFlat: (paletteEntries: PaletteEntry[]) => string[] = (paletteEntries: PaletteEntry[]) => {\n      const idTreeArray: string[] = [];\n\n      const isSearchValueInEntry: (paletteEntry: PaletteEntry) => boolean = (paletteEntry: PaletteEntry) => {\n        return paletteEntry.label.toLowerCase().includes(searchValue.toLowerCase())\n          || paletteEntry.id.toLowerCase().includes(searchValue.toLowerCase());\n      };\n\n      const entryToFlat: (paletteEntry: PaletteEntry, idPrefix: string) => void = (paletteEntry: PaletteEntry, idPrefix: string = '') => {\n        idPrefix = !!idPrefix ? `${idPrefix}` : `${paletteEntry.id}`;\n        if (this.hasChildEntries(paletteEntry)) {\n          idTreeArray.push(`${idPrefix}`);\n          //@ts-ignore\n          for (let i = 0; i < paletteEntry.entries.length; i++) {\n            //@ts-ignore\n            const entry = paletteEntry.entries[i];\n            const idSuffix = `.entries[${i}]`;\n            entryToFlat(entry, `${idPrefix}${idSuffix}`);\n          }\n        } else {\n          if (isSearchValueInEntry(paletteEntry)) {\n            idTreeArray.push(`${idPrefix}`);\n          }\n        }\n      };\n\n      if (paletteEntries.length > 0 && paletteEntries[0].id === 'results') {\n        //@ts-ignore\n        paletteEntries = paletteEntries[0].entries;\n      }\n      const resultEntry: PaletteEntry = {\n        label: 'Results',\n        id: 'results',\n        entries: paletteEntries\n      };\n\n      entryToFlat(resultEntry, '');\n      if (this.searchIdTree.length === 0) {\n        return idTreeArray.slice(1);\n      } else {\n        return idTreeArray.slice(2);\n      }\n    };\n\n    const flatEntriesToEntries: (flatEntries: string[], entriesToCheck: PaletteEntry[]) => PaletteEntry[] = (flatEntries: string[], entriesToCheck: PaletteEntry[]) => {\n      const resultObjToCheck = {results: {entries: [...entriesToCheck]}};\n      const entries: PaletteEntry[] = [];\n      for (const flatEntry of flatEntries) {\n        const entryToAdd: PaletteEntry = _.get(resultObjToCheck, flatEntry);\n        entryToAdd.treeId = flatEntry;\n        entries.push(entryToAdd);\n      }\n      return _.uniqWith(entries, _.isEqual); // remove objetos iguais\n    };\n\n    if (!!searchValue) {\n      this.deleteLatestSearchEntryOnDelete = false;\n      let entries;\n      if (!!this.searchPaletteEntries && this.searchPaletteEntries.length > 0 && this.searchPaletteEntries[0].id === 'results') {\n        entries = this.searchPaletteEntries[0].entries;\n      } else {\n        entries = this.searchPaletteEntries;\n      }\n      this.searchPaletteEntries = [\n        {\n          label: 'Results',\n          id: 'results',\n          entries: flatEntriesToEntries(entriesToFlat(entries), entries)\n        }\n      ];\n    } else {\n      if (this.deleteLatestSearchEntryOnDelete) {\n        this.goBackOneLevel();\n      }\n      this.deleteLatestSearchEntryOnDelete = true;\n      this.searchPaletteEntries = [...this.currentPaletteEntries];\n    }\n  }\n\n  public goBackOneLevel(): void {\n    if (this.isSearchInputFocused()) {\n      if (this.searchIdTree.length === 0) {\n        this.destroyItself();\n      } else {\n        this.rebuildCurrentEntriesFromTree(this.searchIdTree.length - 1);\n        this.focusSearchInput();\n      }\n    } else {\n      this.focusSearchInput();\n    }\n  }\n\n  public hasChildEntries(paletteEntry: PaletteEntry): boolean {\n    //@ts-ignore\n    return paletteEntry?.entries && paletteEntry.entries.length > 0;\n  }\n\n  /**\n   * Com uma palette entry, cria toda a estrutura baseado na raiz e abre o dialog nela já\n   * @param paletteEntry: Entrada da lista raiz\n   */\n  public initFromPaletteEntry(paletteEntry: PaletteEntry): void {\n    this.searchIdTree = this.buildTreeIdEntriesFromPaletteEntry(paletteEntry, this.paletteEntries);\n    this.rebuildCurrentEntriesFromTree(this.searchIdTree.length, false);\n    this.searchString = '';\n    this.focusSearchInput();\n  }\n\n  /**\n   * caso tenha child entries, atualiza o dialog, senão executa a ação da entry.\n   */\n  public paletteEntryAction(paletteEntry: PaletteEntry): void {\n    if (this.hasChildEntries(paletteEntry)) {\n      this.initFromPaletteEntry(paletteEntry);\n    } else {\n      //@ts-ignore\n      paletteEntry.action();\n      this.destroyItself();\n    }\n  }\n\n  public clearAll(): void {\n    this.searchString = '';\n    this.searchIdTree = [];\n    this.searchPaletteEntries = [...this.paletteEntries];\n    this.currentPaletteEntries = [...this.paletteEntries];\n    this.focusSearchInput();\n  }\n\n}\n",
+            "selector": ".palette-result-entry",
+            "providers": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "propertiesClass": [],
+            "methodsClass": []
         }
     ],
     "components": [
@@ -1231,6 +1782,619 @@
                 "OnInit"
             ],
             "templateData": "<ng-container *ngIf=\"text\">\n  <div class=\"d-flex\" [ngClass]=\"{'h-100': fillHeight}\">\n    <input [attr.disabled]=\"disabled\" [attr.readonly]=\"disabled\" [value]=\"text\" class=\"form-control\" [title]=\"text\"\n           style=\"border-radius: var(--border-radius-{{borderRadius}}) 0px 0px var(--border-radius-{{borderRadius}}) !important;\"\n           type=\"text\"\n    >\n    <button\n      [cdkCopyToClipboard]=\"text\"\n      (click)=\"copyCallbackExecute(text)\"\n      class=\"btn btn-copy btn-{{btnColor}}\"\n      style=\"border-radius: 0 var(--border-radius-{{borderRadius}}) var(--border-radius-{{borderRadius}}) 0 !important;\"\n    >\n      <i class=\"uil uil-lg uil-copy d-flex justify-content-center align-items-center align-self-center\"></i>\n    </button>\n  </div>\n</ng-container>\n"
+        },
+        {
+            "name": "DialogComponent",
+            "id": "component-DialogComponent-d78979022f95e87aa76b283bb26548b210afbfb1107f425cc36d96e6cc4db4e0a907202dabfc2ac80a23937d633f86bc587fdc3c780e9a32b345683778b5c54a",
+            "file": "src/services/command-palette/dialog/dialog.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "pm-command-palette-dialog",
+            "styleUrls": [
+                "./dialog.component.scss"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./dialog.component.html"
+            ],
+            "viewProviders": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "currentFocusedElement",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "ElementRef",
+                    "optional": false,
+                    "description": "",
+                    "line": 33,
+                    "modifierKind": [
+                        121
+                    ]
+                },
+                {
+                    "name": "currentPaletteEntries",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "PaletteEntry[]",
+                    "optional": false,
+                    "description": "",
+                    "line": 38,
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
+                    "name": "deleteLatestSearchEntryOnDelete",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "boolean",
+                    "optional": false,
+                    "description": "",
+                    "line": 35,
+                    "modifierKind": [
+                        121
+                    ]
+                },
+                {
+                    "name": "itself",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "any",
+                    "optional": false,
+                    "description": "",
+                    "line": 32,
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
+                    "name": "paletteEntries",
+                    "defaultValue": "[]",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "PaletteEntry[]",
+                    "optional": false,
+                    "description": "",
+                    "line": 37,
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
+                    "name": "resultEntryElements",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "QueryList<ElementRef>",
+                    "optional": false,
+                    "description": "",
+                    "line": 29,
+                    "decorators": [
+                        {
+                            "name": "ViewChildren",
+                            "stringifiedArguments": "ResultSearchElements, {read: ElementRef}"
+                        }
+                    ]
+                },
+                {
+                    "name": "rootPanelComponent",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "ElementRef",
+                    "optional": false,
+                    "description": "",
+                    "line": 27,
+                    "decorators": [
+                        {
+                            "name": "ViewChild",
+                            "stringifiedArguments": "'rootPanel', {static: true}"
+                        }
+                    ]
+                },
+                {
+                    "name": "searchIdTree",
+                    "defaultValue": "[]",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "PaletteTreeEntry[]",
+                    "optional": false,
+                    "description": "",
+                    "line": 31,
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
+                    "name": "searchPaletteEntries",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "PaletteEntry[]",
+                    "optional": false,
+                    "description": "",
+                    "line": 39,
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
+                    "name": "searchResultContainer",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "ElementRef",
+                    "optional": false,
+                    "description": "",
+                    "line": 28,
+                    "decorators": [
+                        {
+                            "name": "ViewChild",
+                            "stringifiedArguments": "'searchResultContainer', {static: true}"
+                        }
+                    ]
+                },
+                {
+                    "name": "searchString",
+                    "defaultValue": "''",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 30,
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
+                    "name": "unlistener",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "function",
+                    "optional": false,
+                    "description": "",
+                    "line": 34,
+                    "modifierKind": [
+                        121
+                    ]
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "buildTreeIdEntriesFromPaletteEntry",
+                    "args": [
+                        {
+                            "name": "paletteEntry",
+                            "type": "PaletteEntry",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        },
+                        {
+                            "name": "entriesToVerify",
+                            "type": "PaletteEntry[]",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "any",
+                    "typeParameters": [],
+                    "line": 115,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        123
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "paletteEntry",
+                            "type": "PaletteEntry",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        },
+                        {
+                            "name": "entriesToVerify",
+                            "type": "PaletteEntry[]",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "clearAll",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 299,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
+                    "name": "destroyItself",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 70,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
+                    "name": "focusNext",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 85,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
+                    "name": "focusPrevious",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 100,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
+                    "name": "focusSearchInput",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 74,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        121
+                    ]
+                },
+                {
+                    "name": "goBackOneLevel",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 257,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
+                    "name": "hasChildEntries",
+                    "args": [
+                        {
+                            "name": "paletteEntry",
+                            "type": "PaletteEntry",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "boolean",
+                    "typeParameters": [],
+                    "line": 270,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        123
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "paletteEntry",
+                            "type": "PaletteEntry",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "initFromPaletteEntry",
+                    "args": [
+                        {
+                            "name": "paletteEntry",
+                            "type": "PaletteEntry",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 279,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n\nCom uma palette entry, cria toda a estrutura baseado na raiz e abre o dialog nela já\n",
+                    "description": "<p>Com uma palette entry, cria toda a estrutura baseado na raiz e abre o dialog nela já</p>\n",
+                    "modifierKind": [
+                        123
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": {
+                                "pos": 9706,
+                                "end": 9718,
+                                "flags": 4227072,
+                                "modifierFlagsCache": 0,
+                                "transformFlags": 0,
+                                "kind": 79,
+                                "escapedText": "paletteEntry"
+                            },
+                            "type": "PaletteEntry",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "pos": 9700,
+                                "end": 9705,
+                                "flags": 4227072,
+                                "modifierFlagsCache": 0,
+                                "transformFlags": 0,
+                                "kind": 79,
+                                "escapedText": "param"
+                            },
+                            "comment": "<p>: Entrada da lista raiz</p>\n"
+                        }
+                    ]
+                },
+                {
+                    "name": "isSearchInputFocused",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "boolean",
+                    "typeParameters": [],
+                    "line": 81,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        121
+                    ]
+                },
+                {
+                    "name": "ngAfterViewInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 54,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
+                    "name": "ngOnDestroy",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 66,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
+                    "name": "paletteEntryAction",
+                    "args": [
+                        {
+                            "name": "paletteEntry",
+                            "type": "PaletteEntry",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 289,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n\ncaso tenha child entries, atualiza o dialog, senão executa a ação da entry.\n",
+                    "description": "<p>caso tenha child entries, atualiza o dialog, senão executa a ação da entry.</p>\n",
+                    "modifierKind": [
+                        123
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "paletteEntry",
+                            "type": "PaletteEntry",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "rebuildCurrentEntriesFromTree",
+                    "args": [
+                        {
+                            "name": "treeEntryIndex",
+                            "type": "number",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        },
+                        {
+                            "name": "sliceTree",
+                            "type": "boolean",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "defaultValue": "true"
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 153,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        123
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "treeEntryIndex",
+                            "type": "number",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        },
+                        {
+                            "name": "sliceTree",
+                            "type": "boolean",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "defaultValue": "true",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "searchAction",
+                    "args": [
+                        {
+                            "name": "searchValue",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 177,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        123
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "searchValue",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import {\n  Component,\n  ElementRef,\n  AfterViewInit,\n  ViewChild,\n  Renderer2,\n  OnDestroy,\n  ViewChildren, QueryList, Directive\n} from '@angular/core';\nimport {ComponentInjectorService} from '../component-injector.service';\nimport _ from 'lodash';\nimport {PaletteEntry, PaletteTreeEntry} from '../models';\nimport {CommandPaletteEntriesService} from '../command-palette-entries.service';\n\n// tslint:disable-next-line:directive-selector directive-class-suffix\n@Directive({selector: '.palette-result-entry'}) export class ResultSearchElements {\n  //\n}\n\n@Component({\n  selector: 'pm-command-palette-dialog',\n  templateUrl: './dialog.component.html',\n  styleUrls: ['./dialog.component.scss']\n})\nexport class DialogComponent implements AfterViewInit, OnDestroy {\n\n  @ViewChild('rootPanel', {static: true}) rootPanelComponent: ElementRef;\n  @ViewChild('searchResultContainer', {static: true}) searchResultContainer: ElementRef;\n  @ViewChildren(ResultSearchElements, { read: ElementRef }) resultEntryElements: QueryList<ElementRef>;\n  public searchString = '';\n  public searchIdTree: PaletteTreeEntry[] = []; // utilizado para navegar entre os ids da lista de entradas\n  public itself: any;\n  private currentFocusedElement: ElementRef;\n  private unlistener: () => void;\n  private deleteLatestSearchEntryOnDelete: boolean = false;\n\n  public paletteEntries: PaletteEntry[] = [];\n  public currentPaletteEntries: PaletteEntry[];\n  public searchPaletteEntries: PaletteEntry[];\n\n  constructor(\n    private commandPaletteEntriesService: CommandPaletteEntriesService,\n    private componentInjectorService: ComponentInjectorService,\n    private renderer2: Renderer2\n  ) {\n    document.documentElement.style.setProperty(`overflow-x`, `hidden`, 'important');\n    this.commandPaletteEntriesService.paletteEntries$.subscribe(entries => {\n      this.paletteEntries = [...entries];\n      this.currentPaletteEntries = [...this.paletteEntries];\n      this.searchPaletteEntries = [...this.paletteEntries];\n    });\n  }\n\n  public ngAfterViewInit(): void {\n    this.clearAll();\n    this.unlistener = this.renderer2.listen('window', 'focusin', event => {\n      if (!(\n        event.target === this.rootPanelComponent.nativeElement\n        || this.rootPanelComponent.nativeElement.contains(event.target)\n      )) {\n        this.destroyItself();\n      }\n    });\n  }\n\n  public ngOnDestroy(): void {\n    document.documentElement.style.removeProperty(`overflow-x`);\n  }\n\n  public destroyItself(): void {\n    this.componentInjectorService.removeComponentFromBody(this.itself);\n  }\n\n  private focusSearchInput(): void {\n    setTimeout(() => {\n      this.currentFocusedElement = this.rootPanelComponent;\n      this.rootPanelComponent.nativeElement.children[0].children[1].focus();\n    }, 50);\n  }\n\n  private isSearchInputFocused(): boolean {\n    return this.currentFocusedElement === this.rootPanelComponent;\n  }\n\n  public focusNext(): void {\n    const arrayResultEntryElements = this.resultEntryElements.toArray();\n    const currentFocusIndex = arrayResultEntryElements.findIndex(item => item === this.currentFocusedElement);\n    const focusNextIndex = currentFocusIndex + 1;\n    if (focusNextIndex >= arrayResultEntryElements.length) {\n      this.focusSearchInput();\n    }\n    else if (isNaN(focusNextIndex)) {\n      this.currentFocusedElement = arrayResultEntryElements[focusNextIndex];\n      this.currentFocusedElement.nativeElement.focus();\n    } else {\n      this.focusSearchInput();\n    }\n  }\n\n  public focusPrevious(): void {\n    const arrayResultEntryElements = this.resultEntryElements.toArray();\n    const currentFocusIndex = arrayResultEntryElements.findIndex(item => item === this.currentFocusedElement);\n    const focusPreviousIndex = currentFocusIndex - 1;\n    if (focusPreviousIndex < 0) {\n      this.focusSearchInput();\n    }\n    else if (isNaN(focusPreviousIndex)) {\n      this.currentFocusedElement = arrayResultEntryElements[focusPreviousIndex];\n      this.currentFocusedElement.nativeElement.focus();\n    } else {\n      this.focusSearchInput();\n    }\n  }\n\n  public buildTreeIdEntriesFromPaletteEntry(paletteEntry: PaletteEntry, entriesToVerify: PaletteEntry[]): any {\n    let result;\n    let foundEqual: boolean = false;\n\n    const verifyEqual = (entryToVerify: PaletteEntry) => {\n      result.push({id: entryToVerify.id, label: entryToVerify.label});\n      foundEqual = _.isEqual(entryToVerify, paletteEntry);\n    };\n\n    const verifyChildren = (entryToVerify: PaletteEntry) => {\n      verifyEqual(entryToVerify);\n      if (!foundEqual) {\n        if (this.hasChildEntries(entryToVerify)) {\n          //@ts-ignore\n          for (const child of entryToVerify.entries) {\n            if (!foundEqual) {\n              verifyChildren(child);\n            } else {\n              break;\n            }\n          }\n        } else {\n          result = result.slice(0, 1);\n        }\n      }\n    };\n\n    for (const entry of entriesToVerify) {\n      if (!foundEqual) {\n        result = []; // toda vez que itera sobre um novo item do array base zera a árvore de results\n        verifyChildren(entry);\n      } else {\n        break;\n      }\n    }\n    return result;\n  }\n\n  public rebuildCurrentEntriesFromTree(treeEntryIndex: number, sliceTree: boolean = true): void {\n    let resultEntries = [...this.paletteEntries];\n    if (this.searchIdTree.length > 0) {\n      const slicedTreeEntries = this.searchIdTree.slice(0, treeEntryIndex);\n      // tslint:disable-next-line:prefer-for-of\n      for (let i = 0; i < slicedTreeEntries.length; i++) {\n        const treeEntry = slicedTreeEntries[i];\n        let paletteEntry;\n        if (i === 0) {\n          paletteEntry = resultEntries.find(entry => entry.id === treeEntry.id);\n        } else {\n          //@ts-ignore\n          paletteEntry = resultEntries[0].entries.find(entry => entry.id === treeEntry.id);\n        }\n        resultEntries = [paletteEntry];\n      }\n    }\n    if (sliceTree) {\n      this.searchIdTree = this.searchIdTree.slice(0, treeEntryIndex);\n    }\n    this.searchPaletteEntries = resultEntries;\n    this.currentPaletteEntries = resultEntries;\n  }\n\n  public searchAction(searchValue: string): void {\n    const entriesToFlat: (paletteEntries: PaletteEntry[]) => string[] = (paletteEntries: PaletteEntry[]) => {\n      const idTreeArray: string[] = [];\n\n      const isSearchValueInEntry: (paletteEntry: PaletteEntry) => boolean = (paletteEntry: PaletteEntry) => {\n        return paletteEntry.label.toLowerCase().includes(searchValue.toLowerCase())\n          || paletteEntry.id.toLowerCase().includes(searchValue.toLowerCase());\n      };\n\n      const entryToFlat: (paletteEntry: PaletteEntry, idPrefix: string) => void = (paletteEntry: PaletteEntry, idPrefix: string = '') => {\n        idPrefix = !!idPrefix ? `${idPrefix}` : `${paletteEntry.id}`;\n        if (this.hasChildEntries(paletteEntry)) {\n          idTreeArray.push(`${idPrefix}`);\n          //@ts-ignore\n          for (let i = 0; i < paletteEntry.entries.length; i++) {\n            //@ts-ignore\n            const entry = paletteEntry.entries[i];\n            const idSuffix = `.entries[${i}]`;\n            entryToFlat(entry, `${idPrefix}${idSuffix}`);\n          }\n        } else {\n          if (isSearchValueInEntry(paletteEntry)) {\n            idTreeArray.push(`${idPrefix}`);\n          }\n        }\n      };\n\n      if (paletteEntries.length > 0 && paletteEntries[0].id === 'results') {\n        //@ts-ignore\n        paletteEntries = paletteEntries[0].entries;\n      }\n      const resultEntry: PaletteEntry = {\n        label: 'Results',\n        id: 'results',\n        entries: paletteEntries\n      };\n\n      entryToFlat(resultEntry, '');\n      if (this.searchIdTree.length === 0) {\n        return idTreeArray.slice(1);\n      } else {\n        return idTreeArray.slice(2);\n      }\n    };\n\n    const flatEntriesToEntries: (flatEntries: string[], entriesToCheck: PaletteEntry[]) => PaletteEntry[] = (flatEntries: string[], entriesToCheck: PaletteEntry[]) => {\n      const resultObjToCheck = {results: {entries: [...entriesToCheck]}};\n      const entries: PaletteEntry[] = [];\n      for (const flatEntry of flatEntries) {\n        const entryToAdd: PaletteEntry = _.get(resultObjToCheck, flatEntry);\n        entryToAdd.treeId = flatEntry;\n        entries.push(entryToAdd);\n      }\n      return _.uniqWith(entries, _.isEqual); // remove objetos iguais\n    };\n\n    if (!!searchValue) {\n      this.deleteLatestSearchEntryOnDelete = false;\n      let entries;\n      if (!!this.searchPaletteEntries && this.searchPaletteEntries.length > 0 && this.searchPaletteEntries[0].id === 'results') {\n        entries = this.searchPaletteEntries[0].entries;\n      } else {\n        entries = this.searchPaletteEntries;\n      }\n      this.searchPaletteEntries = [\n        {\n          label: 'Results',\n          id: 'results',\n          entries: flatEntriesToEntries(entriesToFlat(entries), entries)\n        }\n      ];\n    } else {\n      if (this.deleteLatestSearchEntryOnDelete) {\n        this.goBackOneLevel();\n      }\n      this.deleteLatestSearchEntryOnDelete = true;\n      this.searchPaletteEntries = [...this.currentPaletteEntries];\n    }\n  }\n\n  public goBackOneLevel(): void {\n    if (this.isSearchInputFocused()) {\n      if (this.searchIdTree.length === 0) {\n        this.destroyItself();\n      } else {\n        this.rebuildCurrentEntriesFromTree(this.searchIdTree.length - 1);\n        this.focusSearchInput();\n      }\n    } else {\n      this.focusSearchInput();\n    }\n  }\n\n  public hasChildEntries(paletteEntry: PaletteEntry): boolean {\n    //@ts-ignore\n    return paletteEntry?.entries && paletteEntry.entries.length > 0;\n  }\n\n  /**\n   * Com uma palette entry, cria toda a estrutura baseado na raiz e abre o dialog nela já\n   * @param paletteEntry: Entrada da lista raiz\n   */\n  public initFromPaletteEntry(paletteEntry: PaletteEntry): void {\n    this.searchIdTree = this.buildTreeIdEntriesFromPaletteEntry(paletteEntry, this.paletteEntries);\n    this.rebuildCurrentEntriesFromTree(this.searchIdTree.length, false);\n    this.searchString = '';\n    this.focusSearchInput();\n  }\n\n  /**\n   * caso tenha child entries, atualiza o dialog, senão executa a ação da entry.\n   */\n  public paletteEntryAction(paletteEntry: PaletteEntry): void {\n    if (this.hasChildEntries(paletteEntry)) {\n      this.initFromPaletteEntry(paletteEntry);\n    } else {\n      //@ts-ignore\n      paletteEntry.action();\n      this.destroyItself();\n    }\n  }\n\n  public clearAll(): void {\n    this.searchString = '';\n    this.searchIdTree = [];\n    this.searchPaletteEntries = [...this.paletteEntries];\n    this.currentPaletteEntries = [...this.paletteEntries];\n    this.focusSearchInput();\n  }\n\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": "::ng-deep {\n  pm-command-palette-dialog {\n    * {\n      &:focus,\n      &:focus-visible {\n        outline: none;\n      }\n    }\n\n    position: fixed;\n    z-index: 9999;\n    overflow: hidden !important;\n    overflow-y: hidden !important;\n    overflow-x: hidden !important;\n\n    .backdrop {\n      display: flex;\n      flex-direction: column;\n      align-items: center;\n      width: 100vw;\n      height: 100vh;\n      background-color: rgba(0, 0, 0, 0.30);\n      padding: calc(1.5 * var(--navbar-height)) 1em;\n\n      overflow: hidden !important;\n      overflow-y: hidden !important;\n      overflow-x: hidden !important;\n    }\n\n    .palette-dialog-container {\n      overflow: hidden;\n      border-radius: var(--border-radius-md);\n      width: calc(100% - 1em);\n      max-width: 900px;\n    }\n\n    .palette-dialog {\n      $side-padding: 12px;\n\n      overflow: auto;\n      border: none;\n\n      width: 100%;\n      height: 100%;\n      position: relative;\n\n      .search-input-container {\n        background-color: var(--bg-default);\n        display: flex;\n        flex-direction: row;\n        align-items: center;\n        position: sticky;\n        padding: 1em;\n        top: 0;\n        left: 0;\n        width: 100%;\n        border-bottom: 2px solid var(--color-gray-light);\n        border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;\n\n        pm-button {\n          &:not(:first-child) {\n            margin-left: 0.3em;\n          }\n        }\n\n        .pm-button {\n          height: 100%;\n          button {\n            height: 100%;\n          }\n        }\n\n        input {\n          background-color: var(--bg-default);\n          border: none;\n          color: var(--color-gray-darker);\n          margin-left: 0.3em;\n        }\n      }\n\n      .search-result-container {\n        & > * {\n          h1, h2, h3, h4, h5, h6, p {\n            margin: 0;\n          }\n        }\n\n        .result-category {\n          & > {\n            h1, h2, h3, h4, h5, h6, p {\n              font-size: 0.9em;\n              padding: ($side-padding*0.5) $side-padding;\n            }\n          }\n          color: var(--color-gray-medium);\n        }\n\n        .palette-result-entry {\n          cursor: pointer;\n          font-size: 1em;\n          padding: $side-padding;\n          color: var(--color-gray-darker);\n\n          &:hover,\n          &:focus,\n          &:focus-within,\n          &:active {\n            $border-size: 4px;\n            border-left: $border-size solid var(--color-primary);\n            padding-left: calc(#{$side-padding} - #{$border-size});\n            background-color: var(--color-gray-light);\n          }\n\n\n          &:last-child {\n            margin-bottom: $side-padding;\n          }\n        }\n      }\n    }\n  }\n}\n",
+                    "styleUrl": "./dialog.component.scss"
+                }
+            ],
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "commandPaletteEntriesService",
+                        "type": "CommandPaletteEntriesService",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    },
+                    {
+                        "name": "componentInjectorService",
+                        "type": "ComponentInjectorService",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    },
+                    {
+                        "name": "renderer2",
+                        "type": "Renderer2",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 39,
+                "jsdoctags": [
+                    {
+                        "name": "commandPaletteEntriesService",
+                        "type": "CommandPaletteEntriesService",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "componentInjectorService",
+                        "type": "ComponentInjectorService",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "renderer2",
+                        "type": "Renderer2",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            "implements": [
+                "AfterViewInit",
+                "OnDestroy"
+            ],
+            "templateData": "<div\n  tabindex=\"0\" class=\"backdrop\"\n  (keydown.esc)=\"goBackOneLevel()\"\n  (keydown.arrowDown)=\"$event.preventDefault(); focusNext()\"\n  (keydown.arrowUp)=\"$event.preventDefault(); focusPrevious()\"\n>\n  <div class=\"palette-dialog-container\">\n    <div #rootPanel tabindex=\"0\" class=\"card-basic palette-dialog\">\n      <div class=\"search-input-container\">\n        <div class=\"d-flex search-tag-container\">\n          <pm-button\n            *ngFor=\"let treeEntry of searchIdTree; let index = index\"\n            (click)=\"rebuildCurrentEntriesFromTree(index);\"\n            [type]=\"'primary'\"\n            [size]=\"'sm'\"\n          >\n            {{treeEntry.label}}\n          </pm-button>\n        </div>\n        <input\n          #searchInput\n          class=\"w-100 flex-fill\"\n          (keydown.delete)=\"searchAction(searchInput.value)\"\n          (keydown.backspace)=\"searchAction(searchInput.value)\"\n          (input)=\"searchAction($event.target['value'])\"\n          [(ngModel)]=\"searchString\"\n          type=\"text\"\n          [attr.placeholder]=\"searchIdTree.length > 0 ? '' : commandPaletteEntriesService.dialogSearchPlaceholder\"\n        >\n        <pm-button (click)=\"clearAll()\" [type]=\"'light'\" [size]=\"'sm'\">\n          {{commandPaletteEntriesService.dialogClearButtonLabel}}\n        </pm-button>\n      </div>\n      <div #searchResultContainer class=\"search-result-container\">\n        <div *ngFor=\"let searchEntry of searchPaletteEntries\"\n             class=\"result-category\"\n        >\n          <p>{{searchEntry.label}}</p>\n          <div *ngFor=\"let childEntry of searchEntry.entries; let index = index;\"\n               [attr.tabindex]=\"index\"\n               (click)=\"paletteEntryAction(childEntry)\"\n               (keydown.arrowLeft)=\"$event.preventDefault(); goBackOneLevel()\"\n               (keydown.arrowRight)=\"$event.preventDefault(); paletteEntryAction(childEntry)\"\n               (keydown.enter)=\"$event.preventDefault(); paletteEntryAction(childEntry)\"\n               class=\"palette-result-entry\"\n          >\n            <p>{{childEntry.label}}{{hasChildEntries(childEntry) ? '...' : ''}}</p>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n"
         },
         {
             "name": "DraggableListComponent",
@@ -3734,6 +4898,148 @@
                 "line": 9
             },
             "templateData": "<div class=\"pm-tabs horizontal-tabs\">\n  <ng-content></ng-content>\n</div>\n"
+        },
+        {
+            "name": "TriggerButtonComponent",
+            "id": "component-TriggerButtonComponent-45b19101c655a373241670d97940022d8d4c00d15768cfe4ebf94dbd720a5fb05abf2ba1dfd9621575ff147e67050610c100f50fdb6ba80229f886eb853b7e93",
+            "file": "src/services/command-palette/trigger-button/trigger-button.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "pm-palette-trigger-button",
+            "styleUrls": [
+                "./trigger-button.component.scss"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./trigger-button.component.html"
+            ],
+            "viewProviders": [],
+            "inputsClass": [
+                {
+                    "name": "iconClass",
+                    "defaultValue": "''",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 13,
+                    "type": "string",
+                    "decorators": []
+                },
+                {
+                    "name": "label",
+                    "defaultValue": "'⌘ + K / ctrl + K'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 12,
+                    "type": "string",
+                    "decorators": []
+                }
+            ],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "commandPaletteEntriesService",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "CommandPaletteEntriesService",
+                    "optional": false,
+                    "description": "",
+                    "line": 17,
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
+                    "name": "commandPaletteService",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "CommandPaletteService",
+                    "optional": false,
+                    "description": "",
+                    "line": 16,
+                    "modifierKind": [
+                        123
+                    ]
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "ngAfterViewInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 98,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        123
+                    ]
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import {AfterViewInit, Component, Input} from '@angular/core';\nimport {CommandPaletteService} from '../command-palette.service';\nimport {CommandPaletteEntriesService} from '../command-palette-entries.service';\n\n@Component({\n  selector: 'pm-palette-trigger-button',\n  templateUrl: './trigger-button.component.html',\n  styleUrls: ['./trigger-button.component.scss']\n})\nexport class TriggerButtonComponent implements AfterViewInit {\n\n  @Input() label = '⌘ + K / ctrl + K';\n  @Input() iconClass = '';\n\n  constructor(\n    public commandPaletteService: CommandPaletteService,\n    public commandPaletteEntriesService: CommandPaletteEntriesService\n  ) {\n    this.commandPaletteEntriesService.paletteEntries = [\n      {\n        label: 'Pages',\n        id: 'pages',\n        entries: [\n          {\n            label: 'Dashboard',\n            id: 'dashboard',\n            action: () => {\n              console.log('dashboard');\n            }\n          },\n          {\n            label: 'Notifications',\n            id: 'notifications',\n            action: () => {\n              console.log('notifications');\n            }\n          }\n        ]\n      },\n      {\n        label: 'Preferences',\n        id: 'preferences',\n        entries: [\n          {\n            label: 'Change Theme',\n            id: 'theme',\n            entries: [\n              {\n                label: 'Light Themes',\n                id: 'lightThemes',\n                entries: [\n                  {\n                    label: 'Light',\n                    id: 'light',\n                    action: () => {\n                      console.log('LIGHT THEME');\n                    }\n                  },\n                  {\n                    label: 'Light Alternative',\n                    id: 'lightAlt',\n                    action: () => {\n                      console.log('LIGHT THEME ALTERNATIVE');\n                    }\n                  },\n                ]\n              },\n              {\n                label: 'Dark',\n                id: 'dark',\n                action: () => {\n                  console.log('DARK THEME');\n                }\n              }\n            ]\n          },\n          {\n            id: 'language',\n            label: 'Idioma',\n            entries: [\n              {\n                id: 'ptbr',\n                label: 'Portuguese (BR)',\n                action: () => {console.log('pt-BR'); }\n              },\n              {\n                id: 'en',\n                label: 'English',\n                action: () => {console.log('en'); }\n              }\n            ]\n          }\n        ]\n      }\n    ];\n  }\n\n  public ngAfterViewInit(): void {\n    if (!this.label && !this.iconClass) {\n      this.label = this.commandPaletteService.configs.hotkeys.join(' / ')\n        .split('meta').join('⌘')\n        .split('+').join(' + ');\n    }\n  }\n\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": "",
+                    "styleUrl": "./trigger-button.component.scss"
+                }
+            ],
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "commandPaletteService",
+                        "type": "CommandPaletteService",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    },
+                    {
+                        "name": "commandPaletteEntriesService",
+                        "type": "CommandPaletteEntriesService",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 13,
+                "jsdoctags": [
+                    {
+                        "name": "commandPaletteService",
+                        "type": "CommandPaletteService",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "commandPaletteEntriesService",
+                        "type": "CommandPaletteEntriesService",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            "implements": [
+                "AfterViewInit"
+            ],
+            "templateData": "<pm-button\n  (click)=\"commandPaletteService.triggerDialog()\"\n  [type]=\"'light'\"\n  [iconClass]=\"iconClass\"\n  [outline]=\"false\"\n>\n  {{label}}\n</pm-button>\n"
         }
     ],
     "modules": [
@@ -3970,6 +5276,100 @@
                     "elements": [
                         {
                             "name": "ComboBoxComponent"
+                        }
+                    ]
+                },
+                {
+                    "type": "bootstrap",
+                    "elements": []
+                },
+                {
+                    "type": "classes",
+                    "elements": []
+                }
+            ]
+        },
+        {
+            "name": "CommandPaletteModule",
+            "id": "module-CommandPaletteModule-8d246bd18636d3013bf5d6cf0a6c9a2ce1cd5fbff20013a5f361f211e1381c4b412cd4e809f4f13465489ffbed32718c12677ef8d74e51f5666eaefd0f38ab34",
+            "description": "",
+            "deprecationMessage": "",
+            "deprecated": false,
+            "file": "src/services/command-palette/command-palette.module.ts",
+            "methods": [
+                {
+                    "name": "forRoot",
+                    "args": [
+                        {
+                            "name": "options",
+                            "type": "CommandPaletteConfig | undefined",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "defaultValue": "undefined"
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "ModuleWithProviders<CommandPaletteModule>",
+                    "typeParameters": [],
+                    "line": 30,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        124
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "options",
+                            "type": "CommandPaletteConfig | undefined",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "defaultValue": "undefined",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "sourceCode": "import {ModuleWithProviders, NgModule} from '@angular/core';\nimport {CommonModule} from '@angular/common';\nimport {CommandPaletteService} from './command-palette.service';\nimport {COMMAND_PALETTE_CONFIG, commandPaletteConfig, CommandPaletteConfig} from './injection';\nimport {DialogComponent, ResultSearchElements} from './dialog/dialog.component';\nimport {ComponentInjectorService} from './component-injector.service';\nimport {TriggerButtonComponent} from './trigger-button/trigger-button.component';\nimport {ButtonModule} from '../../components/inputs/button/button.module';\nimport {HotkeyModule} from 'angular2-hotkeys';\nimport {FormsModule} from '@angular/forms';\nimport {CommandPaletteEntriesService} from './command-palette-entries.service';\n\nconst components = [\n  DialogComponent,\n  TriggerButtonComponent,\n  ResultSearchElements\n];\n\n@NgModule({\n  declarations: components,\n  exports: components,\n  imports: [\n    CommonModule,\n    ButtonModule,\n    HotkeyModule,\n    FormsModule\n  ]\n})\nexport class CommandPaletteModule {\n  public static forRoot(options: CommandPaletteConfig | undefined = undefined): ModuleWithProviders<CommandPaletteModule> {\n    return {\n      ngModule: CommandPaletteModule,\n      providers: [\n        CommandPaletteService,\n        CommandPaletteEntriesService,\n        ComponentInjectorService,\n        {provide: COMMAND_PALETTE_CONFIG, useValue: options || commandPaletteConfig},\n      ]\n    };\n  }\n}\n",
+            "children": [
+                {
+                    "type": "providers",
+                    "elements": []
+                },
+                {
+                    "type": "declarations",
+                    "elements": [
+                        {
+                            "name": "DialogComponent"
+                        },
+                        {
+                            "name": "ResultSearchElements"
+                        },
+                        {
+                            "name": "TriggerButtonComponent"
+                        }
+                    ]
+                },
+                {
+                    "type": "imports",
+                    "elements": [
+                        {
+                            "name": "ButtonModule"
+                        }
+                    ]
+                },
+                {
+                    "type": "exports",
+                    "elements": [
+                        {
+                            "name": "DialogComponent"
+                        },
+                        {
+                            "name": "ResultSearchElements"
+                        },
+                        {
+                            "name": "TriggerButtonComponent"
                         }
                     ]
                 },
@@ -4627,6 +6027,36 @@
                 "defaultValue": "new InjectionToken<string>(defaultColorTheme)"
             },
             {
+                "name": "COMMAND_PALETTE_CONFIG",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/services/command-palette/injection.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "new InjectionToken<CommandPaletteConfig>('commandPaletteConfig')"
+            },
+            {
+                "name": "commandPaletteConfig",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/services/command-palette/injection.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "CommandPaletteConfig",
+                "defaultValue": "{\n  hotkeys: ['meta+k', 'ctrl+k'],\n  paletteEntries: []\n}"
+            },
+            {
+                "name": "components",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/services/command-palette/command-palette.module.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "[]",
+                "defaultValue": "[\n  DialogComponent,\n  TriggerButtonComponent,\n  ResultSearchElements\n]"
+            },
+            {
                 "name": "context",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -4947,6 +6377,16 @@
                 "defaultValue": "[\n  {\n    label: 'Value 1',\n    value: 1\n  },\n  {\n    label: 'Value 2',\n    value: 2\n  },\n  {\n    label: 'Value 3',\n    value: 3\n  }\n]"
             },
             {
+                "name": "DefaultModal",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/services/command-palette/command-palette.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
                 "name": "DefaultMultiSelect",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -5244,6 +6684,16 @@
                 "deprecationMessage": "",
                 "type": "Story<XXXComponent>",
                 "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-XXXName\n    >\n    </pm-XXXName>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/services/command-palette/command-palette.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<TriggerButtonComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-palette-trigger-button\n        [label]=\"label\"\n        [iconClass]=\"iconClass\"\n    >\n    </pm-palette-trigger-button>\n  `\n})"
             },
             {
                 "name": "Template",
@@ -6045,6 +7495,40 @@
                     "defaultValue": "'default'"
                 }
             ],
+            "src/services/command-palette/injection.ts": [
+                {
+                    "name": "COMMAND_PALETTE_CONFIG",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/services/command-palette/injection.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "new InjectionToken<CommandPaletteConfig>('commandPaletteConfig')"
+                },
+                {
+                    "name": "commandPaletteConfig",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/services/command-palette/injection.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "CommandPaletteConfig",
+                    "defaultValue": "{\n  hotkeys: ['meta+k', 'ctrl+k'],\n  paletteEntries: []\n}"
+                }
+            ],
+            "src/services/command-palette/command-palette.module.ts": [
+                {
+                    "name": "components",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/services/command-palette/command-palette.module.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "[]",
+                    "defaultValue": "[\n  DialogComponent,\n  TriggerButtonComponent,\n  ResultSearchElements\n]"
+                }
+            ],
             "src/test.ts": [
                 {
                     "name": "context",
@@ -6624,6 +8108,28 @@
                     "deprecationMessage": "",
                     "type": "Story<SpinnerComponent>",
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <div *ngIfLoaded=\"flag\">\n        Conteúdo normal\n    </div>\n  `\n})"
+                }
+            ],
+            "src/services/command-palette/command-palette.stories.ts": [
+                {
+                    "name": "DefaultModal",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/services/command-palette/command-palette.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/services/command-palette/command-palette.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story<TriggerButtonComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-palette-trigger-button\n        [label]=\"label\"\n        [iconClass]=\"iconClass\"\n    >\n    </pm-palette-trigger-button>\n  `\n})"
                 }
             ],
             "src/directives/ng-if-loaded/injection.ts": [
@@ -8038,6 +9544,137 @@
                 "name": "defaultColorTheme",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/services/command-palette/command-palette-entries.service.ts",
+                "type": "injectable",
+                "linktype": "injectable",
+                "name": "CommandPaletteEntriesService",
+                "coveragePercent": 0,
+                "coverageCount": "0/7",
+                "status": "low"
+            },
+            {
+                "filePath": "src/services/command-palette/command-palette.module.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "components",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/services/command-palette/command-palette.service.ts",
+                "type": "injectable",
+                "linktype": "injectable",
+                "name": "CommandPaletteService",
+                "coveragePercent": 0,
+                "coverageCount": "0/5",
+                "status": "low"
+            },
+            {
+                "filePath": "src/services/command-palette/command-palette.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "DefaultModal",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/services/command-palette/command-palette.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/services/command-palette/component-injector.service.ts",
+                "type": "injectable",
+                "linktype": "injectable",
+                "name": "ComponentInjectorService",
+                "coveragePercent": 0,
+                "coverageCount": "0/4",
+                "status": "low"
+            },
+            {
+                "filePath": "src/services/command-palette/dialog/dialog.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "DialogComponent",
+                "coveragePercent": 6,
+                "coverageCount": "2/29",
+                "status": "low"
+            },
+            {
+                "filePath": "src/services/command-palette/dialog/dialog.component.ts",
+                "type": "directive",
+                "linktype": "directive",
+                "name": "ResultSearchElements",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/services/command-palette/injection.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "CommandPaletteConfig",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
+                "status": "low"
+            },
+            {
+                "filePath": "src/services/command-palette/injection.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "COMMAND_PALETTE_CONFIG",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/services/command-palette/injection.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "commandPaletteConfig",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/services/command-palette/models.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "PaletteEntry",
+                "coveragePercent": 0,
+                "coverageCount": "0/6",
+                "status": "low"
+            },
+            {
+                "filePath": "src/services/command-palette/models.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "PaletteTreeEntry",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
+                "status": "low"
+            },
+            {
+                "filePath": "src/services/command-palette/trigger-button/trigger-button.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "TriggerButtonComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/7",
                 "status": "low"
             },
             {
