@@ -2,14 +2,19 @@
 
 # compiled output
 /dist
+/**/dist
 /tmp
 /out-tsc
 # Only exists if Bazel was run
 /bazel-out
+/**/storybook-dist
 
 # dependencies
 /node_modules
+/node_modules
 /**/node_modules
+/.angular
+/**/.angular
 
 # profiling files
 chrome-profiler-events*.json
@@ -17,6 +22,9 @@ speed-measure-plugin*.json
 
 # IDEs and editors
 /.idea
+/**/.idea
+/.vscode
+/**/.vscode
 .project
 .classpath
 .c9/
@@ -33,6 +41,7 @@ speed-measure-plugin*.json
 .history/*
 
 # misc
+/.angular/cache
 /.sass-cache
 /connect.lock
 /coverage

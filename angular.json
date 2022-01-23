@@ -1,0 +1,75 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "",
+  "projects": {
+    "lib": {
+      "projectType": "library",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss",
+          "path": "src/components"
+        },
+        "@schematics/angular:directive": {
+          "path": "src/directives"
+        },
+        "@schematics/angular:module": {
+          "path": "src/components"
+        },
+        "@schematics/angular:service":{
+          "path": "src/services"
+        },
+        "@schematics/angular:pipe": {
+          "path": "src/pipes"
+        },
+        "@schematics/angular:class": {
+          "path": "src/classes"
+        }
+      },
+      "root": "",
+      "sourceRoot": "src",
+      "prefix": "pm",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "browserTarget": "lib:build",
+            "tsConfig": "tsconfig.lib.json",
+            "project": "ng-package.json",
+            "styles": [
+              "src/styles/base_css.scss",
+              "src/styles/base.scss"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "src/test.ts",
+            "tsConfig": "tsconfig.spec.json",
+            "karmaConfig": "karma.conf.js"
+          }
+        },
+        "storybook": {
+          "builder": "@storybook/angular:start-storybook",
+          "options": {
+            "browserTarget": "lib:build",
+            "port": 4400
+          }
+        },
+        "build-storybook": {
+          "builder": "@storybook/angular:build-storybook",
+          "options": {
+            "browserTarget": "lib:build"
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "lib"
+}
