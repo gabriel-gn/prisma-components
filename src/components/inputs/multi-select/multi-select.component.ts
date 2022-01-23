@@ -65,8 +65,10 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
    * Opções que ja vem selecionadas
    */
   @Input() selectedOptions: MultiSelectOption[] = [];
-  myControl = new FormControl();
-  filteredOptions: Observable<MultiSelectOption[]>;
+
+  public myControl = new FormControl();
+  public inputValue: string = '';
+  public filteredOptions: Observable<MultiSelectOption[]>;
 
   constructor(
     private cdr: ChangeDetectorRef
@@ -86,7 +88,8 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
   }
 
   displayFn(user: MultiSelectOption): string {
-    return user && user.label ? user.label : '';
+    return '';
+    // return user && user.label ? user.label : '';
   }
 
   private _filter(label: string): MultiSelectOption[] {

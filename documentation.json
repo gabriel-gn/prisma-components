@@ -2329,7 +2329,7 @@
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": "::ng-deep {\n  pm-command-palette-dialog {\n    * {\n      &:focus,\n      &:focus-visible {\n        outline: none;\n      }\n    }\n\n    position: fixed;\n    z-index: 9999;\n    overflow: hidden !important;\n    overflow-y: hidden !important;\n    overflow-x: hidden !important;\n\n    .backdrop {\n      display: flex;\n      flex-direction: column;\n      align-items: center;\n      width: 100vw;\n      height: 100vh;\n      background-color: rgba(0, 0, 0, 0.30);\n      padding: calc(1.5 * var(--navbar-height)) 1em;\n\n      overflow: hidden !important;\n      overflow-y: hidden !important;\n      overflow-x: hidden !important;\n    }\n\n    .palette-dialog-container {\n      overflow: hidden;\n      border-radius: var(--border-radius-md);\n      width: calc(100% - 1em);\n      max-width: 900px;\n    }\n\n    .palette-dialog {\n      $side-padding: 12px;\n\n      overflow: auto;\n      border: none;\n\n      width: 100%;\n      height: 100%;\n      position: relative;\n\n      .search-input-container {\n        background-color: var(--bg-default);\n        display: flex;\n        flex-direction: row;\n        align-items: center;\n        position: sticky;\n        padding: 1em;\n        top: 0;\n        left: 0;\n        width: 100%;\n        border-bottom: 2px solid var(--color-gray-light);\n        border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;\n\n        pm-button {\n          &:not(:first-child) {\n            margin-left: 0.3em;\n          }\n        }\n\n        .pm-button {\n          height: 100%;\n          button {\n            height: 100%;\n          }\n        }\n\n        input {\n          background-color: var(--bg-default);\n          border: none;\n          color: var(--color-gray-darker);\n          margin-left: 0.3em;\n        }\n      }\n\n      .search-result-container {\n        & > * {\n          h1, h2, h3, h4, h5, h6, p {\n            margin: 0;\n          }\n        }\n\n        .result-category {\n          & > {\n            h1, h2, h3, h4, h5, h6, p {\n              font-size: 0.9em;\n              padding: ($side-padding*0.5) $side-padding;\n            }\n          }\n          color: var(--color-gray-medium);\n        }\n\n        .palette-result-entry {\n          cursor: pointer;\n          font-size: 1em;\n          padding: $side-padding;\n          color: var(--color-gray-darker);\n\n          &:hover,\n          &:focus,\n          &:focus-within,\n          &:active {\n            $border-size: 4px;\n            border-left: $border-size solid var(--color-primary);\n            padding-left: calc(#{$side-padding} - #{$border-size});\n            background-color: var(--color-gray-light);\n          }\n\n\n          &:last-child {\n            margin-bottom: $side-padding;\n          }\n        }\n      }\n    }\n  }\n}\n",
+                    "data": "::ng-deep {\n  pm-command-palette-dialog {\n    * {\n      &:focus,\n      &:focus-visible {\n        outline: none;\n      }\n    }\n\n    position: fixed;\n    z-index: 9999;\n    overflow: hidden !important;\n    overflow-y: hidden !important;\n    overflow-x: hidden !important;\n\n    .backdrop {\n      display: flex;\n      flex-direction: column;\n      align-items: center;\n      width: 100vw;\n      height: 100vh;\n      background-color: rgba(0, 0, 0, 0.30);\n      padding: calc(1.5 * var(--navbar-height)) 1em;\n\n      overflow: hidden !important;\n      overflow-y: hidden !important;\n      overflow-x: hidden !important;\n    }\n\n    .palette-dialog-container {\n      overflow: hidden;\n      border-radius: var(--border-radius-md);\n      width: calc(100% - 1em);\n      max-width: 900px;\n      background-color: var(--bg-default);\n    }\n\n    .palette-dialog {\n      $side-padding: 12px;\n\n      overflow: auto;\n      border: none;\n\n      width: 100%;\n      height: 100%;\n      position: relative;\n\n      .search-input-container {\n        background-color: var(--bg-default);\n        display: flex;\n        flex-direction: row;\n        align-items: center;\n        position: sticky;\n        padding: 1em;\n        top: 0;\n        left: 0;\n        width: 100%;\n        border-bottom: 2px solid var(--color-gray-light);\n        border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;\n\n        pm-button {\n          &:not(:first-child) {\n            margin-left: 0.3em;\n          }\n        }\n\n        .pm-button {\n          height: 100%;\n          button {\n            height: 100%;\n          }\n        }\n\n        input {\n          background-color: var(--bg-default);\n          border: none;\n          color: var(--color-gray-darker);\n          margin-left: 0.3em;\n        }\n      }\n\n      .search-result-container {\n        & > * {\n          h1, h2, h3, h4, h5, h6, p {\n            margin: 0;\n          }\n        }\n\n        .result-category {\n          & > {\n            h1, h2, h3, h4, h5, h6, p {\n              font-size: 0.9em;\n              padding: ($side-padding*0.5) $side-padding;\n            }\n          }\n          color: var(--color-gray-medium);\n        }\n\n        .palette-result-entry {\n          cursor: pointer;\n          font-size: 1em;\n          padding: $side-padding;\n          color: var(--color-gray-darker);\n\n          &:hover,\n          &:focus,\n          &:focus-within,\n          &:active {\n            $border-size: 4px;\n            border-left: $border-size solid var(--color-primary);\n            padding-left: calc(#{$side-padding} - #{$border-size});\n            background-color: var(--bg-default-1);\n          }\n\n\n          &:last-child {\n            margin-bottom: $side-padding;\n          }\n        }\n      }\n    }\n  }\n}\n",
                     "styleUrl": "./dialog.component.scss"
                 }
             ],
@@ -6120,26 +6120,6 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/components/containers/expansion-panel/expansion-panel.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "object",
-                "defaultValue": "{\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/components/containers/tabs/tabs.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "object",
-                "defaultValue": "{\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "src/components/inputs/button/button.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
@@ -6205,6 +6185,26 @@
                 "deprecationMessage": "",
                 "type": "object",
                 "defaultValue": "{\n  orientation: OrientationEnum.Y,\n  values: [],\n  disabled: false,\n  selectedValue: undefined\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/containers/expansion-panel/expansion-panel.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/containers/tabs/tabs.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\n}"
             },
             {
                 "name": "defaultArgs",
@@ -6719,26 +6719,6 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/components/containers/expansion-panel/expansion-panel.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story<ExpansionPanelComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-expansion-panel\n    >\n        Conteúdo aqui\n    </pm-expansion-panel>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/components/containers/tabs/tabs.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story<TabsComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-tabs\n    >\n    </pm-tabs>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "src/components/inputs/button/button.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
@@ -6804,6 +6784,26 @@
                 "deprecationMessage": "",
                 "type": "Story<RadioButtonComponent>",
                 "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-radio-button\n      [orientation]=\"orientation\"\n      [values]=\"values\"\n      [selectedValue]=\"selectedValue\"\n      [disabled]=\"disabled\"\n    >\n    </pm-radio-button>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/containers/expansion-panel/expansion-panel.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<ExpansionPanelComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-expansion-panel\n    >\n        Conteúdo aqui\n    </pm-expansion-panel>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/containers/tabs/tabs.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<TabsComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-tabs\n    >\n    </pm-tabs>\n  `\n})"
             },
             {
                 "name": "Template",
@@ -7646,70 +7646,6 @@
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-basic-card\n      [hoverable]=\"hoverable\"\n      [borderRadius]=\"borderRadius\"\n      [paddingClass]=\"paddingClass\"\n    >\n    </pm-basic-card>\n  `\n})"
                 }
             ],
-            "src/components/containers/expansion-panel/expansion-panel.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/containers/expansion-panel/expansion-panel.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "object",
-                    "defaultValue": "{\n}"
-                },
-                {
-                    "name": "DefaultExpansionPanel",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/containers/expansion-panel/expansion-panel.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/containers/expansion-panel/expansion-panel.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Story<ExpansionPanelComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-expansion-panel\n    >\n        Conteúdo aqui\n    </pm-expansion-panel>\n  `\n})"
-                }
-            ],
-            "src/components/containers/tabs/tabs.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/containers/tabs/tabs.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "object",
-                    "defaultValue": "{\n}"
-                },
-                {
-                    "name": "DefaultTabs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/containers/tabs/tabs.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/containers/tabs/tabs.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Story<TabsComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-tabs\n    >\n    </pm-tabs>\n  `\n})"
-                }
-            ],
             "src/components/inputs/checkbox/checkbox.stories.ts": [
                 {
                     "name": "defaultArgs",
@@ -7950,6 +7886,70 @@
                     "deprecationMessage": "",
                     "type": "Story<RadioButtonComponent>",
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-radio-button\n      [orientation]=\"orientation\"\n      [values]=\"values\"\n      [selectedValue]=\"selectedValue\"\n      [disabled]=\"disabled\"\n    >\n    </pm-radio-button>\n  `\n})"
+                }
+            ],
+            "src/components/containers/expansion-panel/expansion-panel.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/containers/expansion-panel/expansion-panel.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "object",
+                    "defaultValue": "{\n}"
+                },
+                {
+                    "name": "DefaultExpansionPanel",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/containers/expansion-panel/expansion-panel.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/containers/expansion-panel/expansion-panel.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story<ExpansionPanelComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-expansion-panel\n    >\n        Conteúdo aqui\n    </pm-expansion-panel>\n  `\n})"
+                }
+            ],
+            "src/components/containers/tabs/tabs.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/containers/tabs/tabs.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "object",
+                    "defaultValue": "{\n}"
+                },
+                {
+                    "name": "DefaultTabs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/containers/tabs/tabs.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/containers/tabs/tabs.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story<TabsComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-tabs\n    >\n    </pm-tabs>\n  `\n})"
                 }
             ],
             "src/components/lists/draggable-list/draggable-list.stories.ts": [
