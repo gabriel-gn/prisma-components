@@ -2,6 +2,7 @@ on:
   push:
     branches:
       - main
+      - feature/update-angular
   workflow_dispatch:
     inputs:
       name:
