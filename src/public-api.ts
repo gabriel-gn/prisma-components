@@ -23,6 +23,8 @@ export * from './services/color-theme/color-theme.module';
  ******************/
 
 export * from './directives/ng-if-loaded/ng-if-loaded.module';
+export * from './directives/ng-if-loaded/spinner/spinner.component';
+export * from './directives/ng-if-loaded/ng-if-loaded.directive';
 
 /******************
  * COMPONENTS

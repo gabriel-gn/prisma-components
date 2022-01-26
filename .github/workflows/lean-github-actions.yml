@@ -2,9 +2,6 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
   workflow_dispatch:
     inputs:
       name:
@@ -26,7 +23,7 @@ jobs:
         uses: gabriel-gn/hello-world-github-action@v1.0.1
         with:
           packageName: '@mprisma/components'
-          filepath: 'design-system/projects/lib/package.json'
+          filepath: './package.lib.json'
         id: check # Usa o output checked a partir desse id
       - name: Version checked
         run: 'echo "Version -> ${{ steps.check.outputs.changed }}"'
@@ -53,7 +50,7 @@ jobs:
           registry-url: https://registry.npmjs.org/
 
       - name: Install dependencies and build package
-        working-directory: ./design-system
+        working-directory: ./
         run: |
           echo "*** Iniciando NPM Install ***"
           npm install
@@ -61,7 +58,7 @@ jobs:
           npm run build-npm
 
       - name: Publish package to NPM
-        working-directory: ./design-system
+        working-directory: ./
         run: |
           npm run deploy-npm
         env:
@@ -76,7 +73,7 @@ jobs:
       - uses: Klemensas/action-autotag@stable
         with:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-          package_root: "/design-system/projects/lib"
+          package_root: "/"
           tag_prefix: "v"
 
   create-release:

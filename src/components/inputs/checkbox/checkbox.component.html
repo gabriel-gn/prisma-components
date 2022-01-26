@@ -1,6 +1,6 @@
 <div class="form-check" [ngClass]="{'disabled': disabled}" (click)="$event.stopPropagation();">
   <label class="form-check-label">
-    <input (change)="setValue($event.target['checked'])"
+    <input (change)="setValue(convertValueToBoolean($event))"
            [(ngModel)]="checked"
            [ngModelOptions]="{standalone: true}"
            [disabled]="disabled"

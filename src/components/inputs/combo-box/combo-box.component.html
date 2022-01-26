@@ -2,7 +2,8 @@
   <mat-select
     [disabled]="disabled"
     [disableRipple]="true"
-    [(ngModel)]="selectedItem" disableOptionCentering
+    [(ngModel)]="selectedItem"
+    disableOptionCentering
     (selectionChange)="selectionChanged($event)"
   >
     <mat-option *ngFor="let item of items" [value]="item.value">

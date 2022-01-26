@@ -15,7 +15,7 @@ import {ComponentType} from '@angular/cdk/overlay';
 })
 export class NgIfLoadedDirective {
 
-  spinner: ComponentType<any>;
+  public spinner: ComponentType<any>;
 
   constructor(
     @Inject(IF_LOADED_SPINNER) spinnerComponent: ComponentType<any>,

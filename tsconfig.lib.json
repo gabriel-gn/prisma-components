@@ -1,17 +1,29 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "./out-tsc/app",
-    "types": []
+    "outDir": "out-tsc/lib",
+    "target": "es2015",
+    "declaration": true,
+    "declarationMap": true,
+    "inlineSources": true,
+    "types": [],
+    "lib": [
+      "dom",
+      "es2018"
+    ]
   },
-  "files": [
-    "src/main.ts",
-    "src/polyfills.ts"
-  ],
+  "angularCompilerOptions": {
+    "skipTemplateCodegen": true,
+    "strictMetadataEmit": true,
+    "enableResourceInlining": true
+  },
   "include": [
-    "src/**/*.d.ts"
+    "./src/"
   ],
   "exclude": [
+    "src/test.ts",
+    "src/public-api.ts",
+    "**/*.spec.ts",
     "**/*.stories.*"
   ]
 }

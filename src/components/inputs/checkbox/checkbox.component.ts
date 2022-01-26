@@ -22,8 +22,12 @@ export class CheckboxComponent {
   constructor() {
   }
 
-  public setValue(value: boolean): void {
-    this.checked = value;
+  public convertValueToBoolean(event: any): boolean {
+    return !!event?.target['checked'];
+  }
+
+  public setValue(value: boolean | null | undefined): void {
+    this.checked = !!value;
     this.checkedChange.emit(this.checked);
     this.onCheckedChange.emit(this.checked);
   }

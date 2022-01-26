@@ -42,7 +42,7 @@ export class ComboBoxComponent implements OnInit {
     this.selectionChange.emit(item);
   }
 
-  private selectionChanged(event: any): void {
+  public selectionChanged(event: any): void {
     this.selectionChange.emit(event.value);
     this.ref.detectChanges();
   }
