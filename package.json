@@ -9,9 +9,9 @@
     "test": "ng test",
     "docs:json": "compodoc -p ./tsconfig.json -e json -d .",
     "storybook": "npm run docs:json && start-storybook -p 6006",
-    "storybook:ng": "npm run docs:json && ng run storybook-angular13:storybook ",
+    "storybook:ng": "npm run docs:json && ng run lib:storybook ",
     "build-storybook": "npm run docs:json && build-storybook",
-    "build-storybook-dist": "npm run build-storybook -- -o ./dist/components",
+    "build-storybook-dist": "npm run build-storybook -- -o ./dist/storybook",
     "build-npm": "ng build --project=lib --configuration production",
     "deploy-npm": "cd dist/components && npm publish --access=public"
   },
