@@ -1,6 +1,6 @@
 {
   "name": "@mprisma/components",
-  "version": "0.0.77-rc.0",
+  "version": "0.0.77-rc.1",
   "repository": {
     "type": "git",
     "url": "https://github.com/gabriel-gn/prisma-components.git"
@@ -9,7 +9,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --configuration=production",
+    "build": "npm i node-sass && node scripts/update-color-themes.js && ng build --configuration=production && npm uninstall node-sass",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "docs:json": "compodoc -p ./tsconfig.json -e json -d .",

@@ -7,7 +7,7 @@ const getDirectories = (source) => {
   .map(dirent => dirent.name);
 }
 
-const themesPath = 'projects/lib/src/styles/themes'
+const themesPath = 'src/styles/themes'
 const themes = getDirectories(themesPath);
 
 for (const themeName of themes) {
@@ -53,12 +53,12 @@ for (const themeName of themes) {
     }
   }
 
-  const servicePath = `projects/lib/src/services/color-theme/color-theme.service.ts`;
+  const servicePath = `src/services/color-theme/color-theme.service.ts`;
   const themeServiceFile = fs.readFileSync(servicePath).toString('utf8');
   const objStartIndexes = getAllIndexes(themeServiceFile, '{')
   const objEndIndexes = getAllIndexes(themeServiceFile, '}')
-  console.log(objStartIndexes);
-  console.log(objEndIndexes);
+  // console.log(objStartIndexes);
+  // console.log(objEndIndexes);
   const themeConstName = `${themeName}Theme`;
   const themeConstIndex = themeServiceFile.indexOf(themeConstName) + themeConstName.length;
   const modifiedFile =
@@ -67,4 +67,5 @@ for (const themeName of themes) {
     + themeServiceFile.substring(getNumberAfterCertainValue(objEndIndexes, themeConstIndex) + 1)
   ;
   fs.writeFileSync(servicePath, modifiedFile);
+  console.log('Themes variables updated!')
 }
