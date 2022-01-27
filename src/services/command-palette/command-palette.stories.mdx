@@ -54,12 +54,17 @@ Devem ser usados da seguinte forma:
 ## Module Config
 
 ```
-import {ButtonModule} from '@mprisma/components';
+import {CommandPaletteModule} from '@mprisma/components';
 
 @NgModule({
   imports: [
     ...,
-    ButtonModule,
+    CommandPaletteModule.forRoot({
+        hotkeys: ['meta+k', 'ctrl+k'],
+        // pode ser atualizada posteriormente atribuindo ao serviço:
+        // this.commandPalette.commandPaletteEntriesService.paletteEntries = [{id: 'a', label: 'A', action: () => {console.log('a')}}]
+        paletteEntries: []
+    }),
     ...,
   ]
 })
