@@ -19,6 +19,8 @@ export * from './services/color-theme/color-theme.service';
 export * from './services/color-theme/color-theme.module';
 export * from './services/command-palette/command-palette.service';
 export * from './services/command-palette/command-palette.module';
+export * from './services/command-palette/dialog/dialog.component';
+export * from './services/command-palette/trigger-button/trigger-button.component';
 
 /******************
  * DIRECTIVES

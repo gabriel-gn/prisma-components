@@ -5,11 +5,12 @@
     "type": "git",
     "url": "https://github.com/gabriel-gn/prisma-components.git"
   },
-  "license" : "Apache-2.0",
+  "license": "Apache-2.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "npm i node-sass && node scripts/update-color-themes.js && ng build --configuration=production && npm uninstall node-sass",
+    "build": "npm i node-sass && node scripts/update-color-themes.js && npm run build:lib && npm uninstall node-sass",
+    "build:lib": "ng build --configuration=production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "docs:json": "compodoc -p ./tsconfig.json -e json -d .",

@@ -39,7 +39,7 @@ export class DialogComponent implements AfterViewInit, OnDestroy {
   public searchPaletteEntries: PaletteEntry[];
 
   constructor(
-    private commandPaletteEntriesService: CommandPaletteEntriesService,
+    public readonly commandPaletteEntriesService: CommandPaletteEntriesService,
     private componentInjectorService: ComponentInjectorService,
     private renderer2: Renderer2
   ) {
@@ -174,7 +174,8 @@ export class DialogComponent implements AfterViewInit, OnDestroy {
     this.currentPaletteEntries = resultEntries;
   }
 
-  public searchAction(searchValue: string): void {
+  public searchAction(searchValue: any): void {
+    searchValue = `${searchValue}`; // força string
     const entriesToFlat: (paletteEntries: PaletteEntry[]) => string[] = (paletteEntries: PaletteEntry[]) => {
       const idTreeArray: string[] = [];
 

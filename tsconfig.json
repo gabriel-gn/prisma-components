@@ -19,6 +19,7 @@
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "strict": true,
+    "strictNullChecks": false,
     "strictPropertyInitialization": false,
     "target": "es2017",
     "lib": [
