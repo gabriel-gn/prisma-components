@@ -6,10 +6,10 @@
   --background: transparent !important;
 }
 
-ion-content::part(scroll) {
-  overflow-y: visible !important;
-  overflow: inherit !important;
-}
+// ion-content::part(scroll) {
+//   overflow-y: visible !important;
+//   overflow: inherit !important;
+// }
 
 html, body {
   position: relative;
