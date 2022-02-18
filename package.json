@@ -10,7 +10,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "npm i node-sass && node scripts/update-color-themes.js && npm run build:lib && npm uninstall node-sass",
-    "build:lib": "ng build --configuration=production",
+    "build:lib": "node scripts/remove-styles-from-build.js && ng build --configuration=production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "docs:json": "compodoc -p ./tsconfig.json -e json -d .",
