@@ -33,7 +33,11 @@
           "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
             "tsConfig": "tsconfig.lib.json",
-            "project": "ng-package.json"
+            "project": "ng-package.json",
+            "styles": [
+              "src/styles/base_css.scss",
+              "src/styles/base.scss"
+            ]
           },
           "configurations": {
             "production": {

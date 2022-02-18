@@ -5,8 +5,3 @@
   --ion-font-family: var(--font-default);
   --background: transparent !important;
 }
-
-ion-content::part(scroll) {
-  overflow-y: visible !important;
-  overflow: inherit !important;
-}
