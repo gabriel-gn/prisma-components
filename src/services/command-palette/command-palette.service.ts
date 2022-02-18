@@ -5,7 +5,7 @@ import {
 import {COMMAND_PALETTE_CONFIG, CommandPaletteConfig} from './injection';
 import {DialogComponent} from './dialog/dialog.component';
 import {ComponentInjectorService} from './component-injector.service';
-import {Hotkey, HotkeysService} from 'angular2-hotkeys';
+import {Hotkey, HotkeyOptions, HotkeysService, IHotkeyOptions} from 'angular2-hotkeys';
 import {CommandPaletteEntriesService} from './command-palette-entries.service';
 import {PaletteEntry} from './models';
 
@@ -15,6 +15,7 @@ export class CommandPaletteService {
 
   constructor(
     @Inject(COMMAND_PALETTE_CONFIG) initialConfig: CommandPaletteConfig,
+    @Inject(HotkeyOptions) hotkeysOptions: IHotkeyOptions,
     public commandPaletteEntriesService: CommandPaletteEntriesService,
     private componentInjectorService: ComponentInjectorService,
     private hotkeysService: HotkeysService,
