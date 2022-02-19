@@ -1,5 +1,6 @@
 import {Inject, Injectable} from '@angular/core';
-import {colorThemeToken} from './injection';
+import {ColorThemeConfig, colorThemeConfigToken} from './injection';
+import {CookieService} from "ngx-cookie-service";
 
 export const defaultTheme = {
   'color-primary': '#455363',
@@ -26,11 +27,32 @@ export const darkTheme = {
 export class ColorThemeService {
 
   private _theme: string;
+  private readonly themeConfig: ColorThemeConfig;
+  private availableThemes = {
+    default: defaultTheme,
+    light: lightTheme,
+    dark: darkTheme
+  }
 
   constructor(
-    @Inject(colorThemeToken) initialTheme: any
+    @Inject(colorThemeConfigToken) initialThemeConfig: ColorThemeConfig,
+    private cookieService: CookieService
   ) {
-    this.theme = initialTheme;
+    this.themeConfig = initialThemeConfig;
+    if (initialThemeConfig && initialThemeConfig.cookie) {
+      let cookieTheme = this.cookieService.get(initialThemeConfig.cookie);
+      cookieTheme = this.normalizeTheme(cookieTheme);
+      this.theme = cookieTheme;
+    } else {
+      this.theme = initialThemeConfig.theme;
+    }
+  }
+
+  // verifica se o tema é válido, se for usa ele. Se não for usa a config, se não for ainda usa default
+  private normalizeTheme(themeString: string) {
+    themeString = Object.keys(this.availableThemes).includes(themeString) ? themeString : this.themeConfig.theme;
+    themeString = Object.keys(this.availableThemes).includes(themeString) ? themeString : 'default';
+    return themeString;
   }
 
   public get theme(): string {
@@ -38,26 +60,35 @@ export class ColorThemeService {
   }
 
   public set theme(theme: string) {
-    this._theme = theme;
+    theme = this.normalizeTheme(theme);
+    let themeObj; // tema definido la em cima para virar variaveis de css
 
-    let themeObj;
-    switch (theme) {
-      case 'default':
-        themeObj = defaultTheme;
-        break;
-      case 'light':
-        themeObj = lightTheme;
-        break;
-      case 'dark':
-        themeObj = darkTheme;
-        break;
-      default:
-        themeObj = defaultTheme;
-        break;
+    const verifyTheme = (themeString) => {
+      themeString = `${themeString}`.toLowerCase()
+      switch (themeString) {
+        case 'default':
+          themeObj = this.availableThemes.default;
+          break;
+        case 'light':
+          themeObj = this.availableThemes.light;
+          break;
+        case 'dark':
+          themeObj = this.availableThemes.dark;
+          break;
+        default:
+          themeObj = this.availableThemes[theme];
+          break;
+      }
+    }
+
+    verifyTheme(theme);
+    if (this.themeConfig && this.themeConfig.cookie) {
+      this.cookieService.set(this.themeConfig.cookie, theme);
     }
     Object.keys(themeObj).forEach(key =>
       document.documentElement.style.setProperty(`--${key}`, `${themeObj[key]}`, 'important')
     );
+    this._theme = theme;
   }
 
   public toggle(): void {
