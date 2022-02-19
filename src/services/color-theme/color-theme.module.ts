@@ -1,11 +1,8 @@
 import {CommonModule} from '@angular/common';
 import {ModuleWithProviders, NgModule} from '@angular/core';
 import {ColorThemeService} from './color-theme.service';
-import {colorThemeToken, defaultColorTheme} from './injection';
-
-export interface ColorThemeModuleConfig {
-  theme?: string;
-}
+import {ColorThemeConfig, colorThemeConfigToken, defaultColorThemeConfig} from './injection';
+import {CookieService} from "ngx-cookie-service";
 
 @NgModule({
   declarations: [],
@@ -13,12 +10,13 @@ export interface ColorThemeModuleConfig {
   exports: [],
 })
 export class ColorThemeModule {
-  public static forRoot(options: ColorThemeModuleConfig = {}): ModuleWithProviders<ColorThemeModule> {
+  public static forRoot(options: ColorThemeConfig = undefined): ModuleWithProviders<ColorThemeModule> {
     return {
       ngModule: ColorThemeModule,
       providers: [
+        CookieService,
         ColorThemeService,
-        {provide: colorThemeToken, useValue: options.theme || defaultColorTheme},
+        {provide: colorThemeConfigToken, useValue: options || defaultColorThemeConfig},
       ]
     };
   }
