@@ -27,7 +27,7 @@ export const darkTheme = {
 export class ColorThemeService {
 
   private _theme: string;
-  private themeConfig: ColorThemeConfig;
+  private readonly themeConfig: ColorThemeConfig;
   private availableThemes = {
     default: defaultTheme,
     light: lightTheme,
@@ -38,6 +38,7 @@ export class ColorThemeService {
     @Inject(colorThemeConfigToken) initialThemeConfig: ColorThemeConfig,
     private cookieService: CookieService
   ) {
+    this.themeConfig = initialThemeConfig;
     if (initialThemeConfig && initialThemeConfig.cookie) {
       let cookieTheme = this.cookieService.get(initialThemeConfig.cookie);
       cookieTheme = this.normalizeTheme(cookieTheme);
@@ -45,7 +46,6 @@ export class ColorThemeService {
     } else {
       this.theme = initialThemeConfig.theme;
     }
-    this.themeConfig = initialThemeConfig;
   }
 
   // verifica se o tema é válido, se for usa ele. Se não for usa a config, se não for ainda usa default
