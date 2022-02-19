@@ -1,49 +1,37 @@
-[![Website shields.io](https://img.shields.io/website-up-down-green-red/http/shields.io.svg)](https://prisma-components.vercel.app/)
-[![npm version](https://badge.fury.io/js/%40mprisma%2Fcomponents.svg)](https://www.npmjs.com/package/@mprisma/components)
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/gabriel-gn/prisma-components/blob/main/LICENSE)
+[![Actions Status](https://github.com/gabriel-gn/prisma-components/workflows/lean-github-actions/badge.svg)](https://github.com/gabriel-gn/prisma-components/actions)
 
-[comment]: <> (![alt text]&#40;./design-system/.storybook/public/logo.png&#41;)
+# DesignSystem
 
-# Prisma Components 
-___
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.2.9.
 
-## Getting Started
+## Reference
 
-Install Prisma Components
+[Ref](https://dev.to/activenode/angular-10-storybook-npm-package-ng-design-system-step-by-step-2dn2)
 
-```
-npm i bootstrap --save
-npm i popper.js --save
-npm i @angular/material --save
-npm i @mprisma/components --save
-```
+## New Component
 
-add to your `angular.json` file the following:
+ng generate component <componentName> --project=components
 
-```
-...
-    "scripts": [
-              "node_modules/popper.js/dist/umd/popper.js",
-              "node_modules/bootstrap/dist/js/bootstrap.js",
-              ...
-            ],
-...
-```
+## Development server
 
-Add to your `base.scss` file the following:
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-```
-@import '~@mprisma/components/src/styles/base';
-// @import '~@mprisma/components/src/styles/icons/unicons/css/animation.css';
-// @import '~@mprisma/components/src/styles/icons/unicons/css/line.css';
-// @import '~@mprisma/components/src/styles/icons/unicons/css/before.css';
-// @import '~@mprisma/components/src/styles/icons/prisma-cube/webfont.css';
-```
+## Code scaffolding
 
-## Creating new components
+Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-```
-design-system/create-component.sh -c <ComponentName> 
-```
+## Build
 
-it supports folders, like `myfolder/inputs/ComponentName`
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+
+## Running unit tests
+
+Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+
+## Running end-to-end tests
+
+Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+
+## Further help
+
+To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
