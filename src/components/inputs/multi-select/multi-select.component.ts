@@ -38,8 +38,8 @@ export interface MultiSelectOption {
 })
 export class MultiSelectComponent implements OnInit, AfterViewInit {
 
-  @ViewChild('inputBox') inputBoxEl: ElementRef;
-  @ViewChild('trigger') trigger: MatAutocompleteTrigger;
+  @ViewChild('inputBox', {static: true}) inputBoxEl: ElementRef;
+  @ViewChild('trigger', {static: true}) trigger: MatAutocompleteTrigger;
   /**
    * Ao ser selecionada uma opção nova, emite
    */
@@ -66,7 +66,7 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
    */
   @Input() selectedOptions: MultiSelectOption[] = [];
 
-  public myControl = new FormControl();
+  public myControl: FormControl = new FormControl();
   public inputValue: string = '';
   public filteredOptions: Observable<MultiSelectOption[]>;
 
@@ -108,7 +108,8 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
   }
 
   private clearInput(): void {
-    this.myControl.setValue('');
+    this.inputValue = '';
+    this.myControl.setValue(this.inputValue);
     try { this.inputBoxEl.nativeElement.blur(); } catch (e) {}
     this.cdr.detectChanges();
   }
@@ -132,6 +133,14 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
     this.selectedOptions = [];
     this.selectedOptionsChanged.emit(this.selectedOptions);
     this.clearInput();
+  }
+
+  public togglePanel(): void {
+    if (this.trigger.panelOpen === false) {
+      this.trigger.openPanel();
+    } else {
+      this.trigger.closePanel();
+    }
   }
 
 }

@@ -1,5 +1,5 @@
 <div #multiselect class="pm-multi-select cursor-pointer border-radius-{{borderRadius}}" (click)="$event.stopPropagation(); openSelect();">
-  <div class="d-flex flex-wrap p-1 rad-md position-relative">
+  <div class="d-flex flex-wrap p-1 rad-md position-relative" (click)="trigger.openPanel()">
     <div class="d-flex flex-row justify-content-start flex-wrap">
       <div *ngFor="let selected of selectedOptions; let first = first" [ngClass]="{'m-1 chip-container': true}">
         <div class="d-flex flex-row align-items-center">
@@ -17,14 +17,15 @@
              matInput
              class="form-control h-100 border-0"
              type="text"
-             formControlName="myControl"
+             [formControl]="myControl"
              [placeholder]="placeholder"
              [matAutocomplete]="auto"
+             [required]="false"
       >
 
       <mat-autocomplete #auto="matAutocomplete"
                         (optionSelected)="selectOption($event.option.value);"
-                        [panelWidth]="multiselect.offsetWidth"
+                        [panelWidth]="multiselect?.offsetWidth"
                         [displayWith]="displayFn"
       >
         <ng-container *ngFor="let option of filteredOptions | async">
