@@ -238,13 +238,13 @@ export class DialogComponent implements AfterViewInit, OnDestroy {
     };
 
     const doSearch = () => {
-      let entries;
-      if (!!this.searchPaletteEntries && this.searchPaletteEntries.length > 0 && this.searchPaletteEntries[0].id === 'results') {
-        entries = this.searchPaletteEntries[0].entries;
+      let entries: PaletteEntry[];
+      if (this.searchIdTree.length > 0) { // caso tenha entrado em alguma subcategoria, não busca por ela mesma
+        entries = this.currentPaletteEntries[0].entries;
       } else {
-        entries = this.searchPaletteEntries;
+        entries = this.currentPaletteEntries;
       }
-      this.rebuildCurrentEntriesFromTree(this.searchIdTree.length - 1);
+      this.rebuildCurrentEntriesFromTree(this.searchIdTree.length, false);
       this.searchPaletteEntries = [
         {
           label: 'Results',
