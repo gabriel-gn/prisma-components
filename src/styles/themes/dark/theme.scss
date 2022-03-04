@@ -30,6 +30,8 @@
 ********************************/
 
 :root {
+  --color-scheme:                               #{$color-scheme};
+
   @each $key, $val in $colors {
     @if type-of($val) == color {
       --#{$key}: #{$val};

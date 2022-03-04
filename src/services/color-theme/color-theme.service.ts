@@ -85,9 +85,13 @@ export class ColorThemeService {
     if (this.themeConfig && this.themeConfig.cookie) {
       this.cookieService.set(this.themeConfig.cookie, theme);
     }
-    Object.keys(themeObj).forEach(key =>
-      document.documentElement.style.setProperty(`--${key}`, `${themeObj[key]}`, 'important')
-    );
+    Object.keys(themeObj).forEach(key => {
+      if (key !== 'color-scheme') {
+        document.documentElement.style.setProperty(`--${key}`, `${themeObj[key]}`, 'important')
+      } else {
+        document.documentElement.style.setProperty(`${key}`, `${themeObj[key]}`, 'important')
+      }
+    });
     this._theme = theme;
   }
 
