@@ -36,16 +36,18 @@
              class="result-category"
         >
           <p>{{searchEntry.label}}</p>
-          <div *ngFor="let childEntry of searchEntry.entries; let index = index;"
-               [attr.tabindex]="index"
-               (click)="paletteEntryAction(childEntry)"
-               (keydown.arrowLeft)="$event.preventDefault(); goBackOneLevel()"
-               (keydown.arrowRight)="$event.preventDefault(); paletteEntryAction(childEntry)"
-               (keydown.enter)="$event.preventDefault(); paletteEntryAction(childEntry)"
-               class="palette-result-entry"
-          >
-            <p>{{childEntry.label}}{{hasChildEntries(childEntry) ? '...' : ''}}</p>
-          </div>
+          <ng-container *ngFor="let childEntry of searchEntry.entries; let index = index;">
+            <div *ngIf="childEntry.label"
+                 [attr.tabindex]="index"
+                 (click)="paletteEntryAction(childEntry)"
+                 (keydown.arrowLeft)="$event.preventDefault(); goBackOneLevel()"
+                 (keydown.arrowRight)="$event.preventDefault(); paletteEntryAction(childEntry)"
+                 (keydown.enter)="$event.preventDefault(); paletteEntryAction(childEntry)"
+                 class="palette-result-entry"
+            >
+              <p>{{childEntry.label}}{{hasChildEntries(childEntry) ? '...' : ''}}</p>
+            </div>
+          </ng-container>
         </div>
       </div>
     </div>
