@@ -89,7 +89,7 @@ export class DialogComponent implements AfterViewInit, OnDestroy {
     if (focusNextIndex >= arrayResultEntryElements.length) {
       this.focusSearchInput();
     }
-    else if (isNaN(focusNextIndex)) {
+    else if (!isNaN(focusNextIndex)) {
       this.currentFocusedElement = arrayResultEntryElements[focusNextIndex];
       this.currentFocusedElement.nativeElement.focus();
     } else {
@@ -104,7 +104,7 @@ export class DialogComponent implements AfterViewInit, OnDestroy {
     if (focusPreviousIndex < 0) {
       this.focusSearchInput();
     }
-    else if (isNaN(focusPreviousIndex)) {
+    else if (!isNaN(focusPreviousIndex)) {
       this.currentFocusedElement = arrayResultEntryElements[focusPreviousIndex];
       this.currentFocusedElement.nativeElement.focus();
     } else {
