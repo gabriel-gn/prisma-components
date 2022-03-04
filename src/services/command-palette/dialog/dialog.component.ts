@@ -71,7 +71,7 @@ export class DialogComponent implements AfterViewInit, OnDestroy {
     this.componentInjectorService.removeComponentFromBody(this.itself);
   }
 
-  private focusSearchInput(): void {
+  public focusSearchInput(): void {
     setTimeout(() => {
       this.currentFocusedElement = this.rootPanelComponent;
       this.rootPanelComponent.nativeElement.children[0].children[1].focus();
