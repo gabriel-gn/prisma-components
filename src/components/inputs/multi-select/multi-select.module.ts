@@ -5,8 +5,6 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatInputModule} from '@angular/material/input';
 import {CommonModule} from '@angular/common';
-import {BrowserModule} from "@angular/platform-browser";
-
 
 @NgModule({
   declarations: [
@@ -17,7 +15,6 @@ import {BrowserModule} from "@angular/platform-browser";
   ],
   imports: [
     CommonModule,
-    BrowserModule,
     FormsModule,
     ReactiveFormsModule,
     MatAutocompleteModule,

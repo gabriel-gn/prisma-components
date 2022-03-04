@@ -66,13 +66,14 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
    */
   @Input() selectedOptions: MultiSelectOption[] = [];
 
-  public myControl: FormControl = new FormControl();
+  public readonly myControl: FormControl;
   public inputValue: string = '';
   public filteredOptions: Observable<MultiSelectOption[]>;
 
   constructor(
     private cdr: ChangeDetectorRef
   ) {
+    this.myControl = new FormControl();
   }
 
   ngOnInit(): void {
@@ -87,9 +88,13 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
     this.clearInput();
   }
 
-  displayFn(user: MultiSelectOption): string {
+  /**
+   * Função utilizada para colocar texto na caixa de input ao selecionar uma opção
+   * @param user
+   */
+  displayFn(option: MultiSelectOption): string {
     return '';
-    // return user && user.label ? user.label : '';
+    // return option && option.label ? option.label : '';
   }
 
   private _filter(label: string): MultiSelectOption[] {
@@ -124,9 +129,10 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
   }
 
   public openSelect(): void {
-    setTimeout(() => {
-      try { this.inputBoxEl.nativeElement.focus(); } catch (e) {}
-    }, 0);
+    // setTimeout(() => {
+    //   try { this.inputBoxEl.nativeElement.focus(); } catch (e) {}
+    // }, 0);
+    this.trigger.openPanel();
   }
 
   public clearSelected(): void {

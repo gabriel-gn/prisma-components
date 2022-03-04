@@ -43,6 +43,7 @@
                  (keydown.arrowLeft)="$event.preventDefault(); goBackOneLevel()"
                  (keydown.arrowRight)="$event.preventDefault(); paletteEntryAction(childEntry)"
                  (keydown.enter)="$event.preventDefault(); paletteEntryAction(childEntry)"
+                 (keydown.backspace)="$event.preventDefault(); focusSearchInput()"
                  class="palette-result-entry"
             >
               <p>{{childEntry.label}}{{hasChildEntries(childEntry) ? '...' : ''}}</p>
