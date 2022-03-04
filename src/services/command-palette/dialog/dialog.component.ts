@@ -175,33 +175,39 @@ export class DialogComponent implements AfterViewInit, OnDestroy {
   }
 
   public searchAction(searchValue: any): void {
-    searchValue = `${searchValue}`; // força string
-    const entriesToFlat: (paletteEntries: PaletteEntry[]) => string[] = (paletteEntries: PaletteEntry[]) => {
-      const idTreeArray: string[] = [];
+    searchValue = `${searchValue}`.toLowerCase(); // força string
+    let idTreeArray: string[] = [];
 
-      const isSearchValueInEntry: (paletteEntry: PaletteEntry) => boolean = (paletteEntry: PaletteEntry) => {
-        return paletteEntry.label.toLowerCase().includes(searchValue.toLowerCase())
-          || paletteEntry.id.toLowerCase().includes(searchValue.toLowerCase());
-      };
+    const isSearchValueInEntry: (paletteEntry: PaletteEntry) => boolean = (paletteEntry: PaletteEntry) => {
+      const label = !!paletteEntry?.label ? `${paletteEntry.label}`.toLowerCase() : '';
+      const id = !!paletteEntry?.id ? `${paletteEntry.id}`.toLowerCase() : '';
+      return label.includes(searchValue)
+        || id.includes(searchValue);
+    };
 
-      const entryToFlat: (paletteEntry: PaletteEntry, idPrefix: string) => void = (paletteEntry: PaletteEntry, idPrefix: string = '') => {
-        idPrefix = !!idPrefix ? `${idPrefix}` : `${paletteEntry.id}`;
-        if (this.hasChildEntries(paletteEntry)) {
-          idTreeArray.push(`${idPrefix}`);
+    const entryToFlat: (paletteEntry: PaletteEntry, idPrefix: string, parentIds: string[]) => void = (paletteEntry: PaletteEntry, idPrefix: string = '', parentIds: string[] = []) => {
+      idPrefix = !!idPrefix ? `${idPrefix}` : `${paletteEntry.id}`;
+      if (this.hasChildEntries(paletteEntry)) {
+        //@ts-ignore
+        for (let i = 0; i < paletteEntry.entries.length; i++) {
           //@ts-ignore
-          for (let i = 0; i < paletteEntry.entries.length; i++) {
-            //@ts-ignore
-            const entry = paletteEntry.entries[i];
-            const idSuffix = `.entries[${i}]`;
-            entryToFlat(entry, `${idPrefix}${idSuffix}`);
-          }
-        } else {
+          const entry = paletteEntry.entries[i];
+          const idSuffix = `.entries[${i}]`;
+          const currentEntryId = `${idPrefix}${idSuffix}`;
           if (isSearchValueInEntry(paletteEntry)) {
-            idTreeArray.push(`${idPrefix}`);
+            idTreeArray.push(idPrefix);
           }
+          entryToFlat(entry, currentEntryId, parentIds);
         }
-      };
+      } else {
+        if (isSearchValueInEntry(paletteEntry)) {
+          parentIds.push(idPrefix);
+          idTreeArray = [...idTreeArray, ...parentIds];
+        }
+      }
+    };
 
+    const entriesToFlat: (paletteEntries: PaletteEntry[]) => string[] = (paletteEntries: PaletteEntry[]) => {
       if (paletteEntries.length > 0 && paletteEntries[0].id === 'results') {
         //@ts-ignore
         paletteEntries = paletteEntries[0].entries;
@@ -212,12 +218,12 @@ export class DialogComponent implements AfterViewInit, OnDestroy {
         entries: paletteEntries
       };
 
-      entryToFlat(resultEntry, '');
-      if (this.searchIdTree.length === 0) {
-        return idTreeArray.slice(1);
-      } else {
-        return idTreeArray.slice(2);
-      }
+      entryToFlat(resultEntry, '', []);
+      // if (this.searchIdTree.length === 0) {
+      //   return idTreeArray.slice(0);
+      // } else {
+      // }
+      return idTreeArray;
     };
 
     const flatEntriesToEntries: (flatEntries: string[], entriesToCheck: PaletteEntry[]) => PaletteEntry[] = (flatEntries: string[], entriesToCheck: PaletteEntry[]) => {
@@ -231,21 +237,29 @@ export class DialogComponent implements AfterViewInit, OnDestroy {
       return _.uniqWith(entries, _.isEqual); // remove objetos iguais
     };
 
-    if (!!searchValue) {
-      this.deleteLatestSearchEntryOnDelete = false;
+    const doSearch = () => {
       let entries;
       if (!!this.searchPaletteEntries && this.searchPaletteEntries.length > 0 && this.searchPaletteEntries[0].id === 'results') {
         entries = this.searchPaletteEntries[0].entries;
       } else {
         entries = this.searchPaletteEntries;
       }
+      this.rebuildCurrentEntriesFromTree(this.searchIdTree.length - 1);
       this.searchPaletteEntries = [
         {
           label: 'Results',
           id: 'results',
-          entries: flatEntriesToEntries(entriesToFlat(entries), entries)
+          entries: flatEntriesToEntries(
+            entriesToFlat(entries),
+            entries
+          )
         }
       ];
+    }
+
+    if (!!searchValue) {
+      this.deleteLatestSearchEntryOnDelete = false;
+      doSearch();
     } else {
       if (this.deleteLatestSearchEntryOnDelete) {
         this.goBackOneLevel();
