@@ -28,7 +28,12 @@
                         [panelWidth]="multiselect?.offsetWidth"
                         [displayWith]="displayFn"
       >
-        <ng-container *ngFor="let option of filteredOptions | async">
+        <mat-option *ngIf="(filteredOptions | async)?.length <= 0 && observableInputLoading">
+          <ng-container *ngTemplateOutlet="loadingObservableTemplate"></ng-container>
+        </mat-option>
+        <ng-container *ngIf="(filteredOptions | async) as options">
+        <ng-container *ngIf="options?.length > 0">
+        <ng-container *ngFor="let option of options">
           <mat-option
             [hidden]="isOptionSelected(option)"
             [value]="option"
@@ -38,6 +43,8 @@
               <span class="color-gray-dark" [ngClass]="{'ms-2': option?.thumbnail}">{{option.label}}</span>
             </div>
           </mat-option>
+        </ng-container>
+        </ng-container>
         </ng-container>
       </mat-autocomplete>
     </form>
@@ -52,5 +59,11 @@
       [src]="option.thumbnail"
       height="25"
     >
+  </div>
+</ng-template>
+
+<ng-template #loadingObservableTemplate>
+  <div class="p-3">
+    <div *ngIfLoaded="false"></div>
   </div>
 </ng-template>

@@ -5,6 +5,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatInputModule} from '@angular/material/input';
 import {CommonModule} from '@angular/common';
+import {NgIfLoadedModule} from "../../../directives/ng-if-loaded/ng-if-loaded.module";
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import {CommonModule} from '@angular/common';
     ReactiveFormsModule,
     MatAutocompleteModule,
     MatInputModule,
+    NgIfLoadedModule.forRoot(),
   ]
 })
 export class MultiSelectModule {

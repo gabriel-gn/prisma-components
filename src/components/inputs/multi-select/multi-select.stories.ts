@@ -76,8 +76,23 @@ ThumbnailMultiSelect.args = {
 } as Partial<MultiSelectComponent>;
 
 export const PreSelectedOptions = Template.bind({});
-// const preSelectedOptionsArgs = DefaultMultiSelect.args;
 PreSelectedOptions.args = {
+  ...defaultArgs,
+  placeholder: 'Busque algo',
+  options: [
+    {label: 'Mary', value: {} },
+    {label: 'Shelley', value: {} },
+    {label: 'Gabs', value: {} },
+    {label: 'Pedrocs', value: {} },
+    {label: 'Rics', value: {} },
+    {label: 'Ana', value: {} },
+    {label: 'Igor', value: {} }
+  ],
+  selectedOptions: [{label: 'Mary', value: {} }]
+} as Partial<MultiSelectComponent>;
+
+export const ObservableInput = Template.bind({});
+ObservableInput.args = {
   ...defaultArgs,
   placeholder: 'Busque algo',
   options: [
