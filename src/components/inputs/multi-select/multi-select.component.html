@@ -9,11 +9,11 @@
         </div>
       </div>
     </div>
-    <form>
+    <form style="min-height: 31px">
       <input #inputBox
              #trigger="matAutocompleteTrigger"
              name="searchInput"
-             [hidden]="selectedOptions.length === options.length || (!!limit && selectedOptions.length >= limit)"
+             [hidden]="!observableInput && (selectedOptions.length === options.length || (!!limit && selectedOptions.length >= limit))"
              matInput
              class="form-control h-100 border-0"
              type="text"
@@ -28,12 +28,12 @@
                         [panelWidth]="multiselect?.offsetWidth"
                         [displayWith]="displayFn"
       >
-        <ng-container *ngIf="(filteredOptions | async) as options; else loadingObservableNoResultsTemplate">
-          <mat-option *ngIf="options?.length <= 0 && _observableInputLoading">
+        <ng-container *ngIf="(filteredOptions | async) as fOptions; else loadingObservableNoResultsTemplate">
+          <mat-option *ngIf="fOptions?.length <= 0 && _observableInputLoading">
             <ng-container *ngTemplateOutlet="loadingObservableTemplate"></ng-container>
           </mat-option>
-          <ng-container *ngIf="options?.length > 0">
-            <ng-container *ngFor="let option of options">
+          <ng-container *ngIf="fOptions?.length > 0">
+            <ng-container *ngFor="let option of fOptions">
               <mat-option
                 [hidden]="isOptionSelected(option)"
                 [value]="option"

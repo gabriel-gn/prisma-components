@@ -65,17 +65,7 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
    * Opções que ja vem selecionadas
    */
   @Input() selectedOptions: MultiSelectOption[] = [];
-  @Input() observableInput: (search: string) => Observable<MultiSelectOption[]> = (search: string) => {
-    let call: Observable<any>;
-    if (`${search}`.length > 3) {
-      call = of([{label: `${search}`, value: `${search}` }]);
-    } else {
-      call = of([]);
-    }
-    return call.pipe(
-      delay(2000),
-    )
-  };
+  @Input() observableInput: (search: string) => Observable<MultiSelectOption[]>;
   public _observableInputLoading: boolean = false;
 
   public readonly myControl: FormControl;
@@ -89,7 +79,7 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    if (this.observableInput(`${this.myControl.value}`)) {
+    if (this.observableInput) {
       this.filteredOptions = this.myControl.valueChanges.pipe(
         tap(() => {this.observableInputLoading = true}),
         concatMap(() => this.observableInput(`${this.myControl.value}`)),
