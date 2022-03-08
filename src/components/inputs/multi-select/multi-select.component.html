@@ -28,27 +28,32 @@
                         [panelWidth]="multiselect?.offsetWidth"
                         [displayWith]="displayFn"
       >
-        <mat-option *ngIf="(filteredOptions | async)?.length <= 0 && observableInputLoading">
-          <ng-container *ngTemplateOutlet="loadingObservableTemplate"></ng-container>
-        </mat-option>
-        <ng-container *ngIf="(filteredOptions | async) as options">
-        <ng-container *ngIf="options?.length > 0">
-        <ng-container *ngFor="let option of options">
-          <mat-option
-            [hidden]="isOptionSelected(option)"
-            [value]="option"
-          >
-            <div class="d-flex flex-row align-items-center">
-              <ng-container *ngTemplateOutlet="thumbnailContainer; context: {$implicit: option}"></ng-container>
-              <span class="color-gray-dark" [ngClass]="{'ms-2': option?.thumbnail}">{{option.label}}</span>
-            </div>
+        <ng-container *ngIf="(filteredOptions | async) as options; else loadingObservableNoResultsTemplate">
+          <mat-option *ngIf="options?.length <= 0 && _observableInputLoading">
+            <ng-container *ngTemplateOutlet="loadingObservableTemplate"></ng-container>
           </mat-option>
-        </ng-container>
-        </ng-container>
+          <ng-container *ngIf="options?.length > 0">
+            <ng-container *ngFor="let option of options">
+              <mat-option
+                [hidden]="isOptionSelected(option)"
+                [value]="option"
+              >
+                <div class="d-flex flex-row align-items-center">
+                  <ng-container *ngTemplateOutlet="thumbnailContainer; context: {$implicit: option}"></ng-container>
+                  <span class="color-gray-dark" [ngClass]="{'ms-2': option?.thumbnail}">{{option.label}}</span>
+                </div>
+              </mat-option>
+            </ng-container>
+          </ng-container>
         </ng-container>
       </mat-autocomplete>
     </form>
-    <i class="position-absolute uil uil-lg uil-angle-down"></i>
+    <div class="position-absolute d-flex h-100 justify-content-center align-items-center mx-3" style="right: 0;">
+      <ng-container [ngSwitch]="_observableInputLoading">
+        <span *ngSwitchCase="true" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        <i *ngSwitchCase="false" class="uil uil-lg uil-angle-down"></i>
+      </ng-container>
+    </div>
   </div>
 </div>
 
@@ -66,4 +71,12 @@
   <div class="p-3">
     <div *ngIfLoaded="false"></div>
   </div>
+</ng-template>
+
+<ng-template #loadingObservableNoResultsTemplate>
+  <mat-option>
+    <div class="p-3">
+      <p>Nada aqui</p>
+    </div>
+  </mat-option>
 </ng-template>

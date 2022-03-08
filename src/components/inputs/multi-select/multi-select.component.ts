@@ -66,15 +66,17 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
    */
   @Input() selectedOptions: MultiSelectOption[] = [];
   @Input() observableInput: (search: string) => Observable<MultiSelectOption[]> = (search: string) => {
+    let call: Observable<any>;
     if (`${search}`.length > 3) {
-      return of([{label: `${search}`, value: `${search}` }]).pipe(
-        delay(0),
-      );
+      call = of([{label: `${search}`, value: `${search}` }]);
     } else {
-      return of([]);
+      call = of([]);
     }
+    return call.pipe(
+      delay(2000),
+    )
   };
-  public observableInputLoading: boolean = false;
+  public _observableInputLoading: boolean = false;
 
   public readonly myControl: FormControl;
   public inputValue: string = '';
@@ -89,14 +91,9 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     if (this.observableInput(`${this.myControl.value}`)) {
       this.filteredOptions = this.myControl.valueChanges.pipe(
-        tap(() => this.observableInputLoading = true),
-        // startWith(''),
-        // map(value => (typeof value === 'string' ? value : `${value.label}`)),
-        // map(label => this._filter(label)),
-        delay(500),
+        tap(() => {this.observableInputLoading = true}),
         concatMap(() => this.observableInput(`${this.myControl.value}`)),
-        tap(sla => console.log(sla)),
-        tap(() => this.observableInputLoading = false),
+        tap(() => {this.observableInputLoading = false}),
       );
     } else {
       this.filteredOptions = this.myControl.valueChanges.pipe(
@@ -109,6 +106,11 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.clearInput();
+  }
+
+  public set observableInputLoading(state: boolean) {
+    this._observableInputLoading = state;
+    this.cdr.detectChanges();
   }
 
   /**
