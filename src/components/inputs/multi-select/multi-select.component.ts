@@ -136,6 +136,7 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
 
   public removeSelectedOption(option: MultiSelectOption): void {
     _.remove(this.selectedOptions, option);
+    this.trigger.closePanel();
     this.clearInput();
   }
 
