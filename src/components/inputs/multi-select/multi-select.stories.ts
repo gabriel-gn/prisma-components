@@ -2,6 +2,7 @@ import {MultiSelectComponent, MultiSelectOption} from './multi-select.component'
 import {Meta} from '@storybook/angular/types-6-0';
 import {Story} from '@storybook/angular';
 import {Sizes} from '../../../models/sizes';
+import {delay, Observable, of} from "rxjs";
 
 export default {
   title: 'Prisma/Stories/MultiSelect',
@@ -18,6 +19,7 @@ export const Template: Story<MultiSelectComponent> = (args) => ({
         [roundedThumbnail]="roundedThumbnail"
         [limit]="limit"
         [selectedOptions]="selectedOptions"
+        [observableInput]="observableInput"
     >
     </pm-multi-select>
   `
@@ -29,7 +31,8 @@ export const defaultArgs = {
   borderRadius: Sizes.md,
   roundedThumbnail: true,
   limit: 0,
-  selectedOptions: []
+  selectedOptions: [],
+  observableInput: undefined
 };
 
 export const DefaultMultiSelect = Template.bind({});
@@ -76,7 +79,6 @@ ThumbnailMultiSelect.args = {
 } as Partial<MultiSelectComponent>;
 
 export const PreSelectedOptions = Template.bind({});
-// const preSelectedOptionsArgs = DefaultMultiSelect.args;
 PreSelectedOptions.args = {
   ...defaultArgs,
   placeholder: 'Busque algo',
@@ -90,4 +92,23 @@ PreSelectedOptions.args = {
     {label: 'Igor', value: {} }
   ],
   selectedOptions: [{label: 'Mary', value: {} }]
+} as Partial<MultiSelectComponent>;
+
+export const ObservableInput = Template.bind({});
+ObservableInput.args = {
+  ...defaultArgs,
+  placeholder: 'Busque algo',
+  options: [],
+  selectedOptions: [{label: 'Pre Selected', value: {} }],
+  observableInput: (search: string) => {
+    let call: Observable<any>;
+    if (`${search}`.length > 3) {
+      call = of([{label: `${search}`, value: `${search}` }]);
+    } else {
+      call = of([]);
+    }
+    return call.pipe(
+      delay(2000),
+    )
+  }
 } as Partial<MultiSelectComponent>;

@@ -10,7 +10,7 @@ import {
   ViewChild
 } from '@angular/core';
 import {FormControl} from '@angular/forms';
-import {Observable} from 'rxjs';
+import {concatMap, delay, Observable, of, tap} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import _ from 'lodash';
 import {MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, MatAutocompleteTrigger} from '@angular/material/autocomplete';
@@ -19,7 +19,7 @@ import {Sizes} from '../../../models/sizes';
 export interface MultiSelectOption {
   label: string;
   value: any;
-  thumbnail: string;
+  thumbnail?: string;
 }
 
 @Component({
@@ -65,6 +65,8 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
    * Opções que ja vem selecionadas
    */
   @Input() selectedOptions: MultiSelectOption[] = [];
+  @Input() observableInput: (search: string) => Observable<MultiSelectOption[]>;
+  public _observableInputLoading: boolean = false;
 
   public readonly myControl: FormControl;
   public inputValue: string = '';
@@ -77,15 +79,28 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.filteredOptions = this.myControl.valueChanges.pipe(
-      startWith(''),
-      map(value => (typeof value === 'string' ? value : `${value.label}`)),
-      map(label => this._filter(label)),
-    );
+    if (this.observableInput) {
+      this.filteredOptions = this.myControl.valueChanges.pipe(
+        tap(() => {this.observableInputLoading = true}),
+        concatMap(() => this.observableInput(`${this.myControl.value}`)),
+        tap(() => {this.observableInputLoading = false}),
+      );
+    } else {
+      this.filteredOptions = this.myControl.valueChanges.pipe(
+        startWith(''),
+        map(value => (typeof value === 'string' ? value : `${value.label}`)),
+        map(label => this._filter(label)),
+      );
+    }
   }
 
   ngAfterViewInit(): void {
     this.clearInput();
+  }
+
+  public set observableInputLoading(state: boolean) {
+    this._observableInputLoading = state;
+    this.cdr.detectChanges();
   }
 
   /**
@@ -121,6 +136,7 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
 
   public removeSelectedOption(option: MultiSelectOption): void {
     _.remove(this.selectedOptions, option);
+    this.trigger.closePanel();
     this.clearInput();
   }
 

@@ -30,8 +30,12 @@
     }
   }
 
-  i {
+  i,
+  span {
     color: var(--color-light-states);
+  }
+
+  i {
     right: 0.5em;
     height: 100%;
     display: flex;
