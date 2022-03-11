@@ -1,5 +1,9 @@
 @import 'variables';
 
+.rad-0 {
+  border-radius: 0px !important;
+}
+
 @each $key, $val in $border-radiuss {
   .rad-#{$key} {
     border-radius: var(--border-radius-#{$key}) !important;
@@ -13,5 +17,15 @@
   .rad-#{$key}-bottom {
     border-bottom-left-radius: var(--border-radius-#{$key}) !important;
     border-bottom-right-radius: var(--border-radius-#{$key}) !important;
+  }
+
+  .rad-#{$key}-right {
+    border-top-right-radius: var(--border-radius-#{$key}) !important;
+    border-bottom-right-radius: var(--border-radius-#{$key}) !important;
+  }
+
+  .rad-#{$key}-left {
+    border-top-left-radius: var(--border-radius-#{$key}) !important;
+    border-bottom-left-radius: var(--border-radius-#{$key}) !important;
   }
 }
