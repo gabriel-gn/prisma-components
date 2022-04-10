@@ -10,7 +10,7 @@ import {
   ViewChild
 } from '@angular/core';
 import {FormControl} from '@angular/forms';
-import {catchError, concatMap, distinctUntilChanged, Observable, tap, throwError} from 'rxjs';
+import {catchError, concatMap, debounceTime, distinctUntilChanged, Observable, of, tap, throwError} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import _ from 'lodash';
 import {MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, MatAutocompleteTrigger} from '@angular/material/autocomplete';
@@ -66,6 +66,10 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
    */
   @Input() selectedOptions: MultiSelectOption[] = [];
   @Input() observableInput: (search: string) => Observable<MultiSelectOption[]>;
+  /**
+   * Tempo de espera em cada execução de chamada do observable ao digitar no campo de input
+   */
+  @Input() observableDebounce: number = 100;
   public _observableInputLoading: boolean = false;
 
   public readonly myControl: FormControl;
@@ -81,10 +85,11 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     if (this.observableInput) {
       this.filteredOptions = this.myControl.valueChanges.pipe(
+        debounceTime(this.observableDebounce),
+        distinctUntilChanged(),
         tap(() => {this.observableInputLoading = true}),
         concatMap(() => this.observableInput(`${this.myControl.value}`).pipe(
-          distinctUntilChanged(),
-          catchError(error => {this.observableInputLoading = false; return throwError(error); }),
+          catchError(error => {this.observableInputLoading = false; return of(null); }),
         )),
         tap(() => {this.observableInputLoading = false}),
       );

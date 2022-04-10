@@ -20,6 +20,7 @@ export const Template: Story<MultiSelectComponent> = (args) => ({
         [limit]="limit"
         [selectedOptions]="selectedOptions"
         [observableInput]="observableInput"
+        [observableDebounce]="observableDebounce"
     >
     </pm-multi-select>
   `
@@ -32,7 +33,8 @@ export const defaultArgs = {
   roundedThumbnail: true,
   limit: 0,
   selectedOptions: [],
-  observableInput: undefined
+  observableInput: undefined,
+  observableDebounce: 100,
 };
 
 export const DefaultMultiSelect = Template.bind({});
