@@ -10,7 +10,7 @@ import {
   ViewChild
 } from '@angular/core';
 import {FormControl} from '@angular/forms';
-import {concatMap, delay, Observable, of, tap} from 'rxjs';
+import {catchError, concatMap, distinctUntilChanged, Observable, tap, throwError} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import _ from 'lodash';
 import {MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, MatAutocompleteTrigger} from '@angular/material/autocomplete';
@@ -82,7 +82,10 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
     if (this.observableInput) {
       this.filteredOptions = this.myControl.valueChanges.pipe(
         tap(() => {this.observableInputLoading = true}),
-        concatMap(() => this.observableInput(`${this.myControl.value}`)),
+        concatMap(() => this.observableInput(`${this.myControl.value}`).pipe(
+          distinctUntilChanged(),
+          catchError(error => {this.observableInputLoading = false; return throwError(error); }),
+        )),
         tap(() => {this.observableInputLoading = false}),
       );
     } else {
