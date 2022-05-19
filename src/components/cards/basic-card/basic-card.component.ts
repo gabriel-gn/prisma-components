@@ -9,6 +9,7 @@ import {Sizes} from '../../../models/sizes';
 export class BasicCardComponent {
 
   @Input('hoverable') hoverable = false;
+  @Input('focused') focused = false;
   @Input('borderRadius') borderRadius: Sizes = Sizes.md;
   @Input('paddingClass') paddingClass: string = 'p-3';
 

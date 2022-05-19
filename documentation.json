@@ -262,12 +262,12 @@
         },
         {
             "name": "MultiSelectOption",
-            "id": "interface-MultiSelectOption-480fb859314ac65a93ce9df1dbb0d7de143cdc44f57612af1f1bdbe0deb3f9921dde2b27c44d9531f926cd3c554e3b174966d94410692ac9e239255f7162fa1f",
+            "id": "interface-MultiSelectOption-5baf0386c10c49f4940425763650b8f19eed9be614eb2765ec47a4cbc7ccc76650e348ad4de3d2c0aa1192910f7ca61ad3c6c475c6f5a67a8ef2b296ff0f7967",
             "file": "src/components/inputs/multi-select/multi-select.component.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "import {\n  AfterViewInit,\n  ChangeDetectorRef,\n  Component,\n  ElementRef,\n  EventEmitter,\n  Input,\n  OnInit,\n  Output,\n  ViewChild\n} from '@angular/core';\nimport {FormControl} from '@angular/forms';\nimport {concatMap, delay, Observable, of, tap} from 'rxjs';\nimport {map, startWith} from 'rxjs/operators';\nimport _ from 'lodash';\nimport {MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, MatAutocompleteTrigger} from '@angular/material/autocomplete';\nimport {Sizes} from '../../../models/sizes';\n\nexport interface MultiSelectOption {\n  label: string;\n  value: any;\n  thumbnail?: string;\n}\n\n@Component({\n  selector: 'pm-multi-select',\n  templateUrl: './multi-select.component.html',\n  styleUrls: ['./multi-select.component.scss'],\n  providers: [\n    {\n      provide: MAT_AUTOCOMPLETE_DEFAULT_OPTIONS,\n      useValue: {\n        autoActiveFirstOption: false,\n        overlayPanelClass: 'pm-multi-select-autocomplete-panel'\n      }\n    }\n  ]\n})\nexport class MultiSelectComponent implements OnInit, AfterViewInit {\n\n  @ViewChild('inputBox', {static: true}) inputBoxEl: ElementRef;\n  @ViewChild('trigger', {static: true}) trigger: MatAutocompleteTrigger;\n  /**\n   * Ao ser selecionada uma opção nova, emite\n   */\n  @Output() selectedOptionsChanged = new EventEmitter<MultiSelectOption[]>();\n  /**\n   * Texto a ser exibido no input\n   */\n  @Input() placeholder: string = '';\n  /**\n   * opções a serem exibidas no input\n   */\n  @Input() options: MultiSelectOption[] = [];\n  @Input() borderRadius: Sizes = Sizes.md;\n  /**\n   * se as thumbnails serão arredondadas\n   */\n  @Input() roundedThumbnail: boolean = true;\n  /**\n   * limite máximo de seleções de itens\n   */\n  @Input() limit: number = 0;\n  /**\n   * Opções que ja vem selecionadas\n   */\n  @Input() selectedOptions: MultiSelectOption[] = [];\n  @Input() observableInput: (search: string) => Observable<MultiSelectOption[]>;\n  public _observableInputLoading: boolean = false;\n\n  public readonly myControl: FormControl;\n  public inputValue: string = '';\n  public filteredOptions: Observable<MultiSelectOption[]>;\n\n  constructor(\n    private cdr: ChangeDetectorRef\n  ) {\n    this.myControl = new FormControl();\n  }\n\n  ngOnInit(): void {\n    if (this.observableInput) {\n      this.filteredOptions = this.myControl.valueChanges.pipe(\n        tap(() => {this.observableInputLoading = true}),\n        concatMap(() => this.observableInput(`${this.myControl.value}`)),\n        tap(() => {this.observableInputLoading = false}),\n      );\n    } else {\n      this.filteredOptions = this.myControl.valueChanges.pipe(\n        startWith(''),\n        map(value => (typeof value === 'string' ? value : `${value.label}`)),\n        map(label => this._filter(label)),\n      );\n    }\n  }\n\n  ngAfterViewInit(): void {\n    this.clearInput();\n  }\n\n  public set observableInputLoading(state: boolean) {\n    this._observableInputLoading = state;\n    this.cdr.detectChanges();\n  }\n\n  /**\n   * Função utilizada para colocar texto na caixa de input ao selecionar uma opção\n   * @param user\n   */\n  displayFn(option: MultiSelectOption): string {\n    return '';\n    // return option && option.label ? option.label : '';\n  }\n\n  private _filter(label: string): MultiSelectOption[] {\n    const filterValue = label.toLowerCase();\n\n    return _.difference(\n      this.options.filter(option => option.label.toLowerCase().includes(filterValue)),\n      this.selectedOptions\n    );\n  }\n\n  public selectOption(option: any): void {\n    this.selectedOptions.push(option);\n    this.selectedOptionsChanged.emit(this.selectedOptions);\n    this.clearInput();\n  }\n\n  private clearInput(): void {\n    this.inputValue = '';\n    this.myControl.setValue(this.inputValue);\n    try { this.inputBoxEl.nativeElement.blur(); } catch (e) {}\n    this.cdr.detectChanges();\n  }\n\n  public removeSelectedOption(option: MultiSelectOption): void {\n    _.remove(this.selectedOptions, option);\n    this.trigger.closePanel();\n    this.clearInput();\n  }\n\n  public isOptionSelected(option: MultiSelectOption): boolean {\n    return !!this.selectedOptions.find(sOptions => _.isEqual(sOptions, option));\n  }\n\n  public openSelect(): void {\n    // setTimeout(() => {\n    //   try { this.inputBoxEl.nativeElement.focus(); } catch (e) {}\n    // }, 0);\n    this.trigger.openPanel();\n  }\n\n  public clearSelected(): void {\n    this.selectedOptions = [];\n    this.selectedOptionsChanged.emit(this.selectedOptions);\n    this.clearInput();\n  }\n\n  public togglePanel(): void {\n    if (this.trigger.panelOpen === false) {\n      this.trigger.openPanel();\n    } else {\n      this.trigger.closePanel();\n    }\n  }\n\n}\n",
+            "sourceCode": "import {\n  AfterViewInit,\n  ChangeDetectorRef,\n  Component,\n  ElementRef,\n  EventEmitter,\n  Input,\n  OnInit,\n  Output,\n  ViewChild\n} from '@angular/core';\nimport {FormControl} from '@angular/forms';\nimport {catchError, concatMap, debounceTime, distinctUntilChanged, Observable, of, tap, throwError} from 'rxjs';\nimport {map, startWith} from 'rxjs/operators';\nimport _ from 'lodash';\nimport {MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, MatAutocompleteTrigger} from '@angular/material/autocomplete';\nimport {Sizes} from '../../../models/sizes';\n\nexport interface MultiSelectOption {\n  label: string;\n  value: any;\n  thumbnail?: string;\n}\n\n@Component({\n  selector: 'pm-multi-select',\n  templateUrl: './multi-select.component.html',\n  styleUrls: ['./multi-select.component.scss'],\n  providers: [\n    {\n      provide: MAT_AUTOCOMPLETE_DEFAULT_OPTIONS,\n      useValue: {\n        autoActiveFirstOption: false,\n        overlayPanelClass: 'pm-multi-select-autocomplete-panel'\n      }\n    }\n  ]\n})\nexport class MultiSelectComponent implements OnInit, AfterViewInit {\n\n  @ViewChild('inputBox', {static: true}) inputBoxEl: ElementRef;\n  @ViewChild('trigger', {static: true}) trigger: MatAutocompleteTrigger;\n  /**\n   * Ao ser selecionada uma opção nova, emite\n   */\n  @Output() selectedOptionsChanged = new EventEmitter<MultiSelectOption[]>();\n  /**\n   * Texto a ser exibido no input\n   */\n  @Input() placeholder: string = '';\n  /**\n   * opções a serem exibidas no input\n   */\n  @Input() options: MultiSelectOption[] = [];\n  @Input() borderRadius: Sizes = Sizes.md;\n  /**\n   * se as thumbnails serão arredondadas\n   */\n  @Input() roundedThumbnail: boolean = true;\n  /**\n   * limite máximo de seleções de itens\n   */\n  @Input() limit: number = 0;\n  /**\n   * Opções que ja vem selecionadas\n   */\n  @Input() selectedOptions: MultiSelectOption[] = [];\n  @Input() observableInput: (search: string) => Observable<MultiSelectOption[]>;\n  /**\n   * Tempo de espera em cada execução de chamada do observable ao digitar no campo de input\n   */\n  @Input() observableDebounce: number = 100;\n  public _observableInputLoading: boolean = false;\n\n  public readonly myControl: FormControl;\n  public inputValue: string = '';\n  public filteredOptions: Observable<MultiSelectOption[]>;\n\n  constructor(\n    private cdr: ChangeDetectorRef\n  ) {\n    this.myControl = new FormControl();\n  }\n\n  ngOnInit(): void {\n    if (this.observableInput) {\n      this.filteredOptions = this.myControl.valueChanges.pipe(\n        debounceTime(this.observableDebounce),\n        distinctUntilChanged(),\n        tap(() => {this.observableInputLoading = true}),\n        concatMap(() => this.observableInput(`${this.myControl.value}`).pipe(\n          catchError(error => {this.observableInputLoading = false; return of(null); }),\n        )),\n        tap(() => {this.observableInputLoading = false}),\n      );\n    } else {\n      this.filteredOptions = this.myControl.valueChanges.pipe(\n        startWith(''),\n        map(value => (typeof value === 'string' ? value : `${value.label}`)),\n        map(label => this._filter(label)),\n      );\n    }\n  }\n\n  ngAfterViewInit(): void {\n    this.clearInput();\n  }\n\n  public set observableInputLoading(state: boolean) {\n    this._observableInputLoading = state;\n    this.cdr.detectChanges();\n  }\n\n  /**\n   * Função utilizada para colocar texto na caixa de input ao selecionar uma opção\n   * @param user\n   */\n  displayFn(option: MultiSelectOption): string {\n    return '';\n    // return option && option.label ? option.label : '';\n  }\n\n  private _filter(label: string): MultiSelectOption[] {\n    const filterValue = label.toLowerCase();\n\n    return _.difference(\n      this.options.filter(option => option.label.toLowerCase().includes(filterValue)),\n      this.selectedOptions\n    );\n  }\n\n  public selectOption(option: any): void {\n    this.selectedOptions.push(option);\n    this.selectedOptionsChanged.emit(this.selectedOptions);\n    this.clearInput();\n  }\n\n  private clearInput(): void {\n    this.inputValue = '';\n    this.myControl.setValue(this.inputValue);\n    try { this.inputBoxEl.nativeElement.blur(); } catch (e) {}\n    this.cdr.detectChanges();\n  }\n\n  public removeSelectedOption(option: MultiSelectOption): void {\n    _.remove(this.selectedOptions, option);\n    this.trigger.closePanel();\n    this.clearInput();\n  }\n\n  public isOptionSelected(option: MultiSelectOption): boolean {\n    return !!this.selectedOptions.find(sOptions => _.isEqual(sOptions, option));\n  }\n\n  public openSelect(): void {\n    // setTimeout(() => {\n    //   try { this.inputBoxEl.nativeElement.focus(); } catch (e) {}\n    // }, 0);\n    this.trigger.openPanel();\n  }\n\n  public clearSelected(): void {\n    this.selectedOptions = [];\n    this.selectedOptionsChanged.emit(this.selectedOptions);\n    this.clearInput();\n  }\n\n  public togglePanel(): void {\n    if (this.trigger.panelOpen === false) {\n      this.trigger.openPanel();\n    } else {\n      this.trigger.closePanel();\n    }\n  }\n\n}\n",
             "properties": [
                 {
                     "name": "label",
@@ -1166,7 +1166,7 @@
     "components": [
         {
             "name": "BasicCardComponent",
-            "id": "component-BasicCardComponent-0e69c39b231aba26950c6359e503431447a62bdc9c0bf7b548bb8130d1a8d3bad08deac3c3da5d49b6b3057eceb3fa508a2e95a20f684da2164fa7dac35e3e3f",
+            "id": "component-BasicCardComponent-779b54d1857f17b62ad0c46f8ae4040db2cbc97511c241b629542c836fd7cdcb487044ec53c1f26e5ac49adf6e3816565ccc2d2770329b8dc94085a3157d9f05",
             "file": "src/components/cards/basic-card/basic-card.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -1188,8 +1188,17 @@
                     "defaultValue": "Sizes.md",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 12,
+                    "line": 13,
                     "type": "Sizes",
+                    "decorators": []
+                },
+                {
+                    "name": "focused",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 12,
+                    "type": "boolean",
                     "decorators": []
                 },
                 {
@@ -1206,7 +1215,7 @@
                     "defaultValue": "'p-3'",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 13,
+                    "line": 14,
                     "type": "string",
                     "decorators": []
                 }
@@ -1221,7 +1230,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {Component, Input} from '@angular/core';\nimport {Sizes} from '../../../models/sizes';\n\n@Component({\n  selector: 'pm-basic-card',\n  templateUrl: './basic-card.component.html',\n  styleUrls: ['./basic-card.component.scss']\n})\nexport class BasicCardComponent {\n\n  @Input('hoverable') hoverable = false;\n  @Input('borderRadius') borderRadius: Sizes = Sizes.md;\n  @Input('paddingClass') paddingClass: string = 'p-3';\n\n  constructor() {\n  }\n\n}\n",
+            "sourceCode": "import {Component, Input} from '@angular/core';\nimport {Sizes} from '../../../models/sizes';\n\n@Component({\n  selector: 'pm-basic-card',\n  templateUrl: './basic-card.component.html',\n  styleUrls: ['./basic-card.component.scss']\n})\nexport class BasicCardComponent {\n\n  @Input('hoverable') hoverable = false;\n  @Input('focused') focused = false;\n  @Input('borderRadius') borderRadius: Sizes = Sizes.md;\n  @Input('paddingClass') paddingClass: string = 'p-3';\n\n  constructor() {\n  }\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -1236,7 +1245,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "args": [],
-                "line": 13
+                "line": 14
             },
             "templateData": "<div class=\"pm-basic-card\">\n  <div\n    [ngClass]=\"{'hoverable': hoverable}\"\n    class=\"card-basic {{paddingClass}} {{borderRadius ? 'rad-' + borderRadius : ''}} w-100\"\n    style=\"height: auto;\">\n    <ng-content></ng-content>\n  </div>\n</div>\n"
         },
@@ -3719,7 +3728,7 @@
         },
         {
             "name": "MultiSelectComponent",
-            "id": "component-MultiSelectComponent-480fb859314ac65a93ce9df1dbb0d7de143cdc44f57612af1f1bdbe0deb3f9921dde2b27c44d9531f926cd3c554e3b174966d94410692ac9e239255f7162fa1f",
+            "id": "component-MultiSelectComponent-5baf0386c10c49f4940425763650b8f19eed9be614eb2765ec47a4cbc7ccc76650e348ad4de3d2c0aa1192910f7ca61ad3c6c475c6f5a67a8ef2b296ff0f7967",
             "file": "src/components/inputs/multi-select/multi-select.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -3757,6 +3766,17 @@
                     "rawdescription": "\n\nlimite máximo de seleções de itens\n",
                     "description": "<p>limite máximo de seleções de itens</p>\n",
                     "line": 63,
+                    "type": "number",
+                    "decorators": []
+                },
+                {
+                    "name": "observableDebounce",
+                    "defaultValue": "100",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n\nTempo de espera em cada execução de chamada do observable ao digitar no campo de input\n",
+                    "description": "<p>Tempo de espera em cada execução de chamada do observable ao digitar no campo de input</p>\n",
+                    "line": 72,
                     "type": "number",
                     "decorators": []
                 },
@@ -3834,7 +3854,7 @@
                     "type": "boolean",
                     "optional": false,
                     "description": "",
-                    "line": 69,
+                    "line": 73,
                     "modifierKind": [
                         123
                     ]
@@ -3846,7 +3866,7 @@
                     "type": "Observable<MultiSelectOption[]>",
                     "optional": false,
                     "description": "",
-                    "line": 73,
+                    "line": 77,
                     "modifierKind": [
                         123
                     ]
@@ -3874,7 +3894,7 @@
                     "type": "string",
                     "optional": false,
                     "description": "",
-                    "line": 72,
+                    "line": 76,
                     "modifierKind": [
                         123
                     ]
@@ -3886,7 +3906,7 @@
                     "type": "FormControl",
                     "optional": false,
                     "description": "",
-                    "line": 71,
+                    "line": 75,
                     "modifierKind": [
                         123,
                         144
@@ -3922,7 +3942,7 @@
                     "optional": false,
                     "returnType": "MultiSelectOption[]",
                     "typeParameters": [],
-                    "line": 115,
+                    "line": 123,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -3946,7 +3966,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 130,
+                    "line": 138,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -3959,7 +3979,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 154,
+                    "line": 162,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -3979,7 +3999,7 @@
                     "optional": false,
                     "returnType": "string",
                     "typeParameters": [],
-                    "line": 110,
+                    "line": 118,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "rawdescription": "\n\nFunção utilizada para colocar texto na caixa de input ao selecionar uma opção\n",
@@ -4009,7 +4029,7 @@
                     "optional": false,
                     "returnType": "boolean",
                     "typeParameters": [],
-                    "line": 143,
+                    "line": 151,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -4033,7 +4053,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 97,
+                    "line": 105,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -4043,7 +4063,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 81,
+                    "line": 85,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -4053,7 +4073,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 147,
+                    "line": 155,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -4073,7 +4093,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 137,
+                    "line": 145,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -4104,7 +4124,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 124,
+                    "line": 132,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -4128,7 +4148,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 160,
+                    "line": 168,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -4143,11 +4163,11 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {\n  AfterViewInit,\n  ChangeDetectorRef,\n  Component,\n  ElementRef,\n  EventEmitter,\n  Input,\n  OnInit,\n  Output,\n  ViewChild\n} from '@angular/core';\nimport {FormControl} from '@angular/forms';\nimport {concatMap, delay, Observable, of, tap} from 'rxjs';\nimport {map, startWith} from 'rxjs/operators';\nimport _ from 'lodash';\nimport {MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, MatAutocompleteTrigger} from '@angular/material/autocomplete';\nimport {Sizes} from '../../../models/sizes';\n\nexport interface MultiSelectOption {\n  label: string;\n  value: any;\n  thumbnail?: string;\n}\n\n@Component({\n  selector: 'pm-multi-select',\n  templateUrl: './multi-select.component.html',\n  styleUrls: ['./multi-select.component.scss'],\n  providers: [\n    {\n      provide: MAT_AUTOCOMPLETE_DEFAULT_OPTIONS,\n      useValue: {\n        autoActiveFirstOption: false,\n        overlayPanelClass: 'pm-multi-select-autocomplete-panel'\n      }\n    }\n  ]\n})\nexport class MultiSelectComponent implements OnInit, AfterViewInit {\n\n  @ViewChild('inputBox', {static: true}) inputBoxEl: ElementRef;\n  @ViewChild('trigger', {static: true}) trigger: MatAutocompleteTrigger;\n  /**\n   * Ao ser selecionada uma opção nova, emite\n   */\n  @Output() selectedOptionsChanged = new EventEmitter<MultiSelectOption[]>();\n  /**\n   * Texto a ser exibido no input\n   */\n  @Input() placeholder: string = '';\n  /**\n   * opções a serem exibidas no input\n   */\n  @Input() options: MultiSelectOption[] = [];\n  @Input() borderRadius: Sizes = Sizes.md;\n  /**\n   * se as thumbnails serão arredondadas\n   */\n  @Input() roundedThumbnail: boolean = true;\n  /**\n   * limite máximo de seleções de itens\n   */\n  @Input() limit: number = 0;\n  /**\n   * Opções que ja vem selecionadas\n   */\n  @Input() selectedOptions: MultiSelectOption[] = [];\n  @Input() observableInput: (search: string) => Observable<MultiSelectOption[]>;\n  public _observableInputLoading: boolean = false;\n\n  public readonly myControl: FormControl;\n  public inputValue: string = '';\n  public filteredOptions: Observable<MultiSelectOption[]>;\n\n  constructor(\n    private cdr: ChangeDetectorRef\n  ) {\n    this.myControl = new FormControl();\n  }\n\n  ngOnInit(): void {\n    if (this.observableInput) {\n      this.filteredOptions = this.myControl.valueChanges.pipe(\n        tap(() => {this.observableInputLoading = true}),\n        concatMap(() => this.observableInput(`${this.myControl.value}`)),\n        tap(() => {this.observableInputLoading = false}),\n      );\n    } else {\n      this.filteredOptions = this.myControl.valueChanges.pipe(\n        startWith(''),\n        map(value => (typeof value === 'string' ? value : `${value.label}`)),\n        map(label => this._filter(label)),\n      );\n    }\n  }\n\n  ngAfterViewInit(): void {\n    this.clearInput();\n  }\n\n  public set observableInputLoading(state: boolean) {\n    this._observableInputLoading = state;\n    this.cdr.detectChanges();\n  }\n\n  /**\n   * Função utilizada para colocar texto na caixa de input ao selecionar uma opção\n   * @param user\n   */\n  displayFn(option: MultiSelectOption): string {\n    return '';\n    // return option && option.label ? option.label : '';\n  }\n\n  private _filter(label: string): MultiSelectOption[] {\n    const filterValue = label.toLowerCase();\n\n    return _.difference(\n      this.options.filter(option => option.label.toLowerCase().includes(filterValue)),\n      this.selectedOptions\n    );\n  }\n\n  public selectOption(option: any): void {\n    this.selectedOptions.push(option);\n    this.selectedOptionsChanged.emit(this.selectedOptions);\n    this.clearInput();\n  }\n\n  private clearInput(): void {\n    this.inputValue = '';\n    this.myControl.setValue(this.inputValue);\n    try { this.inputBoxEl.nativeElement.blur(); } catch (e) {}\n    this.cdr.detectChanges();\n  }\n\n  public removeSelectedOption(option: MultiSelectOption): void {\n    _.remove(this.selectedOptions, option);\n    this.trigger.closePanel();\n    this.clearInput();\n  }\n\n  public isOptionSelected(option: MultiSelectOption): boolean {\n    return !!this.selectedOptions.find(sOptions => _.isEqual(sOptions, option));\n  }\n\n  public openSelect(): void {\n    // setTimeout(() => {\n    //   try { this.inputBoxEl.nativeElement.focus(); } catch (e) {}\n    // }, 0);\n    this.trigger.openPanel();\n  }\n\n  public clearSelected(): void {\n    this.selectedOptions = [];\n    this.selectedOptionsChanged.emit(this.selectedOptions);\n    this.clearInput();\n  }\n\n  public togglePanel(): void {\n    if (this.trigger.panelOpen === false) {\n      this.trigger.openPanel();\n    } else {\n      this.trigger.closePanel();\n    }\n  }\n\n}\n",
+            "sourceCode": "import {\n  AfterViewInit,\n  ChangeDetectorRef,\n  Component,\n  ElementRef,\n  EventEmitter,\n  Input,\n  OnInit,\n  Output,\n  ViewChild\n} from '@angular/core';\nimport {FormControl} from '@angular/forms';\nimport {catchError, concatMap, debounceTime, distinctUntilChanged, Observable, of, tap, throwError} from 'rxjs';\nimport {map, startWith} from 'rxjs/operators';\nimport _ from 'lodash';\nimport {MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, MatAutocompleteTrigger} from '@angular/material/autocomplete';\nimport {Sizes} from '../../../models/sizes';\n\nexport interface MultiSelectOption {\n  label: string;\n  value: any;\n  thumbnail?: string;\n}\n\n@Component({\n  selector: 'pm-multi-select',\n  templateUrl: './multi-select.component.html',\n  styleUrls: ['./multi-select.component.scss'],\n  providers: [\n    {\n      provide: MAT_AUTOCOMPLETE_DEFAULT_OPTIONS,\n      useValue: {\n        autoActiveFirstOption: false,\n        overlayPanelClass: 'pm-multi-select-autocomplete-panel'\n      }\n    }\n  ]\n})\nexport class MultiSelectComponent implements OnInit, AfterViewInit {\n\n  @ViewChild('inputBox', {static: true}) inputBoxEl: ElementRef;\n  @ViewChild('trigger', {static: true}) trigger: MatAutocompleteTrigger;\n  /**\n   * Ao ser selecionada uma opção nova, emite\n   */\n  @Output() selectedOptionsChanged = new EventEmitter<MultiSelectOption[]>();\n  /**\n   * Texto a ser exibido no input\n   */\n  @Input() placeholder: string = '';\n  /**\n   * opções a serem exibidas no input\n   */\n  @Input() options: MultiSelectOption[] = [];\n  @Input() borderRadius: Sizes = Sizes.md;\n  /**\n   * se as thumbnails serão arredondadas\n   */\n  @Input() roundedThumbnail: boolean = true;\n  /**\n   * limite máximo de seleções de itens\n   */\n  @Input() limit: number = 0;\n  /**\n   * Opções que ja vem selecionadas\n   */\n  @Input() selectedOptions: MultiSelectOption[] = [];\n  @Input() observableInput: (search: string) => Observable<MultiSelectOption[]>;\n  /**\n   * Tempo de espera em cada execução de chamada do observable ao digitar no campo de input\n   */\n  @Input() observableDebounce: number = 100;\n  public _observableInputLoading: boolean = false;\n\n  public readonly myControl: FormControl;\n  public inputValue: string = '';\n  public filteredOptions: Observable<MultiSelectOption[]>;\n\n  constructor(\n    private cdr: ChangeDetectorRef\n  ) {\n    this.myControl = new FormControl();\n  }\n\n  ngOnInit(): void {\n    if (this.observableInput) {\n      this.filteredOptions = this.myControl.valueChanges.pipe(\n        debounceTime(this.observableDebounce),\n        distinctUntilChanged(),\n        tap(() => {this.observableInputLoading = true}),\n        concatMap(() => this.observableInput(`${this.myControl.value}`).pipe(\n          catchError(error => {this.observableInputLoading = false; return of(null); }),\n        )),\n        tap(() => {this.observableInputLoading = false}),\n      );\n    } else {\n      this.filteredOptions = this.myControl.valueChanges.pipe(\n        startWith(''),\n        map(value => (typeof value === 'string' ? value : `${value.label}`)),\n        map(label => this._filter(label)),\n      );\n    }\n  }\n\n  ngAfterViewInit(): void {\n    this.clearInput();\n  }\n\n  public set observableInputLoading(state: boolean) {\n    this._observableInputLoading = state;\n    this.cdr.detectChanges();\n  }\n\n  /**\n   * Função utilizada para colocar texto na caixa de input ao selecionar uma opção\n   * @param user\n   */\n  displayFn(option: MultiSelectOption): string {\n    return '';\n    // return option && option.label ? option.label : '';\n  }\n\n  private _filter(label: string): MultiSelectOption[] {\n    const filterValue = label.toLowerCase();\n\n    return _.difference(\n      this.options.filter(option => option.label.toLowerCase().includes(filterValue)),\n      this.selectedOptions\n    );\n  }\n\n  public selectOption(option: any): void {\n    this.selectedOptions.push(option);\n    this.selectedOptionsChanged.emit(this.selectedOptions);\n    this.clearInput();\n  }\n\n  private clearInput(): void {\n    this.inputValue = '';\n    this.myControl.setValue(this.inputValue);\n    try { this.inputBoxEl.nativeElement.blur(); } catch (e) {}\n    this.cdr.detectChanges();\n  }\n\n  public removeSelectedOption(option: MultiSelectOption): void {\n    _.remove(this.selectedOptions, option);\n    this.trigger.closePanel();\n    this.clearInput();\n  }\n\n  public isOptionSelected(option: MultiSelectOption): boolean {\n    return !!this.selectedOptions.find(sOptions => _.isEqual(sOptions, option));\n  }\n\n  public openSelect(): void {\n    // setTimeout(() => {\n    //   try { this.inputBoxEl.nativeElement.focus(); } catch (e) {}\n    // }, 0);\n    this.trigger.openPanel();\n  }\n\n  public clearSelected(): void {\n    this.selectedOptions = [];\n    this.selectedOptionsChanged.emit(this.selectedOptions);\n    this.clearInput();\n  }\n\n  public togglePanel(): void {\n    if (this.trigger.panelOpen === false) {\n      this.trigger.openPanel();\n    } else {\n      this.trigger.closePanel();\n    }\n  }\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": "@import '../../../styles/default/mixins/buttons';\n\n.pm-multi-select {\n  @include btn-styles(var(--color-light), var(--color-light-sat), false);\n\n  form, input {\n    width: -webkit-fill-available;\n  }\n\n  form {\n    padding-top: 1px;\n  }\n\n  input {\n    padding: 0.5em;\n    background-color: transparent;\n\n    color: var(--color-gray-darker) !important;\n  }\n\n  .chip-container {\n    background-color: var(--color-light);\n    border: 1px solid var(--color-light-states);\n    border-radius: var(--border-radius-md);\n    padding: 3px;\n    color: var(--color-gray-dark);\n\n    button {\n      border: none !important;\n    }\n  }\n\n  i,\n  span {\n    color: var(--color-light-states);\n  }\n\n  i {\n    right: 0.5em;\n    height: 100%;\n    display: flex;\n    flex-direction: row;\n    align-content: center;\n    justify-content: center;\n    margin-top: -4px;\n\n    &:before {\n      align-self: center;\n    }\n  }\n\n}\n\n::ng-deep {\n  .pm-multi-select-autocomplete-panel {\n    margin-left: -4px;\n\n    * {\n      box-shadow: none !important;\n    }\n\n    .mat-autocomplete-panel {\n      background-color: var(--color-light);\n      margin-top: -2px;\n    }\n  }\n\n  .pm-multi-select-thumbnail-container {\n    width: 25px;\n    height: 25px;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    box-sizing: border-box;\n    outline: none;\n    flex: 0 0 auto;\n\n    &.circular {\n      border-radius: 50%;\n      margin: 0;\n      overflow: hidden;\n      border: 1px solid var(--color-light-states);\n    }\n\n    img {\n      object-fit: cover;\n    }\n  }\n}\n",
+                    "data": "@import '../../../styles/default/mixins/buttons';\n\n.pm-multi-select {\n  @include btn-styles(var(--color-light), var(--color-light-sat), false);\n\n  form, input {\n    width: -webkit-fill-available;\n  }\n\n  form {\n    padding-top: 1px;\n  }\n\n  input {\n    padding: 0px 0.5em;\n    background-color: transparent;\n    color: var(--color-gray-darker) !important;\n  }\n\n  .chip-container {\n    background-color: var(--color-light);\n    border: 1px solid var(--color-light-states);\n    border-radius: var(--border-radius-md);\n    padding: 3px;\n    color: var(--color-gray-dark);\n\n    button {\n      border: none !important;\n    }\n  }\n\n  i,\n  span {\n    color: var(--color-light-states);\n  }\n\n  i {\n    right: 0.5em;\n    height: 100%;\n    display: flex;\n    flex-direction: row;\n    align-content: center;\n    justify-content: center;\n    margin-top: -4px;\n\n    &:before {\n      align-self: center;\n    }\n  }\n\n}\n\n::ng-deep {\n  .pm-multi-select-autocomplete-panel {\n    margin-left: -4px;\n\n    * {\n      box-shadow: none !important;\n    }\n\n    .mat-autocomplete-panel {\n      background-color: var(--color-light);\n      margin-top: -2px;\n    }\n  }\n\n  .pm-multi-select-thumbnail-container {\n    width: 25px;\n    height: 25px;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    box-sizing: border-box;\n    outline: none;\n    flex: 0 0 auto;\n\n    &.circular {\n      border-radius: 50%;\n      margin: 0;\n      overflow: hidden;\n      border: 1px solid var(--color-light-states);\n    }\n\n    img {\n      object-fit: cover;\n    }\n  }\n}\n",
                     "styleUrl": "./multi-select.component.scss"
                 }
             ],
@@ -4165,7 +4185,7 @@
                         "deprecationMessage": ""
                     }
                 ],
-                "line": 73,
+                "line": 77,
                 "jsdoctags": [
                     {
                         "name": "cdr",
@@ -4199,7 +4219,7 @@
                             }
                         ],
                         "returnType": "void",
-                        "line": 101,
+                        "line": 109,
                         "jsdoctags": [
                             {
                                 "name": "state",
@@ -6364,26 +6384,6 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/components/containers/expansion-panel/expansion-panel.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "object",
-                "defaultValue": "{\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/components/containers/tabs/tabs.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "object",
-                "defaultValue": "{\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "src/components/inputs/button/button.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
@@ -6438,7 +6438,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "object",
-                "defaultValue": "{\n  options: [],\n  placeholder: '',\n  borderRadius: Sizes.md,\n  roundedThumbnail: true,\n  limit: 0,\n  selectedOptions: [],\n  observableInput: undefined\n}"
+                "defaultValue": "{\n  options: [],\n  placeholder: '',\n  borderRadius: Sizes.md,\n  roundedThumbnail: true,\n  limit: 0,\n  selectedOptions: [],\n  observableInput: undefined,\n  observableDebounce: 100,\n}"
             },
             {
                 "name": "defaultArgs",
@@ -6454,6 +6454,26 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
+                "file": "src/components/containers/expansion-panel/expansion-panel.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/containers/tabs/tabs.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
                 "file": "src/components/lists/draggable-list/draggable-list.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
@@ -6464,21 +6484,21 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/components/lists/grid-list/grid-list.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "object",
-                "defaultValue": "{\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "src/components/lists/table-list/table-list.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "object",
                 "defaultValue": "{\n  columns: [],\n  columnNames: [],\n  imageColumns: [],\n  imageHeight: '50px',\n  showHeader: true,\n  numberFormat: '1.2-2',\n  numberPrefix: '',\n  actionsTemplate: undefined,\n  itemList: undefined,\n  borderRadius: undefined,\n  backgroundColor: undefined,\n  expandedDetailTemplate: undefined,\n  disableExpandedOnDisabledRow: true,\n  expandedRow: undefined\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/lists/grid-list/grid-list.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\n}"
             },
             {
                 "name": "defaultArgs",
@@ -6973,26 +6993,6 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/components/containers/expansion-panel/expansion-panel.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story<ExpansionPanelComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-expansion-panel\n    >\n        Conteúdo aqui\n    </pm-expansion-panel>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/components/containers/tabs/tabs.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story<TabsComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-tabs\n    >\n    </pm-tabs>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "src/components/inputs/button/button.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
@@ -7047,7 +7047,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story<MultiSelectComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-multi-select\n        [options]=\"options\"\n        [placeholder]=\"placeholder\"\n        [borderRadius]=\"borderRadius\"\n        [roundedThumbnail]=\"roundedThumbnail\"\n        [limit]=\"limit\"\n        [selectedOptions]=\"selectedOptions\"\n        [observableInput]=\"observableInput\"\n    >\n    </pm-multi-select>\n  `\n})"
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-multi-select\n        [options]=\"options\"\n        [placeholder]=\"placeholder\"\n        [borderRadius]=\"borderRadius\"\n        [roundedThumbnail]=\"roundedThumbnail\"\n        [limit]=\"limit\"\n        [selectedOptions]=\"selectedOptions\"\n        [observableInput]=\"observableInput\"\n        [observableDebounce]=\"observableDebounce\"\n    >\n    </pm-multi-select>\n  `\n})"
             },
             {
                 "name": "Template",
@@ -7063,6 +7063,26 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
+                "file": "src/components/containers/expansion-panel/expansion-panel.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<ExpansionPanelComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-expansion-panel\n    >\n        Conteúdo aqui\n    </pm-expansion-panel>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/containers/tabs/tabs.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<TabsComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-tabs\n    >\n    </pm-tabs>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
                 "file": "src/components/lists/draggable-list/draggable-list.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
@@ -7073,21 +7093,21 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/components/lists/grid-list/grid-list.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story<GridListComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-grid-list\n      [items]=\"items\"\n      [displayStyle]=\"displayStyle\"\n      [gridHeaderReverse]=\"gridHeaderReverse\"\n      [bodyBackgroundColor]=\"bodyBackgroundColor\"\n      [actionTemplate]=\"undefined\"\n      [overflowGallery]=\"overflowGallery\"\n    >\n    </pm-grid-list>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "src/components/lists/table-list/table-list.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story<TableListComponent>",
                 "defaultValue": "(args) => ({\n  props: args,\n  template: `<pm-table-list\n    [columns]=\"columns\"\n    [columnNames]=\"columnNames\"\n    [imageColumns]=\"imageColumns\"\n    [imageHeight]=\"imageHeight\"\n    [showHeader]=\"showHeader\"\n    [numberFormat]=\"numberFormat\"\n    [numberPrefix]=\"numberPrefix\"\n    [itemList]=\"itemList\"\n    [borderRadius]=\"borderRadius\"\n    [backgroundColor]=\"backgroundColor\"\n    [expandedDetailTemplate]=\"expandedDetailTemplate\"\n    [disableExpandedOnDisabledRow]=\"disableExpandedOnDisabledRow\"\n  ></pm-table-list>`\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/lists/grid-list/grid-list.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<GridListComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-grid-list\n      [items]=\"items\"\n      [displayStyle]=\"displayStyle\"\n      [gridHeaderReverse]=\"gridHeaderReverse\"\n      [bodyBackgroundColor]=\"bodyBackgroundColor\"\n      [actionTemplate]=\"undefined\"\n      [overflowGallery]=\"overflowGallery\"\n    >\n    </pm-grid-list>\n  `\n})"
             },
             {
                 "name": "Template",
@@ -7922,70 +7942,6 @@
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-basic-card\n      [hoverable]=\"hoverable\"\n      [borderRadius]=\"borderRadius\"\n      [paddingClass]=\"paddingClass\"\n    >\n    </pm-basic-card>\n  `\n})"
                 }
             ],
-            "src/components/containers/expansion-panel/expansion-panel.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/containers/expansion-panel/expansion-panel.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "object",
-                    "defaultValue": "{\n}"
-                },
-                {
-                    "name": "DefaultExpansionPanel",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/containers/expansion-panel/expansion-panel.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/containers/expansion-panel/expansion-panel.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Story<ExpansionPanelComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-expansion-panel\n    >\n        Conteúdo aqui\n    </pm-expansion-panel>\n  `\n})"
-                }
-            ],
-            "src/components/containers/tabs/tabs.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/containers/tabs/tabs.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "object",
-                    "defaultValue": "{\n}"
-                },
-                {
-                    "name": "DefaultTabs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/containers/tabs/tabs.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/containers/tabs/tabs.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Story<TabsComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-tabs\n    >\n    </pm-tabs>\n  `\n})"
-                }
-            ],
             "src/components/inputs/checkbox/checkbox.stories.ts": [
                 {
                     "name": "defaultArgs",
@@ -8143,7 +8099,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "object",
-                    "defaultValue": "{\n  options: [],\n  placeholder: '',\n  borderRadius: Sizes.md,\n  roundedThumbnail: true,\n  limit: 0,\n  selectedOptions: [],\n  observableInput: undefined\n}"
+                    "defaultValue": "{\n  options: [],\n  placeholder: '',\n  borderRadius: Sizes.md,\n  roundedThumbnail: true,\n  limit: 0,\n  selectedOptions: [],\n  observableInput: undefined,\n  observableDebounce: 100,\n}"
                 },
                 {
                     "name": "DefaultMultiSelect",
@@ -8183,7 +8139,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story<MultiSelectComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-multi-select\n        [options]=\"options\"\n        [placeholder]=\"placeholder\"\n        [borderRadius]=\"borderRadius\"\n        [roundedThumbnail]=\"roundedThumbnail\"\n        [limit]=\"limit\"\n        [selectedOptions]=\"selectedOptions\"\n        [observableInput]=\"observableInput\"\n    >\n    </pm-multi-select>\n  `\n})"
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-multi-select\n        [options]=\"options\"\n        [placeholder]=\"placeholder\"\n        [borderRadius]=\"borderRadius\"\n        [roundedThumbnail]=\"roundedThumbnail\"\n        [limit]=\"limit\"\n        [selectedOptions]=\"selectedOptions\"\n        [observableInput]=\"observableInput\"\n        [observableDebounce]=\"observableDebounce\"\n    >\n    </pm-multi-select>\n  `\n})"
                 },
                 {
                     "name": "ThumbnailMultiSelect",
@@ -8236,6 +8192,70 @@
                     "deprecationMessage": "",
                     "type": "Story<RadioButtonComponent>",
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-radio-button\n      [orientation]=\"orientation\"\n      [values]=\"values\"\n      [selectedValue]=\"selectedValue\"\n      [disabled]=\"disabled\"\n    >\n    </pm-radio-button>\n  `\n})"
+                }
+            ],
+            "src/components/containers/expansion-panel/expansion-panel.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/containers/expansion-panel/expansion-panel.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "object",
+                    "defaultValue": "{\n}"
+                },
+                {
+                    "name": "DefaultExpansionPanel",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/containers/expansion-panel/expansion-panel.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/containers/expansion-panel/expansion-panel.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story<ExpansionPanelComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-expansion-panel\n    >\n        Conteúdo aqui\n    </pm-expansion-panel>\n  `\n})"
+                }
+            ],
+            "src/components/containers/tabs/tabs.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/containers/tabs/tabs.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "object",
+                    "defaultValue": "{\n}"
+                },
+                {
+                    "name": "DefaultTabs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/containers/tabs/tabs.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/containers/tabs/tabs.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story<TabsComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-tabs\n    >\n    </pm-tabs>\n  `\n})"
                 }
             ],
             "src/components/lists/draggable-list/draggable-list.stories.ts": [
@@ -8779,7 +8799,7 @@
                 "linktype": "component",
                 "name": "BasicCardComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/5",
+                "coverageCount": "0/6",
                 "status": "low"
             },
             {
@@ -9277,9 +9297,9 @@
                 "type": "component",
                 "linktype": "component",
                 "name": "MultiSelectComponent",
-                "coveragePercent": 25,
-                "coverageCount": "7/27",
-                "status": "low"
+                "coveragePercent": 28,
+                "coverageCount": "8/28",
+                "status": "medium"
             },
             {
                 "filePath": "src/components/inputs/multi-select/multi-select.component.ts",
