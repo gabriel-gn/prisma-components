@@ -8,7 +8,10 @@
 <ng-template #buttonContent>
   <i *ngIf="iconClass && busy === false && iconPosition === 'start'" class="{{iconClass}}"></i>
   <ng-container *ngIf="label; else noLabel">
-    <span class="align-self-center" [ngClass]="{'ms-2': !!label && iconPosition === 'start', 'me-2': !!label && iconPosition === 'end'}">
+    <span
+      class="align-self-center text-overflow"
+      [ngClass]="{'ms-2': !!label && iconPosition === 'start', 'me-2': !!label && iconPosition === 'end'}"
+    >
       {{label}}
     </span>
   </ng-container>
