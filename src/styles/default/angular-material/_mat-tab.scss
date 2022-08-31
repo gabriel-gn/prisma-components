@@ -1,4 +1,7 @@
 .horizontal-tabs {
+  .mat-tab-body-content {
+    overflow: hidden;
+  }
 
   .mat-tab-label {
     margin-right: 0.5rem;
@@ -42,7 +45,6 @@
     visibility: hidden !important;
     display: none !important;
     height: 100%;
-    left: 100% !important;
     background-color: #51cbce33 !important;
   }
 
@@ -70,6 +72,121 @@
       margin-bottom: 5px;
     }
   }
+
+  &.sticky-tabs {
+    .mat-tab-header {
+      position: sticky;
+      top: 0;
+      background: rgba(var(--bg-default-rgb), 0.8);
+      backdrop-filter: blur(5px);
+      padding: 0.5em 0px;
+      width: inherit;
+      z-index: 2;
+      padding: 0.5em;
+    }
+
+    .mat-tab-body-content {
+      padding: 0px 1em;
+    }
+
+    .selected-display {
+      color: var(--color-primary-states);
+      text-shadow: 0 0 3px var(--color-primary);
+    }
+
+    @media screen and (min-width: 992px) {
+      .mat-tab-label-content {
+        i {
+          display: none;
+        }
+      }
+    }
+
+    @media screen and (max-width: 991px) {
+      .mat-ink-bar {
+        height: 3px;
+        top: 0 !important;
+        visibility: visible !important;
+        background-color: var(--color-primary) !important;
+        border-radius: 50px;
+        display: block !important;
+      }
+
+      /**
+       * Essa outra classe é apenas para sobrescrever a mat-ink-bar original
+       * Que aí ela mesmo com o fill width fica com a inkbar apenas em 50 do tamanho, mais bonito no mobile
+       */
+      .mat-ink-bar {
+        background-color: transparent !important;
+        &::before {
+          content: '';
+          display: block;
+          width: 50%;
+          background-color: var(--color-primary);
+          height: 3px;
+          border-bottom-right-radius: 50px;
+          border-bottom-left-radius: 50px;
+          margin: 0 auto;
+          position: relative;
+        }
+      }
+
+      .mat-tab-header {
+        background: rgba(var(--bg-default-rgb), 1);
+        backdrop-filter: blur(2px);
+        border-top: 1px solid var(--color-gray-medium);
+        bottom: 0 !important;
+        left: 0 !important;
+        padding: 0px !important;
+        position: fixed !important;
+        top: unset !important;
+        width: 100%;
+        z-index: 999;
+
+        .mat-tab-list {
+          transform: unset !important;
+        }
+
+        mat-tab-group {
+          height: auto !important;
+        }
+
+        .mat-tab-label {
+          height: auto;
+          opacity: 1;
+
+          &:not(.mat-tab-label-active) {
+            color: var(--color-gray-medium) !important;
+          }
+        }
+
+        .mat-tab-label-active {
+          text-shadow: 0 0 12px rgba(var(--color-primary-pale-rgb), 0.2);
+          background-color: transparent !important;
+        }
+
+        .mat-tab-label-content {
+          display: flex;
+          flex-direction: column;
+
+          span {
+            font-size: 0.8em !important;
+          }
+        }
+      }
+
+      .mat-tab-body-wrapper {
+        padding-bottom: 60px !important;
+      }
+
+      .filter-dialog-panel {
+        .mat-dialog-container {
+          background-color: var(--bg-default);
+        }
+      }
+    }
+  }
+
 }
 
 .vertical-tabs {
