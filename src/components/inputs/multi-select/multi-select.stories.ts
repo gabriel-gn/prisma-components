@@ -19,6 +19,7 @@ export const Template: Story<MultiSelectComponent> = (args) => ({
         [roundedThumbnail]="roundedThumbnail"
         [limit]="limit"
         [selectedOptions]="selectedOptions"
+        [sortSelectedItems]="sortSelectedItems"
         [observableInput]="observableInput"
         [observableDebounce]="observableDebounce"
     >
@@ -33,6 +34,7 @@ export const defaultArgs = {
   roundedThumbnail: true,
   limit: 0,
   selectedOptions: [],
+  sortSelectedItems: true,
   observableInput: undefined,
   observableDebounce: 100,
 };

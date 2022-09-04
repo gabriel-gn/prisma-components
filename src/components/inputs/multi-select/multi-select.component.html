@@ -1,5 +1,5 @@
 <div #multiselect class="pm-multi-select cursor-pointer border-radius-{{borderRadius}}" (click)="$event.stopPropagation(); openSelect();">
-  <div class="d-flex flex-wrap p-1 rad-md position-relative" (click)="trigger.openPanel()">
+  <div class="d-flex flex-wrap p-1 rad-md position-relative" (click)="openSelect()">
     <div class="d-flex flex-row justify-content-start flex-wrap">
       <div *ngFor="let selected of selectedOptions; let first = first" [ngClass]="{'m-1 chip-container': true}">
         <div class="d-flex flex-row align-items-center">
@@ -13,7 +13,7 @@
       <input #inputBox
              #trigger="matAutocompleteTrigger"
              name="searchInput"
-             [hidden]="!observableInput && (selectedOptions.length === options.length || (!!limit && selectedOptions.length >= limit))"
+             [hidden]="isLimitReached() === true"
              matInput
              class="form-control h-100 border-0"
              type="text"

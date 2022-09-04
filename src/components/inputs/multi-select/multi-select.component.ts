@@ -65,6 +65,10 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
    * Opções que ja vem selecionadas
    */
   @Input() selectedOptions: MultiSelectOption[] = [];
+  /**
+   * sort selected items instead of showing them in selected sequence
+   */
+  @Input() sortSelectedItems: boolean = true;
   @Input() observableInput: (search: string) => Observable<MultiSelectOption[]>;
   /**
    * Tempo de espera em cada execução de chamada do observable ao digitar no campo de input
@@ -131,6 +135,13 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
 
   public selectOption(option: any): void {
     this.selectedOptions.push(option);
+
+    if (this.sortSelectedItems) {
+      this.selectedOptions = this.selectedOptions.sort((a, b) => {
+        return this.options.indexOf(a) - this.options.indexOf(b);
+      });
+    }
+
     this.selectedOptionsChanged.emit(this.selectedOptions);
     this.clearInput();
   }
@@ -152,11 +163,13 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
     return !!this.selectedOptions.find(sOptions => _.isEqual(sOptions, option));
   }
 
+  /**
+   * Use this method instead of "trigger.openPanel()" because it has some validations before opening the panel
+   */
   public openSelect(): void {
-    // setTimeout(() => {
-    //   try { this.inputBoxEl.nativeElement.focus(); } catch (e) {}
-    // }, 0);
-    this.trigger.openPanel();
+    if (this.isLimitReached() === false) {
+      this.trigger.openPanel();
+    }
   }
 
   public clearSelected(): void {
@@ -167,10 +180,15 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
 
   public togglePanel(): void {
     if (this.trigger.panelOpen === false) {
-      this.trigger.openPanel();
+      this.openSelect();
     } else {
       this.trigger.closePanel();
     }
+  }
+
+  public isLimitReached() {
+    return !this.observableInput // caso tenha observable input, as options são dinâmicas, e não armazenadas no componente
+      && (this.selectedOptions.length === this.options.length || (!!this.limit && this.selectedOptions.length >= this.limit))
   }
 
 }
