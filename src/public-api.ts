@@ -30,6 +30,10 @@ export * from './directives/ng-if-loaded/ng-if-loaded.module';
 export * from './directives/ng-if-loaded/spinner/spinner.component';
 export * from './directives/ng-if-loaded/ng-if-loaded.directive';
 
+export * from './directives/navigation-back-click/navigation-back-click.module';
+
+export * from './directives/long-press/long-press.module';
+
 /******************
  * COMPONENTS
  ******************/
@@ -81,3 +85,4 @@ export * from './components/inputs/multi-select/multi-select.module';
 
 export * from './components/layout/sidebar/sidebar.component';
 export * from './components/layout/sidebar/sidebar.module';
+export * from './components/layout/sidebar/sidebar-content/models';

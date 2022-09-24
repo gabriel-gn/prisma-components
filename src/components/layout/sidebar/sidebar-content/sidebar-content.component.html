@@ -29,7 +29,7 @@
 
 <ng-template #noSubmenuEntry let-entry>
     <a (click)="executeAction($event, entry)"
-       [routerLink]="entry.path"
+       [routerLink]="entry?.routerLink"
        [queryParams]="entry?.queryParams"
     >
         <ng-container *ngTemplateOutlet="entryContent; context: {$implicit: entry}"></ng-container>
@@ -75,7 +75,7 @@
                         <ng-container *ngSwitchCase="false">
                             <a class="sub"
                                (click)="executeAction($event, childEntry)"
-                               [routerLink]="childEntry.path"
+                               [routerLink]="childEntry?.routerLink"
                                [queryParams]="childEntry?.queryParams"
                             >
                                 <ng-container *ngTemplateOutlet="entryContent; context: {$implicit: childEntry}"></ng-container>

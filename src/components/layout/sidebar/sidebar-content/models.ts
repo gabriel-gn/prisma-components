@@ -1,7 +1,7 @@
 export interface SidebarItem {
     label: string; // should be unique
     iconClass: string;
-    path?: string | any; // router link
+    routerLink?: string | string[]; // router link
     queryParams?: any; // queryParams router link
     action?: () => void; // action to trigger
     translate?: string; // if provided, use transloco pipe

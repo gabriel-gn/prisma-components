@@ -32,7 +32,7 @@ DefaultSidebar.args = {
   ...defaultArgs,
   sidebarEntries: [
     {
-      path: `/`,
+      routerLink: `/`,
       label: 'Home',
       translate: '',
       iconClass: 'uil uil-2x uil-home',
@@ -45,25 +45,25 @@ DefaultSidebar.args = {
       children: [
         {
           label: 'Deck Library',
-          path: `/`,
+          routerLink: `/`,
           queryParams: {tab: 'library'},
           iconClass: 'uil uil-xl uil-apps'
         },
         {
           label: 'Meta Decks',
-          path: `/`,
+          routerLink: `/`,
           queryParams: {tab: 'meta'},
           iconClass: 'uil uil-xl uil-fire'
         },
         {
           label: 'Trending Decks',
-          path: `/`,
+          routerLink: `/`,
           queryParams: {tab: 'trending'},
           iconClass: 'uil uil-xl uil-arrow-growth'
         },
         {
           label: 'Favorites',
-          path: `/favorites`,
+          routerLink: `/favorites`,
           iconClass: 'uil uil-xl uil-favorite'
         },
       ]
@@ -75,7 +75,7 @@ DefaultSidebar.args = {
       children: [
         {
           label: 'Card Gallery',
-          path: `/cards`,
+          routerLink: `/cards`,
           iconClass: 'uil uil-xl uil-apps'
         },
       ]

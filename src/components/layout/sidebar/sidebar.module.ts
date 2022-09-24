@@ -4,6 +4,7 @@ import {SidebarComponent} from '../sidebar/sidebar.component';
 import {MatSidenavModule} from "@angular/material/sidenav";
 import {SidebarContentComponent} from "./sidebar-content/sidebar-content.component";
 import {RouterModule} from "@angular/router";
+import {NavigationBackClickModule} from "../../../directives/navigation-back-click/navigation-back-click.module";
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import {RouterModule} from "@angular/router";
   imports: [
     CommonModule,
     MatSidenavModule,
-    RouterModule
+    RouterModule,
+    NavigationBackClickModule
   ]
 })
 export class SidebarModule {
