@@ -52,14 +52,15 @@ echo "$ngscript"
 ngscriptoutput=$(eval "$ngscript")
 echo "$ngscriptoutput"
 
-ngscript="ng generate component $componentPath --project=lib"
+ngscript="ng generate component $componentPath --project=lib --export=true"
 echo "$ngscript"
 ngscriptoutput=$(eval "$ngscript")
 echo "$ngscriptoutput"
 
 # Copia os stories para as pastas que precisa
-cp ./stories/default.mdx "${filenamePath}.stories.mdx"
-cp ./stories/default.ts "${filenamePath}.stories.ts"
+scriptDir=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+cp ${scriptDir}/stories/default.mdx "${filenamePath}.stories.mdx"
+cp ${scriptDir}/stories/default.ts "${filenamePath}.stories.ts"
 echo "Stories created"
 
 # altera os stories default com os valores novos de acordo com o componente criado

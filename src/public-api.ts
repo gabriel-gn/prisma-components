@@ -78,3 +78,6 @@ export * from './components/containers/tabs/tabs.module';
 
 export * from './components/inputs/multi-select/multi-select.component';
 export * from './components/inputs/multi-select/multi-select.module';
+
+export * from './components/layout/sidebar/sidebar.component';
+export * from './components/layout/sidebar/sidebar.module';

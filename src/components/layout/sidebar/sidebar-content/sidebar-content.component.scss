@@ -1,0 +1,124 @@
+.app-sidebar-content {
+  $main-link-margin-top: 1.2em;
+  $sub-link-margin-top: 0.6em;
+
+  padding: 0 1em 1em 0.5em;
+  list-style: none !important;
+
+  .sidebar-nav {
+    padding: 0px;
+    display: block;
+    transition: 0.3s;
+    list-style: none !important;
+
+    li {
+      cursor: pointer;
+
+      * {
+        color: var(--color-gray-dark);
+
+        &:focus-visible {
+          outline: none;
+        }
+
+      }
+
+      a {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0.5em 1em;
+        border-radius: 1em;
+
+        text-decoration: none;
+        font-size: 0.8em;
+        font-weight: 500;
+
+        &.expanded {
+          background-color: rgba(var(--color-gray-dark-rgb), 0.15);
+        }
+
+        &:hover {
+          background-color: rgba(var(--color-gray-dark-rgb), 0.15);
+
+          * {
+            color: var(--color-primary) !important;
+          }
+        }
+      }
+
+      &.active {
+        > a:first-child {
+          background-color: rgba(var(--color-primary-rgb), 0.2);
+
+          * {
+            color: var(--color-primary) !important;
+          }
+        }
+      }
+    }
+
+    a {
+      &:first-child {
+        margin-top: $main-link-margin-top;
+      }
+
+      &.sub {
+        margin-top: $sub-link-margin-top;
+      }
+    }
+
+    .collapse,
+    .collapsing {
+      .nav {
+        margin-top: 0;
+      }
+    }
+
+    p {
+      margin: 0;
+      white-space: nowrap;
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+
+      > {
+        align-self: center;
+      }
+    }
+
+    a:not(.sub) {
+      p {
+        font-size: 14px;
+        font-weight: 700;
+        text-transform: uppercase;
+      }
+    }
+
+    i {
+      font-size: 24px;
+      float: left;
+      line-height: 30px;
+      width: 34px;
+      text-align: center;
+      color: #ffffff;
+      position: relative;
+    }
+
+    ul {
+      margin: 0px;
+      width: 100%;
+    }
+
+    div {
+      .aux-bar {
+        width: 2px;
+        min-width: 2px;
+        border-radius: 50px;
+        margin: $sub-link-margin-top $sub-link-margin-top 0 $sub-link-margin-top;
+        background-color: rgba(var(--color-gray-dark-rgb), 0.3);
+      }
+    }
+
+  }
+}

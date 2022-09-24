@@ -262,12 +262,12 @@
         },
         {
             "name": "MultiSelectOption",
-            "id": "interface-MultiSelectOption-5baf0386c10c49f4940425763650b8f19eed9be614eb2765ec47a4cbc7ccc76650e348ad4de3d2c0aa1192910f7ca61ad3c6c475c6f5a67a8ef2b296ff0f7967",
+            "id": "interface-MultiSelectOption-d816d4dd40e83dc9696328c469055d1bbf7c7c05740085d453a7390731c78cf94f5d115a1d2a82335320ffce052380464030058d14c9e29522bf657245335b61",
             "file": "src/components/inputs/multi-select/multi-select.component.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "import {\n  AfterViewInit,\n  ChangeDetectorRef,\n  Component,\n  ElementRef,\n  EventEmitter,\n  Input,\n  OnInit,\n  Output,\n  ViewChild\n} from '@angular/core';\nimport {FormControl} from '@angular/forms';\nimport {catchError, concatMap, debounceTime, distinctUntilChanged, Observable, of, tap, throwError} from 'rxjs';\nimport {map, startWith} from 'rxjs/operators';\nimport _ from 'lodash';\nimport {MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, MatAutocompleteTrigger} from '@angular/material/autocomplete';\nimport {Sizes} from '../../../models/sizes';\n\nexport interface MultiSelectOption {\n  label: string;\n  value: any;\n  thumbnail?: string;\n}\n\n@Component({\n  selector: 'pm-multi-select',\n  templateUrl: './multi-select.component.html',\n  styleUrls: ['./multi-select.component.scss'],\n  providers: [\n    {\n      provide: MAT_AUTOCOMPLETE_DEFAULT_OPTIONS,\n      useValue: {\n        autoActiveFirstOption: false,\n        overlayPanelClass: 'pm-multi-select-autocomplete-panel'\n      }\n    }\n  ]\n})\nexport class MultiSelectComponent implements OnInit, AfterViewInit {\n\n  @ViewChild('inputBox', {static: true}) inputBoxEl: ElementRef;\n  @ViewChild('trigger', {static: true}) trigger: MatAutocompleteTrigger;\n  /**\n   * Ao ser selecionada uma opção nova, emite\n   */\n  @Output() selectedOptionsChanged = new EventEmitter<MultiSelectOption[]>();\n  /**\n   * Texto a ser exibido no input\n   */\n  @Input() placeholder: string = '';\n  /**\n   * opções a serem exibidas no input\n   */\n  @Input() options: MultiSelectOption[] = [];\n  @Input() borderRadius: Sizes = Sizes.md;\n  /**\n   * se as thumbnails serão arredondadas\n   */\n  @Input() roundedThumbnail: boolean = true;\n  /**\n   * limite máximo de seleções de itens\n   */\n  @Input() limit: number = 0;\n  /**\n   * Opções que ja vem selecionadas\n   */\n  @Input() selectedOptions: MultiSelectOption[] = [];\n  @Input() observableInput: (search: string) => Observable<MultiSelectOption[]>;\n  /**\n   * Tempo de espera em cada execução de chamada do observable ao digitar no campo de input\n   */\n  @Input() observableDebounce: number = 100;\n  public _observableInputLoading: boolean = false;\n\n  public readonly myControl: FormControl;\n  public inputValue: string = '';\n  public filteredOptions: Observable<MultiSelectOption[]>;\n\n  constructor(\n    private cdr: ChangeDetectorRef\n  ) {\n    this.myControl = new FormControl();\n  }\n\n  ngOnInit(): void {\n    if (this.observableInput) {\n      this.filteredOptions = this.myControl.valueChanges.pipe(\n        debounceTime(this.observableDebounce),\n        distinctUntilChanged(),\n        tap(() => {this.observableInputLoading = true}),\n        concatMap(() => this.observableInput(`${this.myControl.value}`).pipe(\n          catchError(error => {this.observableInputLoading = false; return of(null); }),\n        )),\n        tap(() => {this.observableInputLoading = false}),\n      );\n    } else {\n      this.filteredOptions = this.myControl.valueChanges.pipe(\n        startWith(''),\n        map(value => (typeof value === 'string' ? value : `${value.label}`)),\n        map(label => this._filter(label)),\n      );\n    }\n  }\n\n  ngAfterViewInit(): void {\n    this.clearInput();\n  }\n\n  public set observableInputLoading(state: boolean) {\n    this._observableInputLoading = state;\n    this.cdr.detectChanges();\n  }\n\n  /**\n   * Função utilizada para colocar texto na caixa de input ao selecionar uma opção\n   * @param user\n   */\n  displayFn(option: MultiSelectOption): string {\n    return '';\n    // return option && option.label ? option.label : '';\n  }\n\n  private _filter(label: string): MultiSelectOption[] {\n    const filterValue = label.toLowerCase();\n\n    return _.difference(\n      this.options.filter(option => option.label.toLowerCase().includes(filterValue)),\n      this.selectedOptions\n    );\n  }\n\n  public selectOption(option: any): void {\n    this.selectedOptions.push(option);\n    this.selectedOptionsChanged.emit(this.selectedOptions);\n    this.clearInput();\n  }\n\n  private clearInput(): void {\n    this.inputValue = '';\n    this.myControl.setValue(this.inputValue);\n    try { this.inputBoxEl.nativeElement.blur(); } catch (e) {}\n    this.cdr.detectChanges();\n  }\n\n  public removeSelectedOption(option: MultiSelectOption): void {\n    _.remove(this.selectedOptions, option);\n    this.trigger.closePanel();\n    this.clearInput();\n  }\n\n  public isOptionSelected(option: MultiSelectOption): boolean {\n    return !!this.selectedOptions.find(sOptions => _.isEqual(sOptions, option));\n  }\n\n  public openSelect(): void {\n    // setTimeout(() => {\n    //   try { this.inputBoxEl.nativeElement.focus(); } catch (e) {}\n    // }, 0);\n    this.trigger.openPanel();\n  }\n\n  public clearSelected(): void {\n    this.selectedOptions = [];\n    this.selectedOptionsChanged.emit(this.selectedOptions);\n    this.clearInput();\n  }\n\n  public togglePanel(): void {\n    if (this.trigger.panelOpen === false) {\n      this.trigger.openPanel();\n    } else {\n      this.trigger.closePanel();\n    }\n  }\n\n}\n",
+            "sourceCode": "import {\n  AfterViewInit,\n  ChangeDetectorRef,\n  Component,\n  ElementRef,\n  EventEmitter,\n  Input,\n  OnInit,\n  Output,\n  ViewChild\n} from '@angular/core';\nimport {FormControl} from '@angular/forms';\nimport {catchError, concatMap, debounceTime, distinctUntilChanged, Observable, of, tap, throwError} from 'rxjs';\nimport {map, startWith} from 'rxjs/operators';\nimport _ from 'lodash';\nimport {MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, MatAutocompleteTrigger} from '@angular/material/autocomplete';\nimport {Sizes} from '../../../models/sizes';\n\nexport interface MultiSelectOption {\n  label: string;\n  value: any;\n  thumbnail?: string;\n}\n\n@Component({\n  selector: 'pm-multi-select',\n  templateUrl: './multi-select.component.html',\n  styleUrls: ['./multi-select.component.scss'],\n  providers: [\n    {\n      provide: MAT_AUTOCOMPLETE_DEFAULT_OPTIONS,\n      useValue: {\n        autoActiveFirstOption: false,\n        overlayPanelClass: 'pm-multi-select-autocomplete-panel'\n      }\n    }\n  ]\n})\nexport class MultiSelectComponent implements OnInit, AfterViewInit {\n\n  @ViewChild('inputBox', {static: true}) inputBoxEl: ElementRef;\n  @ViewChild('trigger', {static: true}) trigger: MatAutocompleteTrigger;\n  /**\n   * Ao ser selecionada uma opção nova, emite\n   */\n  @Output() selectedOptionsChanged = new EventEmitter<MultiSelectOption[]>();\n  /**\n   * Texto a ser exibido no input\n   */\n  @Input() placeholder: string = '';\n  /**\n   * opções a serem exibidas no input\n   */\n  @Input() options: MultiSelectOption[] = [];\n  @Input() borderRadius: Sizes = Sizes.md;\n  /**\n   * se as thumbnails serão arredondadas\n   */\n  @Input() roundedThumbnail: boolean = true;\n  /**\n   * limite máximo de seleções de itens\n   */\n  @Input() limit: number = 0;\n  /**\n   * Opções que ja vem selecionadas\n   */\n  @Input() selectedOptions: MultiSelectOption[] = [];\n  /**\n   * sort selected items instead of showing them in selected sequence\n   */\n  @Input() sortSelectedItems: boolean = true;\n  @Input() observableInput: (search: string) => Observable<MultiSelectOption[]>;\n  /**\n   * Tempo de espera em cada execução de chamada do observable ao digitar no campo de input\n   */\n  @Input() observableDebounce: number = 100;\n  public _observableInputLoading: boolean = false;\n\n  public readonly myControl: FormControl;\n  public inputValue: string = '';\n  public filteredOptions: Observable<MultiSelectOption[]>;\n\n  constructor(\n    private cdr: ChangeDetectorRef\n  ) {\n    this.myControl = new FormControl();\n  }\n\n  ngOnInit(): void {\n    if (this.observableInput) {\n      this.filteredOptions = this.myControl.valueChanges.pipe(\n        debounceTime(this.observableDebounce),\n        distinctUntilChanged(),\n        tap(() => {this.observableInputLoading = true}),\n        concatMap(() => this.observableInput(`${this.myControl.value}`).pipe(\n          catchError(error => {this.observableInputLoading = false; return of(null); }),\n        )),\n        tap(() => {this.observableInputLoading = false}),\n      );\n    } else {\n      this.filteredOptions = this.myControl.valueChanges.pipe(\n        startWith(''),\n        map(value => (typeof value === 'string' ? value : `${value.label}`)),\n        map(label => this._filter(label)),\n      );\n    }\n  }\n\n  ngAfterViewInit(): void {\n    this.clearInput();\n  }\n\n  public set observableInputLoading(state: boolean) {\n    this._observableInputLoading = state;\n    this.cdr.detectChanges();\n  }\n\n  /**\n   * Função utilizada para colocar texto na caixa de input ao selecionar uma opção\n   * @param user\n   */\n  displayFn(option: MultiSelectOption): string {\n    return '';\n    // return option && option.label ? option.label : '';\n  }\n\n  private _filter(label: string): MultiSelectOption[] {\n    const filterValue = label.toLowerCase();\n\n    return _.difference(\n      this.options.filter(option => option.label.toLowerCase().includes(filterValue)),\n      this.selectedOptions\n    );\n  }\n\n  public selectOption(option: any): void {\n    this.selectedOptions.push(option);\n\n    if (this.sortSelectedItems) {\n      this.selectedOptions = this.selectedOptions.sort((a, b) => {\n        return this.options.indexOf(a) - this.options.indexOf(b);\n      });\n    }\n\n    this.selectedOptionsChanged.emit(this.selectedOptions);\n    this.clearInput();\n  }\n\n  private clearInput(): void {\n    this.inputValue = '';\n    this.myControl.setValue(this.inputValue);\n    try { this.inputBoxEl.nativeElement.blur(); } catch (e) {}\n    this.cdr.detectChanges();\n  }\n\n  public removeSelectedOption(option: MultiSelectOption): void {\n    _.remove(this.selectedOptions, option);\n    this.trigger.closePanel();\n    this.clearInput();\n  }\n\n  public isOptionSelected(option: MultiSelectOption): boolean {\n    return !!this.selectedOptions.find(sOptions => _.isEqual(sOptions, option));\n  }\n\n  /**\n   * Use this method instead of \"trigger.openPanel()\" because it has some validations before opening the panel\n   */\n  public openSelect(): void {\n    if (this.isLimitReached() === false) {\n      this.trigger.openPanel();\n    }\n  }\n\n  public clearSelected(): void {\n    this.selectedOptions = [];\n    this.selectedOptionsChanged.emit(this.selectedOptions);\n    this.clearInput();\n  }\n\n  public togglePanel(): void {\n    if (this.trigger.panelOpen === false) {\n      this.openSelect();\n    } else {\n      this.trigger.closePanel();\n    }\n  }\n\n  public isLimitReached() {\n    return !this.observableInput // caso tenha observable input, as options são dinâmicas, e não armazenadas no componente\n      && (this.selectedOptions.length === this.options.length || (!!this.limit && this.selectedOptions.length >= this.limit))\n  }\n\n}\n",
             "properties": [
                 {
                     "name": "label",
@@ -386,6 +386,92 @@
                     "optional": false,
                     "description": "",
                     "line": 12
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 165,
+            "methods": []
+        },
+        {
+            "name": "SidebarItem",
+            "id": "interface-SidebarItem-21d93cf9348df9e9321c8d76f1d85f74c69efa0dc9a9110326af4137948ac881d9e4d5004993fc79f9a8f90b6c34f65b0a05b34e2f33b8035bd75f531d67aae4",
+            "file": "src/components/layout/sidebar/sidebar-content/models.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "export interface SidebarItem {\n    label: string; // should be unique\n    iconClass: string;\n    path?: string | any; // router link\n    queryParams?: any; // queryParams router link\n    action?: () => void; // action to trigger\n    translate?: string; // if provided, use transloco pipe\n    badge?: any; // badge to be displayed, if not observable, turns into string\n    children?: SidebarItem[];\n}\n",
+            "properties": [
+                {
+                    "name": "action",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "function",
+                    "optional": true,
+                    "description": "",
+                    "line": 6
+                },
+                {
+                    "name": "badge",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "any",
+                    "optional": true,
+                    "description": "",
+                    "line": 8
+                },
+                {
+                    "name": "children",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "SidebarItem[]",
+                    "optional": true,
+                    "description": "",
+                    "line": 9
+                },
+                {
+                    "name": "iconClass",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 3
+                },
+                {
+                    "name": "label",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 2
+                },
+                {
+                    "name": "path",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string | any",
+                    "optional": true,
+                    "description": "",
+                    "line": 4
+                },
+                {
+                    "name": "queryParams",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "any",
+                    "optional": true,
+                    "description": "",
+                    "line": 5
+                },
+                {
+                    "name": "translate",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": true,
+                    "description": "",
+                    "line": 7
                 }
             ],
             "indexSignatures": [],
@@ -1247,7 +1333,7 @@
                 "args": [],
                 "line": 14
             },
-            "templateData": "<div class=\"pm-basic-card\">\n  <div\n    [ngClass]=\"{'hoverable': hoverable}\"\n    class=\"card-basic {{paddingClass}} {{borderRadius ? 'rad-' + borderRadius : ''}} w-100\"\n    style=\"height: auto;\">\n    <ng-content></ng-content>\n  </div>\n</div>\n"
+            "templateData": "<div class=\"pm-basic-card\">\n  <div\n    [ngClass]=\"{'hoverable': hoverable, 'focused': focused}\"\n    class=\"card-basic {{paddingClass}} {{borderRadius ? 'rad-' + borderRadius : ''}} w-100\"\n    style=\"height: auto;\">\n    <ng-content></ng-content>\n  </div>\n</div>\n"
         },
         {
             "name": "ButtonComponent",
@@ -1416,7 +1502,7 @@
                 "args": [],
                 "line": 48
             },
-            "templateData": "<button [className]=\"getClassName()\" [disabled]=\"busy || disabled\">\n  <ng-container *ngIf=\"busy; else buttonContent\">\n    <span class=\"spinner-border spinner-border-sm mx-2\" role=\"status\" aria-hidden=\"true\"></span>\n    {{busyText ? busyText : ''}}\n  </ng-container>\n</button>\n\n<ng-template #buttonContent>\n  <i *ngIf=\"iconClass && busy === false && iconPosition === 'start'\" class=\"{{iconClass}}\"></i>\n  <ng-container *ngIf=\"label; else noLabel\">\n    <span class=\"align-self-center\" [ngClass]=\"{'ms-2': !!label && iconPosition === 'start', 'me-2': !!label && iconPosition === 'end'}\">\n      {{label}}\n    </span>\n  </ng-container>\n  <i *ngIf=\"iconClass && busy === false && iconPosition === 'end'\" class=\"{{iconClass}}\"></i>\n</ng-template>\n\n<ng-template #noLabel>\n  <ng-content></ng-content>\n</ng-template>\n\n"
+            "templateData": "<button [className]=\"getClassName()\" [disabled]=\"busy || disabled\">\n  <ng-container *ngIf=\"busy; else buttonContent\">\n    <span class=\"spinner-border spinner-border-sm mx-2\" role=\"status\" aria-hidden=\"true\"></span>\n    {{busyText ? busyText : ''}}\n  </ng-container>\n</button>\n\n<ng-template #buttonContent>\n  <i *ngIf=\"iconClass && busy === false && iconPosition === 'start'\" class=\"{{iconClass}}\"></i>\n  <ng-container *ngIf=\"label; else noLabel\">\n    <span\n      class=\"align-self-center text-overflow\"\n      [ngClass]=\"{'ms-2': !!label && iconPosition === 'start', 'me-2': !!label && iconPosition === 'end'}\"\n    >\n      {{label}}\n    </span>\n  </ng-container>\n  <i *ngIf=\"iconClass && busy === false && iconPosition === 'end'\" class=\"{{iconClass}}\"></i>\n</ng-template>\n\n<ng-template #noLabel>\n  <ng-content></ng-content>\n</ng-template>\n\n"
         },
         {
             "name": "CheckboxComponent",
@@ -3728,7 +3814,7 @@
         },
         {
             "name": "MultiSelectComponent",
-            "id": "component-MultiSelectComponent-5baf0386c10c49f4940425763650b8f19eed9be614eb2765ec47a4cbc7ccc76650e348ad4de3d2c0aa1192910f7ca61ad3c6c475c6f5a67a8ef2b296ff0f7967",
+            "id": "component-MultiSelectComponent-d816d4dd40e83dc9696328c469055d1bbf7c7c05740085d453a7390731c78cf94f5d115a1d2a82335320ffce052380464030058d14c9e29522bf657245335b61",
             "file": "src/components/inputs/multi-select/multi-select.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -3776,7 +3862,7 @@
                     "deprecationMessage": "",
                     "rawdescription": "\n\nTempo de espera em cada execução de chamada do observable ao digitar no campo de input\n",
                     "description": "<p>Tempo de espera em cada execução de chamada do observable ao digitar no campo de input</p>\n",
-                    "line": 72,
+                    "line": 76,
                     "type": "number",
                     "decorators": []
                 },
@@ -3784,7 +3870,7 @@
                     "name": "observableInput",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 68,
+                    "line": 72,
                     "type": "function",
                     "decorators": []
                 },
@@ -3831,6 +3917,17 @@
                     "line": 67,
                     "type": "MultiSelectOption[]",
                     "decorators": []
+                },
+                {
+                    "name": "sortSelectedItems",
+                    "defaultValue": "true",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n\nsort selected items instead of showing them in selected sequence\n",
+                    "description": "<p>sort selected items instead of showing them in selected sequence</p>\n",
+                    "line": 71,
+                    "type": "boolean",
+                    "decorators": []
                 }
             ],
             "outputsClass": [
@@ -3854,7 +3951,7 @@
                     "type": "boolean",
                     "optional": false,
                     "description": "",
-                    "line": 73,
+                    "line": 77,
                     "modifierKind": [
                         123
                     ]
@@ -3866,7 +3963,7 @@
                     "type": "Observable<MultiSelectOption[]>",
                     "optional": false,
                     "description": "",
-                    "line": 77,
+                    "line": 81,
                     "modifierKind": [
                         123
                     ]
@@ -3894,7 +3991,7 @@
                     "type": "string",
                     "optional": false,
                     "description": "",
-                    "line": 76,
+                    "line": 80,
                     "modifierKind": [
                         123
                     ]
@@ -3906,7 +4003,7 @@
                     "type": "FormControl",
                     "optional": false,
                     "description": "",
-                    "line": 75,
+                    "line": 79,
                     "modifierKind": [
                         123,
                         144
@@ -3942,7 +4039,7 @@
                     "optional": false,
                     "returnType": "MultiSelectOption[]",
                     "typeParameters": [],
-                    "line": 123,
+                    "line": 127,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -3966,7 +4063,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 138,
+                    "line": 149,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -3979,7 +4076,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 162,
+                    "line": 175,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -3999,7 +4096,7 @@
                     "optional": false,
                     "returnType": "string",
                     "typeParameters": [],
-                    "line": 118,
+                    "line": 122,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "rawdescription": "\n\nFunção utilizada para colocar texto na caixa de input ao selecionar uma opção\n",
@@ -4017,6 +4114,19 @@
                     ]
                 },
                 {
+                    "name": "isLimitReached",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "boolean",
+                    "typeParameters": [],
+                    "line": 189,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
                     "name": "isOptionSelected",
                     "args": [
                         {
@@ -4029,7 +4139,7 @@
                     "optional": false,
                     "returnType": "boolean",
                     "typeParameters": [],
-                    "line": 151,
+                    "line": 162,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -4053,7 +4163,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 105,
+                    "line": 109,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -4063,7 +4173,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 85,
+                    "line": 89,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -4073,9 +4183,11 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 155,
+                    "line": 169,
                     "deprecated": false,
                     "deprecationMessage": "",
+                    "rawdescription": "\n\nUse this method instead of \"trigger.openPanel()\" because it has some validations before opening the panel\n",
+                    "description": "<p>Use this method instead of &quot;trigger.openPanel()&quot; because it has some validations before opening the panel</p>\n",
                     "modifierKind": [
                         123
                     ]
@@ -4093,7 +4205,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 145,
+                    "line": 156,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -4124,7 +4236,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 132,
+                    "line": 136,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -4148,7 +4260,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 168,
+                    "line": 181,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -4163,7 +4275,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {\n  AfterViewInit,\n  ChangeDetectorRef,\n  Component,\n  ElementRef,\n  EventEmitter,\n  Input,\n  OnInit,\n  Output,\n  ViewChild\n} from '@angular/core';\nimport {FormControl} from '@angular/forms';\nimport {catchError, concatMap, debounceTime, distinctUntilChanged, Observable, of, tap, throwError} from 'rxjs';\nimport {map, startWith} from 'rxjs/operators';\nimport _ from 'lodash';\nimport {MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, MatAutocompleteTrigger} from '@angular/material/autocomplete';\nimport {Sizes} from '../../../models/sizes';\n\nexport interface MultiSelectOption {\n  label: string;\n  value: any;\n  thumbnail?: string;\n}\n\n@Component({\n  selector: 'pm-multi-select',\n  templateUrl: './multi-select.component.html',\n  styleUrls: ['./multi-select.component.scss'],\n  providers: [\n    {\n      provide: MAT_AUTOCOMPLETE_DEFAULT_OPTIONS,\n      useValue: {\n        autoActiveFirstOption: false,\n        overlayPanelClass: 'pm-multi-select-autocomplete-panel'\n      }\n    }\n  ]\n})\nexport class MultiSelectComponent implements OnInit, AfterViewInit {\n\n  @ViewChild('inputBox', {static: true}) inputBoxEl: ElementRef;\n  @ViewChild('trigger', {static: true}) trigger: MatAutocompleteTrigger;\n  /**\n   * Ao ser selecionada uma opção nova, emite\n   */\n  @Output() selectedOptionsChanged = new EventEmitter<MultiSelectOption[]>();\n  /**\n   * Texto a ser exibido no input\n   */\n  @Input() placeholder: string = '';\n  /**\n   * opções a serem exibidas no input\n   */\n  @Input() options: MultiSelectOption[] = [];\n  @Input() borderRadius: Sizes = Sizes.md;\n  /**\n   * se as thumbnails serão arredondadas\n   */\n  @Input() roundedThumbnail: boolean = true;\n  /**\n   * limite máximo de seleções de itens\n   */\n  @Input() limit: number = 0;\n  /**\n   * Opções que ja vem selecionadas\n   */\n  @Input() selectedOptions: MultiSelectOption[] = [];\n  @Input() observableInput: (search: string) => Observable<MultiSelectOption[]>;\n  /**\n   * Tempo de espera em cada execução de chamada do observable ao digitar no campo de input\n   */\n  @Input() observableDebounce: number = 100;\n  public _observableInputLoading: boolean = false;\n\n  public readonly myControl: FormControl;\n  public inputValue: string = '';\n  public filteredOptions: Observable<MultiSelectOption[]>;\n\n  constructor(\n    private cdr: ChangeDetectorRef\n  ) {\n    this.myControl = new FormControl();\n  }\n\n  ngOnInit(): void {\n    if (this.observableInput) {\n      this.filteredOptions = this.myControl.valueChanges.pipe(\n        debounceTime(this.observableDebounce),\n        distinctUntilChanged(),\n        tap(() => {this.observableInputLoading = true}),\n        concatMap(() => this.observableInput(`${this.myControl.value}`).pipe(\n          catchError(error => {this.observableInputLoading = false; return of(null); }),\n        )),\n        tap(() => {this.observableInputLoading = false}),\n      );\n    } else {\n      this.filteredOptions = this.myControl.valueChanges.pipe(\n        startWith(''),\n        map(value => (typeof value === 'string' ? value : `${value.label}`)),\n        map(label => this._filter(label)),\n      );\n    }\n  }\n\n  ngAfterViewInit(): void {\n    this.clearInput();\n  }\n\n  public set observableInputLoading(state: boolean) {\n    this._observableInputLoading = state;\n    this.cdr.detectChanges();\n  }\n\n  /**\n   * Função utilizada para colocar texto na caixa de input ao selecionar uma opção\n   * @param user\n   */\n  displayFn(option: MultiSelectOption): string {\n    return '';\n    // return option && option.label ? option.label : '';\n  }\n\n  private _filter(label: string): MultiSelectOption[] {\n    const filterValue = label.toLowerCase();\n\n    return _.difference(\n      this.options.filter(option => option.label.toLowerCase().includes(filterValue)),\n      this.selectedOptions\n    );\n  }\n\n  public selectOption(option: any): void {\n    this.selectedOptions.push(option);\n    this.selectedOptionsChanged.emit(this.selectedOptions);\n    this.clearInput();\n  }\n\n  private clearInput(): void {\n    this.inputValue = '';\n    this.myControl.setValue(this.inputValue);\n    try { this.inputBoxEl.nativeElement.blur(); } catch (e) {}\n    this.cdr.detectChanges();\n  }\n\n  public removeSelectedOption(option: MultiSelectOption): void {\n    _.remove(this.selectedOptions, option);\n    this.trigger.closePanel();\n    this.clearInput();\n  }\n\n  public isOptionSelected(option: MultiSelectOption): boolean {\n    return !!this.selectedOptions.find(sOptions => _.isEqual(sOptions, option));\n  }\n\n  public openSelect(): void {\n    // setTimeout(() => {\n    //   try { this.inputBoxEl.nativeElement.focus(); } catch (e) {}\n    // }, 0);\n    this.trigger.openPanel();\n  }\n\n  public clearSelected(): void {\n    this.selectedOptions = [];\n    this.selectedOptionsChanged.emit(this.selectedOptions);\n    this.clearInput();\n  }\n\n  public togglePanel(): void {\n    if (this.trigger.panelOpen === false) {\n      this.trigger.openPanel();\n    } else {\n      this.trigger.closePanel();\n    }\n  }\n\n}\n",
+            "sourceCode": "import {\n  AfterViewInit,\n  ChangeDetectorRef,\n  Component,\n  ElementRef,\n  EventEmitter,\n  Input,\n  OnInit,\n  Output,\n  ViewChild\n} from '@angular/core';\nimport {FormControl} from '@angular/forms';\nimport {catchError, concatMap, debounceTime, distinctUntilChanged, Observable, of, tap, throwError} from 'rxjs';\nimport {map, startWith} from 'rxjs/operators';\nimport _ from 'lodash';\nimport {MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, MatAutocompleteTrigger} from '@angular/material/autocomplete';\nimport {Sizes} from '../../../models/sizes';\n\nexport interface MultiSelectOption {\n  label: string;\n  value: any;\n  thumbnail?: string;\n}\n\n@Component({\n  selector: 'pm-multi-select',\n  templateUrl: './multi-select.component.html',\n  styleUrls: ['./multi-select.component.scss'],\n  providers: [\n    {\n      provide: MAT_AUTOCOMPLETE_DEFAULT_OPTIONS,\n      useValue: {\n        autoActiveFirstOption: false,\n        overlayPanelClass: 'pm-multi-select-autocomplete-panel'\n      }\n    }\n  ]\n})\nexport class MultiSelectComponent implements OnInit, AfterViewInit {\n\n  @ViewChild('inputBox', {static: true}) inputBoxEl: ElementRef;\n  @ViewChild('trigger', {static: true}) trigger: MatAutocompleteTrigger;\n  /**\n   * Ao ser selecionada uma opção nova, emite\n   */\n  @Output() selectedOptionsChanged = new EventEmitter<MultiSelectOption[]>();\n  /**\n   * Texto a ser exibido no input\n   */\n  @Input() placeholder: string = '';\n  /**\n   * opções a serem exibidas no input\n   */\n  @Input() options: MultiSelectOption[] = [];\n  @Input() borderRadius: Sizes = Sizes.md;\n  /**\n   * se as thumbnails serão arredondadas\n   */\n  @Input() roundedThumbnail: boolean = true;\n  /**\n   * limite máximo de seleções de itens\n   */\n  @Input() limit: number = 0;\n  /**\n   * Opções que ja vem selecionadas\n   */\n  @Input() selectedOptions: MultiSelectOption[] = [];\n  /**\n   * sort selected items instead of showing them in selected sequence\n   */\n  @Input() sortSelectedItems: boolean = true;\n  @Input() observableInput: (search: string) => Observable<MultiSelectOption[]>;\n  /**\n   * Tempo de espera em cada execução de chamada do observable ao digitar no campo de input\n   */\n  @Input() observableDebounce: number = 100;\n  public _observableInputLoading: boolean = false;\n\n  public readonly myControl: FormControl;\n  public inputValue: string = '';\n  public filteredOptions: Observable<MultiSelectOption[]>;\n\n  constructor(\n    private cdr: ChangeDetectorRef\n  ) {\n    this.myControl = new FormControl();\n  }\n\n  ngOnInit(): void {\n    if (this.observableInput) {\n      this.filteredOptions = this.myControl.valueChanges.pipe(\n        debounceTime(this.observableDebounce),\n        distinctUntilChanged(),\n        tap(() => {this.observableInputLoading = true}),\n        concatMap(() => this.observableInput(`${this.myControl.value}`).pipe(\n          catchError(error => {this.observableInputLoading = false; return of(null); }),\n        )),\n        tap(() => {this.observableInputLoading = false}),\n      );\n    } else {\n      this.filteredOptions = this.myControl.valueChanges.pipe(\n        startWith(''),\n        map(value => (typeof value === 'string' ? value : `${value.label}`)),\n        map(label => this._filter(label)),\n      );\n    }\n  }\n\n  ngAfterViewInit(): void {\n    this.clearInput();\n  }\n\n  public set observableInputLoading(state: boolean) {\n    this._observableInputLoading = state;\n    this.cdr.detectChanges();\n  }\n\n  /**\n   * Função utilizada para colocar texto na caixa de input ao selecionar uma opção\n   * @param user\n   */\n  displayFn(option: MultiSelectOption): string {\n    return '';\n    // return option && option.label ? option.label : '';\n  }\n\n  private _filter(label: string): MultiSelectOption[] {\n    const filterValue = label.toLowerCase();\n\n    return _.difference(\n      this.options.filter(option => option.label.toLowerCase().includes(filterValue)),\n      this.selectedOptions\n    );\n  }\n\n  public selectOption(option: any): void {\n    this.selectedOptions.push(option);\n\n    if (this.sortSelectedItems) {\n      this.selectedOptions = this.selectedOptions.sort((a, b) => {\n        return this.options.indexOf(a) - this.options.indexOf(b);\n      });\n    }\n\n    this.selectedOptionsChanged.emit(this.selectedOptions);\n    this.clearInput();\n  }\n\n  private clearInput(): void {\n    this.inputValue = '';\n    this.myControl.setValue(this.inputValue);\n    try { this.inputBoxEl.nativeElement.blur(); } catch (e) {}\n    this.cdr.detectChanges();\n  }\n\n  public removeSelectedOption(option: MultiSelectOption): void {\n    _.remove(this.selectedOptions, option);\n    this.trigger.closePanel();\n    this.clearInput();\n  }\n\n  public isOptionSelected(option: MultiSelectOption): boolean {\n    return !!this.selectedOptions.find(sOptions => _.isEqual(sOptions, option));\n  }\n\n  /**\n   * Use this method instead of \"trigger.openPanel()\" because it has some validations before opening the panel\n   */\n  public openSelect(): void {\n    if (this.isLimitReached() === false) {\n      this.trigger.openPanel();\n    }\n  }\n\n  public clearSelected(): void {\n    this.selectedOptions = [];\n    this.selectedOptionsChanged.emit(this.selectedOptions);\n    this.clearInput();\n  }\n\n  public togglePanel(): void {\n    if (this.trigger.panelOpen === false) {\n      this.openSelect();\n    } else {\n      this.trigger.closePanel();\n    }\n  }\n\n  public isLimitReached() {\n    return !this.observableInput // caso tenha observable input, as options são dinâmicas, e não armazenadas no componente\n      && (this.selectedOptions.length === this.options.length || (!!this.limit && this.selectedOptions.length >= this.limit))\n  }\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -4185,7 +4297,7 @@
                         "deprecationMessage": ""
                     }
                 ],
-                "line": 77,
+                "line": 81,
                 "jsdoctags": [
                     {
                         "name": "cdr",
@@ -4219,7 +4331,7 @@
                             }
                         ],
                         "returnType": "void",
-                        "line": 109,
+                        "line": 113,
                         "jsdoctags": [
                             {
                                 "name": "state",
@@ -4234,7 +4346,7 @@
                     }
                 }
             },
-            "templateData": "<div #multiselect class=\"pm-multi-select cursor-pointer border-radius-{{borderRadius}}\" (click)=\"$event.stopPropagation(); openSelect();\">\n  <div class=\"d-flex flex-wrap p-1 rad-md position-relative\" (click)=\"trigger.openPanel()\">\n    <div class=\"d-flex flex-row justify-content-start flex-wrap\">\n      <div *ngFor=\"let selected of selectedOptions; let first = first\" [ngClass]=\"{'m-1 chip-container': true}\">\n        <div class=\"d-flex flex-row align-items-center\">\n          <ng-container *ngTemplateOutlet=\"thumbnailContainer; context: {$implicit: selected, marginStart: true}\"></ng-container>\n          <p class=\"m-0 ms-1\">{{selected.label}}</p>\n          <button class=\"btn btn-light\" (click)=\"$event.stopPropagation(); removeSelectedOption(selected)\">x</button>\n        </div>\n      </div>\n    </div>\n    <form style=\"min-height: 31px\">\n      <input #inputBox\n             #trigger=\"matAutocompleteTrigger\"\n             name=\"searchInput\"\n             [hidden]=\"!observableInput && (selectedOptions.length === options.length || (!!limit && selectedOptions.length >= limit))\"\n             matInput\n             class=\"form-control h-100 border-0\"\n             type=\"text\"\n             [formControl]=\"myControl\"\n             [placeholder]=\"placeholder\"\n             [matAutocomplete]=\"auto\"\n             [required]=\"false\"\n      >\n\n      <mat-autocomplete #auto=\"matAutocomplete\"\n                        (optionSelected)=\"selectOption($event.option.value);\"\n                        [panelWidth]=\"multiselect?.offsetWidth\"\n                        [displayWith]=\"displayFn\"\n      >\n        <ng-container *ngIf=\"(filteredOptions | async) as fOptions; else loadingObservableNoResultsTemplate\">\n          <mat-option *ngIf=\"fOptions?.length <= 0 && _observableInputLoading\">\n            <ng-container *ngTemplateOutlet=\"loadingObservableTemplate\"></ng-container>\n          </mat-option>\n          <ng-container *ngIf=\"fOptions?.length > 0\">\n            <ng-container *ngFor=\"let option of fOptions\">\n              <mat-option\n                [hidden]=\"isOptionSelected(option)\"\n                [value]=\"option\"\n              >\n                <div class=\"d-flex flex-row align-items-center\">\n                  <ng-container *ngTemplateOutlet=\"thumbnailContainer; context: {$implicit: option}\"></ng-container>\n                  <span class=\"color-gray-dark\" [ngClass]=\"{'ms-2': option?.thumbnail}\">{{option.label}}</span>\n                </div>\n              </mat-option>\n            </ng-container>\n          </ng-container>\n        </ng-container>\n      </mat-autocomplete>\n    </form>\n    <div class=\"position-absolute d-flex h-100 justify-content-center align-items-center mx-3\" style=\"right: 0;\">\n      <ng-container [ngSwitch]=\"_observableInputLoading\">\n        <span *ngSwitchCase=\"true\" class=\"spinner-border spinner-border-sm\" role=\"status\" aria-hidden=\"true\"></span>\n        <i *ngSwitchCase=\"false\" class=\"uil uil-lg uil-angle-down\"></i>\n      </ng-container>\n    </div>\n  </div>\n</div>\n\n<ng-template #thumbnailContainer let-option let-marginStart=\"marginStart\">\n  <div *ngIf=\"option?.thumbnail\" class=\"pm-multi-select-thumbnail-container\" [ngClass]=\"{'ms-2': marginStart, 'circular': roundedThumbnail, 'mx-2': roundedThumbnail}\">\n    <img\n      aria-hidden\n      [src]=\"option.thumbnail\"\n      height=\"25\"\n    >\n  </div>\n</ng-template>\n\n<ng-template #loadingObservableTemplate>\n  <div class=\"p-3\">\n    <div *ngIfLoaded=\"false\"></div>\n  </div>\n</ng-template>\n\n<ng-template #loadingObservableNoResultsTemplate>\n  <mat-option>\n    <div class=\"p-3\">\n      <p>Nada aqui</p>\n    </div>\n  </mat-option>\n</ng-template>\n"
+            "templateData": "<div #multiselect class=\"pm-multi-select cursor-pointer border-radius-{{borderRadius}}\" (click)=\"$event.stopPropagation(); openSelect();\">\n  <div class=\"d-flex flex-wrap p-1 rad-md position-relative\" (click)=\"openSelect()\">\n    <div class=\"d-flex flex-row justify-content-start flex-wrap\">\n      <div *ngFor=\"let selected of selectedOptions; let first = first\" [ngClass]=\"{'m-1 chip-container': true}\">\n        <div class=\"d-flex flex-row align-items-center\">\n          <ng-container *ngTemplateOutlet=\"thumbnailContainer; context: {$implicit: selected, marginStart: true}\"></ng-container>\n          <p class=\"m-0 ms-1\">{{selected.label}}</p>\n          <button class=\"btn btn-light\" (click)=\"$event.stopPropagation(); removeSelectedOption(selected)\">x</button>\n        </div>\n      </div>\n    </div>\n    <form style=\"min-height: 31px\">\n      <input #inputBox\n             #trigger=\"matAutocompleteTrigger\"\n             name=\"searchInput\"\n             [hidden]=\"isLimitReached() === true\"\n             matInput\n             class=\"form-control h-100 border-0\"\n             type=\"text\"\n             [formControl]=\"myControl\"\n             [placeholder]=\"placeholder\"\n             [matAutocomplete]=\"auto\"\n             [required]=\"false\"\n      >\n\n      <mat-autocomplete #auto=\"matAutocomplete\"\n                        (optionSelected)=\"selectOption($event.option.value);\"\n                        [panelWidth]=\"multiselect?.offsetWidth\"\n                        [displayWith]=\"displayFn\"\n      >\n        <ng-container *ngIf=\"(filteredOptions | async) as fOptions; else loadingObservableNoResultsTemplate\">\n          <mat-option *ngIf=\"fOptions?.length <= 0 && _observableInputLoading\">\n            <ng-container *ngTemplateOutlet=\"loadingObservableTemplate\"></ng-container>\n          </mat-option>\n          <ng-container *ngIf=\"fOptions?.length > 0\">\n            <ng-container *ngFor=\"let option of fOptions\">\n              <mat-option\n                [hidden]=\"isOptionSelected(option)\"\n                [value]=\"option\"\n              >\n                <div class=\"d-flex flex-row align-items-center\">\n                  <ng-container *ngTemplateOutlet=\"thumbnailContainer; context: {$implicit: option}\"></ng-container>\n                  <span class=\"color-gray-dark\" [ngClass]=\"{'ms-2': option?.thumbnail}\">{{option.label}}</span>\n                </div>\n              </mat-option>\n            </ng-container>\n          </ng-container>\n        </ng-container>\n      </mat-autocomplete>\n    </form>\n    <div class=\"position-absolute d-flex h-100 justify-content-center align-items-center mx-3\" style=\"right: 0;\">\n      <ng-container [ngSwitch]=\"_observableInputLoading\">\n        <span *ngSwitchCase=\"true\" class=\"spinner-border spinner-border-sm\" role=\"status\" aria-hidden=\"true\"></span>\n        <i *ngSwitchCase=\"false\" class=\"uil uil-lg uil-angle-down\"></i>\n      </ng-container>\n    </div>\n  </div>\n</div>\n\n<ng-template #thumbnailContainer let-option let-marginStart=\"marginStart\">\n  <div *ngIf=\"option?.thumbnail\" class=\"pm-multi-select-thumbnail-container\" [ngClass]=\"{'ms-2': marginStart, 'circular': roundedThumbnail, 'mx-2': roundedThumbnail}\">\n    <img\n      aria-hidden\n      [src]=\"option.thumbnail\"\n      height=\"25\"\n    >\n  </div>\n</ng-template>\n\n<ng-template #loadingObservableTemplate>\n  <div class=\"p-3\">\n    <div *ngIfLoaded=\"false\"></div>\n  </div>\n</ng-template>\n\n<ng-template #loadingObservableNoResultsTemplate>\n  <mat-option>\n    <div class=\"p-3\">\n      <p>Nada aqui</p>\n    </div>\n  </mat-option>\n</ng-template>\n"
         },
         {
             "name": "RadioButtonComponent",
@@ -4370,6 +4482,369 @@
                 "line": 31
             },
             "templateData": "<div class=\"pm-radio-button\">\n  <mat-radio-group\n    [(ngModel)]=\"selectedValue\"\n    [disabled]=\"disabled\"\n    (change)=\"setValue($event.value)\"\n    [ngClass]=\"{'d-flex flex-column': orientation === 'vertical', 'horizontal': orientation === 'horizontal'}\">\n    <mat-radio-button *ngFor=\"let value of values\" [value]=\"value\">\n      {{value}}\n    </mat-radio-button>\n  </mat-radio-group>\n</div>\n"
+        },
+        {
+            "name": "SidebarComponent",
+            "id": "component-SidebarComponent-cd38e71afa4215d49ae37c20c63a6ba0e39dbe5e4366b8f695da49e199a357d4ff708d25ea184be1caa0047add1586061552aa7c1d8cb5f9f1cea22751c74ecd",
+            "file": "src/components/layout/sidebar/sidebar.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "pm-sidebar",
+            "styleUrls": [
+                "./sidebar.component.scss"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./sidebar.component.html"
+            ],
+            "viewProviders": [],
+            "inputsClass": [
+                {
+                    "name": "showBackButton",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 11,
+                    "type": "boolean",
+                    "decorators": []
+                },
+                {
+                    "name": "sidebarEntries",
+                    "defaultValue": "[]",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 12,
+                    "type": "SidebarItem[]",
+                    "decorators": []
+                }
+            ],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [
+                {
+                    "name": "isWindowWidthMobile",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "boolean",
+                    "typeParameters": [],
+                    "line": 19,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
+                    "name": "ngOnInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 16,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import {Component, Input, OnInit} from '@angular/core';\nimport {SidebarItem} from \"./sidebar-content/models\";\n\n@Component({\n  selector: 'pm-sidebar',\n  templateUrl: './sidebar.component.html',\n  styleUrls: ['./sidebar.component.scss']\n})\nexport class SidebarComponent implements OnInit {\n\n  @Input() showBackButton: boolean = false;\n  @Input() sidebarEntries: SidebarItem[] = [];\n\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n\n  public isWindowWidthMobile(): boolean {\n    return window.innerWidth <= 991;\n  }\n\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": ".pm-sidebar {\n  $navbar-bg: rgba(var(--bg-default-rgb), 1);\n  $navbar-content-height: 40px; // necessário para saber\n  $navbar-padding: 0.5em;\n  $gradient-offset: $navbar-content-height * 0.7;\n  --navbar-height: calc(#{$navbar-content-height} + #{2 * $navbar-padding} + #{$gradient-offset});\n\n  .mat-drawer {\n    background-color: $navbar-bg;\n    border-right: 1px solid var(--color-gray-light);\n  }\n\n  .drawer-content {\n    position: relative;\n    background-color: var(--bg-default);\n    padding-top: var(--navbar-height);\n    max-width: 100vw;\n    overflow-x: hidden;\n\n    .navbar {\n      padding: $navbar-padding $navbar-padding calc(#{$navbar-padding} + #{$gradient-offset}) $navbar-padding;\n      // border-bottom: 1px solid var(--color-gray-light);\n\n      height: var(--navbar-height);\n      max-height: var(--navbar-height);\n      position: sticky;\n      top: calc(-1 * var(--navbar-height));\n      margin-top: calc(-1 * var(--navbar-height));\n      z-index: 3;\n\n      .navbar-bg {\n        position: absolute;\n        height: 100%;\n        width: 100%;\n        background-color: $navbar-bg;\n        -webkit-mask-image: linear-gradient(to bottom, $navbar-bg 60%, transparent 100%);\n        mask-image: linear-gradient(to bottom, $navbar-bg 60%, transparent 100%);\n        // backdrop-filter: blur(4px);\n        // -webkit-backdrop-filter: blur(4px);\n      }\n\n      .navbar-content {\n        z-index: 1;\n        display: flex;\n        justify-content: flex-start;\n        align-items: center;\n\n        .ham {\n          cursor: pointer;\n          -webkit-tap-highlight-color: transparent;\n          transition: transform 400ms;\n          -moz-user-select: none;\n          -webkit-user-select: none;\n          -ms-user-select: none;\n          user-select: none;\n\n          .line {\n            fill: none;\n            transition: stroke-dasharray 400ms, stroke-dashoffset 400ms;\n            stroke: var(--color-gray-dark);\n            stroke-width: 6;\n            stroke-linecap: round;\n          }\n\n          .top, .bottom {\n            stroke-dasharray: 40 121;\n          }\n\n          &.active {\n            .top, .bottom {\n              stroke-dashoffset: -102px;\n            }\n          }\n        }\n\n        .hamRotate.active {\n          transform: rotate(45deg);\n        }\n\n        .hamRotate180.active {\n          transform: rotate(180deg);\n        }\n\n      }\n    }\n  }\n}\n",
+                    "styleUrl": "./sidebar.component.scss"
+                }
+            ],
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [],
+                "line": 12
+            },
+            "implements": [
+                "OnInit"
+            ],
+            "templateData": "<mat-drawer-container class=\"pm-sidebar\" [autosize]=\"true\" fullscreen>\n\n  <mat-drawer #drawer [mode]=\"isWindowWidthMobile() === true ? 'over' : 'side'\">\n    <app-sidebar-content\n      *ngIf=\"sidebarEntries.length > 0\"\n      [sidebarEntries]=\"sidebarEntries\"\n      [drawer]=\"drawer\">\n    </app-sidebar-content>\n  </mat-drawer>\n\n  <mat-drawer-content class=\"ion-content-scroll-host drawer-content\">\n    <div class=\"navbar\">\n      <div class=\"navbar-bg\"></div>\n      <div class=\"navbar-content mb-3\">\n        <svg (click)=\"drawer.toggle()\"\n             class=\"ham\"\n             [ngClass]=\"{'active': drawer.opened}\"\n             viewBox=\"0 0 100 100\" width=\"40\"\n        >\n          <path class=\"line top\" d=\"m 70,33 h -40 c -6.5909,0 -7.763966,-4.501509 -7.763966,-7.511428 0,-4.721448 3.376452,-9.583771 13.876919,-9.583771 14.786182,0 11.409257,14.896182 9.596449,21.970818 -1.812808,7.074636 -15.709402,12.124381 -15.709402,12.124381\"/>\n          <path class=\"line middle\" d=\"m 30,50 h 40\"/>\n          <path class=\"line bottom\" d=\"m 70,67 h -40 c -6.5909,0 -7.763966,4.501509 -7.763966,7.511428 0,4.721448 3.376452,9.583771 13.876919,9.583771 14.786182,0 11.409257,-14.896182 9.596449,-21.970818 -1.812808,-7.074636 -15.709402,-12.124381 -15.709402,-12.124381\"/>\n        </svg>\n        <span *ngIf=\"showBackButton\"\n              backButton\n              class=\"d-flex justify-content-center align-items-center overflow-hidden color-gray-dark no-outline no-shadow cursor-pointer\"\n              style=\"max-height: 20px\"\n        >\n                    <i class=\"uil uil-2x uil-angle-left text-center inline-block\"></i>\n                </span>\n        <!--                <h2 class=\"color-gray-dark m-0 ms-3\">Navbar</h2>-->\n      </div>\n    </div>\n    <div class=\"container\">\n      <ng-content></ng-content>\n    </div>\n  </mat-drawer-content>\n\n\n</mat-drawer-container>\n"
+        },
+        {
+            "name": "SidebarContentComponent",
+            "id": "component-SidebarContentComponent-5edd0d52dff4d4b6a59d7c9825e7c7f9363cac111cc78fb16ce22ccff3ff2b0a55bfe4b513b7ec82295f7f526c7a494cae6181ca396ee2bff73e38facb3be6c8",
+            "file": "src/components/layout/sidebar/sidebar-content/sidebar-content.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-sidebar-content",
+            "styleUrls": [
+                "./sidebar-content.component.scss"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./sidebar-content.component.html"
+            ],
+            "viewProviders": [],
+            "inputsClass": [
+                {
+                    "name": "drawer",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 12,
+                    "type": "MatDrawer",
+                    "decorators": []
+                },
+                {
+                    "name": "expandCurrentItem",
+                    "defaultValue": "true",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 14,
+                    "type": "boolean",
+                    "decorators": []
+                },
+                {
+                    "name": "minWidth",
+                    "defaultValue": "'240px'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 13,
+                    "type": "string",
+                    "decorators": []
+                },
+                {
+                    "name": "sidebarEntries",
+                    "defaultValue": "[]",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 15,
+                    "type": "SidebarItem[]",
+                    "decorators": []
+                }
+            ],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "currentExpandedSession",
+                    "defaultValue": "''",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 16,
+                    "modifierKind": [
+                        121
+                    ]
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "executeAction",
+                    "args": [
+                        {
+                            "name": "event",
+                            "type": "any",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        },
+                        {
+                            "name": "entry",
+                            "type": "SidebarItem",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        },
+                        {
+                            "name": "closeDrawer",
+                            "type": "boolean",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "defaultValue": "true"
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 25,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        123
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "event",
+                            "type": "any",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        },
+                        {
+                            "name": "entry",
+                            "type": "SidebarItem",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        },
+                        {
+                            "name": "closeDrawer",
+                            "type": "boolean",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "defaultValue": "true",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "getIdForEntry",
+                    "args": [
+                        {
+                            "name": "entry",
+                            "type": "SidebarItem",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        },
+                        {
+                            "name": "prefix",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "defaultValue": "''"
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "string",
+                    "typeParameters": [],
+                    "line": 46,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        123
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "entry",
+                            "type": "SidebarItem",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        },
+                        {
+                            "name": "prefix",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "defaultValue": "''",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "keepSessionExpanded",
+                    "args": [
+                        {
+                            "name": "event",
+                            "type": "any",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        },
+                        {
+                            "name": "treeId",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 36,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        123
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "event",
+                            "type": "any",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        },
+                        {
+                            "name": "treeId",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "ngOnInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 22,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import {Component, Input, OnInit} from '@angular/core';\nimport {SidebarItem} from './models';\nimport {MatDrawer} from '@angular/material/sidenav';\n\n@Component({\n    selector: 'app-sidebar-content',\n    templateUrl: './sidebar-content.component.html',\n    styleUrls: ['./sidebar-content.component.scss']\n})\nexport class SidebarContentComponent implements OnInit {\n\n    @Input() drawer: MatDrawer;\n    @Input() minWidth: string = '240px';\n    @Input() expandCurrentItem: boolean = true;\n    @Input() sidebarEntries: SidebarItem[] = [];\n    private currentExpandedSession: string = '';\n\n    constructor(\n    ) {\n    }\n\n    ngOnInit(): void {\n    }\n\n    public executeAction(event: any, entry: SidebarItem, closeDrawer: boolean = true): void {\n        if (entry?.action) {\n            event.stopPropagation();\n            entry.action();\n        }\n\n        if (closeDrawer && this.drawer) {\n            this.drawer.close();\n        }\n    }\n\n    public keepSessionExpanded(event: any, treeId: string): void {\n        if (\n            event === true\n            && this.expandCurrentItem\n            && !!treeId\n        ) {\n            this.currentExpandedSession = `${treeId}`;\n        }\n    }\n\n    public getIdForEntry(entry: SidebarItem, prefix: string = ''): string {\n        let entryId = entry.label.replace(/[^a-zA-Z0-9,._-]/g, '');\n        entryId = prefix ? `${prefix}${entryId}` : entryId; // não pode ter \".\" senão o id não é reconhecido direito pelo bootstrap\n        return entryId;\n    }\n\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": ".app-sidebar-content {\n  $main-link-margin-top: 1.2em;\n  $sub-link-margin-top: 0.6em;\n\n  padding: 0 1em 1em 0.5em;\n  list-style: none !important;\n\n  .sidebar-nav {\n    padding: 0px;\n    display: block;\n    transition: 0.3s;\n    list-style: none !important;\n\n    li {\n      cursor: pointer;\n\n      * {\n        color: var(--color-gray-dark);\n\n        &:focus-visible {\n          outline: none;\n        }\n\n      }\n\n      a {\n        display: flex;\n        justify-content: center;\n        align-items: center;\n        padding: 0.5em 1em;\n        border-radius: 1em;\n\n        text-decoration: none;\n        font-size: 0.8em;\n        font-weight: 500;\n\n        &.expanded {\n          background-color: rgba(var(--color-gray-dark-rgb), 0.15);\n        }\n\n        &:hover {\n          background-color: rgba(var(--color-gray-dark-rgb), 0.15);\n\n          * {\n            color: var(--color-primary) !important;\n          }\n        }\n      }\n\n      &.active {\n        > a:first-child {\n          background-color: rgba(var(--color-primary-rgb), 0.2);\n\n          * {\n            color: var(--color-primary) !important;\n          }\n        }\n      }\n    }\n\n    a {\n      &:first-child {\n        margin-top: $main-link-margin-top;\n      }\n\n      &.sub {\n        margin-top: $sub-link-margin-top;\n      }\n    }\n\n    .collapse,\n    .collapsing {\n      .nav {\n        margin-top: 0;\n      }\n    }\n\n    p {\n      margin: 0;\n      white-space: nowrap;\n      display: flex;\n      justify-content: space-between;\n      width: 100%;\n\n      > {\n        align-self: center;\n      }\n    }\n\n    a:not(.sub) {\n      p {\n        font-size: 14px;\n        font-weight: 700;\n        text-transform: uppercase;\n      }\n    }\n\n    i {\n      font-size: 24px;\n      float: left;\n      line-height: 30px;\n      width: 34px;\n      text-align: center;\n      color: #ffffff;\n      position: relative;\n    }\n\n    ul {\n      margin: 0px;\n      width: 100%;\n    }\n\n    div {\n      .aux-bar {\n        width: 2px;\n        min-width: 2px;\n        border-radius: 50px;\n        margin: $sub-link-margin-top $sub-link-margin-top 0 $sub-link-margin-top;\n        background-color: rgba(var(--color-gray-dark-rgb), 0.3);\n      }\n    }\n\n  }\n}\n",
+                    "styleUrl": "./sidebar-content.component.scss"
+                }
+            ],
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [],
+                "line": 16
+            },
+            "implements": [
+                "OnInit"
+            ],
+            "templateData": "<div class=\"app-sidebar-content\"\n     [ngStyle]=\"{'min-width': minWidth}\"\n>\n    <ul class=\"sidebar-nav\">\n        <ng-container *ngFor=\"let entry of sidebarEntries\">\n            <ng-container *ngTemplateOutlet=\"entryChecker; context: {$implicit: entry, prefixId: getIdForEntry(entry)}\"></ng-container>\n        </ng-container>\n    </ul>\n</div>\n\n<ng-template #entryChecker let-entry let-prefixId=\"prefixId\">\n    <li routerLinkActive=\"active\"\n        [routerLinkActiveOptions]=\"{exact: true}\"\n        [ngClass]=\"{'active': currentExpandedSession.startsWith(prefixId)}\"\n    >\n        <ng-container [ngSwitch]=\"!!entry?.children\">\n            <!--Se for um item sem submenus-->\n            <ng-container *ngSwitchCase=\"false\">\n                <ng-container *ngTemplateOutlet=\"noSubmenuEntry; context: {$implicit: entry}\"></ng-container>\n            </ng-container>\n\n            <!--Se for um item com submenus-->\n            <ng-container *ngSwitchCase=\"true\">\n                <ng-container *ngTemplateOutlet=\"submenuEntry; context: {$implicit: entry, prefixId: prefixId}\"></ng-container>\n            </ng-container>\n        </ng-container>\n    </li>\n</ng-template>\n\n<ng-template #noSubmenuEntry let-entry>\n    <a (click)=\"executeAction($event, entry)\"\n       [routerLink]=\"entry.path\"\n       [queryParams]=\"entry?.queryParams\"\n    >\n        <ng-container *ngTemplateOutlet=\"entryContent; context: {$implicit: entry}\"></ng-container>\n    </a>\n</ng-template>\n\n<ng-template #submenuEntry let-entry let-prefixId=\"prefixId\" let-isSub=\"isSub\">\n    <a [ngClass]=\"{'sub': isSub}\"\n       [attr.data-bs-toggle]=\"'collapse'\"\n       [attr.data-bs-target]=\"'#collapse' + prefixId\"\n    >\n        <ng-container *ngTemplateOutlet=\"entryContent; context: {$implicit: entry}\"></ng-container>\n    </a>\n\n    <!--Exibe os itens do submenu-->\n    <ng-container *ngTemplateOutlet=\"childEntryContent; context: {$implicit: entry, prefixId: prefixId}\"></ng-container>\n</ng-template>\n\n<ng-template #entryContent let-entry>\n    <i class=\"{{ entry.iconClass }}\"></i>\n    <p class=\"ms-2\">\n        {{entry.label}}\n        <b *ngIf=\"entry?.children\" class=\"caret ms-3\"></b>\n    </p>\n</ng-template>\n\n<ng-template #childEntryContent let-entry let-prefixId=\"prefixId\">\n    <div *ngIf=\"entry?.children\"\n         [attr.id]=\"'collapse' + prefixId\"\n         class=\"{{currentExpandedSession.startsWith(getIdForEntry(entry, prefixId)) ? 'show' : 'collapse'}}\"\n    >\n        <div class=\"d-flex\">\n            <div class=\"aux-bar\"></div>\n            <ul class=\"sidebar-nav\">\n                <ng-container *ngFor=\"let childEntry of entry.children\">\n                <li routerLinkActive=\"active\"\n                    [routerLinkActiveOptions]=\"{exact: true}\"\n                    (isActiveChange)=\"keepSessionExpanded($event, getIdForEntry(entry, prefixId))\"\n                    [ngClass]=\"{'active': currentExpandedSession.startsWith(getIdForEntry(childEntry, prefixId))}\"\n                >\n                    <ng-container [ngSwitch]=\"!!childEntry?.children\">\n                        <!--Se for um item sem submenus-->\n                        <ng-container *ngSwitchCase=\"false\">\n                            <a class=\"sub\"\n                               (click)=\"executeAction($event, childEntry)\"\n                               [routerLink]=\"childEntry.path\"\n                               [queryParams]=\"childEntry?.queryParams\"\n                            >\n                                <ng-container *ngTemplateOutlet=\"entryContent; context: {$implicit: childEntry}\"></ng-container>\n                            </a>\n                        </ng-container>\n\n                        <!--Se for um item com submenus-->\n                        <ng-container *ngSwitchCase=\"true\">\n                            <ng-container *ngTemplateOutlet=\"submenuEntry; context: {$implicit: childEntry, prefixId: getIdForEntry(childEntry, prefixId), isSub: true}\"></ng-container>\n                        </ng-container>\n                    </ng-container>\n                </li>\n                </ng-container>\n            </ul>\n        </div>\n    </div>\n</ng-template>\n"
         },
         {
             "name": "SpinnerComponent",
@@ -6082,6 +6557,53 @@
             ]
         },
         {
+            "name": "SidebarModule",
+            "id": "module-SidebarModule-9624fa944f39d6724639cc67a89ee77f0257782bd3aaf2c702ba678f3abb7f67fab05481557420a3091d2232884c8809888c5bb2f19b7c556f2f9062e452ed68",
+            "description": "",
+            "deprecationMessage": "",
+            "deprecated": false,
+            "file": "src/components/layout/sidebar/sidebar.module.ts",
+            "methods": [],
+            "sourceCode": "import {NgModule} from '@angular/core';\nimport {CommonModule} from '@angular/common';\nimport {SidebarComponent} from '../sidebar/sidebar.component';\nimport {MatSidenavModule} from \"@angular/material/sidenav\";\nimport {SidebarContentComponent} from \"./sidebar-content/sidebar-content.component\";\nimport {RouterModule} from \"@angular/router\";\n\n\n@NgModule({\n  declarations: [\n    SidebarComponent,\n    SidebarContentComponent\n  ],\n  exports: [\n    SidebarComponent\n  ],\n  imports: [\n    CommonModule,\n    MatSidenavModule,\n    RouterModule\n  ]\n})\nexport class SidebarModule {\n}\n",
+            "children": [
+                {
+                    "type": "providers",
+                    "elements": []
+                },
+                {
+                    "type": "declarations",
+                    "elements": [
+                        {
+                            "name": "SidebarComponent"
+                        },
+                        {
+                            "name": "SidebarContentComponent"
+                        }
+                    ]
+                },
+                {
+                    "type": "imports",
+                    "elements": []
+                },
+                {
+                    "type": "exports",
+                    "elements": [
+                        {
+                            "name": "SidebarComponent"
+                        }
+                    ]
+                },
+                {
+                    "type": "bootstrap",
+                    "elements": []
+                },
+                {
+                    "type": "classes",
+                    "elements": []
+                }
+            ]
+        },
+        {
             "name": "StepperModule",
             "id": "module-StepperModule-4be658cff9db9159efd4f5875bb288a468d3601b1b543884cc258f89a9316cb9549e4473a354a9af586cb2f0f661902be13038936134825b858ffc9a4501526a",
             "description": "",
@@ -6354,16 +6876,6 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/directives/ng-if-loaded/spinner/spinner.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "object",
-                "defaultValue": "{\n  flag: true\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "src/components/cards/basic-card/basic-card.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
@@ -6384,11 +6896,31 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
+                "file": "src/components/containers/expansion-panel/expansion-panel.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
                 "file": "src/components/inputs/button/button.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "object",
                 "defaultValue": "{\n  label: '',\n  type: MainColors.default,\n  busy: false,\n  busyText: '',\n  iconClass: '',\n  iconPosition: 'start',\n  outline: false,\n  disabled: false,\n  size: 'md',\n  fillWidth: false\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/containers/tabs/tabs.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\n}"
             },
             {
                 "name": "defaultArgs",
@@ -6414,16 +6946,6 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/components/inputs/copy-content-input/copy-content-input.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "object",
-                "defaultValue": "{\n  disabled: false,\n  text: '',\n  copyCallback: undefined,\n  fillHeight: false,\n  btnColor: MainColors.primary,\n  borderRadius: Sizes.md\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "src/components/inputs/dropdown-actions/dropdown-actions.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
@@ -6438,7 +6960,17 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "object",
-                "defaultValue": "{\n  options: [],\n  placeholder: '',\n  borderRadius: Sizes.md,\n  roundedThumbnail: true,\n  limit: 0,\n  selectedOptions: [],\n  observableInput: undefined,\n  observableDebounce: 100,\n}"
+                "defaultValue": "{\n  options: [],\n  placeholder: '',\n  borderRadius: Sizes.md,\n  roundedThumbnail: true,\n  limit: 0,\n  selectedOptions: [],\n  sortSelectedItems: true,\n  observableInput: undefined,\n  observableDebounce: 100,\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/inputs/copy-content-input/copy-content-input.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\n  disabled: false,\n  text: '',\n  copyCallback: undefined,\n  fillHeight: false,\n  btnColor: MainColors.primary,\n  borderRadius: Sizes.md\n}"
             },
             {
                 "name": "defaultArgs",
@@ -6454,41 +6986,21 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/components/containers/expansion-panel/expansion-panel.stories.ts",
+                "file": "src/components/layout/sidebar/sidebar.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "object",
-                "defaultValue": "{\n}"
+                "defaultValue": "{\n  showBackButton: false,\n  sidebarEntries: []\n}"
             },
             {
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/components/containers/tabs/tabs.stories.ts",
+                "file": "src/components/navigation/stepper/stepper.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "object",
-                "defaultValue": "{\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/components/lists/draggable-list/draggable-list.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "object",
-                "defaultValue": "{\n  showIndex: true,\n  itemActionLabel: undefined,\n  itemMainLabel: undefined,\n  itemSubLabel: undefined,\n  actions: undefined,\n  itemList: undefined,\n  roundedBorders: true,\n  enableDragging: true,\n  enableSelection: true,\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/components/lists/table-list/table-list.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "object",
-                "defaultValue": "{\n  columns: [],\n  columnNames: [],\n  imageColumns: [],\n  imageHeight: '50px',\n  showHeader: true,\n  numberFormat: '1.2-2',\n  numberPrefix: '',\n  actionsTemplate: undefined,\n  itemList: undefined,\n  borderRadius: undefined,\n  backgroundColor: undefined,\n  expandedDetailTemplate: undefined,\n  disableExpandedOnDisabledRow: true,\n  expandedRow: undefined\n}"
+                "defaultValue": "{}"
             },
             {
                 "name": "defaultArgs",
@@ -6504,11 +7016,31 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/components/navigation/stepper/stepper.stories.ts",
+                "file": "src/components/lists/table-list/table-list.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "object",
-                "defaultValue": "{}"
+                "defaultValue": "{\n  columns: [],\n  columnNames: [],\n  imageColumns: [],\n  imageHeight: '50px',\n  showHeader: true,\n  numberFormat: '1.2-2',\n  numberPrefix: '',\n  actionsTemplate: undefined,\n  itemList: undefined,\n  borderRadius: undefined,\n  backgroundColor: undefined,\n  expandedDetailTemplate: undefined,\n  disableExpandedOnDisabledRow: true,\n  expandedRow: undefined\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/lists/draggable-list/draggable-list.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\n  showIndex: true,\n  itemActionLabel: undefined,\n  itemMainLabel: undefined,\n  itemSubLabel: undefined,\n  actions: undefined,\n  itemList: undefined,\n  roundedBorders: true,\n  enableDragging: true,\n  enableSelection: true,\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/directives/ng-if-loaded/spinner/spinner.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\n  flag: true\n}"
             },
             {
                 "name": "DefaultBasicCard",
@@ -6655,6 +7187,16 @@
                 "ctype": "miscellaneous",
                 "subtype": "variable",
                 "file": "src/components/inputs/radio-button/radio-button.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "DefaultSidebar",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/layout/sidebar/sidebar.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "",
@@ -6963,16 +7505,6 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/directives/ng-if-loaded/spinner/spinner.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story<SpinnerComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <div *ngIfLoaded=\"flag\">\n        Conteúdo normal\n    </div>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "src/components/cards/basic-card/basic-card.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
@@ -6993,11 +7525,31 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
+                "file": "src/components/containers/expansion-panel/expansion-panel.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<ExpansionPanelComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-expansion-panel\n    >\n        Conteúdo aqui\n    </pm-expansion-panel>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
                 "file": "src/components/inputs/button/button.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story<ButtonComponent>",
                 "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-button\n        [label]=\"label\"\n        [type]=\"type\"\n        [busy]=\"busy\"\n        [busyText]=\"busyText\"\n        [iconClass]=\"iconClass\"\n        [iconPosition]=\"iconPosition\"\n        [outline]=\"outline\"\n        [disabled]=\"disabled\"\n        [size]=\"size\"\n        [fillWidth]=\"fillWidth\"\n    >\n        Button Content\n    </pm-button>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/containers/tabs/tabs.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<TabsComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-tabs\n    >\n    </pm-tabs>\n  `\n})"
             },
             {
                 "name": "Template",
@@ -7023,16 +7575,6 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/components/inputs/copy-content-input/copy-content-input.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story<CopyContentInputComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-copy-content-input\n      [text]=\"text\"\n      [disabled]=\"disabled\"\n      [copyCallback]=\"copyCallback\"\n      [fillHeight]=\"fillHeight\"\n      [btnColor]=\"btnColor\"\n      [borderRadius]=\"borderRadius\"\n    >\n    </pm-copy-content-input>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "src/components/inputs/dropdown-actions/dropdown-actions.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
@@ -7047,7 +7589,17 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story<MultiSelectComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-multi-select\n        [options]=\"options\"\n        [placeholder]=\"placeholder\"\n        [borderRadius]=\"borderRadius\"\n        [roundedThumbnail]=\"roundedThumbnail\"\n        [limit]=\"limit\"\n        [selectedOptions]=\"selectedOptions\"\n        [observableInput]=\"observableInput\"\n        [observableDebounce]=\"observableDebounce\"\n    >\n    </pm-multi-select>\n  `\n})"
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-multi-select\n        [options]=\"options\"\n        [placeholder]=\"placeholder\"\n        [borderRadius]=\"borderRadius\"\n        [roundedThumbnail]=\"roundedThumbnail\"\n        [limit]=\"limit\"\n        [selectedOptions]=\"selectedOptions\"\n        [sortSelectedItems]=\"sortSelectedItems\"\n        [observableInput]=\"observableInput\"\n        [observableDebounce]=\"observableDebounce\"\n    >\n    </pm-multi-select>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/inputs/copy-content-input/copy-content-input.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<CopyContentInputComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-copy-content-input\n      [text]=\"text\"\n      [disabled]=\"disabled\"\n      [copyCallback]=\"copyCallback\"\n      [fillHeight]=\"fillHeight\"\n      [btnColor]=\"btnColor\"\n      [borderRadius]=\"borderRadius\"\n    >\n    </pm-copy-content-input>\n  `\n})"
             },
             {
                 "name": "Template",
@@ -7063,41 +7615,21 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/components/containers/expansion-panel/expansion-panel.stories.ts",
+                "file": "src/components/layout/sidebar/sidebar.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
-                "type": "Story<ExpansionPanelComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-expansion-panel\n    >\n        Conteúdo aqui\n    </pm-expansion-panel>\n  `\n})"
+                "type": "Story<SidebarComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-sidebar\n        [showBackButton]=\"showBackButton\"\n        [sidebarEntries]=\"sidebarEntries\"\n    >\n        <p>Conteúdo aqui! algo como router-outlet</p>\n    </pm-sidebar>\n  `\n})"
             },
             {
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/components/containers/tabs/tabs.stories.ts",
+                "file": "src/components/navigation/stepper/stepper.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
-                "type": "Story<TabsComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-tabs\n    >\n    </pm-tabs>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/components/lists/draggable-list/draggable-list.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story<DraggableListComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-draggable-list\n      [showIndex]=\"showIndex\"\n      [itemActionLabel]=\"itemActionLabel\"\n      [itemMainLabel]=\"itemMainLabel\"\n      [itemSubLabel]=\"itemSubLabel\"\n      [actions]=\"actions\"\n      [itemList]=\"itemList\"\n      [roundedBorders]=\"roundedBorders\"\n      [enableDragging]=\"enableDragging\"\n      [enableSelection]=\"enableSelection\"\n    >\n    </pm-draggable-list>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/components/lists/table-list/table-list.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story<TableListComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `<pm-table-list\n    [columns]=\"columns\"\n    [columnNames]=\"columnNames\"\n    [imageColumns]=\"imageColumns\"\n    [imageHeight]=\"imageHeight\"\n    [showHeader]=\"showHeader\"\n    [numberFormat]=\"numberFormat\"\n    [numberPrefix]=\"numberPrefix\"\n    [itemList]=\"itemList\"\n    [borderRadius]=\"borderRadius\"\n    [backgroundColor]=\"backgroundColor\"\n    [expandedDetailTemplate]=\"expandedDetailTemplate\"\n    [disableExpandedOnDisabledRow]=\"disableExpandedOnDisabledRow\"\n  ></pm-table-list>`\n})"
+                "type": "Story<StepperComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-stepper>\n      <cdk-step> <p>This is any content of \"Step 1\"</p> </cdk-step>\n      <cdk-step> <p>This is any content of \"Step 2\"</p> </cdk-step>\n    </pm-stepper>\n  `\n})"
             },
             {
                 "name": "Template",
@@ -7113,11 +7645,31 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/components/navigation/stepper/stepper.stories.ts",
+                "file": "src/components/lists/table-list/table-list.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
-                "type": "Story<StepperComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-stepper>\n      <cdk-step> <p>This is any content of \"Step 1\"</p> </cdk-step>\n      <cdk-step> <p>This is any content of \"Step 2\"</p> </cdk-step>\n    </pm-stepper>\n  `\n})"
+                "type": "Story<TableListComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `<pm-table-list\n    [columns]=\"columns\"\n    [columnNames]=\"columnNames\"\n    [imageColumns]=\"imageColumns\"\n    [imageHeight]=\"imageHeight\"\n    [showHeader]=\"showHeader\"\n    [numberFormat]=\"numberFormat\"\n    [numberPrefix]=\"numberPrefix\"\n    [itemList]=\"itemList\"\n    [borderRadius]=\"borderRadius\"\n    [backgroundColor]=\"backgroundColor\"\n    [expandedDetailTemplate]=\"expandedDetailTemplate\"\n    [disableExpandedOnDisabledRow]=\"disableExpandedOnDisabledRow\"\n  ></pm-table-list>`\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/lists/draggable-list/draggable-list.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<DraggableListComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-draggable-list\n      [showIndex]=\"showIndex\"\n      [itemActionLabel]=\"itemActionLabel\"\n      [itemMainLabel]=\"itemMainLabel\"\n      [itemSubLabel]=\"itemSubLabel\"\n      [actions]=\"actions\"\n      [itemList]=\"itemList\"\n      [roundedBorders]=\"roundedBorders\"\n      [enableDragging]=\"enableDragging\"\n      [enableSelection]=\"enableSelection\"\n    >\n    </pm-draggable-list>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/directives/ng-if-loaded/spinner/spinner.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<SpinnerComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <div *ngIfLoaded=\"flag\">\n        Conteúdo normal\n    </div>\n  `\n})"
             },
             {
                 "name": "ThumbnailMultiSelect",
@@ -7878,38 +8430,6 @@
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-XXXName\n    >\n    </pm-XXXName>\n  `\n})"
                 }
             ],
-            "src/directives/ng-if-loaded/spinner/spinner.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/directives/ng-if-loaded/spinner/spinner.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "object",
-                    "defaultValue": "{\n  flag: true\n}"
-                },
-                {
-                    "name": "DefaultSpinner",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/directives/ng-if-loaded/spinner/spinner.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/directives/ng-if-loaded/spinner/spinner.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Story<SpinnerComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <div *ngIfLoaded=\"flag\">\n        Conteúdo normal\n    </div>\n  `\n})"
-                }
-            ],
             "src/components/cards/basic-card/basic-card.stories.ts": [
                 {
                     "name": "defaultArgs",
@@ -7940,6 +8460,70 @@
                     "deprecationMessage": "",
                     "type": "Story<BasicCardComponent>",
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-basic-card\n      [hoverable]=\"hoverable\"\n      [borderRadius]=\"borderRadius\"\n      [paddingClass]=\"paddingClass\"\n    >\n    </pm-basic-card>\n  `\n})"
+                }
+            ],
+            "src/components/containers/expansion-panel/expansion-panel.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/containers/expansion-panel/expansion-panel.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "object",
+                    "defaultValue": "{\n}"
+                },
+                {
+                    "name": "DefaultExpansionPanel",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/containers/expansion-panel/expansion-panel.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/containers/expansion-panel/expansion-panel.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story<ExpansionPanelComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-expansion-panel\n    >\n        Conteúdo aqui\n    </pm-expansion-panel>\n  `\n})"
+                }
+            ],
+            "src/components/containers/tabs/tabs.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/containers/tabs/tabs.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "object",
+                    "defaultValue": "{\n}"
+                },
+                {
+                    "name": "DefaultTabs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/containers/tabs/tabs.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/containers/tabs/tabs.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story<TabsComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-tabs\n    >\n    </pm-tabs>\n  `\n})"
                 }
             ],
             "src/components/inputs/checkbox/checkbox.stories.ts": [
@@ -8026,38 +8610,6 @@
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-combo-box\n      [items]=\"items\"\n      [disabled]=\"disabled\"\n      [selectedItem]=\"selectedItem\"\n    >\n    </pm-combo-box>\n  `\n})"
                 }
             ],
-            "src/components/inputs/copy-content-input/copy-content-input.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/inputs/copy-content-input/copy-content-input.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "object",
-                    "defaultValue": "{\n  disabled: false,\n  text: '',\n  copyCallback: undefined,\n  fillHeight: false,\n  btnColor: MainColors.primary,\n  borderRadius: Sizes.md\n}"
-                },
-                {
-                    "name": "DefaultCopyContentInput",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/inputs/copy-content-input/copy-content-input.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/inputs/copy-content-input/copy-content-input.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Story<CopyContentInputComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-copy-content-input\n      [text]=\"text\"\n      [disabled]=\"disabled\"\n      [copyCallback]=\"copyCallback\"\n      [fillHeight]=\"fillHeight\"\n      [btnColor]=\"btnColor\"\n      [borderRadius]=\"borderRadius\"\n    >\n    </pm-copy-content-input>\n  `\n})"
-                }
-            ],
             "src/components/inputs/dropdown-actions/dropdown-actions.stories.ts": [
                 {
                     "name": "defaultArgs",
@@ -8099,7 +8651,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "object",
-                    "defaultValue": "{\n  options: [],\n  placeholder: '',\n  borderRadius: Sizes.md,\n  roundedThumbnail: true,\n  limit: 0,\n  selectedOptions: [],\n  observableInput: undefined,\n  observableDebounce: 100,\n}"
+                    "defaultValue": "{\n  options: [],\n  placeholder: '',\n  borderRadius: Sizes.md,\n  roundedThumbnail: true,\n  limit: 0,\n  selectedOptions: [],\n  sortSelectedItems: true,\n  observableInput: undefined,\n  observableDebounce: 100,\n}"
                 },
                 {
                     "name": "DefaultMultiSelect",
@@ -8139,7 +8691,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story<MultiSelectComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-multi-select\n        [options]=\"options\"\n        [placeholder]=\"placeholder\"\n        [borderRadius]=\"borderRadius\"\n        [roundedThumbnail]=\"roundedThumbnail\"\n        [limit]=\"limit\"\n        [selectedOptions]=\"selectedOptions\"\n        [observableInput]=\"observableInput\"\n        [observableDebounce]=\"observableDebounce\"\n    >\n    </pm-multi-select>\n  `\n})"
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-multi-select\n        [options]=\"options\"\n        [placeholder]=\"placeholder\"\n        [borderRadius]=\"borderRadius\"\n        [roundedThumbnail]=\"roundedThumbnail\"\n        [limit]=\"limit\"\n        [selectedOptions]=\"selectedOptions\"\n        [sortSelectedItems]=\"sortSelectedItems\"\n        [observableInput]=\"observableInput\"\n        [observableDebounce]=\"observableDebounce\"\n    >\n    </pm-multi-select>\n  `\n})"
                 },
                 {
                     "name": "ThumbnailMultiSelect",
@@ -8150,6 +8702,38 @@
                     "deprecationMessage": "",
                     "type": "",
                     "defaultValue": "Template.bind({})"
+                }
+            ],
+            "src/components/inputs/copy-content-input/copy-content-input.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/inputs/copy-content-input/copy-content-input.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "object",
+                    "defaultValue": "{\n  disabled: false,\n  text: '',\n  copyCallback: undefined,\n  fillHeight: false,\n  btnColor: MainColors.primary,\n  borderRadius: Sizes.md\n}"
+                },
+                {
+                    "name": "DefaultCopyContentInput",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/inputs/copy-content-input/copy-content-input.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/inputs/copy-content-input/copy-content-input.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story<CopyContentInputComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-copy-content-input\n      [text]=\"text\"\n      [disabled]=\"disabled\"\n      [copyCallback]=\"copyCallback\"\n      [fillHeight]=\"fillHeight\"\n      [btnColor]=\"btnColor\"\n      [borderRadius]=\"borderRadius\"\n    >\n    </pm-copy-content-input>\n  `\n})"
                 }
             ],
             "src/components/inputs/radio-button/radio-button.stories.ts": [
@@ -8194,22 +8778,22 @@
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-radio-button\n      [orientation]=\"orientation\"\n      [values]=\"values\"\n      [selectedValue]=\"selectedValue\"\n      [disabled]=\"disabled\"\n    >\n    </pm-radio-button>\n  `\n})"
                 }
             ],
-            "src/components/containers/expansion-panel/expansion-panel.stories.ts": [
+            "src/components/layout/sidebar/sidebar.stories.ts": [
                 {
                     "name": "defaultArgs",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "src/components/containers/expansion-panel/expansion-panel.stories.ts",
+                    "file": "src/components/layout/sidebar/sidebar.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "object",
-                    "defaultValue": "{\n}"
+                    "defaultValue": "{\n  showBackButton: false,\n  sidebarEntries: []\n}"
                 },
                 {
-                    "name": "DefaultExpansionPanel",
+                    "name": "DefaultSidebar",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "src/components/containers/expansion-panel/expansion-panel.stories.ts",
+                    "file": "src/components/layout/sidebar/sidebar.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "",
@@ -8219,29 +8803,29 @@
                     "name": "Template",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "src/components/containers/expansion-panel/expansion-panel.stories.ts",
+                    "file": "src/components/layout/sidebar/sidebar.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "type": "Story<ExpansionPanelComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-expansion-panel\n    >\n        Conteúdo aqui\n    </pm-expansion-panel>\n  `\n})"
+                    "type": "Story<SidebarComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-sidebar\n        [showBackButton]=\"showBackButton\"\n        [sidebarEntries]=\"sidebarEntries\"\n    >\n        <p>Conteúdo aqui! algo como router-outlet</p>\n    </pm-sidebar>\n  `\n})"
                 }
             ],
-            "src/components/containers/tabs/tabs.stories.ts": [
+            "src/components/navigation/stepper/stepper.stories.ts": [
                 {
                     "name": "defaultArgs",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "src/components/containers/tabs/tabs.stories.ts",
+                    "file": "src/components/navigation/stepper/stepper.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "object",
-                    "defaultValue": "{\n}"
+                    "defaultValue": "{}"
                 },
                 {
-                    "name": "DefaultTabs",
+                    "name": "DefaultStepper",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "src/components/containers/tabs/tabs.stories.ts",
+                    "file": "src/components/navigation/stepper/stepper.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "",
@@ -8251,11 +8835,53 @@
                     "name": "Template",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "src/components/containers/tabs/tabs.stories.ts",
+                    "file": "src/components/navigation/stepper/stepper.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "type": "Story<TabsComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-tabs\n    >\n    </pm-tabs>\n  `\n})"
+                    "type": "Story<StepperComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-stepper>\n      <cdk-step> <p>This is any content of \"Step 1\"</p> </cdk-step>\n      <cdk-step> <p>This is any content of \"Step 2\"</p> </cdk-step>\n    </pm-stepper>\n  `\n})"
+                }
+            ],
+            "src/components/lists/grid-list/grid-list.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/lists/grid-list/grid-list.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "object",
+                    "defaultValue": "{\n}"
+                },
+                {
+                    "name": "DefaultGridList",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/lists/grid-list/grid-list.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "getColor",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/lists/grid-list/grid-list.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "() => MainColors.primary"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/lists/grid-list/grid-list.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story<GridListComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-grid-list\n      [items]=\"items\"\n      [displayStyle]=\"displayStyle\"\n      [gridHeaderReverse]=\"gridHeaderReverse\"\n      [bodyBackgroundColor]=\"bodyBackgroundColor\"\n      [actionTemplate]=\"undefined\"\n      [overflowGallery]=\"overflowGallery\"\n    >\n    </pm-grid-list>\n  `\n})"
                 }
             ],
             "src/components/lists/draggable-list/draggable-list.stories.ts": [
@@ -8310,64 +8936,22 @@
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-draggable-list\n      [showIndex]=\"showIndex\"\n      [itemActionLabel]=\"itemActionLabel\"\n      [itemMainLabel]=\"itemMainLabel\"\n      [itemSubLabel]=\"itemSubLabel\"\n      [actions]=\"actions\"\n      [itemList]=\"itemList\"\n      [roundedBorders]=\"roundedBorders\"\n      [enableDragging]=\"enableDragging\"\n      [enableSelection]=\"enableSelection\"\n    >\n    </pm-draggable-list>\n  `\n})"
                 }
             ],
-            "src/components/lists/grid-list/grid-list.stories.ts": [
+            "src/directives/ng-if-loaded/spinner/spinner.stories.ts": [
                 {
                     "name": "defaultArgs",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "src/components/lists/grid-list/grid-list.stories.ts",
+                    "file": "src/directives/ng-if-loaded/spinner/spinner.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "object",
-                    "defaultValue": "{\n}"
+                    "defaultValue": "{\n  flag: true\n}"
                 },
                 {
-                    "name": "DefaultGridList",
+                    "name": "DefaultSpinner",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "src/components/lists/grid-list/grid-list.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "getColor",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/lists/grid-list/grid-list.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "() => MainColors.primary"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/lists/grid-list/grid-list.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Story<GridListComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-grid-list\n      [items]=\"items\"\n      [displayStyle]=\"displayStyle\"\n      [gridHeaderReverse]=\"gridHeaderReverse\"\n      [bodyBackgroundColor]=\"bodyBackgroundColor\"\n      [actionTemplate]=\"undefined\"\n      [overflowGallery]=\"overflowGallery\"\n    >\n    </pm-grid-list>\n  `\n})"
-                }
-            ],
-            "src/components/navigation/stepper/stepper.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/navigation/stepper/stepper.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "object",
-                    "defaultValue": "{}"
-                },
-                {
-                    "name": "DefaultStepper",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/navigation/stepper/stepper.stories.ts",
+                    "file": "src/directives/ng-if-loaded/spinner/spinner.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "",
@@ -8377,11 +8961,11 @@
                     "name": "Template",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "src/components/navigation/stepper/stepper.stories.ts",
+                    "file": "src/directives/ng-if-loaded/spinner/spinner.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "type": "Story<StepperComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-stepper>\n      <cdk-step> <p>This is any content of \"Step 1\"</p> </cdk-step>\n      <cdk-step> <p>This is any content of \"Step 2\"</p> </cdk-step>\n    </pm-stepper>\n  `\n})"
+                    "type": "Story<SpinnerComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <div *ngIfLoaded=\"flag\">\n        Conteúdo normal\n    </div>\n  `\n})"
                 }
             ],
             "src/services/command-palette/command-palette.stories.ts": [
@@ -8760,7 +9344,7 @@
     },
     "routes": [],
     "coverage": {
-        "count": 3,
+        "count": 2,
         "status": "low",
         "files": [
             {
@@ -9297,8 +9881,8 @@
                 "type": "component",
                 "linktype": "component",
                 "name": "MultiSelectComponent",
-                "coveragePercent": 28,
-                "coverageCount": "8/28",
+                "coveragePercent": 33,
+                "coverageCount": "10/30",
                 "status": "medium"
             },
             {
@@ -9411,6 +9995,63 @@
             },
             {
                 "filePath": "src/components/inputs/radio-button/radio-button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/components/layout/sidebar/sidebar-content/models.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "SidebarItem",
+                "coveragePercent": 0,
+                "coverageCount": "0/9",
+                "status": "low"
+            },
+            {
+                "filePath": "src/components/layout/sidebar/sidebar-content/sidebar-content.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "SidebarContentComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/11",
+                "status": "low"
+            },
+            {
+                "filePath": "src/components/layout/sidebar/sidebar.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "SidebarComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/6",
+                "status": "low"
+            },
+            {
+                "filePath": "src/components/layout/sidebar/sidebar.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "defaultArgs",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/components/layout/sidebar/sidebar.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "DefaultSidebar",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/components/layout/sidebar/sidebar.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",

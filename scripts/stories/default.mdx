@@ -5,6 +5,7 @@ import {moduleMetadata} from "@storybook/angular";
 import {XXXModule} from "./XXXName.module";
 import SourceStory from '!!raw-loader!./XXXName.stories';
 import {
+  Template as storyTemplate,
   defaultArgs,
   DefaultXXXTitle,
 } from "./XXXName.stories";
@@ -46,10 +47,7 @@ Descrição do componente XXXTitle padrão
 
 Deve ser usado da seguinte forma:
 
-```
-<pm-XXXName>
-</pm-XXXName>
-```
+<Source code={storyTemplate.template} language='html' />
 
 <Canvas>
   <Story name='Default' story={DefaultXXXTitle} />

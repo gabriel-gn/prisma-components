@@ -1,0 +1,82 @@
+import {Meta, Story, ArgsTable, Canvas, Source} from '@storybook/addon-docs';
+import {SidebarComponent} from './sidebar.component';
+import {moduleMetadata} from "@storybook/angular";
+import {SidebarModule} from "./sidebar.module";
+import SourceStory from '!!raw-loader!./sidebar.stories';
+import {
+  Template as storyTemplate,
+  defaultArgs,
+  DefaultSidebar,
+} from "./sidebar.stories";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {APP_BASE_HREF} from '@angular/common';
+import {RouterModule} from "@angular/router";
+
+export const argTypes = {
+  // XXXArg1: {
+  //   // description: 'CRIAR A DESCRIÇÃO COMO COMENTÁRIO MULTILINHA ACIMA DOS INPUTS NO COMPONENTE',
+  //   table: {
+  //     defaultValue: { summary: defaultArgs.XXXArg1},
+  //   },
+  //   control: { type: 'inline-radio'}, options: [true, false],
+  // },
+}
+
+<Meta
+  title='Components/Layout/Sidebar'
+  component={SidebarComponent}
+  argTypes={argTypes}
+  parameters={{ badges: [ 'beta' ] }}
+  decorators={[
+    moduleMetadata({
+      imports: [SidebarModule, BrowserAnimationsModule, RouterModule.forRoot([])],
+      providers: [{provide: APP_BASE_HREF, useValue: '/'}],
+    })
+  ]}
+/>
+
+export const Template = (args) => <SidebarComponent {...args} />
+
+# Sidebar
+
+#### Descrição do componente Sidebar
+
+<br/>
+<br/>
+
+## Sidebar padrão
+
+Descrição do componente Sidebar padrão
+
+Deve ser usado da seguinte forma:
+
+<Source code={storyTemplate.template} language='html' />
+
+<Canvas>
+  <Story name='Default' story={DefaultSidebar} />
+</Canvas>
+
+## Module Config
+
+```
+import {SidebarModule} from '@mprisma/components';
+
+@NgModule({
+  imports: [
+    ...,
+    SidebarModule,
+    ...,
+  ]
+})
+```
+
+## Args Table
+
+<ArgsTable story='Default'/>
+
+## Source
+
+<details>
+  <summary>The source stories on file <code>sidebar.stories.ts</code></summary>
+  <Source code={SourceStory} language='ts' />
+</details>
