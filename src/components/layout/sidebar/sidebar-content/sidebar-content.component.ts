@@ -13,7 +13,7 @@ export class SidebarContentComponent implements OnInit {
     @Input() minWidth: string = '240px';
     @Input() expandCurrentItem: boolean = true;
     @Input() sidebarEntries: SidebarItem[] = [];
-    private currentExpandedSession: string = '';
+    public currentExpandedSession: string = '';
 
     constructor(
     ) {
