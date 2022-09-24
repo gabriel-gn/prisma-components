@@ -37,6 +37,10 @@
             "styles": [
               "src/styles/base_css.scss",
               "src/styles/base.scss"
+            ],
+            "scripts": [
+              "node_modules/popper.js/dist/umd/popper.js",
+              "node_modules/bootstrap/dist/js/bootstrap.js"
             ]
           },
           "configurations": {
