@@ -6,7 +6,9 @@ import {Location} from '@angular/common';
     selector: '[navigationBackButton]'
 })
 export class NavigationBackClickDirective {
-    constructor(private location: Location) {
+    constructor(
+      private location: Location
+    ) {
     }
 
     @HostListener('click')
