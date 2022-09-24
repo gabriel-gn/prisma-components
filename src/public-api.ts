@@ -26,12 +26,15 @@ export * from './services/command-palette/trigger-button/trigger-button.componen
  * DIRECTIVES
  ******************/
 
-export * from './directives/ng-if-loaded/ng-if-loaded.module';
 export * from './directives/ng-if-loaded/spinner/spinner.component';
 export * from './directives/ng-if-loaded/ng-if-loaded.directive';
+export * from './directives/ng-if-loaded/ng-if-loaded.module';
 
+export * from './directives/navigation-back-click/navigation-back-click.directive';
 export * from './directives/navigation-back-click/navigation-back-click.module';
 
+export * from './directives/long-press/short-press.directive';
+export * from './directives/long-press/long-press.directive';
 export * from './directives/long-press/long-press.module';
 
 /******************
