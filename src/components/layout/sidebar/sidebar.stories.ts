@@ -1,6 +1,7 @@
 import {SidebarComponent} from './sidebar.component';
 import {Meta} from '@storybook/angular/types-6-0';
 import {Story} from '@storybook/angular';
+import {of} from "rxjs";
 
 export default {
   title: 'Prisma/Stories/Sidebar',
@@ -13,6 +14,7 @@ export const Template: Story<SidebarComponent> = (args) => ({
     <pm-sidebar
         [showBackButton]="showBackButton"
         [sidebarEntries]="sidebarEntries"
+        [label]="label"
     >
         <p>Conteúdo aqui! algo como router-outlet</p>
         <ng-container *ngFor="let _ of [].constructor(20)">
@@ -24,12 +26,14 @@ export const Template: Story<SidebarComponent> = (args) => ({
 
 export const defaultArgs = {
   showBackButton: false,
-  sidebarEntries: []
+  sidebarEntries: [],
+  label: of(''),
 };
 
 export const DefaultSidebar = Template.bind({});
 DefaultSidebar.args = {
   ...defaultArgs,
+  label: of('Sidebar'),
   sidebarEntries: [
     {
       routerLink: `/`,

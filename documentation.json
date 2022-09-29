@@ -394,12 +394,12 @@
         },
         {
             "name": "SidebarItem",
-            "id": "interface-SidebarItem-21d93cf9348df9e9321c8d76f1d85f74c69efa0dc9a9110326af4137948ac881d9e4d5004993fc79f9a8f90b6c34f65b0a05b34e2f33b8035bd75f531d67aae4",
+            "id": "interface-SidebarItem-aef6881e67be1cd1bbd70f724187d23310a4fb612ac4288eb50086ba0dd496c6e156949e90dda46a9aa6b5d48121de94312c46b22fa0f54f0c4f291c9c978aba",
             "file": "src/components/layout/sidebar/sidebar-content/models.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "export interface SidebarItem {\n    label: string; // should be unique\n    iconClass: string;\n    path?: string | any; // router link\n    queryParams?: any; // queryParams router link\n    action?: () => void; // action to trigger\n    translate?: string; // if provided, use transloco pipe\n    badge?: any; // badge to be displayed, if not observable, turns into string\n    children?: SidebarItem[];\n}\n",
+            "sourceCode": "export interface SidebarItem {\n    label: string; // should be unique\n    iconClass: string;\n    routerLink?: string | string[]; // router link\n    queryParams?: any; // queryParams router link\n    action?: () => void; // action to trigger\n    translate?: string; // if provided, use transloco pipe\n    badge?: any; // badge to be displayed, if not observable, turns into string\n    children?: SidebarItem[];\n}\n",
             "properties": [
                 {
                     "name": "action",
@@ -447,15 +447,6 @@
                     "line": 2
                 },
                 {
-                    "name": "path",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "string | any",
-                    "optional": true,
-                    "description": "",
-                    "line": 4
-                },
-                {
                     "name": "queryParams",
                     "deprecated": false,
                     "deprecationMessage": "",
@@ -463,6 +454,15 @@
                     "optional": true,
                     "description": "",
                     "line": 5
+                },
+                {
+                    "name": "routerLink",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string | string[]",
+                    "optional": true,
+                    "description": "",
+                    "line": 4
                 },
                 {
                     "name": "translate",
@@ -1086,6 +1086,298 @@
     "classes": [],
     "directives": [
         {
+            "name": "LongPressDirective",
+            "id": "directive-LongPressDirective-5fc585abc6a74a393d4e08bafedf3a7faf07914510ffc93b40b28bf2d40c02042993caa38604598517874fa7a7490e8215e040194223c867f7897f07e4346f7a",
+            "file": "src/directives/long-press/long-press.directive.ts",
+            "type": "directive",
+            "description": "",
+            "rawdescription": "\n",
+            "sourceCode": "import {Directive, HostListener, Output, EventEmitter} from '@angular/core';\n\n// ref: https://stackoverflow.com/a/43629814/13335507\n\n// tslint:disable-next-line:directive-selector\n@Directive({selector: '[longPress]'})\nexport class LongPressDirective {\n\n    @Output()\n    longPress = new EventEmitter();\n\n    private _timeout: any;\n    private _isLong: boolean = true;\n\n    @HostListener('touchstart')\n    @HostListener('mousedown')\n    onMouseDown(e: Event): void {\n        this._timeout = setTimeout(() => {\n            if (this._isLong) {\n                this.longPress.emit(e);\n            }\n        }, 500);\n    }\n\n    @HostListener('touchmove')\n    onTouchScroll(e): void {\n        this._isLong = false;\n    }\n\n    @HostListener('touchend')\n    @HostListener('mouseup')\n    @HostListener('mouseleave')\n    onMouseUp(): void {\n        this._isLong = true;\n        clearTimeout(this._timeout);\n    }\n\n}\n",
+            "selector": "[longPress]",
+            "providers": [],
+            "inputsClass": [],
+            "outputsClass": [
+                {
+                    "name": "longPress",
+                    "defaultValue": "new EventEmitter()",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 10,
+                    "type": "EventEmitter"
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [
+                {
+                    "name": "mousedown",
+                    "args": [
+                        {
+                            "name": "e",
+                            "type": "Event",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "argsDecorator": [],
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 17
+                },
+                {
+                    "name": "mouseleave",
+                    "args": [],
+                    "argsDecorator": [],
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 33
+                },
+                {
+                    "name": "mouseup",
+                    "args": [],
+                    "argsDecorator": [],
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 33
+                },
+                {
+                    "name": "touchend",
+                    "args": [],
+                    "argsDecorator": [],
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 33
+                },
+                {
+                    "name": "touchmove",
+                    "args": [
+                        {
+                            "name": "e",
+                            "type": "",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "argsDecorator": [],
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 26
+                },
+                {
+                    "name": "touchstart",
+                    "args": [
+                        {
+                            "name": "e",
+                            "type": "Event",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "argsDecorator": [],
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 17
+                }
+            ],
+            "propertiesClass": [
+                {
+                    "name": "_isLong",
+                    "defaultValue": "true",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "boolean",
+                    "optional": false,
+                    "description": "",
+                    "line": 13,
+                    "modifierKind": [
+                        121
+                    ]
+                },
+                {
+                    "name": "_timeout",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "any",
+                    "optional": false,
+                    "description": "",
+                    "line": 12,
+                    "modifierKind": [
+                        121
+                    ]
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "onMouseDown",
+                    "args": [
+                        {
+                            "name": "e",
+                            "type": "Event",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 17,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "decorators": [
+                        {
+                            "name": "HostListener",
+                            "stringifiedArguments": "'touchstart'"
+                        },
+                        {
+                            "name": "HostListener",
+                            "stringifiedArguments": "'mousedown'"
+                        }
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "e",
+                            "type": "Event",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "onMouseUp",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 33,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "decorators": [
+                        {
+                            "name": "HostListener",
+                            "stringifiedArguments": "'touchend'"
+                        },
+                        {
+                            "name": "HostListener",
+                            "stringifiedArguments": "'mouseup'"
+                        },
+                        {
+                            "name": "HostListener",
+                            "stringifiedArguments": "'mouseleave'"
+                        }
+                    ]
+                },
+                {
+                    "name": "onTouchScroll",
+                    "args": [
+                        {
+                            "name": "e",
+                            "type": "",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 26,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "decorators": [
+                        {
+                            "name": "HostListener",
+                            "stringifiedArguments": "'touchmove'"
+                        }
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "e",
+                            "type": "",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "NavigationBackClickDirective",
+            "id": "directive-NavigationBackClickDirective-6ca2486b0fa9c831aa17ad194249c8991baed0ba1436f7b3ad34818261f82f0a5918c898e2e9d29d8e144d18fe18f067de26f70b93e3258582113ff1017bf600",
+            "file": "src/directives/navigation-back-click/navigation-back-click.directive.ts",
+            "type": "directive",
+            "description": "",
+            "rawdescription": "\n",
+            "sourceCode": "import {Directive, HostListener} from '@angular/core';\nimport {Location} from '@angular/common';\n\n@Directive({\n    // tslint:disable-next-line:directive-selector\n    selector: '[navigationBackButton]'\n})\nexport class NavigationBackClickDirective {\n    constructor(\n      private location: Location\n    ) {\n    }\n\n    @HostListener('click')\n    onClick(): void {\n        this.location.back();\n    }\n}\n",
+            "selector": "[navigationBackButton]",
+            "providers": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [
+                {
+                    "name": "click",
+                    "args": [],
+                    "argsDecorator": [],
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 15
+                }
+            ],
+            "propertiesClass": [],
+            "methodsClass": [
+                {
+                    "name": "onClick",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 15,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "decorators": [
+                        {
+                            "name": "HostListener",
+                            "stringifiedArguments": "'click'"
+                        }
+                    ]
+                }
+            ],
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "location",
+                        "type": "Location",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 8,
+                "jsdoctags": [
+                    {
+                        "name": "location",
+                        "type": "Location",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            }
+        },
+        {
             "name": "NgIfLoadedDirective",
             "id": "directive-NgIfLoadedDirective-f417be008db835d87ebebfa55c875a082595ed114474af70e98fbbef4a99560d17f885632542f14089fc825c96228e36f04ce2e2613d98c659324e0ca429a72d",
             "file": "src/directives/ng-if-loaded/ng-if-loaded.directive.ts",
@@ -1247,6 +1539,282 @@
             "hostListeners": [],
             "propertiesClass": [],
             "methodsClass": []
+        },
+        {
+            "name": "ShortPressDirective",
+            "id": "directive-ShortPressDirective-c8d6868ef5c42ac71c5e06fdc0a34250ee50630d01281ceed7199077f5a0ce9f0f5290b688dcec770512767a7e35f141f405dac559ba41943aed9bfdfa14f3c4",
+            "file": "src/directives/long-press/short-press.directive.ts",
+            "type": "directive",
+            "description": "",
+            "rawdescription": "\n",
+            "sourceCode": "import {Directive, HostListener, Output, EventEmitter} from '@angular/core';\n\n// ref: https://stackoverflow.com/a/43629814/13335507\n\n// tslint:disable-next-line:directive-selector\n@Directive({selector: '[shortPress]'})\nexport class ShortPressDirective {\n\n    @Output()\n    shortPress = new EventEmitter();\n\n    private _timeout: any;\n    private _isShort: boolean;\n\n    @HostListener('touchstart')\n    @HostListener('mousedown')\n    onMouseDown(e): void {\n        this._isShort = true;\n        this._timeout = setTimeout(() => {\n            this._isShort = false;\n        }, 500);\n    }\n\n    @HostListener('touchmove')\n    onTouchScroll(e): void {\n        this._isShort = false;\n    }\n\n    @HostListener('touchend')\n    @HostListener('mouseup')\n    onMouseUp(e): void {\n        if (this._isShort) {\n            this.shortPress.emit(e);\n        }\n        clearTimeout(this._timeout);\n    }\n\n    @HostListener('touchcancel')\n    @HostListener('mouseleave')\n    onMouseLeave(): void {\n        clearTimeout(this._timeout);\n    }\n}\n",
+            "selector": "[shortPress]",
+            "providers": [],
+            "inputsClass": [],
+            "outputsClass": [
+                {
+                    "name": "shortPress",
+                    "defaultValue": "new EventEmitter()",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 10,
+                    "type": "EventEmitter"
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [
+                {
+                    "name": "mousedown",
+                    "args": [
+                        {
+                            "name": "e",
+                            "type": "",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "argsDecorator": [],
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 17
+                },
+                {
+                    "name": "mouseleave",
+                    "args": [],
+                    "argsDecorator": [],
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 40
+                },
+                {
+                    "name": "mouseup",
+                    "args": [
+                        {
+                            "name": "e",
+                            "type": "",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "argsDecorator": [],
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 31
+                },
+                {
+                    "name": "touchcancel",
+                    "args": [],
+                    "argsDecorator": [],
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 40
+                },
+                {
+                    "name": "touchend",
+                    "args": [
+                        {
+                            "name": "e",
+                            "type": "",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "argsDecorator": [],
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 31
+                },
+                {
+                    "name": "touchmove",
+                    "args": [
+                        {
+                            "name": "e",
+                            "type": "",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "argsDecorator": [],
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 25
+                },
+                {
+                    "name": "touchstart",
+                    "args": [
+                        {
+                            "name": "e",
+                            "type": "",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "argsDecorator": [],
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 17
+                }
+            ],
+            "propertiesClass": [
+                {
+                    "name": "_isShort",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "boolean",
+                    "optional": false,
+                    "description": "",
+                    "line": 13,
+                    "modifierKind": [
+                        121
+                    ]
+                },
+                {
+                    "name": "_timeout",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "any",
+                    "optional": false,
+                    "description": "",
+                    "line": 12,
+                    "modifierKind": [
+                        121
+                    ]
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "onMouseDown",
+                    "args": [
+                        {
+                            "name": "e",
+                            "type": "",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 17,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "decorators": [
+                        {
+                            "name": "HostListener",
+                            "stringifiedArguments": "'touchstart'"
+                        },
+                        {
+                            "name": "HostListener",
+                            "stringifiedArguments": "'mousedown'"
+                        }
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "e",
+                            "type": "",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "onMouseLeave",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 40,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "decorators": [
+                        {
+                            "name": "HostListener",
+                            "stringifiedArguments": "'touchcancel'"
+                        },
+                        {
+                            "name": "HostListener",
+                            "stringifiedArguments": "'mouseleave'"
+                        }
+                    ]
+                },
+                {
+                    "name": "onMouseUp",
+                    "args": [
+                        {
+                            "name": "e",
+                            "type": "",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 31,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "decorators": [
+                        {
+                            "name": "HostListener",
+                            "stringifiedArguments": "'touchend'"
+                        },
+                        {
+                            "name": "HostListener",
+                            "stringifiedArguments": "'mouseup'"
+                        }
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "e",
+                            "type": "",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "onTouchScroll",
+                    "args": [
+                        {
+                            "name": "e",
+                            "type": "",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 25,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "decorators": [
+                        {
+                            "name": "HostListener",
+                            "stringifiedArguments": "'touchmove'"
+                        }
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "e",
+                            "type": "",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ]
         }
     ],
     "components": [
@@ -4485,7 +5053,7 @@
         },
         {
             "name": "SidebarComponent",
-            "id": "component-SidebarComponent-cd38e71afa4215d49ae37c20c63a6ba0e39dbe5e4366b8f695da49e199a357d4ff708d25ea184be1caa0047add1586061552aa7c1d8cb5f9f1cea22751c74ecd",
+            "id": "component-SidebarComponent-b94e1b39bff4d809e30a57aa8ae03a5c736b067ac6f43ff7b47969bfcc8f03b47a6f8b6ede334b1a669f77a3e1a3e5777f76065d9002317cd9078000ba557b22",
             "file": "src/components/layout/sidebar/sidebar.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -4503,11 +5071,19 @@
             "viewProviders": [],
             "inputsClass": [
                 {
+                    "name": "label",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 16,
+                    "type": "",
+                    "decorators": []
+                },
+                {
                     "name": "showBackButton",
                     "defaultValue": "false",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 11,
+                    "line": 12,
                     "type": "boolean",
                     "decorators": []
                 },
@@ -4516,13 +5092,26 @@
                     "defaultValue": "[]",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 12,
+                    "line": 13,
                     "type": "SidebarItem[]",
                     "decorators": []
                 }
             ],
             "outputsClass": [],
-            "propertiesClass": [],
+            "propertiesClass": [
+                {
+                    "name": "_label",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Observable<string>",
+                    "optional": false,
+                    "description": "",
+                    "line": 15,
+                    "modifierKind": [
+                        121
+                    ]
+                }
+            ],
             "methodsClass": [
                 {
                     "name": "isWindowWidthMobile",
@@ -4530,7 +5119,7 @@
                     "optional": false,
                     "returnType": "boolean",
                     "typeParameters": [],
-                    "line": 19,
+                    "line": 31,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -4543,7 +5132,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 16,
+                    "line": 28,
                     "deprecated": false,
                     "deprecationMessage": ""
                 }
@@ -4555,11 +5144,11 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {Component, Input, OnInit} from '@angular/core';\nimport {SidebarItem} from \"./sidebar-content/models\";\n\n@Component({\n  selector: 'pm-sidebar',\n  templateUrl: './sidebar.component.html',\n  styleUrls: ['./sidebar.component.scss']\n})\nexport class SidebarComponent implements OnInit {\n\n  @Input() showBackButton: boolean = false;\n  @Input() sidebarEntries: SidebarItem[] = [];\n\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n\n  public isWindowWidthMobile(): boolean {\n    return window.innerWidth <= 991;\n  }\n\n}\n",
+            "sourceCode": "import {Component, Input, OnInit} from '@angular/core';\nimport {SidebarItem} from \"./sidebar-content/models\";\nimport {isObservable, Observable, of} from \"rxjs\";\n\n@Component({\n  selector: 'pm-sidebar',\n  templateUrl: './sidebar.component.html',\n  styleUrls: ['./sidebar.component.scss']\n})\nexport class SidebarComponent implements OnInit {\n\n  @Input() showBackButton: boolean = false;\n  @Input() sidebarEntries: SidebarItem[] = [];\n\n  private _label: Observable<string>;\n  @Input() set label(value: string | Observable<string>) {\n    if (isObservable(value) === false) {\n      value = of(`${value}`);\n    }\n    this._label = value as Observable<string>;\n  }\n  get label(): Observable<string> {\n    return this._label;\n  }\n\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n\n  public isWindowWidthMobile(): boolean {\n    return window.innerWidth <= 991;\n  }\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": ".pm-sidebar {\n  $navbar-bg: rgba(var(--bg-default-rgb), 1);\n  $navbar-content-height: 40px; // necessário para saber\n  $navbar-padding: 0.5em;\n  $gradient-offset: $navbar-content-height * 0.7;\n  --navbar-height: calc(#{$navbar-content-height} + #{2 * $navbar-padding} + #{$gradient-offset});\n\n  .mat-drawer {\n    background-color: $navbar-bg;\n    border-right: 1px solid var(--color-gray-light);\n  }\n\n  .drawer-content {\n    position: relative;\n    background-color: var(--bg-default);\n    padding-top: var(--navbar-height);\n    max-width: 100vw;\n    overflow-x: hidden;\n\n    .navbar {\n      padding: $navbar-padding $navbar-padding calc(#{$navbar-padding} + #{$gradient-offset}) $navbar-padding;\n      // border-bottom: 1px solid var(--color-gray-light);\n\n      height: var(--navbar-height);\n      max-height: var(--navbar-height);\n      position: sticky;\n      top: calc(-1 * var(--navbar-height));\n      margin-top: calc(-1 * var(--navbar-height));\n      z-index: 3;\n\n      .navbar-bg {\n        position: absolute;\n        height: 100%;\n        width: 100%;\n        background-color: $navbar-bg;\n        -webkit-mask-image: linear-gradient(to bottom, $navbar-bg 60%, transparent 100%);\n        mask-image: linear-gradient(to bottom, $navbar-bg 60%, transparent 100%);\n        // backdrop-filter: blur(4px);\n        // -webkit-backdrop-filter: blur(4px);\n      }\n\n      .navbar-content {\n        z-index: 1;\n        display: flex;\n        justify-content: flex-start;\n        align-items: center;\n\n        .ham {\n          cursor: pointer;\n          -webkit-tap-highlight-color: transparent;\n          transition: transform 400ms;\n          -moz-user-select: none;\n          -webkit-user-select: none;\n          -ms-user-select: none;\n          user-select: none;\n\n          .line {\n            fill: none;\n            transition: stroke-dasharray 400ms, stroke-dashoffset 400ms;\n            stroke: var(--color-gray-dark);\n            stroke-width: 6;\n            stroke-linecap: round;\n          }\n\n          .top, .bottom {\n            stroke-dasharray: 40 121;\n          }\n\n          &.active {\n            .top, .bottom {\n              stroke-dashoffset: -102px;\n            }\n          }\n        }\n\n        .hamRotate.active {\n          transform: rotate(45deg);\n        }\n\n        .hamRotate180.active {\n          transform: rotate(180deg);\n        }\n\n      }\n    }\n  }\n}\n",
+                    "data": ".pm-sidebar {\n  $navbar-bg: rgba(var(--bg-default-rgb), 1);\n  $navbar-content-height: 40px; // necessário para saber\n  $navbar-padding: 0.5em;\n  $gradient-offset: $navbar-content-height * 0.7;\n  --navbar-height: calc(#{$navbar-content-height} + #{2 * $navbar-padding} + #{$gradient-offset});\n\n  .mat-drawer {\n    background-color: $navbar-bg;\n    border-right: 1px solid var(--color-gray-light);\n  }\n\n  .drawer-content {\n    position: relative;\n    background-color: var(--bg-default);\n    padding-top: var(--navbar-height);\n    max-width: 100vw;\n    overflow-x: hidden;\n\n    .navbar {\n      // border-bottom: 1px solid var(--color-gray-light);\n\n      height: var(--navbar-height);\n      max-height: var(--navbar-height);\n      position: sticky;\n      top: calc(-1 * var(--navbar-height));\n      margin-top: calc(-1 * var(--navbar-height));\n      z-index: 3;\n      padding: 0;\n\n      .navbar-bg {\n        position: absolute;\n        height: 100%;\n        width: 100%;\n        background-color: $navbar-bg;\n        -webkit-mask-image: linear-gradient(to bottom, $navbar-bg 60%, transparent 100%);\n        mask-image: linear-gradient(to bottom, $navbar-bg 60%, transparent 100%);\n        // backdrop-filter: blur(4px);\n        // -webkit-backdrop-filter: blur(4px);\n      }\n\n      .navbar-content {\n        padding: $navbar-padding $navbar-padding calc(#{$navbar-padding} + #{$gradient-offset}) $navbar-padding;\n        z-index: 1;\n        display: flex;\n        justify-content: flex-start;\n        align-items: center;\n\n        .ham {\n          cursor: pointer;\n          -webkit-tap-highlight-color: transparent;\n          transition: transform 400ms;\n          -moz-user-select: none;\n          -webkit-user-select: none;\n          -ms-user-select: none;\n          user-select: none;\n\n          .line {\n            fill: none;\n            transition: stroke-dasharray 400ms, stroke-dashoffset 400ms;\n            stroke: var(--color-gray-dark);\n            stroke-width: 6;\n            stroke-linecap: round;\n          }\n\n          .top, .bottom {\n            stroke-dasharray: 40 121;\n          }\n\n          &.active {\n            .top, .bottom {\n              stroke-dashoffset: -102px;\n            }\n          }\n        }\n\n        .hamRotate.active {\n          transform: rotate(45deg);\n        }\n\n        .hamRotate180.active {\n          transform: rotate(180deg);\n        }\n\n      }\n    }\n  }\n}\n",
                     "styleUrl": "./sidebar.component.scss"
                 }
             ],
@@ -4570,16 +5159,54 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "args": [],
-                "line": 12
+                "line": 24
             },
             "implements": [
                 "OnInit"
             ],
-            "templateData": "<mat-drawer-container class=\"pm-sidebar\" [autosize]=\"true\" fullscreen>\n\n  <mat-drawer #drawer [mode]=\"isWindowWidthMobile() === true ? 'over' : 'side'\">\n    <app-sidebar-content\n      *ngIf=\"sidebarEntries.length > 0\"\n      [sidebarEntries]=\"sidebarEntries\"\n      [drawer]=\"drawer\">\n    </app-sidebar-content>\n  </mat-drawer>\n\n  <mat-drawer-content class=\"ion-content-scroll-host drawer-content\">\n    <div class=\"navbar\">\n      <div class=\"navbar-bg\"></div>\n      <div class=\"navbar-content mb-3\">\n        <svg (click)=\"drawer.toggle()\"\n             class=\"ham\"\n             [ngClass]=\"{'active': drawer.opened}\"\n             viewBox=\"0 0 100 100\" width=\"40\"\n        >\n          <path class=\"line top\" d=\"m 70,33 h -40 c -6.5909,0 -7.763966,-4.501509 -7.763966,-7.511428 0,-4.721448 3.376452,-9.583771 13.876919,-9.583771 14.786182,0 11.409257,14.896182 9.596449,21.970818 -1.812808,7.074636 -15.709402,12.124381 -15.709402,12.124381\"/>\n          <path class=\"line middle\" d=\"m 30,50 h 40\"/>\n          <path class=\"line bottom\" d=\"m 70,67 h -40 c -6.5909,0 -7.763966,4.501509 -7.763966,7.511428 0,4.721448 3.376452,9.583771 13.876919,9.583771 14.786182,0 11.409257,-14.896182 9.596449,-21.970818 -1.812808,-7.074636 -15.709402,-12.124381 -15.709402,-12.124381\"/>\n        </svg>\n        <span *ngIf=\"showBackButton\"\n              backButton\n              class=\"d-flex justify-content-center align-items-center overflow-hidden color-gray-dark no-outline no-shadow cursor-pointer\"\n              style=\"max-height: 20px\"\n        >\n                    <i class=\"uil uil-2x uil-angle-left text-center inline-block\"></i>\n                </span>\n        <!--                <h2 class=\"color-gray-dark m-0 ms-3\">Navbar</h2>-->\n      </div>\n    </div>\n    <div class=\"container\">\n      <ng-content></ng-content>\n    </div>\n  </mat-drawer-content>\n\n\n</mat-drawer-container>\n"
+            "accessors": {
+                "label": {
+                    "name": "label",
+                    "setSignature": {
+                        "name": "label",
+                        "type": "void",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "args": [
+                            {
+                                "name": "value",
+                                "type": "string | Observable<string>",
+                                "deprecated": false,
+                                "deprecationMessage": ""
+                            }
+                        ],
+                        "returnType": "void",
+                        "line": 16,
+                        "jsdoctags": [
+                            {
+                                "name": "value",
+                                "type": "string | Observable<string>",
+                                "deprecated": false,
+                                "deprecationMessage": "",
+                                "tagName": {
+                                    "text": "param"
+                                }
+                            }
+                        ]
+                    },
+                    "getSignature": {
+                        "name": "label",
+                        "type": "",
+                        "returnType": "Observable<string>",
+                        "line": 22
+                    }
+                }
+            },
+            "templateData": "<mat-drawer-container class=\"pm-sidebar\" [autosize]=\"true\" fullscreen>\n\n  <mat-drawer #drawer [mode]=\"isWindowWidthMobile() === true ? 'over' : 'side'\">\n    <app-sidebar-content\n      *ngIf=\"sidebarEntries.length > 0\"\n      [sidebarEntries]=\"sidebarEntries\"\n      [drawer]=\"drawer\"\n    >\n    </app-sidebar-content>\n  </mat-drawer>\n\n  <mat-drawer-content class=\"ion-content-scroll-host drawer-content\">\n    <div class=\"navbar\">\n      <div class=\"navbar-bg\"></div>\n      <div class=\"navbar-content mb-3\">\n        <svg (click)=\"drawer.toggle()\"\n             class=\"ham\"\n             [ngClass]=\"{'active': drawer.opened}\"\n             viewBox=\"0 0 100 100\" width=\"40\"\n        >\n          <path class=\"line top\" d=\"m 70,33 h -40 c -6.5909,0 -7.763966,-4.501509 -7.763966,-7.511428 0,-4.721448 3.376452,-9.583771 13.876919,-9.583771 14.786182,0 11.409257,14.896182 9.596449,21.970818 -1.812808,7.074636 -15.709402,12.124381 -15.709402,12.124381\"/>\n          <path class=\"line middle\" d=\"m 30,50 h 40\"/>\n          <path class=\"line bottom\" d=\"m 70,67 h -40 c -6.5909,0 -7.763966,4.501509 -7.763966,7.511428 0,4.721448 3.376452,9.583771 13.876919,9.583771 14.786182,0 11.409257,-14.896182 9.596449,-21.970818 -1.812808,-7.074636 -15.709402,-12.124381 -15.709402,-12.124381\"/>\n        </svg>\n        <span *ngIf=\"showBackButton\"\n              navigationBackButton\n              class=\"d-flex justify-content-center align-items-center overflow-hidden color-gray-dark no-outline no-shadow cursor-pointer\"\n              style=\"max-height: 20px\"\n        >\n                    <i class=\"uil uil-2x uil-angle-left text-center inline-block\"></i>\n        </span>\n        <h2 class=\"color-gray-dark m-0 ms-3\">{{ label | async }}</h2>\n      </div>\n    </div>\n    <div class=\"container\">\n      <ng-content></ng-content>\n    </div>\n  </mat-drawer-content>\n\n\n</mat-drawer-container>\n"
         },
         {
             "name": "SidebarContentComponent",
-            "id": "component-SidebarContentComponent-5edd0d52dff4d4b6a59d7c9825e7c7f9363cac111cc78fb16ce22ccff3ff2b0a55bfe4b513b7ec82295f7f526c7a494cae6181ca396ee2bff73e38facb3be6c8",
+            "id": "component-SidebarContentComponent-4e841bb9cc0d027a90fbe36ed7b59d20e1f76fab4f54e031903ebec32fa73c84e553e1d541ddc314c311300bb8ce1b1a6f3b18b4588e5c01bc12d4499ca132a2",
             "file": "src/components/layout/sidebar/sidebar-content/sidebar-content.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -4644,7 +5271,7 @@
                     "description": "",
                     "line": 16,
                     "modifierKind": [
-                        121
+                        123
                     ]
                 }
             ],
@@ -4824,7 +5451,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {Component, Input, OnInit} from '@angular/core';\nimport {SidebarItem} from './models';\nimport {MatDrawer} from '@angular/material/sidenav';\n\n@Component({\n    selector: 'app-sidebar-content',\n    templateUrl: './sidebar-content.component.html',\n    styleUrls: ['./sidebar-content.component.scss']\n})\nexport class SidebarContentComponent implements OnInit {\n\n    @Input() drawer: MatDrawer;\n    @Input() minWidth: string = '240px';\n    @Input() expandCurrentItem: boolean = true;\n    @Input() sidebarEntries: SidebarItem[] = [];\n    private currentExpandedSession: string = '';\n\n    constructor(\n    ) {\n    }\n\n    ngOnInit(): void {\n    }\n\n    public executeAction(event: any, entry: SidebarItem, closeDrawer: boolean = true): void {\n        if (entry?.action) {\n            event.stopPropagation();\n            entry.action();\n        }\n\n        if (closeDrawer && this.drawer) {\n            this.drawer.close();\n        }\n    }\n\n    public keepSessionExpanded(event: any, treeId: string): void {\n        if (\n            event === true\n            && this.expandCurrentItem\n            && !!treeId\n        ) {\n            this.currentExpandedSession = `${treeId}`;\n        }\n    }\n\n    public getIdForEntry(entry: SidebarItem, prefix: string = ''): string {\n        let entryId = entry.label.replace(/[^a-zA-Z0-9,._-]/g, '');\n        entryId = prefix ? `${prefix}${entryId}` : entryId; // não pode ter \".\" senão o id não é reconhecido direito pelo bootstrap\n        return entryId;\n    }\n\n}\n",
+            "sourceCode": "import {Component, Input, OnInit} from '@angular/core';\nimport {SidebarItem} from './models';\nimport {MatDrawer} from '@angular/material/sidenav';\n\n@Component({\n    selector: 'app-sidebar-content',\n    templateUrl: './sidebar-content.component.html',\n    styleUrls: ['./sidebar-content.component.scss']\n})\nexport class SidebarContentComponent implements OnInit {\n\n    @Input() drawer: MatDrawer;\n    @Input() minWidth: string = '240px';\n    @Input() expandCurrentItem: boolean = true;\n    @Input() sidebarEntries: SidebarItem[] = [];\n    public currentExpandedSession: string = '';\n\n    constructor(\n    ) {\n    }\n\n    ngOnInit(): void {\n    }\n\n    public executeAction(event: any, entry: SidebarItem, closeDrawer: boolean = true): void {\n        if (entry?.action) {\n            event.stopPropagation();\n            entry.action();\n        }\n\n        if (closeDrawer && this.drawer) {\n            this.drawer.close();\n        }\n    }\n\n    public keepSessionExpanded(event: any, treeId: string): void {\n        if (\n            event === true\n            && this.expandCurrentItem\n            && !!treeId\n        ) {\n            this.currentExpandedSession = `${treeId}`;\n        }\n    }\n\n    public getIdForEntry(entry: SidebarItem, prefix: string = ''): string {\n        let entryId = entry.label.replace(/[^a-zA-Z0-9,._-]/g, '');\n        entryId = prefix ? `${prefix}${entryId}` : entryId; // não pode ter \".\" senão o id não é reconhecido direito pelo bootstrap\n        return entryId;\n    }\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -4844,7 +5471,7 @@
             "implements": [
                 "OnInit"
             ],
-            "templateData": "<div class=\"app-sidebar-content\"\n     [ngStyle]=\"{'min-width': minWidth}\"\n>\n    <ul class=\"sidebar-nav\">\n        <ng-container *ngFor=\"let entry of sidebarEntries\">\n            <ng-container *ngTemplateOutlet=\"entryChecker; context: {$implicit: entry, prefixId: getIdForEntry(entry)}\"></ng-container>\n        </ng-container>\n    </ul>\n</div>\n\n<ng-template #entryChecker let-entry let-prefixId=\"prefixId\">\n    <li routerLinkActive=\"active\"\n        [routerLinkActiveOptions]=\"{exact: true}\"\n        [ngClass]=\"{'active': currentExpandedSession.startsWith(prefixId)}\"\n    >\n        <ng-container [ngSwitch]=\"!!entry?.children\">\n            <!--Se for um item sem submenus-->\n            <ng-container *ngSwitchCase=\"false\">\n                <ng-container *ngTemplateOutlet=\"noSubmenuEntry; context: {$implicit: entry}\"></ng-container>\n            </ng-container>\n\n            <!--Se for um item com submenus-->\n            <ng-container *ngSwitchCase=\"true\">\n                <ng-container *ngTemplateOutlet=\"submenuEntry; context: {$implicit: entry, prefixId: prefixId}\"></ng-container>\n            </ng-container>\n        </ng-container>\n    </li>\n</ng-template>\n\n<ng-template #noSubmenuEntry let-entry>\n    <a (click)=\"executeAction($event, entry)\"\n       [routerLink]=\"entry.path\"\n       [queryParams]=\"entry?.queryParams\"\n    >\n        <ng-container *ngTemplateOutlet=\"entryContent; context: {$implicit: entry}\"></ng-container>\n    </a>\n</ng-template>\n\n<ng-template #submenuEntry let-entry let-prefixId=\"prefixId\" let-isSub=\"isSub\">\n    <a [ngClass]=\"{'sub': isSub}\"\n       [attr.data-bs-toggle]=\"'collapse'\"\n       [attr.data-bs-target]=\"'#collapse' + prefixId\"\n    >\n        <ng-container *ngTemplateOutlet=\"entryContent; context: {$implicit: entry}\"></ng-container>\n    </a>\n\n    <!--Exibe os itens do submenu-->\n    <ng-container *ngTemplateOutlet=\"childEntryContent; context: {$implicit: entry, prefixId: prefixId}\"></ng-container>\n</ng-template>\n\n<ng-template #entryContent let-entry>\n    <i class=\"{{ entry.iconClass }}\"></i>\n    <p class=\"ms-2\">\n        {{entry.label}}\n        <b *ngIf=\"entry?.children\" class=\"caret ms-3\"></b>\n    </p>\n</ng-template>\n\n<ng-template #childEntryContent let-entry let-prefixId=\"prefixId\">\n    <div *ngIf=\"entry?.children\"\n         [attr.id]=\"'collapse' + prefixId\"\n         class=\"{{currentExpandedSession.startsWith(getIdForEntry(entry, prefixId)) ? 'show' : 'collapse'}}\"\n    >\n        <div class=\"d-flex\">\n            <div class=\"aux-bar\"></div>\n            <ul class=\"sidebar-nav\">\n                <ng-container *ngFor=\"let childEntry of entry.children\">\n                <li routerLinkActive=\"active\"\n                    [routerLinkActiveOptions]=\"{exact: true}\"\n                    (isActiveChange)=\"keepSessionExpanded($event, getIdForEntry(entry, prefixId))\"\n                    [ngClass]=\"{'active': currentExpandedSession.startsWith(getIdForEntry(childEntry, prefixId))}\"\n                >\n                    <ng-container [ngSwitch]=\"!!childEntry?.children\">\n                        <!--Se for um item sem submenus-->\n                        <ng-container *ngSwitchCase=\"false\">\n                            <a class=\"sub\"\n                               (click)=\"executeAction($event, childEntry)\"\n                               [routerLink]=\"childEntry.path\"\n                               [queryParams]=\"childEntry?.queryParams\"\n                            >\n                                <ng-container *ngTemplateOutlet=\"entryContent; context: {$implicit: childEntry}\"></ng-container>\n                            </a>\n                        </ng-container>\n\n                        <!--Se for um item com submenus-->\n                        <ng-container *ngSwitchCase=\"true\">\n                            <ng-container *ngTemplateOutlet=\"submenuEntry; context: {$implicit: childEntry, prefixId: getIdForEntry(childEntry, prefixId), isSub: true}\"></ng-container>\n                        </ng-container>\n                    </ng-container>\n                </li>\n                </ng-container>\n            </ul>\n        </div>\n    </div>\n</ng-template>\n"
+            "templateData": "<div class=\"app-sidebar-content\"\n     [ngStyle]=\"{'min-width': minWidth}\"\n>\n    <ul class=\"sidebar-nav\">\n        <ng-container *ngFor=\"let entry of sidebarEntries\">\n            <ng-container *ngTemplateOutlet=\"entryChecker; context: {$implicit: entry, prefixId: getIdForEntry(entry)}\"></ng-container>\n        </ng-container>\n    </ul>\n</div>\n\n<ng-template #entryChecker let-entry let-prefixId=\"prefixId\">\n    <li routerLinkActive=\"active\"\n        [routerLinkActiveOptions]=\"{exact: true}\"\n        [ngClass]=\"{'active': currentExpandedSession.startsWith(prefixId)}\"\n    >\n        <ng-container [ngSwitch]=\"!!entry?.children\">\n            <!--Se for um item sem submenus-->\n            <ng-container *ngSwitchCase=\"false\">\n                <ng-container *ngTemplateOutlet=\"noSubmenuEntry; context: {$implicit: entry}\"></ng-container>\n            </ng-container>\n\n            <!--Se for um item com submenus-->\n            <ng-container *ngSwitchCase=\"true\">\n                <ng-container *ngTemplateOutlet=\"submenuEntry; context: {$implicit: entry, prefixId: prefixId}\"></ng-container>\n            </ng-container>\n        </ng-container>\n    </li>\n</ng-template>\n\n<ng-template #noSubmenuEntry let-entry>\n    <a (click)=\"executeAction($event, entry)\"\n       [routerLink]=\"entry?.routerLink\"\n       [queryParams]=\"entry?.queryParams\"\n    >\n        <ng-container *ngTemplateOutlet=\"entryContent; context: {$implicit: entry}\"></ng-container>\n    </a>\n</ng-template>\n\n<ng-template #submenuEntry let-entry let-prefixId=\"prefixId\" let-isSub=\"isSub\">\n    <a [ngClass]=\"{'sub': isSub}\"\n       [attr.data-bs-toggle]=\"'collapse'\"\n       [attr.data-bs-target]=\"'#collapse' + prefixId\"\n    >\n        <ng-container *ngTemplateOutlet=\"entryContent; context: {$implicit: entry}\"></ng-container>\n    </a>\n\n    <!--Exibe os itens do submenu-->\n    <ng-container *ngTemplateOutlet=\"childEntryContent; context: {$implicit: entry, prefixId: prefixId}\"></ng-container>\n</ng-template>\n\n<ng-template #entryContent let-entry>\n    <i class=\"{{ entry.iconClass }}\"></i>\n    <p class=\"ms-2\">\n        {{entry.label}}\n        <b *ngIf=\"entry?.children\" class=\"caret ms-3\"></b>\n    </p>\n</ng-template>\n\n<ng-template #childEntryContent let-entry let-prefixId=\"prefixId\">\n    <div *ngIf=\"entry?.children\"\n         [attr.id]=\"'collapse' + prefixId\"\n         class=\"{{currentExpandedSession.startsWith(getIdForEntry(entry, prefixId)) ? 'show' : 'collapse'}}\"\n    >\n        <div class=\"d-flex\">\n            <div class=\"aux-bar\"></div>\n            <ul class=\"sidebar-nav\">\n                <ng-container *ngFor=\"let childEntry of entry.children\">\n                <li routerLinkActive=\"active\"\n                    [routerLinkActiveOptions]=\"{exact: true}\"\n                    (isActiveChange)=\"keepSessionExpanded($event, getIdForEntry(entry, prefixId))\"\n                    [ngClass]=\"{'active': currentExpandedSession.startsWith(getIdForEntry(childEntry, prefixId))}\"\n                >\n                    <ng-container [ngSwitch]=\"!!childEntry?.children\">\n                        <!--Se for um item sem submenus-->\n                        <ng-container *ngSwitchCase=\"false\">\n                            <a class=\"sub\"\n                               (click)=\"executeAction($event, childEntry)\"\n                               [routerLink]=\"childEntry?.routerLink\"\n                               [queryParams]=\"childEntry?.queryParams\"\n                            >\n                                <ng-container *ngTemplateOutlet=\"entryContent; context: {$implicit: childEntry}\"></ng-container>\n                            </a>\n                        </ng-container>\n\n                        <!--Se for um item com submenus-->\n                        <ng-container *ngSwitchCase=\"true\">\n                            <ng-container *ngTemplateOutlet=\"submenuEntry; context: {$implicit: childEntry, prefixId: getIdForEntry(childEntry, prefixId), isSub: true}\"></ng-container>\n                        </ng-container>\n                    </ng-container>\n                </li>\n                </ng-container>\n            </ul>\n        </div>\n    </div>\n</ng-template>\n"
         },
         {
             "name": "SpinnerComponent",
@@ -6381,6 +7008,56 @@
             ]
         },
         {
+            "name": "LongPressModule",
+            "id": "module-LongPressModule-458e934aa6150449fd4b6ebcfe5f72f97b54a4e207e965ae579ac1d1cf0c3a84207ad5f688d72423c2875dbc65fe4a4a01ec0f6acd7110aa065947b0592afa8f",
+            "description": "",
+            "deprecationMessage": "",
+            "deprecated": false,
+            "file": "src/directives/long-press/long-press.module.ts",
+            "methods": [],
+            "sourceCode": "import { NgModule } from '@angular/core';\nimport { CommonModule } from '@angular/common';\nimport { LongPressDirective } from './long-press.directive';\nimport { ShortPressDirective } from './short-press.directive';\n\n// ref: https://stackoverflow.com/a/43629814/13335507\n\n@NgModule({\n  declarations: [\n    LongPressDirective,\n    ShortPressDirective\n  ],\n  exports: [\n    LongPressDirective,\n    ShortPressDirective\n  ],\n  imports: [\n    CommonModule\n  ]\n})\nexport class LongPressModule { }\n",
+            "children": [
+                {
+                    "type": "providers",
+                    "elements": []
+                },
+                {
+                    "type": "declarations",
+                    "elements": [
+                        {
+                            "name": "LongPressDirective"
+                        },
+                        {
+                            "name": "ShortPressDirective"
+                        }
+                    ]
+                },
+                {
+                    "type": "imports",
+                    "elements": []
+                },
+                {
+                    "type": "exports",
+                    "elements": [
+                        {
+                            "name": "LongPressDirective"
+                        },
+                        {
+                            "name": "ShortPressDirective"
+                        }
+                    ]
+                },
+                {
+                    "type": "bootstrap",
+                    "elements": []
+                },
+                {
+                    "type": "classes",
+                    "elements": []
+                }
+            ]
+        },
+        {
             "name": "MultiSelectModule",
             "id": "module-MultiSelectModule-c752e852df98bea0708c0149e380a8174743537f8cee25ff1de82c382871dff7785e0cfc228917978f368ae39f8fe4e92517dca21a19c96d1ce261af268bb90c",
             "description": "",
@@ -6415,6 +7092,50 @@
                     "elements": [
                         {
                             "name": "MultiSelectComponent"
+                        }
+                    ]
+                },
+                {
+                    "type": "bootstrap",
+                    "elements": []
+                },
+                {
+                    "type": "classes",
+                    "elements": []
+                }
+            ]
+        },
+        {
+            "name": "NavigationBackClickModule",
+            "id": "module-NavigationBackClickModule-aaf49c0b29345eb7ff9631b5f7110bb7989e3a0f04137b9205ae39121aba35f3338619345ee708f9b3d8cc30a9a4a72ae7868d66a4475611666d471a81695cdf",
+            "description": "",
+            "deprecationMessage": "",
+            "deprecated": false,
+            "file": "src/directives/navigation-back-click/navigation-back-click.module.ts",
+            "methods": [],
+            "sourceCode": "import {NgModule} from '@angular/core';\nimport {CommonModule} from '@angular/common';\nimport {NavigationBackClickDirective} from './navigation-back-click.directive';\n\n\n@NgModule({\n    exports: [NavigationBackClickDirective],\n    declarations: [NavigationBackClickDirective],\n    imports: [\n        CommonModule\n    ]\n})\nexport class NavigationBackClickModule {\n}\n",
+            "children": [
+                {
+                    "type": "providers",
+                    "elements": []
+                },
+                {
+                    "type": "declarations",
+                    "elements": [
+                        {
+                            "name": "NavigationBackClickDirective"
+                        }
+                    ]
+                },
+                {
+                    "type": "imports",
+                    "elements": []
+                },
+                {
+                    "type": "exports",
+                    "elements": [
+                        {
+                            "name": "NavigationBackClickDirective"
                         }
                     ]
                 },
@@ -6558,13 +7279,13 @@
         },
         {
             "name": "SidebarModule",
-            "id": "module-SidebarModule-9624fa944f39d6724639cc67a89ee77f0257782bd3aaf2c702ba678f3abb7f67fab05481557420a3091d2232884c8809888c5bb2f19b7c556f2f9062e452ed68",
+            "id": "module-SidebarModule-9283c4f298505cb66fc4e53afc98d257235aa6b5bf96b3070843d4fd67ea2565ab827cedf324f7c57efe079335054157ecd655c877b3de100b9f9a126c44b6a4",
             "description": "",
             "deprecationMessage": "",
             "deprecated": false,
             "file": "src/components/layout/sidebar/sidebar.module.ts",
             "methods": [],
-            "sourceCode": "import {NgModule} from '@angular/core';\nimport {CommonModule} from '@angular/common';\nimport {SidebarComponent} from '../sidebar/sidebar.component';\nimport {MatSidenavModule} from \"@angular/material/sidenav\";\nimport {SidebarContentComponent} from \"./sidebar-content/sidebar-content.component\";\nimport {RouterModule} from \"@angular/router\";\n\n\n@NgModule({\n  declarations: [\n    SidebarComponent,\n    SidebarContentComponent\n  ],\n  exports: [\n    SidebarComponent\n  ],\n  imports: [\n    CommonModule,\n    MatSidenavModule,\n    RouterModule\n  ]\n})\nexport class SidebarModule {\n}\n",
+            "sourceCode": "import {NgModule} from '@angular/core';\nimport {CommonModule} from '@angular/common';\nimport {SidebarComponent} from '../sidebar/sidebar.component';\nimport {MatSidenavModule} from \"@angular/material/sidenav\";\nimport {SidebarContentComponent} from \"./sidebar-content/sidebar-content.component\";\nimport {RouterModule} from \"@angular/router\";\nimport {NavigationBackClickModule} from \"../../../directives/navigation-back-click/navigation-back-click.module\";\n\n\n@NgModule({\n  declarations: [\n    SidebarComponent,\n    SidebarContentComponent\n  ],\n  exports: [\n    SidebarComponent\n  ],\n  imports: [\n    CommonModule,\n    MatSidenavModule,\n    RouterModule,\n    NavigationBackClickModule\n  ]\n})\nexport class SidebarModule {\n}\n",
             "children": [
                 {
                     "type": "providers",
@@ -6583,7 +7304,11 @@
                 },
                 {
                     "type": "imports",
-                    "elements": []
+                    "elements": [
+                        {
+                            "name": "NavigationBackClickModule"
+                        }
+                    ]
                 },
                 {
                     "type": "exports",
@@ -6876,6 +7601,16 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
+                "file": "src/directives/ng-if-loaded/spinner/spinner.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\n  flag: true\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
                 "file": "src/components/cards/basic-card/basic-card.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
@@ -6906,81 +7641,11 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/components/inputs/button/button.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "object",
-                "defaultValue": "{\n  label: '',\n  type: MainColors.default,\n  busy: false,\n  busyText: '',\n  iconClass: '',\n  iconPosition: 'start',\n  outline: false,\n  disabled: false,\n  size: 'md',\n  fillWidth: false\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "src/components/containers/tabs/tabs.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "object",
                 "defaultValue": "{\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/components/inputs/checkbox/checkbox.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "object",
-                "defaultValue": "{\n  checked: false,\n  disabled: false,\n  selectedItem: undefined,\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/components/inputs/combo-box/combo-box.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "object",
-                "defaultValue": "{\n  items: [],\n  disabled: false,\n  selectedItem: undefined\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/components/inputs/dropdown-actions/dropdown-actions.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "object",
-                "defaultValue": "{\n  actions: []\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/components/inputs/multi-select/multi-select.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "object",
-                "defaultValue": "{\n  options: [],\n  placeholder: '',\n  borderRadius: Sizes.md,\n  roundedThumbnail: true,\n  limit: 0,\n  selectedOptions: [],\n  sortSelectedItems: true,\n  observableInput: undefined,\n  observableDebounce: 100,\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/components/inputs/copy-content-input/copy-content-input.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "object",
-                "defaultValue": "{\n  disabled: false,\n  text: '',\n  copyCallback: undefined,\n  fillHeight: false,\n  btnColor: MainColors.primary,\n  borderRadius: Sizes.md\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/components/inputs/radio-button/radio-button.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "object",
-                "defaultValue": "{\n  orientation: OrientationEnum.Y,\n  values: [],\n  disabled: false,\n  selectedValue: undefined\n}"
             },
             {
                 "name": "defaultArgs",
@@ -6996,11 +7661,11 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/components/navigation/stepper/stepper.stories.ts",
+                "file": "src/components/lists/draggable-list/draggable-list.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "object",
-                "defaultValue": "{}"
+                "defaultValue": "{\n  showIndex: true,\n  itemActionLabel: undefined,\n  itemMainLabel: undefined,\n  itemSubLabel: undefined,\n  actions: undefined,\n  itemList: undefined,\n  roundedBorders: true,\n  enableDragging: true,\n  enableSelection: true,\n}"
             },
             {
                 "name": "defaultArgs",
@@ -7026,21 +7691,81 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/components/lists/draggable-list/draggable-list.stories.ts",
+                "file": "src/components/navigation/stepper/stepper.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "object",
-                "defaultValue": "{\n  showIndex: true,\n  itemActionLabel: undefined,\n  itemMainLabel: undefined,\n  itemSubLabel: undefined,\n  actions: undefined,\n  itemList: undefined,\n  roundedBorders: true,\n  enableDragging: true,\n  enableSelection: true,\n}"
+                "defaultValue": "{}"
             },
             {
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/directives/ng-if-loaded/spinner/spinner.stories.ts",
+                "file": "src/components/inputs/button/button.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "object",
-                "defaultValue": "{\n  flag: true\n}"
+                "defaultValue": "{\n  label: '',\n  type: MainColors.default,\n  busy: false,\n  busyText: '',\n  iconClass: '',\n  iconPosition: 'start',\n  outline: false,\n  disabled: false,\n  size: 'md',\n  fillWidth: false\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/inputs/checkbox/checkbox.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\n  checked: false,\n  disabled: false,\n  selectedItem: undefined,\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/inputs/combo-box/combo-box.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\n  items: [],\n  disabled: false,\n  selectedItem: undefined\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/inputs/multi-select/multi-select.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\n  options: [],\n  placeholder: '',\n  borderRadius: Sizes.md,\n  roundedThumbnail: true,\n  limit: 0,\n  selectedOptions: [],\n  sortSelectedItems: true,\n  observableInput: undefined,\n  observableDebounce: 100,\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/inputs/radio-button/radio-button.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\n  orientation: OrientationEnum.Y,\n  values: [],\n  disabled: false,\n  selectedValue: undefined\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/inputs/copy-content-input/copy-content-input.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\n  disabled: false,\n  text: '',\n  copyCallback: undefined,\n  fillHeight: false,\n  btnColor: MainColors.primary,\n  borderRadius: Sizes.md\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/inputs/dropdown-actions/dropdown-actions.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\n  actions: []\n}"
             },
             {
                 "name": "DefaultBasicCard",
@@ -7505,6 +8230,16 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
+                "file": "src/directives/ng-if-loaded/spinner/spinner.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<SpinnerComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <div *ngIfLoaded=\"flag\">\n        Conteúdo normal\n    </div>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
                 "file": "src/components/cards/basic-card/basic-card.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
@@ -7535,16 +8270,6 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/components/inputs/button/button.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story<ButtonComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-button\n        [label]=\"label\"\n        [type]=\"type\"\n        [busy]=\"busy\"\n        [busyText]=\"busyText\"\n        [iconClass]=\"iconClass\"\n        [iconPosition]=\"iconPosition\"\n        [outline]=\"outline\"\n        [disabled]=\"disabled\"\n        [size]=\"size\"\n        [fillWidth]=\"fillWidth\"\n    >\n        Button Content\n    </pm-button>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "src/components/containers/tabs/tabs.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
@@ -7555,81 +8280,21 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/components/inputs/checkbox/checkbox.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story<CheckboxComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-checkbox\n      [checked]=\"checked\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/components/inputs/combo-box/combo-box.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story<ComboBoxComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-combo-box\n      [items]=\"items\"\n      [disabled]=\"disabled\"\n      [selectedItem]=\"selectedItem\"\n    >\n    </pm-combo-box>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/components/inputs/dropdown-actions/dropdown-actions.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story<DropdownActionsComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-dropdown-actions\n      [actions]=\"actions\"\n    >\n    </pm-dropdown-actions>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/components/inputs/multi-select/multi-select.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story<MultiSelectComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-multi-select\n        [options]=\"options\"\n        [placeholder]=\"placeholder\"\n        [borderRadius]=\"borderRadius\"\n        [roundedThumbnail]=\"roundedThumbnail\"\n        [limit]=\"limit\"\n        [selectedOptions]=\"selectedOptions\"\n        [sortSelectedItems]=\"sortSelectedItems\"\n        [observableInput]=\"observableInput\"\n        [observableDebounce]=\"observableDebounce\"\n    >\n    </pm-multi-select>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/components/inputs/copy-content-input/copy-content-input.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story<CopyContentInputComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-copy-content-input\n      [text]=\"text\"\n      [disabled]=\"disabled\"\n      [copyCallback]=\"copyCallback\"\n      [fillHeight]=\"fillHeight\"\n      [btnColor]=\"btnColor\"\n      [borderRadius]=\"borderRadius\"\n    >\n    </pm-copy-content-input>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/components/inputs/radio-button/radio-button.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story<RadioButtonComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-radio-button\n      [orientation]=\"orientation\"\n      [values]=\"values\"\n      [selectedValue]=\"selectedValue\"\n      [disabled]=\"disabled\"\n    >\n    </pm-radio-button>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "src/components/layout/sidebar/sidebar.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story<SidebarComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-sidebar\n        [showBackButton]=\"showBackButton\"\n        [sidebarEntries]=\"sidebarEntries\"\n    >\n        <p>Conteúdo aqui! algo como router-outlet</p>\n    </pm-sidebar>\n  `\n})"
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-sidebar\n        [showBackButton]=\"showBackButton\"\n        [sidebarEntries]=\"sidebarEntries\"\n    >\n        <p>Conteúdo aqui! algo como router-outlet</p>\n        <ng-container *ngFor=\"let _ of [].constructor(20)\">\n            <p>.</p>\n        </ng-container>\n    </pm-sidebar>\n  `\n})"
             },
             {
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/components/navigation/stepper/stepper.stories.ts",
+                "file": "src/components/lists/draggable-list/draggable-list.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
-                "type": "Story<StepperComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-stepper>\n      <cdk-step> <p>This is any content of \"Step 1\"</p> </cdk-step>\n      <cdk-step> <p>This is any content of \"Step 2\"</p> </cdk-step>\n    </pm-stepper>\n  `\n})"
+                "type": "Story<DraggableListComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-draggable-list\n      [showIndex]=\"showIndex\"\n      [itemActionLabel]=\"itemActionLabel\"\n      [itemMainLabel]=\"itemMainLabel\"\n      [itemSubLabel]=\"itemSubLabel\"\n      [actions]=\"actions\"\n      [itemList]=\"itemList\"\n      [roundedBorders]=\"roundedBorders\"\n      [enableDragging]=\"enableDragging\"\n      [enableSelection]=\"enableSelection\"\n    >\n    </pm-draggable-list>\n  `\n})"
             },
             {
                 "name": "Template",
@@ -7655,21 +8320,81 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/components/lists/draggable-list/draggable-list.stories.ts",
+                "file": "src/components/navigation/stepper/stepper.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
-                "type": "Story<DraggableListComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-draggable-list\n      [showIndex]=\"showIndex\"\n      [itemActionLabel]=\"itemActionLabel\"\n      [itemMainLabel]=\"itemMainLabel\"\n      [itemSubLabel]=\"itemSubLabel\"\n      [actions]=\"actions\"\n      [itemList]=\"itemList\"\n      [roundedBorders]=\"roundedBorders\"\n      [enableDragging]=\"enableDragging\"\n      [enableSelection]=\"enableSelection\"\n    >\n    </pm-draggable-list>\n  `\n})"
+                "type": "Story<StepperComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-stepper>\n      <cdk-step> <p>This is any content of \"Step 1\"</p> </cdk-step>\n      <cdk-step> <p>This is any content of \"Step 2\"</p> </cdk-step>\n    </pm-stepper>\n  `\n})"
             },
             {
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/directives/ng-if-loaded/spinner/spinner.stories.ts",
+                "file": "src/components/inputs/button/button.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
-                "type": "Story<SpinnerComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <div *ngIfLoaded=\"flag\">\n        Conteúdo normal\n    </div>\n  `\n})"
+                "type": "Story<ButtonComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-button\n        [label]=\"label\"\n        [type]=\"type\"\n        [busy]=\"busy\"\n        [busyText]=\"busyText\"\n        [iconClass]=\"iconClass\"\n        [iconPosition]=\"iconPosition\"\n        [outline]=\"outline\"\n        [disabled]=\"disabled\"\n        [size]=\"size\"\n        [fillWidth]=\"fillWidth\"\n    >\n        Button Content\n    </pm-button>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/inputs/checkbox/checkbox.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<CheckboxComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-checkbox\n      [checked]=\"checked\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/inputs/combo-box/combo-box.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<ComboBoxComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-combo-box\n      [items]=\"items\"\n      [disabled]=\"disabled\"\n      [selectedItem]=\"selectedItem\"\n    >\n    </pm-combo-box>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/inputs/multi-select/multi-select.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<MultiSelectComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-multi-select\n        [options]=\"options\"\n        [placeholder]=\"placeholder\"\n        [borderRadius]=\"borderRadius\"\n        [roundedThumbnail]=\"roundedThumbnail\"\n        [limit]=\"limit\"\n        [selectedOptions]=\"selectedOptions\"\n        [sortSelectedItems]=\"sortSelectedItems\"\n        [observableInput]=\"observableInput\"\n        [observableDebounce]=\"observableDebounce\"\n    >\n    </pm-multi-select>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/inputs/radio-button/radio-button.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<RadioButtonComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-radio-button\n      [orientation]=\"orientation\"\n      [values]=\"values\"\n      [selectedValue]=\"selectedValue\"\n      [disabled]=\"disabled\"\n    >\n    </pm-radio-button>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/inputs/copy-content-input/copy-content-input.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<CopyContentInputComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-copy-content-input\n      [text]=\"text\"\n      [disabled]=\"disabled\"\n      [copyCallback]=\"copyCallback\"\n      [fillHeight]=\"fillHeight\"\n      [btnColor]=\"btnColor\"\n      [borderRadius]=\"borderRadius\"\n    >\n    </pm-copy-content-input>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/inputs/dropdown-actions/dropdown-actions.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<DropdownActionsComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-dropdown-actions\n      [actions]=\"actions\"\n    >\n    </pm-dropdown-actions>\n  `\n})"
             },
             {
                 "name": "ThumbnailMultiSelect",
@@ -8430,6 +9155,38 @@
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-XXXName\n    >\n    </pm-XXXName>\n  `\n})"
                 }
             ],
+            "src/directives/ng-if-loaded/spinner/spinner.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/directives/ng-if-loaded/spinner/spinner.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "object",
+                    "defaultValue": "{\n  flag: true\n}"
+                },
+                {
+                    "name": "DefaultSpinner",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/directives/ng-if-loaded/spinner/spinner.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/directives/ng-if-loaded/spinner/spinner.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story<SpinnerComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <div *ngIfLoaded=\"flag\">\n        Conteúdo normal\n    </div>\n  `\n})"
+                }
+            ],
             "src/components/cards/basic-card/basic-card.stories.ts": [
                 {
                     "name": "defaultArgs",
@@ -8526,6 +9283,164 @@
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-tabs\n    >\n    </pm-tabs>\n  `\n})"
                 }
             ],
+            "src/components/layout/sidebar/sidebar.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/layout/sidebar/sidebar.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "object",
+                    "defaultValue": "{\n  showBackButton: false,\n  sidebarEntries: []\n}"
+                },
+                {
+                    "name": "DefaultSidebar",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/layout/sidebar/sidebar.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/layout/sidebar/sidebar.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story<SidebarComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-sidebar\n        [showBackButton]=\"showBackButton\"\n        [sidebarEntries]=\"sidebarEntries\"\n    >\n        <p>Conteúdo aqui! algo como router-outlet</p>\n        <ng-container *ngFor=\"let _ of [].constructor(20)\">\n            <p>.</p>\n        </ng-container>\n    </pm-sidebar>\n  `\n})"
+                }
+            ],
+            "src/components/lists/draggable-list/draggable-list.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/lists/draggable-list/draggable-list.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "object",
+                    "defaultValue": "{\n  showIndex: true,\n  itemActionLabel: undefined,\n  itemMainLabel: undefined,\n  itemSubLabel: undefined,\n  actions: undefined,\n  itemList: undefined,\n  roundedBorders: true,\n  enableDragging: true,\n  enableSelection: true,\n}"
+                },
+                {
+                    "name": "DefaultDraggableList",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/lists/draggable-list/draggable-list.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "DisabledDragging",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/lists/draggable-list/draggable-list.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "NoIndexStringList",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/lists/draggable-list/draggable-list.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/lists/draggable-list/draggable-list.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story<DraggableListComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-draggable-list\n      [showIndex]=\"showIndex\"\n      [itemActionLabel]=\"itemActionLabel\"\n      [itemMainLabel]=\"itemMainLabel\"\n      [itemSubLabel]=\"itemSubLabel\"\n      [actions]=\"actions\"\n      [itemList]=\"itemList\"\n      [roundedBorders]=\"roundedBorders\"\n      [enableDragging]=\"enableDragging\"\n      [enableSelection]=\"enableSelection\"\n    >\n    </pm-draggable-list>\n  `\n})"
+                }
+            ],
+            "src/components/lists/grid-list/grid-list.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/lists/grid-list/grid-list.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "object",
+                    "defaultValue": "{\n}"
+                },
+                {
+                    "name": "DefaultGridList",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/lists/grid-list/grid-list.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "getColor",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/lists/grid-list/grid-list.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "() => MainColors.primary"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/lists/grid-list/grid-list.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story<GridListComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-grid-list\n      [items]=\"items\"\n      [displayStyle]=\"displayStyle\"\n      [gridHeaderReverse]=\"gridHeaderReverse\"\n      [bodyBackgroundColor]=\"bodyBackgroundColor\"\n      [actionTemplate]=\"undefined\"\n      [overflowGallery]=\"overflowGallery\"\n    >\n    </pm-grid-list>\n  `\n})"
+                }
+            ],
+            "src/components/navigation/stepper/stepper.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/navigation/stepper/stepper.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "object",
+                    "defaultValue": "{}"
+                },
+                {
+                    "name": "DefaultStepper",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/navigation/stepper/stepper.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/navigation/stepper/stepper.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story<StepperComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-stepper>\n      <cdk-step> <p>This is any content of \"Step 1\"</p> </cdk-step>\n      <cdk-step> <p>This is any content of \"Step 2\"</p> </cdk-step>\n    </pm-stepper>\n  `\n})"
+                }
+            ],
             "src/components/inputs/checkbox/checkbox.stories.ts": [
                 {
                     "name": "defaultArgs",
@@ -8610,38 +9525,6 @@
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-combo-box\n      [items]=\"items\"\n      [disabled]=\"disabled\"\n      [selectedItem]=\"selectedItem\"\n    >\n    </pm-combo-box>\n  `\n})"
                 }
             ],
-            "src/components/inputs/dropdown-actions/dropdown-actions.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/inputs/dropdown-actions/dropdown-actions.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "object",
-                    "defaultValue": "{\n  actions: []\n}"
-                },
-                {
-                    "name": "DefaultDropdownActions",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/inputs/dropdown-actions/dropdown-actions.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/inputs/dropdown-actions/dropdown-actions.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Story<DropdownActionsComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-dropdown-actions\n      [actions]=\"actions\"\n    >\n    </pm-dropdown-actions>\n  `\n})"
-                }
-            ],
             "src/components/inputs/multi-select/multi-select.stories.ts": [
                 {
                     "name": "defaultArgs",
@@ -8704,38 +9587,6 @@
                     "defaultValue": "Template.bind({})"
                 }
             ],
-            "src/components/inputs/copy-content-input/copy-content-input.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/inputs/copy-content-input/copy-content-input.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "object",
-                    "defaultValue": "{\n  disabled: false,\n  text: '',\n  copyCallback: undefined,\n  fillHeight: false,\n  btnColor: MainColors.primary,\n  borderRadius: Sizes.md\n}"
-                },
-                {
-                    "name": "DefaultCopyContentInput",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/inputs/copy-content-input/copy-content-input.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/inputs/copy-content-input/copy-content-input.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Story<CopyContentInputComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-copy-content-input\n      [text]=\"text\"\n      [disabled]=\"disabled\"\n      [copyCallback]=\"copyCallback\"\n      [fillHeight]=\"fillHeight\"\n      [btnColor]=\"btnColor\"\n      [borderRadius]=\"borderRadius\"\n    >\n    </pm-copy-content-input>\n  `\n})"
-                }
-            ],
             "src/components/inputs/radio-button/radio-button.stories.ts": [
                 {
                     "name": "defaultArgs",
@@ -8778,22 +9629,22 @@
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-radio-button\n      [orientation]=\"orientation\"\n      [values]=\"values\"\n      [selectedValue]=\"selectedValue\"\n      [disabled]=\"disabled\"\n    >\n    </pm-radio-button>\n  `\n})"
                 }
             ],
-            "src/components/layout/sidebar/sidebar.stories.ts": [
+            "src/components/inputs/copy-content-input/copy-content-input.stories.ts": [
                 {
                     "name": "defaultArgs",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "src/components/layout/sidebar/sidebar.stories.ts",
+                    "file": "src/components/inputs/copy-content-input/copy-content-input.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "object",
-                    "defaultValue": "{\n  showBackButton: false,\n  sidebarEntries: []\n}"
+                    "defaultValue": "{\n  disabled: false,\n  text: '',\n  copyCallback: undefined,\n  fillHeight: false,\n  btnColor: MainColors.primary,\n  borderRadius: Sizes.md\n}"
                 },
                 {
-                    "name": "DefaultSidebar",
+                    "name": "DefaultCopyContentInput",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "src/components/layout/sidebar/sidebar.stories.ts",
+                    "file": "src/components/inputs/copy-content-input/copy-content-input.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "",
@@ -8803,29 +9654,29 @@
                     "name": "Template",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "src/components/layout/sidebar/sidebar.stories.ts",
+                    "file": "src/components/inputs/copy-content-input/copy-content-input.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "type": "Story<SidebarComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-sidebar\n        [showBackButton]=\"showBackButton\"\n        [sidebarEntries]=\"sidebarEntries\"\n    >\n        <p>Conteúdo aqui! algo como router-outlet</p>\n    </pm-sidebar>\n  `\n})"
+                    "type": "Story<CopyContentInputComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-copy-content-input\n      [text]=\"text\"\n      [disabled]=\"disabled\"\n      [copyCallback]=\"copyCallback\"\n      [fillHeight]=\"fillHeight\"\n      [btnColor]=\"btnColor\"\n      [borderRadius]=\"borderRadius\"\n    >\n    </pm-copy-content-input>\n  `\n})"
                 }
             ],
-            "src/components/navigation/stepper/stepper.stories.ts": [
+            "src/components/inputs/dropdown-actions/dropdown-actions.stories.ts": [
                 {
                     "name": "defaultArgs",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "src/components/navigation/stepper/stepper.stories.ts",
+                    "file": "src/components/inputs/dropdown-actions/dropdown-actions.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "object",
-                    "defaultValue": "{}"
+                    "defaultValue": "{\n  actions: []\n}"
                 },
                 {
-                    "name": "DefaultStepper",
+                    "name": "DefaultDropdownActions",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "src/components/navigation/stepper/stepper.stories.ts",
+                    "file": "src/components/inputs/dropdown-actions/dropdown-actions.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "",
@@ -8835,137 +9686,11 @@
                     "name": "Template",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "src/components/navigation/stepper/stepper.stories.ts",
+                    "file": "src/components/inputs/dropdown-actions/dropdown-actions.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "type": "Story<StepperComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-stepper>\n      <cdk-step> <p>This is any content of \"Step 1\"</p> </cdk-step>\n      <cdk-step> <p>This is any content of \"Step 2\"</p> </cdk-step>\n    </pm-stepper>\n  `\n})"
-                }
-            ],
-            "src/components/lists/grid-list/grid-list.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/lists/grid-list/grid-list.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "object",
-                    "defaultValue": "{\n}"
-                },
-                {
-                    "name": "DefaultGridList",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/lists/grid-list/grid-list.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "getColor",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/lists/grid-list/grid-list.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "() => MainColors.primary"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/lists/grid-list/grid-list.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Story<GridListComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-grid-list\n      [items]=\"items\"\n      [displayStyle]=\"displayStyle\"\n      [gridHeaderReverse]=\"gridHeaderReverse\"\n      [bodyBackgroundColor]=\"bodyBackgroundColor\"\n      [actionTemplate]=\"undefined\"\n      [overflowGallery]=\"overflowGallery\"\n    >\n    </pm-grid-list>\n  `\n})"
-                }
-            ],
-            "src/components/lists/draggable-list/draggable-list.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/lists/draggable-list/draggable-list.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "object",
-                    "defaultValue": "{\n  showIndex: true,\n  itemActionLabel: undefined,\n  itemMainLabel: undefined,\n  itemSubLabel: undefined,\n  actions: undefined,\n  itemList: undefined,\n  roundedBorders: true,\n  enableDragging: true,\n  enableSelection: true,\n}"
-                },
-                {
-                    "name": "DefaultDraggableList",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/lists/draggable-list/draggable-list.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "DisabledDragging",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/lists/draggable-list/draggable-list.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "NoIndexStringList",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/lists/draggable-list/draggable-list.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/lists/draggable-list/draggable-list.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Story<DraggableListComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-draggable-list\n      [showIndex]=\"showIndex\"\n      [itemActionLabel]=\"itemActionLabel\"\n      [itemMainLabel]=\"itemMainLabel\"\n      [itemSubLabel]=\"itemSubLabel\"\n      [actions]=\"actions\"\n      [itemList]=\"itemList\"\n      [roundedBorders]=\"roundedBorders\"\n      [enableDragging]=\"enableDragging\"\n      [enableSelection]=\"enableSelection\"\n    >\n    </pm-draggable-list>\n  `\n})"
-                }
-            ],
-            "src/directives/ng-if-loaded/spinner/spinner.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/directives/ng-if-loaded/spinner/spinner.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "object",
-                    "defaultValue": "{\n  flag: true\n}"
-                },
-                {
-                    "name": "DefaultSpinner",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/directives/ng-if-loaded/spinner/spinner.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/directives/ng-if-loaded/spinner/spinner.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Story<SpinnerComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <div *ngIfLoaded=\"flag\">\n        Conteúdo normal\n    </div>\n  `\n})"
+                    "type": "Story<DropdownActionsComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-dropdown-actions\n      [actions]=\"actions\"\n    >\n    </pm-dropdown-actions>\n  `\n})"
                 }
             ],
             "src/services/command-palette/command-palette.stories.ts": [
@@ -10027,7 +10752,7 @@
                 "linktype": "component",
                 "name": "SidebarComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/6",
+                "coverageCount": "0/8",
                 "status": "low"
             },
             {
@@ -10323,6 +11048,33 @@
                 "name": "Template",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/directives/long-press/long-press.directive.ts",
+                "type": "directive",
+                "linktype": "directive",
+                "name": "LongPressDirective",
+                "coveragePercent": 0,
+                "coverageCount": "0/13",
+                "status": "low"
+            },
+            {
+                "filePath": "src/directives/long-press/short-press.directive.ts",
+                "type": "directive",
+                "linktype": "directive",
+                "name": "ShortPressDirective",
+                "coveragePercent": 0,
+                "coverageCount": "0/15",
+                "status": "low"
+            },
+            {
+                "filePath": "src/directives/navigation-back-click/navigation-back-click.directive.ts",
+                "type": "directive",
+                "linktype": "directive",
+                "name": "NavigationBackClickDirective",
+                "coveragePercent": 0,
+                "coverageCount": "0/4",
                 "status": "low"
             },
             {
