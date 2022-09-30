@@ -5202,7 +5202,7 @@
                     }
                 }
             },
-            "templateData": "<mat-drawer-container class=\"pm-sidebar\" [autosize]=\"true\" fullscreen>\n\n  <mat-drawer #drawer [mode]=\"isWindowWidthMobile() === true ? 'over' : 'side'\">\n    <app-sidebar-content\n      *ngIf=\"sidebarEntries.length > 0\"\n      [sidebarEntries]=\"sidebarEntries\"\n      [drawer]=\"drawer\"\n    >\n    </app-sidebar-content>\n  </mat-drawer>\n\n  <mat-drawer-content class=\"ion-content-scroll-host drawer-content\">\n    <div class=\"navbar\">\n      <div class=\"navbar-bg\"></div>\n      <div class=\"navbar-content mb-3\">\n        <svg (click)=\"drawer.toggle()\"\n             class=\"ham\"\n             [ngClass]=\"{'active': drawer.opened}\"\n             viewBox=\"0 0 100 100\" width=\"40\"\n        >\n          <path class=\"line top\" d=\"m 70,33 h -40 c -6.5909,0 -7.763966,-4.501509 -7.763966,-7.511428 0,-4.721448 3.376452,-9.583771 13.876919,-9.583771 14.786182,0 11.409257,14.896182 9.596449,21.970818 -1.812808,7.074636 -15.709402,12.124381 -15.709402,12.124381\"/>\n          <path class=\"line middle\" d=\"m 30,50 h 40\"/>\n          <path class=\"line bottom\" d=\"m 70,67 h -40 c -6.5909,0 -7.763966,4.501509 -7.763966,7.511428 0,4.721448 3.376452,9.583771 13.876919,9.583771 14.786182,0 11.409257,-14.896182 9.596449,-21.970818 -1.812808,-7.074636 -15.709402,-12.124381 -15.709402,-12.124381\"/>\n        </svg>\n        <span *ngIf=\"showBackButton\"\n              navigationBackButton\n              class=\"d-flex justify-content-center align-items-center overflow-hidden color-gray-dark no-outline no-shadow cursor-pointer\"\n              style=\"max-height: 20px\"\n        >\n                    <i class=\"uil uil-2x uil-angle-left text-center inline-block\"></i>\n        </span>\n        <h2 class=\"color-gray-dark m-0 ms-3\">{{ label | async }}</h2>\n      </div>\n    </div>\n    <div class=\"container\">\n      <ng-content></ng-content>\n    </div>\n  </mat-drawer-content>\n\n\n</mat-drawer-container>\n"
+            "templateData": "<mat-drawer-container class=\"pm-sidebar\" [autosize]=\"true\" fullscreen>\n\n  <mat-drawer #drawer [mode]=\"isWindowWidthMobile() === true ? 'over' : 'side'\">\n    <app-sidebar-content\n      *ngIf=\"sidebarEntries.length > 0\"\n      [sidebarEntries]=\"sidebarEntries\"\n      [drawer]=\"drawer\"\n    >\n    </app-sidebar-content>\n  </mat-drawer>\n\n  <mat-drawer-content class=\"ion-content-scroll-host drawer-content\">\n    <div class=\"navbar\">\n      <div class=\"navbar-bg\"></div>\n      <div class=\"navbar-content mb-3\">\n        <svg (click)=\"drawer.toggle()\"\n             class=\"ham\"\n             [ngClass]=\"{'active': drawer.opened}\"\n             viewBox=\"0 0 100 100\" width=\"40\"\n        >\n          <path class=\"line top\" d=\"m 70,33 h -40 c -6.5909,0 -7.763966,-4.501509 -7.763966,-7.511428 0,-4.721448 3.376452,-9.583771 13.876919,-9.583771 14.786182,0 11.409257,14.896182 9.596449,21.970818 -1.812808,7.074636 -15.709402,12.124381 -15.709402,12.124381\"/>\n          <path class=\"line middle\" d=\"m 30,50 h 40\"/>\n          <path class=\"line bottom\" d=\"m 70,67 h -40 c -6.5909,0 -7.763966,4.501509 -7.763966,7.511428 0,4.721448 3.376452,9.583771 13.876919,9.583771 14.786182,0 11.409257,-14.896182 9.596449,-21.970818 -1.812808,-7.074636 -15.709402,-12.124381 -15.709402,-12.124381\"/>\n        </svg>\n        <span *ngIf=\"showBackButton\"\n              navigationBackButton\n              class=\"d-flex justify-content-center align-items-center overflow-hidden color-gray-dark no-outline no-shadow cursor-pointer\"\n              style=\"max-height: 20px\"\n        >\n                    <i class=\"uil uil-2x uil-angle-left text-center inline-block\"></i>\n        </span>\n        <h4 class=\"color-gray-dark m-0 ms-3\">{{ label | async }}</h4>\n      </div>\n    </div>\n    <div class=\"container\">\n      <ng-content></ng-content>\n    </div>\n  </mat-drawer-content>\n\n\n</mat-drawer-container>\n"
         },
         {
             "name": "SidebarContentComponent",
@@ -7601,16 +7601,6 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/directives/ng-if-loaded/spinner/spinner.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "object",
-                "defaultValue": "{\n  flag: true\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "src/components/cards/basic-card/basic-card.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
@@ -7655,47 +7645,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "object",
-                "defaultValue": "{\n  showBackButton: false,\n  sidebarEntries: []\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/components/lists/draggable-list/draggable-list.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "object",
-                "defaultValue": "{\n  showIndex: true,\n  itemActionLabel: undefined,\n  itemMainLabel: undefined,\n  itemSubLabel: undefined,\n  actions: undefined,\n  itemList: undefined,\n  roundedBorders: true,\n  enableDragging: true,\n  enableSelection: true,\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/components/lists/grid-list/grid-list.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "object",
-                "defaultValue": "{\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/components/lists/table-list/table-list.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "object",
-                "defaultValue": "{\n  columns: [],\n  columnNames: [],\n  imageColumns: [],\n  imageHeight: '50px',\n  showHeader: true,\n  numberFormat: '1.2-2',\n  numberPrefix: '',\n  actionsTemplate: undefined,\n  itemList: undefined,\n  borderRadius: undefined,\n  backgroundColor: undefined,\n  expandedDetailTemplate: undefined,\n  disableExpandedOnDisabledRow: true,\n  expandedRow: undefined\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/components/navigation/stepper/stepper.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "object",
-                "defaultValue": "{}"
+                "defaultValue": "{\n  showBackButton: false,\n  sidebarEntries: [],\n  label: of(''),\n}"
             },
             {
                 "name": "defaultArgs",
@@ -7731,26 +7681,6 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/components/inputs/multi-select/multi-select.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "object",
-                "defaultValue": "{\n  options: [],\n  placeholder: '',\n  borderRadius: Sizes.md,\n  roundedThumbnail: true,\n  limit: 0,\n  selectedOptions: [],\n  sortSelectedItems: true,\n  observableInput: undefined,\n  observableDebounce: 100,\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/components/inputs/radio-button/radio-button.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "object",
-                "defaultValue": "{\n  orientation: OrientationEnum.Y,\n  values: [],\n  disabled: false,\n  selectedValue: undefined\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "src/components/inputs/copy-content-input/copy-content-input.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
@@ -7766,6 +7696,76 @@
                 "deprecationMessage": "",
                 "type": "object",
                 "defaultValue": "{\n  actions: []\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/inputs/multi-select/multi-select.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\n  options: [],\n  placeholder: '',\n  borderRadius: Sizes.md,\n  roundedThumbnail: true,\n  limit: 0,\n  selectedOptions: [],\n  sortSelectedItems: true,\n  observableInput: undefined,\n  observableDebounce: 100,\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/lists/grid-list/grid-list.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/inputs/radio-button/radio-button.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\n  orientation: OrientationEnum.Y,\n  values: [],\n  disabled: false,\n  selectedValue: undefined\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/lists/draggable-list/draggable-list.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\n  showIndex: true,\n  itemActionLabel: undefined,\n  itemMainLabel: undefined,\n  itemSubLabel: undefined,\n  actions: undefined,\n  itemList: undefined,\n  roundedBorders: true,\n  enableDragging: true,\n  enableSelection: true,\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/lists/table-list/table-list.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\n  columns: [],\n  columnNames: [],\n  imageColumns: [],\n  imageHeight: '50px',\n  showHeader: true,\n  numberFormat: '1.2-2',\n  numberPrefix: '',\n  actionsTemplate: undefined,\n  itemList: undefined,\n  borderRadius: undefined,\n  backgroundColor: undefined,\n  expandedDetailTemplate: undefined,\n  disableExpandedOnDisabledRow: true,\n  expandedRow: undefined\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/navigation/stepper/stepper.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/directives/ng-if-loaded/spinner/spinner.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\n  flag: true\n}"
             },
             {
                 "name": "DefaultBasicCard",
@@ -8230,16 +8230,6 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/directives/ng-if-loaded/spinner/spinner.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story<SpinnerComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <div *ngIfLoaded=\"flag\">\n        Conteúdo normal\n    </div>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "src/components/cards/basic-card/basic-card.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
@@ -8284,47 +8274,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story<SidebarComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-sidebar\n        [showBackButton]=\"showBackButton\"\n        [sidebarEntries]=\"sidebarEntries\"\n    >\n        <p>Conteúdo aqui! algo como router-outlet</p>\n        <ng-container *ngFor=\"let _ of [].constructor(20)\">\n            <p>.</p>\n        </ng-container>\n    </pm-sidebar>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/components/lists/draggable-list/draggable-list.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story<DraggableListComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-draggable-list\n      [showIndex]=\"showIndex\"\n      [itemActionLabel]=\"itemActionLabel\"\n      [itemMainLabel]=\"itemMainLabel\"\n      [itemSubLabel]=\"itemSubLabel\"\n      [actions]=\"actions\"\n      [itemList]=\"itemList\"\n      [roundedBorders]=\"roundedBorders\"\n      [enableDragging]=\"enableDragging\"\n      [enableSelection]=\"enableSelection\"\n    >\n    </pm-draggable-list>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/components/lists/grid-list/grid-list.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story<GridListComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-grid-list\n      [items]=\"items\"\n      [displayStyle]=\"displayStyle\"\n      [gridHeaderReverse]=\"gridHeaderReverse\"\n      [bodyBackgroundColor]=\"bodyBackgroundColor\"\n      [actionTemplate]=\"undefined\"\n      [overflowGallery]=\"overflowGallery\"\n    >\n    </pm-grid-list>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/components/lists/table-list/table-list.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story<TableListComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `<pm-table-list\n    [columns]=\"columns\"\n    [columnNames]=\"columnNames\"\n    [imageColumns]=\"imageColumns\"\n    [imageHeight]=\"imageHeight\"\n    [showHeader]=\"showHeader\"\n    [numberFormat]=\"numberFormat\"\n    [numberPrefix]=\"numberPrefix\"\n    [itemList]=\"itemList\"\n    [borderRadius]=\"borderRadius\"\n    [backgroundColor]=\"backgroundColor\"\n    [expandedDetailTemplate]=\"expandedDetailTemplate\"\n    [disableExpandedOnDisabledRow]=\"disableExpandedOnDisabledRow\"\n  ></pm-table-list>`\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/components/navigation/stepper/stepper.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story<StepperComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-stepper>\n      <cdk-step> <p>This is any content of \"Step 1\"</p> </cdk-step>\n      <cdk-step> <p>This is any content of \"Step 2\"</p> </cdk-step>\n    </pm-stepper>\n  `\n})"
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-sidebar\n        [showBackButton]=\"showBackButton\"\n        [sidebarEntries]=\"sidebarEntries\"\n        [label]=\"label\"\n    >\n        <p>Conteúdo aqui! algo como router-outlet</p>\n        <ng-container *ngFor=\"let _ of [].constructor(20)\">\n            <p>.</p>\n        </ng-container>\n    </pm-sidebar>\n  `\n})"
             },
             {
                 "name": "Template",
@@ -8360,26 +8310,6 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/components/inputs/multi-select/multi-select.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story<MultiSelectComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-multi-select\n        [options]=\"options\"\n        [placeholder]=\"placeholder\"\n        [borderRadius]=\"borderRadius\"\n        [roundedThumbnail]=\"roundedThumbnail\"\n        [limit]=\"limit\"\n        [selectedOptions]=\"selectedOptions\"\n        [sortSelectedItems]=\"sortSelectedItems\"\n        [observableInput]=\"observableInput\"\n        [observableDebounce]=\"observableDebounce\"\n    >\n    </pm-multi-select>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/components/inputs/radio-button/radio-button.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story<RadioButtonComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-radio-button\n      [orientation]=\"orientation\"\n      [values]=\"values\"\n      [selectedValue]=\"selectedValue\"\n      [disabled]=\"disabled\"\n    >\n    </pm-radio-button>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "src/components/inputs/copy-content-input/copy-content-input.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
@@ -8395,6 +8325,76 @@
                 "deprecationMessage": "",
                 "type": "Story<DropdownActionsComponent>",
                 "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-dropdown-actions\n      [actions]=\"actions\"\n    >\n    </pm-dropdown-actions>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/inputs/multi-select/multi-select.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<MultiSelectComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-multi-select\n        [options]=\"options\"\n        [placeholder]=\"placeholder\"\n        [borderRadius]=\"borderRadius\"\n        [roundedThumbnail]=\"roundedThumbnail\"\n        [limit]=\"limit\"\n        [selectedOptions]=\"selectedOptions\"\n        [sortSelectedItems]=\"sortSelectedItems\"\n        [observableInput]=\"observableInput\"\n        [observableDebounce]=\"observableDebounce\"\n    >\n    </pm-multi-select>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/lists/grid-list/grid-list.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<GridListComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-grid-list\n      [items]=\"items\"\n      [displayStyle]=\"displayStyle\"\n      [gridHeaderReverse]=\"gridHeaderReverse\"\n      [bodyBackgroundColor]=\"bodyBackgroundColor\"\n      [actionTemplate]=\"undefined\"\n      [overflowGallery]=\"overflowGallery\"\n    >\n    </pm-grid-list>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/inputs/radio-button/radio-button.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<RadioButtonComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-radio-button\n      [orientation]=\"orientation\"\n      [values]=\"values\"\n      [selectedValue]=\"selectedValue\"\n      [disabled]=\"disabled\"\n    >\n    </pm-radio-button>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/lists/draggable-list/draggable-list.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<DraggableListComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-draggable-list\n      [showIndex]=\"showIndex\"\n      [itemActionLabel]=\"itemActionLabel\"\n      [itemMainLabel]=\"itemMainLabel\"\n      [itemSubLabel]=\"itemSubLabel\"\n      [actions]=\"actions\"\n      [itemList]=\"itemList\"\n      [roundedBorders]=\"roundedBorders\"\n      [enableDragging]=\"enableDragging\"\n      [enableSelection]=\"enableSelection\"\n    >\n    </pm-draggable-list>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/lists/table-list/table-list.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<TableListComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `<pm-table-list\n    [columns]=\"columns\"\n    [columnNames]=\"columnNames\"\n    [imageColumns]=\"imageColumns\"\n    [imageHeight]=\"imageHeight\"\n    [showHeader]=\"showHeader\"\n    [numberFormat]=\"numberFormat\"\n    [numberPrefix]=\"numberPrefix\"\n    [itemList]=\"itemList\"\n    [borderRadius]=\"borderRadius\"\n    [backgroundColor]=\"backgroundColor\"\n    [expandedDetailTemplate]=\"expandedDetailTemplate\"\n    [disableExpandedOnDisabledRow]=\"disableExpandedOnDisabledRow\"\n  ></pm-table-list>`\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/navigation/stepper/stepper.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<StepperComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-stepper>\n      <cdk-step> <p>This is any content of \"Step 1\"</p> </cdk-step>\n      <cdk-step> <p>This is any content of \"Step 2\"</p> </cdk-step>\n    </pm-stepper>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/directives/ng-if-loaded/spinner/spinner.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<SpinnerComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <div *ngIfLoaded=\"flag\">\n        Conteúdo normal\n    </div>\n  `\n})"
             },
             {
                 "name": "ThumbnailMultiSelect",
@@ -9155,38 +9155,6 @@
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-XXXName\n    >\n    </pm-XXXName>\n  `\n})"
                 }
             ],
-            "src/directives/ng-if-loaded/spinner/spinner.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/directives/ng-if-loaded/spinner/spinner.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "object",
-                    "defaultValue": "{\n  flag: true\n}"
-                },
-                {
-                    "name": "DefaultSpinner",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/directives/ng-if-loaded/spinner/spinner.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/directives/ng-if-loaded/spinner/spinner.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Story<SpinnerComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <div *ngIfLoaded=\"flag\">\n        Conteúdo normal\n    </div>\n  `\n})"
-                }
-            ],
             "src/components/cards/basic-card/basic-card.stories.ts": [
                 {
                     "name": "defaultArgs",
@@ -9292,7 +9260,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "object",
-                    "defaultValue": "{\n  showBackButton: false,\n  sidebarEntries: []\n}"
+                    "defaultValue": "{\n  showBackButton: false,\n  sidebarEntries: [],\n  label: of(''),\n}"
                 },
                 {
                     "name": "DefaultSidebar",
@@ -9312,133 +9280,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story<SidebarComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-sidebar\n        [showBackButton]=\"showBackButton\"\n        [sidebarEntries]=\"sidebarEntries\"\n    >\n        <p>Conteúdo aqui! algo como router-outlet</p>\n        <ng-container *ngFor=\"let _ of [].constructor(20)\">\n            <p>.</p>\n        </ng-container>\n    </pm-sidebar>\n  `\n})"
-                }
-            ],
-            "src/components/lists/draggable-list/draggable-list.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/lists/draggable-list/draggable-list.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "object",
-                    "defaultValue": "{\n  showIndex: true,\n  itemActionLabel: undefined,\n  itemMainLabel: undefined,\n  itemSubLabel: undefined,\n  actions: undefined,\n  itemList: undefined,\n  roundedBorders: true,\n  enableDragging: true,\n  enableSelection: true,\n}"
-                },
-                {
-                    "name": "DefaultDraggableList",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/lists/draggable-list/draggable-list.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "DisabledDragging",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/lists/draggable-list/draggable-list.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "NoIndexStringList",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/lists/draggable-list/draggable-list.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/lists/draggable-list/draggable-list.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Story<DraggableListComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-draggable-list\n      [showIndex]=\"showIndex\"\n      [itemActionLabel]=\"itemActionLabel\"\n      [itemMainLabel]=\"itemMainLabel\"\n      [itemSubLabel]=\"itemSubLabel\"\n      [actions]=\"actions\"\n      [itemList]=\"itemList\"\n      [roundedBorders]=\"roundedBorders\"\n      [enableDragging]=\"enableDragging\"\n      [enableSelection]=\"enableSelection\"\n    >\n    </pm-draggable-list>\n  `\n})"
-                }
-            ],
-            "src/components/lists/grid-list/grid-list.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/lists/grid-list/grid-list.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "object",
-                    "defaultValue": "{\n}"
-                },
-                {
-                    "name": "DefaultGridList",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/lists/grid-list/grid-list.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "getColor",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/lists/grid-list/grid-list.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "() => MainColors.primary"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/lists/grid-list/grid-list.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Story<GridListComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-grid-list\n      [items]=\"items\"\n      [displayStyle]=\"displayStyle\"\n      [gridHeaderReverse]=\"gridHeaderReverse\"\n      [bodyBackgroundColor]=\"bodyBackgroundColor\"\n      [actionTemplate]=\"undefined\"\n      [overflowGallery]=\"overflowGallery\"\n    >\n    </pm-grid-list>\n  `\n})"
-                }
-            ],
-            "src/components/navigation/stepper/stepper.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/navigation/stepper/stepper.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "object",
-                    "defaultValue": "{}"
-                },
-                {
-                    "name": "DefaultStepper",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/navigation/stepper/stepper.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/navigation/stepper/stepper.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Story<StepperComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-stepper>\n      <cdk-step> <p>This is any content of \"Step 1\"</p> </cdk-step>\n      <cdk-step> <p>This is any content of \"Step 2\"</p> </cdk-step>\n    </pm-stepper>\n  `\n})"
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-sidebar\n        [showBackButton]=\"showBackButton\"\n        [sidebarEntries]=\"sidebarEntries\"\n        [label]=\"label\"\n    >\n        <p>Conteúdo aqui! algo como router-outlet</p>\n        <ng-container *ngFor=\"let _ of [].constructor(20)\">\n            <p>.</p>\n        </ng-container>\n    </pm-sidebar>\n  `\n})"
                 }
             ],
             "src/components/inputs/checkbox/checkbox.stories.ts": [
@@ -9525,110 +9367,6 @@
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-combo-box\n      [items]=\"items\"\n      [disabled]=\"disabled\"\n      [selectedItem]=\"selectedItem\"\n    >\n    </pm-combo-box>\n  `\n})"
                 }
             ],
-            "src/components/inputs/multi-select/multi-select.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/inputs/multi-select/multi-select.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "object",
-                    "defaultValue": "{\n  options: [],\n  placeholder: '',\n  borderRadius: Sizes.md,\n  roundedThumbnail: true,\n  limit: 0,\n  selectedOptions: [],\n  sortSelectedItems: true,\n  observableInput: undefined,\n  observableDebounce: 100,\n}"
-                },
-                {
-                    "name": "DefaultMultiSelect",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/inputs/multi-select/multi-select.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "ObservableInput",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/inputs/multi-select/multi-select.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "PreSelectedOptions",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/inputs/multi-select/multi-select.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/inputs/multi-select/multi-select.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Story<MultiSelectComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-multi-select\n        [options]=\"options\"\n        [placeholder]=\"placeholder\"\n        [borderRadius]=\"borderRadius\"\n        [roundedThumbnail]=\"roundedThumbnail\"\n        [limit]=\"limit\"\n        [selectedOptions]=\"selectedOptions\"\n        [sortSelectedItems]=\"sortSelectedItems\"\n        [observableInput]=\"observableInput\"\n        [observableDebounce]=\"observableDebounce\"\n    >\n    </pm-multi-select>\n  `\n})"
-                },
-                {
-                    "name": "ThumbnailMultiSelect",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/inputs/multi-select/multi-select.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                }
-            ],
-            "src/components/inputs/radio-button/radio-button.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/inputs/radio-button/radio-button.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "object",
-                    "defaultValue": "{\n  orientation: OrientationEnum.Y,\n  values: [],\n  disabled: false,\n  selectedValue: undefined\n}"
-                },
-                {
-                    "name": "DefaultRadioButton",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/inputs/radio-button/radio-button.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "HorizontalRadioButton",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/inputs/radio-button/radio-button.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/inputs/radio-button/radio-button.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Story<RadioButtonComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-radio-button\n      [orientation]=\"orientation\"\n      [values]=\"values\"\n      [selectedValue]=\"selectedValue\"\n      [disabled]=\"disabled\"\n    >\n    </pm-radio-button>\n  `\n})"
-                }
-            ],
             "src/components/inputs/copy-content-input/copy-content-input.stories.ts": [
                 {
                     "name": "defaultArgs",
@@ -9691,6 +9429,268 @@
                     "deprecationMessage": "",
                     "type": "Story<DropdownActionsComponent>",
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-dropdown-actions\n      [actions]=\"actions\"\n    >\n    </pm-dropdown-actions>\n  `\n})"
+                }
+            ],
+            "src/components/inputs/multi-select/multi-select.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/inputs/multi-select/multi-select.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "object",
+                    "defaultValue": "{\n  options: [],\n  placeholder: '',\n  borderRadius: Sizes.md,\n  roundedThumbnail: true,\n  limit: 0,\n  selectedOptions: [],\n  sortSelectedItems: true,\n  observableInput: undefined,\n  observableDebounce: 100,\n}"
+                },
+                {
+                    "name": "DefaultMultiSelect",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/inputs/multi-select/multi-select.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "ObservableInput",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/inputs/multi-select/multi-select.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "PreSelectedOptions",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/inputs/multi-select/multi-select.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/inputs/multi-select/multi-select.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story<MultiSelectComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-multi-select\n        [options]=\"options\"\n        [placeholder]=\"placeholder\"\n        [borderRadius]=\"borderRadius\"\n        [roundedThumbnail]=\"roundedThumbnail\"\n        [limit]=\"limit\"\n        [selectedOptions]=\"selectedOptions\"\n        [sortSelectedItems]=\"sortSelectedItems\"\n        [observableInput]=\"observableInput\"\n        [observableDebounce]=\"observableDebounce\"\n    >\n    </pm-multi-select>\n  `\n})"
+                },
+                {
+                    "name": "ThumbnailMultiSelect",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/inputs/multi-select/multi-select.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                }
+            ],
+            "src/components/lists/grid-list/grid-list.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/lists/grid-list/grid-list.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "object",
+                    "defaultValue": "{\n}"
+                },
+                {
+                    "name": "DefaultGridList",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/lists/grid-list/grid-list.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "getColor",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/lists/grid-list/grid-list.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "() => MainColors.primary"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/lists/grid-list/grid-list.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story<GridListComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-grid-list\n      [items]=\"items\"\n      [displayStyle]=\"displayStyle\"\n      [gridHeaderReverse]=\"gridHeaderReverse\"\n      [bodyBackgroundColor]=\"bodyBackgroundColor\"\n      [actionTemplate]=\"undefined\"\n      [overflowGallery]=\"overflowGallery\"\n    >\n    </pm-grid-list>\n  `\n})"
+                }
+            ],
+            "src/components/inputs/radio-button/radio-button.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/inputs/radio-button/radio-button.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "object",
+                    "defaultValue": "{\n  orientation: OrientationEnum.Y,\n  values: [],\n  disabled: false,\n  selectedValue: undefined\n}"
+                },
+                {
+                    "name": "DefaultRadioButton",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/inputs/radio-button/radio-button.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "HorizontalRadioButton",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/inputs/radio-button/radio-button.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/inputs/radio-button/radio-button.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story<RadioButtonComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-radio-button\n      [orientation]=\"orientation\"\n      [values]=\"values\"\n      [selectedValue]=\"selectedValue\"\n      [disabled]=\"disabled\"\n    >\n    </pm-radio-button>\n  `\n})"
+                }
+            ],
+            "src/components/lists/draggable-list/draggable-list.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/lists/draggable-list/draggable-list.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "object",
+                    "defaultValue": "{\n  showIndex: true,\n  itemActionLabel: undefined,\n  itemMainLabel: undefined,\n  itemSubLabel: undefined,\n  actions: undefined,\n  itemList: undefined,\n  roundedBorders: true,\n  enableDragging: true,\n  enableSelection: true,\n}"
+                },
+                {
+                    "name": "DefaultDraggableList",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/lists/draggable-list/draggable-list.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "DisabledDragging",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/lists/draggable-list/draggable-list.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "NoIndexStringList",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/lists/draggable-list/draggable-list.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/lists/draggable-list/draggable-list.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story<DraggableListComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-draggable-list\n      [showIndex]=\"showIndex\"\n      [itemActionLabel]=\"itemActionLabel\"\n      [itemMainLabel]=\"itemMainLabel\"\n      [itemSubLabel]=\"itemSubLabel\"\n      [actions]=\"actions\"\n      [itemList]=\"itemList\"\n      [roundedBorders]=\"roundedBorders\"\n      [enableDragging]=\"enableDragging\"\n      [enableSelection]=\"enableSelection\"\n    >\n    </pm-draggable-list>\n  `\n})"
+                }
+            ],
+            "src/components/navigation/stepper/stepper.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/navigation/stepper/stepper.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "object",
+                    "defaultValue": "{}"
+                },
+                {
+                    "name": "DefaultStepper",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/navigation/stepper/stepper.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/navigation/stepper/stepper.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story<StepperComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-stepper>\n      <cdk-step> <p>This is any content of \"Step 1\"</p> </cdk-step>\n      <cdk-step> <p>This is any content of \"Step 2\"</p> </cdk-step>\n    </pm-stepper>\n  `\n})"
+                }
+            ],
+            "src/directives/ng-if-loaded/spinner/spinner.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/directives/ng-if-loaded/spinner/spinner.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "object",
+                    "defaultValue": "{\n  flag: true\n}"
+                },
+                {
+                    "name": "DefaultSpinner",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/directives/ng-if-loaded/spinner/spinner.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/directives/ng-if-loaded/spinner/spinner.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story<SpinnerComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <div *ngIfLoaded=\"flag\">\n        Conteúdo normal\n    </div>\n  `\n})"
                 }
             ],
             "src/services/command-palette/command-palette.stories.ts": [

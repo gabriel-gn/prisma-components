@@ -12,7 +12,7 @@
   <mat-drawer-content class="ion-content-scroll-host drawer-content">
     <div class="navbar">
       <div class="navbar-bg"></div>
-      <div class="navbar-content mb-3">
+      <div class="navbar-content w-100 mb-3">
         <svg (click)="drawer.toggle()"
              class="ham"
              [ngClass]="{'active': drawer.opened}"
@@ -29,7 +29,7 @@
         >
                     <i class="uil uil-2x uil-angle-left text-center inline-block"></i>
         </span>
-        <h4 class="color-gray-dark m-0 ms-3">{{ label | async }}</h4>
+        <h4 style="width: -webkit-fill-available;" class="color-gray-dark m-0 ms-3 text-overflow">{{ label | async }}</h4>
       </div>
     </div>
     <div class="container">
