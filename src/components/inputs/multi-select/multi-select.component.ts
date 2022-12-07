@@ -74,6 +74,10 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
    * Tempo de espera em cada execução de chamada do observable ao digitar no campo de input
    */
   @Input() observableDebounce: number = 100;
+  /**
+   *
+   */
+  @Input() unfocusOnSelect: boolean = true;
   public _observableInputLoading: boolean = false;
 
   public readonly myControl: FormControl;
@@ -143,13 +147,13 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
     }
 
     this.selectedOptionsChanged.emit(this.selectedOptions);
+    this.unfocusOnSelect();
     this.clearInput();
   }
 
   private clearInput(): void {
     this.inputValue = '';
     this.myControl.setValue(this.inputValue);
-    try { this.inputBoxEl.nativeElement.blur(); } catch (e) {}
     this.cdr.detectChanges();
   }
 
@@ -189,6 +193,10 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
   public isLimitReached() {
     return !this.observableInput // caso tenha observable input, as options são dinâmicas, e não armazenadas no componente
       && (this.selectedOptions.length === this.options.length || (!!this.limit && this.selectedOptions.length >= this.limit))
+  }
+
+  public blurInputSelect() {
+    try { this.inputBoxEl.nativeElement.blur(); } catch (e) {}
   }
 
 }
