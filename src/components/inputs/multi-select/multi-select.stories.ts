@@ -22,6 +22,7 @@ export const Template: Story<MultiSelectComponent> = (args) => ({
         [sortSelectedItems]="sortSelectedItems"
         [observableInput]="observableInput"
         [observableDebounce]="observableDebounce"
+        [unfocusOnSelect]="unfocusOnSelect"
     >
     </pm-multi-select>
   `
@@ -37,6 +38,7 @@ export const defaultArgs = {
   sortSelectedItems: true,
   observableInput: undefined,
   observableDebounce: 100,
+  unfocusOnSelect: true
 };
 
 export const DefaultMultiSelect = Template.bind({});

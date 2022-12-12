@@ -75,7 +75,7 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
    */
   @Input() observableDebounce: number = 100;
   /**
-   *
+   * Caso a flag seja "true", desativa o foco no input, escondendo o teclado virtual no mobile
    */
   @Input() unfocusOnSelect: boolean = true;
   public _observableInputLoading: boolean = false;
@@ -147,7 +147,7 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
     }
 
     this.selectedOptionsChanged.emit(this.selectedOptions);
-    this.unfocusOnSelect();
+    this.blurInputSelect();
     this.clearInput();
   }
 
@@ -196,7 +196,11 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
   }
 
   public blurInputSelect() {
-    try { this.inputBoxEl.nativeElement.blur(); } catch (e) {}
+    if (this.unfocusOnSelect) {
+      setTimeout(() => {
+        try { this.inputBoxEl.nativeElement.blur(); } catch (e) {}
+      });
+    }
   }
 
 }
