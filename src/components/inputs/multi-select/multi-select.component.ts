@@ -78,6 +78,11 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
    * Caso a flag seja "true", desativa o foco no input, escondendo o teclado virtual no mobile
    */
   @Input() unfocusOnSelect: boolean = true;
+  /**
+   * Caso a flag seja "true", mostra o botão de remover os itens da lista de selecionados.
+   * Caso contrário, ao clicar sobre um item, remove ele da lista de selecionados
+   */
+  @Input() showRemoveButton: boolean = true;
   public _observableInputLoading: boolean = false;
 
   public readonly myControl: FormControl;

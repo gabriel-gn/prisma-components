@@ -5,7 +5,12 @@
         <div class="d-flex flex-row align-items-center">
           <ng-container *ngTemplateOutlet="thumbnailContainer; context: {$implicit: selected, marginStart: true}"></ng-container>
           <p class="m-0 ms-1">{{selected.label}}</p>
-          <button class="btn btn-light" (click)="$event.stopPropagation(); removeSelectedOption(selected)">x</button>
+          <button *ngIf="showRemoveButton"
+                  class="btn btn-light"
+                  (click)="$event.stopPropagation(); removeSelectedOption(selected)"
+          >
+            x
+          </button>
         </div>
       </div>
     </div>
