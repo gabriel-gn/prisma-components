@@ -9,7 +9,7 @@ import {
   Output,
   ViewChild
 } from '@angular/core';
-import {FormControl} from '@angular/forms';
+import {UntypedFormControl} from '@angular/forms';
 import {catchError, concatMap, debounceTime, distinctUntilChanged, Observable, of, tap, throwError} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import _ from 'lodash';
@@ -85,14 +85,14 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
   @Input() showRemoveButton: boolean = true;
   public _observableInputLoading: boolean = false;
 
-  public readonly myControl: FormControl;
+  public readonly myControl: UntypedFormControl;
   public inputValue: string = '';
   public filteredOptions: Observable<MultiSelectOption[]>;
 
   constructor(
     private cdr: ChangeDetectorRef
   ) {
-    this.myControl = new FormControl();
+    this.myControl = new UntypedFormControl();
   }
 
   ngOnInit(): void {
