@@ -1,17 +1,17 @@
 .horizontal-tabs {
-  .mat-tab-body-content {
+  .mat-mdc-tab-body-content {
     overflow: hidden;
   }
 
-  .mat-tab-label {
+  .mat-mdc-tab {
     margin-right: 0.5rem;
   }
 
-  .mat-tab-label:last-child {
+  .mat-mdc-tab:last-child {
     margin-right: 0px;
   }
 
-  .mat-tab-label {
+  .mat-mdc-tab {
     font-size: 15px;
     background-color: transparent;
     border-radius: var(--border-radius-xxl);
@@ -26,29 +26,29 @@
       background-color: rgba(0, 0, 0, 0.03);
     }
 
-    &.mat-tab-label-active {
+    &.mat-mdc-tab-active {
       background-color: rgba(var(--color-primary-states-rgb), 0.1);
       color: var(--color-primary-states);
       font-weight: 600;
     }
   }
 
-  .mat-tab-header {
+  .mat-mdc-tab-header {
     border-bottom: none;
   }
 
-  .mat-tab-header-pagination {
+  .mat-mdc-tab-header-pagination {
     display: none !important;
   }
 
-  .mat-ink-bar {
+  .mat-mdc-ink-bar {
     visibility: hidden !important;
     display: none !important;
     height: 100%;
     background-color: #51cbce33 !important;
   }
 
-  .mat-tab-body-wrapper {
+  .mat-mdc-tab-body-wrapper {
     flex: 1 1 auto;
     padding: 0px;
     overflow-y: auto;
@@ -74,7 +74,7 @@
   }
 
   &.sticky-tabs {
-    .mat-tab-header {
+    .mat-mdc-tab-header {
       position: sticky;
       top: 0;
       background: rgba(var(--bg-default-rgb), 0.8);
@@ -85,7 +85,7 @@
       padding: 0.5em;
     }
 
-    .mat-tab-body-content {
+    .mat-mdc-tab-body-content {
       padding: 0px 1em;
     }
 
@@ -95,7 +95,7 @@
     }
 
     @media screen and (min-width: 992px) {
-      .mat-tab-label-content {
+      .mat-mdc-tab-content {
         i {
           display: none;
         }
@@ -103,7 +103,7 @@
     }
 
     @media screen and (max-width: 991px) {
-      .mat-ink-bar {
+      .mat-mdc-ink-bar {
         height: 3px;
         top: 0 !important;
         visibility: visible !important;
@@ -116,7 +116,7 @@
        * Essa outra classe é apenas para sobrescrever a mat-ink-bar original
        * Que aí ela mesmo com o fill width fica com a inkbar apenas em 50 do tamanho, mais bonito no mobile
        */
-      .mat-ink-bar {
+      .mat-mdc-ink-bar {
         background-color: transparent !important;
         &::before {
           content: '';
@@ -131,7 +131,7 @@
         }
       }
 
-      .mat-tab-header {
+      .mat-mdc-tab-header {
         background: rgba(var(--bg-default-rgb), 1);
         backdrop-filter: blur(2px);
         border-top: 1px solid var(--color-gray-medium);
@@ -143,7 +143,7 @@
         width: 100%;
         z-index: 999;
 
-        .mat-tab-list {
+        .mat-mdc-tab-list {
           transform: unset !important;
         }
 
@@ -151,21 +151,21 @@
           height: auto !important;
         }
 
-        .mat-tab-label {
+        .mat-mdc-tab {
           height: auto;
           opacity: 1;
 
-          &:not(.mat-tab-label-active) {
+          &:not(.mat-mdc-tab-active) {
             color: var(--color-gray-medium) !important;
           }
         }
 
-        .mat-tab-label-active {
+        .mat-mdc-tab-active {
           text-shadow: 0 0 12px rgba(var(--color-primary-pale-rgb), 0.2);
           background-color: transparent !important;
         }
 
-        .mat-tab-label-content {
+        .mat-mdc-tab-content {
           display: flex;
           flex-direction: column;
 
@@ -175,12 +175,12 @@
         }
       }
 
-      .mat-tab-body-wrapper {
+      .mat-mdc-tab-body-wrapper {
         padding-bottom: 60px !important;
       }
 
       .filter-dialog-panel {
-        .mat-dialog-container {
+        .mat-mdc-dialog-container {
           background-color: var(--bg-default);
         }
       }
@@ -192,23 +192,23 @@
 .vertical-tabs {
   @extend .horizontal-tabs;
 
-  .mat-tab-label {
+  .mat-mdc-tab {
     margin-top: 5px;
   }
 
-  .mat-tab-group {
+  .mat-mdc-tab-group {
     flex-direction: row;
   }
 
-  .mat-tab-labels {
+  .mat-mdc-tab-labels {
     flex-direction: column;
   }
 
-  .mat-tab-body-wrapper {
+  .mat-mdc-tab-body-wrapper {
     padding-left: 10px;
   }
 
-  .mat-tab-label-container {
+  .mat-mdc-tab-container {
     overflow-y: auto;
   }
 
