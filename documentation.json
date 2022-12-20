@@ -6240,7 +6240,7 @@
         },
         {
             "name": "TabsComponent",
-            "id": "component-TabsComponent-e3f750beb7efb3a0bf57075383dec0378aad4f5eb8ddf18a4c2baaeb18eaff82ee5b7d51edf7fd1d030364a30700fb32cd9084d7c0fd2d56785de40587818a2b",
+            "id": "component-TabsComponent-48806d31f6cf1a2ed8be23622dd50993c69eeef7d79523985ca34f7bb0de300faa781fac94fe28d08fe042f0334585f91e0ee4e39e734a2365c909e4c2b903bc",
             "file": "src/components/containers/tabs/tabs.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -6256,7 +6256,19 @@
                 "./tabs.component.html"
             ],
             "viewProviders": [],
-            "inputsClass": [],
+            "inputsClass": [
+                {
+                    "name": "orientation",
+                    "defaultValue": "'horizontal'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n\nTab orientation\n",
+                    "description": "<p>Tab orientation</p>\n",
+                    "line": 13,
+                    "type": "\"horizontal\" | \"vertical\"",
+                    "decorators": []
+                }
+            ],
             "outputsClass": [],
             "propertiesClass": [],
             "methodsClass": [],
@@ -6267,11 +6279,11 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component } from '@angular/core';\nimport {MatTabGroup} from '@angular/material/tabs';\n\n@Component({\n  selector: 'pm-tabs',\n  templateUrl: './tabs.component.html',\n  styleUrls: ['./tabs.component.scss']\n})\nexport class TabsComponent {\n\n  constructor() {\n  }\n\n}\n",
+            "sourceCode": "import {Component, Input} from '@angular/core';\n\n@Component({\n  selector: 'pm-tabs',\n  templateUrl: './tabs.component.html',\n  styleUrls: ['./tabs.component.scss'],\n})\nexport class TabsComponent {\n\n  /**\n   * Tab orientation\n   */\n  @Input() orientation: 'horizontal' | 'vertical' = 'horizontal'\n\n  constructor() {\n  }\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": ".pm-tabs {\n  &.horizontal-tabs {\n\n    .mat-tab-label {\n      margin-right: 0.5rem;\n    }\n\n    .mat-tab-label:last-child {\n      margin-right: 0px;\n    }\n\n    .mat-tab-label {\n      font-size: 15px;\n      background-color: transparent;\n      border-radius: var(--border-radius-xxl);\n      height: 45px;\n      min-width: 25px !important;\n      padding: 5px;\n      color: var(--color-default);\n      font-weight: 500;\n      width: 120px !important;\n\n      &:hover {\n        background-color: rgba(0, 0, 0, 0.03);\n      }\n\n      &.mat-tab-label-active {\n        background-color: rgba(var(--color-primary-states-rgb), 0.1);\n        color: var(--color-primary-states);\n        font-weight: 600;\n      }\n    }\n\n    .mat-tab-header {\n      border-bottom: none;\n    }\n\n    .mat-tab-header-pagination {\n      display: none !important;\n    }\n\n    .mat-ink-bar {\n      height: 100%;\n      left: 100% !important;\n      background-color: #51cbce33 !important;\n    }\n\n    .mat-tab-body-wrapper {\n      flex: 1 1 auto;\n      padding: 0px;\n      overflow-y: auto;\n      overflow-x: hidden;\n\n      label {\n        margin-top: 12px;\n        margin-bottom: 5px;\n        color: var(--color-default);\n      }\n\n      .btn-tooltip-sm {\n        height: 20px;\n        width: 20px;\n        border-radius: 50%;\n        padding: 0px;\n      }\n\n      .bool-div-container {\n        margin-top: 12px;\n        margin-bottom: 5px;\n      }\n    }\n  }\n\n  .vertical-tabs {\n    @extend .horizontal-tabs;\n\n    .mat-tab-label {\n      margin-top: 5px;\n    }\n\n    .mat-tab-group {\n      flex-direction: row;\n    }\n\n    .mat-tab-labels {\n      flex-direction: column;\n    }\n\n    .mat-tab-body-wrapper {\n      padding-left: 10px;\n    }\n\n    .mat-tab-label-container {\n      overflow-y: auto;\n    }\n\n    mat-tab-body {\n      min-height: 100px;\n    }\n  }\n}\n",
+                    "data": "::ng-deep {\n  .pm-tabs {\n    &.horizontal-tabs {\n      --mdc-typography-button-letter-spacing: normal;\n\n      .mat-mdc-tab-body-content {\n        overflow: hidden;\n      }\n\n      .mdc-tab {\n        font-size: 15px;\n        background-color: transparent;\n        border-radius: var(--border-radius-xxl) !important;\n        height: 45px;\n        min-width: 25px !important;\n        padding: 0.5em;\n        color: var(--color-default) !important;\n        font-weight: 500;\n        width: 120px !important;\n\n        &__ripple {\n          display: none;\n        }\n\n        &:hover,\n        &--active {\n          background-color: rgba(var(--color-primary-states-rgb), 0.1);\n          color: var(--color-primary-states);\n          font-weight: 600;\n        }\n      }\n\n      .mat-mdc-tab-header {\n        border-bottom: none;\n      }\n\n      .mat-mdc-tab-header-pagination {\n        display: none !important;\n      }\n\n      .mdc-tab-indicator {\n\n        &--active {\n          .mdc-tab-indicator__content {\n            &--underline {\n              display: none;\n            }\n          }\n\n          * {\n            color: var(--color-primary) !important;\n          }\n        }\n      }\n\n      .mat-mdc-tab-body-wrapper {\n        flex: 1 1 auto;\n        padding: 0px;\n        overflow-y: auto;\n        overflow-x: hidden;\n\n        label {\n          margin-top: 12px;\n          margin-bottom: 5px;\n          color: var(--color-default);\n        }\n\n        .btn-tooltip-sm {\n          height: 20px;\n          width: 20px;\n          border-radius: 50%;\n          padding: 0px;\n        }\n\n        .bool-div-container {\n          margin-top: 12px;\n          margin-bottom: 5px;\n        }\n      }\n\n      &.sticky-tabs {\n        .mat-mdc-tab-header {\n          position: sticky;\n          top: 0;\n          background: rgba(var(--bg-default-rgb), 0.8);\n          backdrop-filter: blur(5px);\n          padding: 0.5em 0px;\n          width: inherit;\n          z-index: 2;\n          padding: 0.5em;\n          border-radius: var(--border-radius-xxl);\n        }\n\n        .mat-mdc-tab-body-content {\n          padding: 0px 1em;\n        }\n\n        @media screen and (min-width: 992px) {\n          .mdc-tab {\n            &__content {\n              align-self: center;\n            }\n\n            &__text-label {\n              i {\n                display: none;\n              }\n            }\n          }\n        }\n\n        @media screen and (max-width: 991px) {\n          .mdc-tab {\n            * {\n              color: var(--color-gray-medium) !important;\n            }\n\n            &:hover {\n              background-color: transparent !important;\n            }\n          }\n\n          .mdc-tab-indicator {\n            &__content {\n              &--underline {\n                align-self: flex-start;\n                border-color: var(--color-primary);\n                height: 3px;\n                background-color: var(--color-primary) !important;\n                border-radius: 50px;\n                width: 50%;\n                display: block;\n              }\n            }\n\n            &--active {\n              background-color: transparent !important;\n\n              * {\n                color: var(--color-primary) !important;\n              }\n            }\n          }\n\n          .mat-mdc-tab-header {\n            backdrop-filter: blur(2px);\n            background: rgba(var(--bg-default-rgb), 1);\n            border-top: 1px solid var(--color-gray-medium);\n            bottom: 0 !important;\n            left: 0 !important;\n            padding: 0px !important;\n            position: fixed !important;\n            top: unset !important;\n            width: 100%;\n            z-index: 999;\n            border-radius: 0px;\n\n            .mat-mdc-tab-list {\n              transform: unset !important;\n            }\n\n            mat-tab-group {\n              height: auto !important;\n            }\n\n            .mat-mdc-tab {\n              height: auto;\n              opacity: 1;\n            }\n\n            .mdc-tab__text-label {\n              display: flex;\n              flex-direction: column;\n\n              * {\n                &:not(:last-child) {\n                  margin-bottom: 5px;\n                }\n              }\n\n              span {\n                font-size: 0.8em !important;\n              }\n            }\n          }\n\n          .mat-mdc-tab-body-wrapper {\n            padding-bottom: 60px !important;\n          }\n\n          .filter-dialog-panel {\n            .mat-mdc-dialog-container {\n              background-color: var(--bg-default);\n            }\n          }\n        }\n      }\n\n    }\n\n    .vertical-tabs {\n      @extend .horizontal-tabs;\n\n      .mat-mdc-tab {\n        margin-top: 5px;\n      }\n\n      .mat-mdc-tab-group {\n        flex-direction: row;\n      }\n\n      .mat-mdc-tab-labels {\n        flex-direction: column;\n      }\n\n      .mat-mdc-tab-body-wrapper {\n        padding-left: 10px;\n      }\n\n      .mat-mdc-tab-container {\n        overflow-y: auto;\n      }\n\n      mat-tab-body {\n        min-height: 100px;\n      }\n    }\n  }\n}\n",
                     "styleUrl": "./tabs.component.scss"
                 }
             ],
@@ -6282,9 +6294,9 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "args": [],
-                "line": 9
+                "line": 13
             },
-            "templateData": "<div class=\"pm-tabs horizontal-tabs\">\n  <ng-content></ng-content>\n</div>\n"
+            "templateData": "<div class=\"pm-tabs {{orientation}}-tabs\">\n  <ng-content select=\"mat-tab-group\"></ng-content>\n</div>\n"
         },
         {
             "name": "TriggerButtonComponent",
@@ -7457,13 +7469,13 @@
         },
         {
             "name": "TabsModule",
-            "id": "module-TabsModule-7df0bd5f8f8f626b7d5242131d9930e4ff20e7ddc331d18dede50193f33d946a5952d37f27570aa27b12640b4169368be24232a532d34e374b14273cb5735212",
+            "id": "module-TabsModule-e01846b2b62fee32b17ece328feec985926c77bd514c1f526c419b85d8b160c659aa9ff93439fcec098a83de027171d2a33ba1defd65ab0cb60e1d4b4ab96ff9",
             "description": "",
             "deprecationMessage": "",
             "deprecated": false,
             "file": "src/components/containers/tabs/tabs.module.ts",
             "methods": [],
-            "sourceCode": "import {NgModule} from '@angular/core';\nimport {CommonModule} from '@angular/common';\nimport {TabsComponent} from '../tabs/tabs.component';\nimport {MatTabsModule} from '@angular/material/tabs';\n\n\n@NgModule({\n  declarations: [\n    TabsComponent\n  ],\n  exports: [\n    TabsComponent\n  ],\n  imports: [\n    CommonModule,\n    MatTabsModule\n  ]\n})\nexport class TabsModule {\n}\n",
+            "sourceCode": "import {NgModule} from '@angular/core';\nimport {CommonModule} from '@angular/common';\nimport {TabsComponent} from './tabs.component';\nimport {MatTabsModule} from '@angular/material/tabs';\n\n\n@NgModule({\n  declarations: [\n    TabsComponent\n  ],\n  exports: [\n    TabsComponent\n  ],\n  imports: [\n    CommonModule,\n    MatTabsModule\n  ]\n})\nexport class TabsModule {\n}\n",
             "children": [
                 {
                     "type": "providers",
@@ -7660,7 +7672,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "object",
-                "defaultValue": "{\n}"
+                "defaultValue": "{\n  orientation: 'horizontal'\n}"
             },
             {
                 "name": "defaultArgs",
@@ -8280,7 +8292,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story<TabsComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-tabs\n    >\n    </pm-tabs>\n  `\n})"
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-tabs\n        [orientation]=\"orientation\"\n    >\n      <mat-tab-group>\n        <mat-tab label=\"First\"> Content 1 </mat-tab>\n        <mat-tab label=\"Second\"> Content 2 </mat-tab>\n        <mat-tab label=\"Third\"> Content 3 </mat-tab>\n      </mat-tab-group>\n    </pm-tabs>\n  `\n})"
             },
             {
                 "name": "Template",
@@ -9223,7 +9235,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "object",
-                    "defaultValue": "{\n}"
+                    "defaultValue": "{\n  orientation: 'horizontal'\n}"
                 },
                 {
                     "name": "DefaultTabs",
@@ -9243,7 +9255,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story<TabsComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-tabs\n    >\n    </pm-tabs>\n  `\n})"
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-tabs\n        [orientation]=\"orientation\"\n    >\n      <mat-tab-group>\n        <mat-tab label=\"First\"> Content 1 </mat-tab>\n        <mat-tab label=\"Second\"> Content 2 </mat-tab>\n        <mat-tab label=\"Third\"> Content 3 </mat-tab>\n      </mat-tab-group>\n    </pm-tabs>\n  `\n})"
                 }
             ],
             "src/components/inputs/checkbox/checkbox.stories.ts": [
@@ -10064,7 +10076,7 @@
     },
     "routes": [],
     "coverage": {
-        "count": 2,
+        "count": 3,
         "status": "low",
         "files": [
             {
@@ -10238,9 +10250,9 @@
                 "type": "component",
                 "linktype": "component",
                 "name": "TabsComponent",
-                "coveragePercent": 0,
-                "coverageCount": "0/2",
-                "status": "low"
+                "coveragePercent": 33,
+                "coverageCount": "1/3",
+                "status": "medium"
             },
             {
                 "filePath": "src/components/containers/tabs/tabs.stories.ts",
