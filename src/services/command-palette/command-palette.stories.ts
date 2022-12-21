@@ -1,5 +1,4 @@
-import {Meta} from '@storybook/angular/types-6-0';
-import {Story} from '@storybook/angular';
+import {Meta, Story} from '@storybook/angular';
 import {TriggerButtonComponent} from './trigger-button/trigger-button.component';
 
 export default {
