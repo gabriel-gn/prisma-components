@@ -9,8 +9,10 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "npm i node-sass && node scripts/update-color-themes.js && npm run build:lib && npm uninstall node-sass",
-    "build:lib": "node scripts/remove-styles-from-build.js && ng build --configuration=production",
+    "prebuild": "npm i node-sass && node scripts/update-color-themes.js && node scripts/remove-styles-from-build.js",
+    "build": "npm run build:lib",
+    "postbuild": "node scripts/revert-git-changes.js && npm uninstall node-sass",
+    "build:lib": "ng build --configuration=production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "docs:json": "compodoc -p ./tsconfig.json -e json -d .",
@@ -46,6 +48,7 @@
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
     "rxjs": "^7.4.0",
+    "shelljs": "^0.8.5",
     "tslib": "^2.3.0",
     "zone.js": "^0.11.4"
   },
