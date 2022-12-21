@@ -9,7 +9,8 @@ import {MatTabsModule} from '@angular/material/tabs';
     TabsComponent
   ],
   exports: [
-    TabsComponent
+    TabsComponent,
+    MatTabsModule
   ],
   imports: [
     CommonModule,
