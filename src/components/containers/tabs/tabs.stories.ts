@@ -13,7 +13,11 @@ export const Template: StoryFn<TabsComponent> = (args) => ({
         [orientation]="orientation"
         [sticky]="sticky"
     >
-      <mat-tab-group>
+      <mat-tab-group
+        mat-stretch-tabs
+        preserveContent
+        [disableRipple]="true"
+      >
         <mat-tab>
           <ng-template mat-tab-label>
             <i class="uil uil-lg uil-apps"></i>

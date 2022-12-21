@@ -6294,7 +6294,7 @@
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": "::ng-deep .pm-tabs {\n  &.horizontal-tabs {\n    --mdc-typography-button-letter-spacing: normal;\n\n    .mat-mdc-tab-body-content {\n      overflow: hidden;\n    }\n\n    .mdc-tab {\n      font-size: 15px;\n      background-color: transparent;\n      border-radius: var(--border-radius-xl) !important;\n      height: 45px;\n      min-width: 25px !important;\n      padding: 0.5em;\n      color: var(--color-default) !important;\n      font-weight: 500;\n      width: 120px !important;\n\n      &__ripple {\n        display: none;\n      }\n\n      &:hover,\n      &--active {\n        background-color: rgba(var(--color-primary-states-rgb), 0.1);\n        color: var(--color-primary-states);\n        font-weight: 600;\n      }\n    }\n\n    .mat-mdc-tab-header {\n      border-bottom: none;\n    }\n\n    .mat-mdc-tab-header-pagination {\n      display: none !important;\n    }\n\n    .mdc-tab-indicator {\n\n      &--active {\n        .mdc-tab-indicator__content {\n          &--underline {\n            display: none;\n          }\n        }\n\n        * {\n          color: var(--color-primary) !important;\n        }\n      }\n    }\n\n    .mat-mdc-tab-body-wrapper {\n      flex: 1 1 auto;\n      padding: 0px;\n      overflow-y: auto;\n      overflow-x: hidden;\n\n      label {\n        margin-top: 12px;\n        margin-bottom: 5px;\n        color: var(--color-default);\n      }\n\n      .btn-tooltip-sm {\n        height: 20px;\n        width: 20px;\n        border-radius: 50%;\n        padding: 0px;\n      }\n\n      .bool-div-container {\n        margin-top: 12px;\n        margin-bottom: 5px;\n      }\n    }\n\n    &.sticky-tabs {\n      .mat-mdc-tab-header {\n        position: sticky;\n        top: 0;\n        background: rgba(var(--bg-default-rgb), 0.8);\n        backdrop-filter: blur(5px);\n        padding: 0.5em 0px;\n        width: inherit;\n        z-index: 2;\n        padding: 0.5em;\n        border-radius: var(--border-radius-xl);\n      }\n\n      .mat-mdc-tab-body-content {\n        padding: 0px 1em;\n      }\n\n      @media screen and (min-width: 992px) {\n        .mdc-tab {\n          &__content {\n            align-self: center;\n          }\n\n          &__text-label {\n            i {\n              display: none;\n            }\n          }\n        }\n      }\n\n      @media screen and (max-width: 991px) {\n        .mdc-tab {\n          * {\n            color: var(--color-gray-medium) !important;\n          }\n\n          &:hover {\n            background-color: transparent !important;\n          }\n        }\n\n        .mdc-tab-indicator {\n          &__content {\n            &--underline {\n              align-self: flex-start;\n              border-color: var(--color-primary);\n              height: 3px;\n              background-color: var(--color-primary) !important;\n              border-radius: 50px;\n              width: 50%;\n              display: block;\n            }\n          }\n\n          &--active {\n            background-color: transparent !important;\n\n            * {\n              color: var(--color-primary) !important;\n            }\n          }\n        }\n\n        .mat-mdc-tab-header {\n          backdrop-filter: blur(2px);\n          background: rgba(var(--bg-default-rgb), 1);\n          border-top: 1px solid var(--color-gray-medium);\n          bottom: 0 !important;\n          left: 0 !important;\n          padding: 0px !important;\n          position: fixed !important;\n          top: unset !important;\n          width: 100%;\n          z-index: 999;\n          border-radius: 0px;\n\n          .mat-mdc-tab-list {\n            transform: unset !important;\n          }\n\n          mat-tab-group {\n            height: auto !important;\n          }\n\n          .mat-mdc-tab {\n            height: auto;\n            opacity: 1;\n          }\n\n          .mdc-tab__text-label {\n            display: flex;\n            flex-direction: column;\n\n            * {\n              &:not(:last-child) {\n                margin-bottom: 5px;\n              }\n            }\n\n            span {\n              font-size: 0.8em !important;\n            }\n          }\n        }\n\n        .mat-mdc-tab-body-wrapper {\n          padding-bottom: 60px !important;\n        }\n\n        .filter-dialog-panel {\n          .mat-mdc-dialog-container {\n            background-color: var(--bg-default);\n          }\n        }\n      }\n    }\n\n  }\n\n  &.vertical-tabs {\n    @extend .horizontal-tabs;\n\n    .mat-mdc-tab {\n      margin-top: 5px;\n    }\n\n    .mat-mdc-tab-group {\n      flex-direction: row;\n    }\n\n    .mat-mdc-tab-labels {\n      flex-direction: column;\n    }\n\n    .mat-mdc-tab-body-wrapper {\n      padding-left: 10px;\n    }\n\n    .mat-mdc-tab-container {\n      overflow-y: auto;\n    }\n\n    mat-tab-body {\n      min-height: 100px;\n    }\n  }\n}\n",
+                    "data": "::ng-deep .pm-tabs {\n  &.horizontal-tabs {\n    --mdc-typography-button-letter-spacing: normal;\n\n    .mat-mdc-tab-body-content {\n      overflow: hidden;\n    }\n\n    .mdc-tab {\n      font-size: 15px;\n      background-color: transparent;\n      border-radius: var(--border-radius-xl) !important;\n      height: 45px;\n      min-width: 25px !important;\n      padding: 0.5em;\n      color: var(--color-default) !important;\n      font-weight: 500;\n      width: 120px !important;\n\n      &__ripple {\n        display: none;\n      }\n\n      &:hover,\n      &--active {\n        background-color: rgba(var(--color-primary-states-rgb), 0.1);\n        color: var(--color-primary-states);\n        font-weight: 600;\n      }\n    }\n\n    .mat-mdc-tab-header {\n      border-bottom: none;\n    }\n\n    .mat-mdc-tab-header-pagination {\n      display: none !important;\n    }\n\n    .mdc-tab-indicator {\n\n      &--active {\n        .mdc-tab-indicator__content {\n          &--underline {\n            display: none;\n          }\n        }\n\n        * {\n          color: var(--color-primary) !important;\n        }\n      }\n    }\n\n    .mat-mdc-tab-body-wrapper {\n      flex: 1 1 auto;\n      padding: 0px;\n      overflow-y: auto;\n      overflow-x: hidden;\n\n      label {\n        margin-top: 12px;\n        margin-bottom: 5px;\n        color: var(--color-default);\n      }\n\n      .btn-tooltip-sm {\n        height: 20px;\n        width: 20px;\n        border-radius: 50%;\n        padding: 0px;\n      }\n\n      .bool-div-container {\n        margin-top: 12px;\n        margin-bottom: 5px;\n      }\n    }\n\n    .mdc-tab {\n      &__content {\n        align-self: center;\n      }\n\n      &__text-label {\n        i {\n          display: none;\n        }\n      }\n    }\n\n    &.sticky-tabs {\n      .mat-mdc-tab-header {\n        position: sticky;\n        top: 0;\n        background: rgba(var(--bg-default-rgb), 0.8);\n        backdrop-filter: blur(5px);\n        padding: 0.5em 0px;\n        width: inherit;\n        z-index: 2;\n        padding: 0.5em;\n        border-radius: var(--border-radius-xl);\n      }\n\n      .mat-mdc-tab-body-content {\n        padding: 0px 1em;\n      }\n\n      @media screen and (max-width: 991px) {\n        .mdc-tab {\n          * {\n            color: var(--color-gray-medium) !important;\n          }\n\n          &__text-label {\n            i {\n              display: block;\n            }\n          }\n\n          &:hover {\n            background-color: transparent !important;\n          }\n        }\n\n        .mdc-tab-indicator {\n          &__content {\n            &--underline {\n              align-self: flex-start;\n              border-color: var(--color-primary);\n              height: 3px;\n              background-color: var(--color-primary) !important;\n              border-radius: 50px;\n              width: 50%;\n              display: block;\n            }\n          }\n\n          &--active {\n            background-color: transparent !important;\n\n            * {\n              color: var(--color-primary) !important;\n            }\n          }\n        }\n\n        .mat-mdc-tab-header {\n          backdrop-filter: blur(2px);\n          background: rgba(var(--bg-default-rgb), 1);\n          border-top: 1px solid var(--color-gray-medium);\n          bottom: 0 !important;\n          left: 0 !important;\n          padding: 0px !important;\n          position: fixed !important;\n          top: unset !important;\n          width: 100%;\n          z-index: 999;\n          border-radius: 0px;\n\n          .mat-mdc-tab-list {\n            transform: unset !important;\n          }\n\n          mat-tab-group {\n            height: auto !important;\n          }\n\n          .mat-mdc-tab {\n            height: auto;\n            opacity: 1;\n          }\n\n          .mdc-tab__text-label {\n            display: flex;\n            flex-direction: column;\n\n            * {\n              &:not(:last-child) {\n                margin-bottom: 5px;\n              }\n            }\n\n            span {\n              font-size: 0.8em !important;\n            }\n          }\n        }\n\n        .mat-mdc-tab-body-wrapper {\n          padding-bottom: 60px !important;\n        }\n\n        .filter-dialog-panel {\n          .mat-mdc-dialog-container {\n            background-color: var(--bg-default);\n          }\n        }\n      }\n    }\n\n  }\n\n  &.vertical-tabs {\n    @extend .horizontal-tabs;\n\n    .mat-mdc-tab {\n      margin-top: 5px;\n    }\n\n    .mat-mdc-tab-group {\n      flex-direction: row;\n    }\n\n    .mat-mdc-tab-labels {\n      flex-direction: column;\n    }\n\n    .mat-mdc-tab-body-wrapper {\n      padding-left: 10px;\n    }\n\n    .mat-mdc-tab-container {\n      overflow-y: auto;\n    }\n\n    mat-tab-body {\n      min-height: 100px;\n    }\n  }\n}\n",
                     "styleUrl": "./tabs.component.scss"
                 }
             ],
@@ -7649,16 +7649,6 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/components/cards/icon-card/icon-card.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "object",
-                "defaultValue": "{\n  textPosition: 'center',\n  paddingClass: 'p-3',\n  hoverable: true,\n  orientation: OrientationEnum.Y,\n  iconClass: 'uil uil-star',\n  title: '',\n  subtitle: '',\n  iconCardArray: [],\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "src/components/cards/basic-card/basic-card.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
@@ -7669,11 +7659,11 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/components/containers/expansion-panel/expansion-panel.stories.ts",
+                "file": "src/components/cards/icon-card/icon-card.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "object",
-                "defaultValue": "{\n}"
+                "defaultValue": "{\n  textPosition: 'center',\n  paddingClass: 'p-3',\n  hoverable: true,\n  orientation: OrientationEnum.Y,\n  iconClass: 'uil uil-star',\n  title: '',\n  subtitle: '',\n  iconCardArray: [],\n}"
             },
             {
                 "name": "defaultArgs",
@@ -7684,6 +7674,16 @@
                 "deprecationMessage": "",
                 "type": "object",
                 "defaultValue": "{\n  orientation: 'horizontal',\n  sticky: true\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/containers/expansion-panel/expansion-panel.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\n}"
             },
             {
                 "name": "defaultArgs",
@@ -7719,16 +7719,6 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/components/inputs/copy-content-input/copy-content-input.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "object",
-                "defaultValue": "{\n  disabled: false,\n  text: '',\n  copyCallback: undefined,\n  fillHeight: false,\n  btnColor: MainColors.primary,\n  borderRadius: Sizes.md\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "src/components/inputs/dropdown-actions/dropdown-actions.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
@@ -7754,6 +7744,16 @@
                 "deprecationMessage": "",
                 "type": "object",
                 "defaultValue": "{\n  orientation: OrientationEnum.Y,\n  values: [],\n  disabled: false,\n  selectedValue: undefined\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/inputs/copy-content-input/copy-content-input.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\n  disabled: false,\n  text: '',\n  copyCallback: undefined,\n  fillHeight: false,\n  btnColor: MainColors.primary,\n  borderRadius: Sizes.md\n}"
             },
             {
                 "name": "defaultArgs",
@@ -8269,16 +8269,6 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/components/cards/icon-card/icon-card.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story<IconCardComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-icon-card\n      [textPosition]=\"textPosition\"\n      [paddingClass]=\"paddingClass\"\n      [hoverable]=\"hoverable\"\n      [orientation]=\"orientation\"\n      [iconClass]=\"iconClass\"\n      [title]=\"title\"\n      [subtitle]=\"subtitle\"\n      [iconCardArray]=\"iconCardArray\"\n    >\n    </pm-icon-card>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "src/components/cards/basic-card/basic-card.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
@@ -8289,11 +8279,11 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/components/containers/expansion-panel/expansion-panel.stories.ts",
+                "file": "src/components/cards/icon-card/icon-card.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
-                "type": "Story<ExpansionPanelComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-expansion-panel\n    >\n        Conteúdo aqui\n    </pm-expansion-panel>\n  `\n})"
+                "type": "Story<IconCardComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-icon-card\n      [textPosition]=\"textPosition\"\n      [paddingClass]=\"paddingClass\"\n      [hoverable]=\"hoverable\"\n      [orientation]=\"orientation\"\n      [iconClass]=\"iconClass\"\n      [title]=\"title\"\n      [subtitle]=\"subtitle\"\n      [iconCardArray]=\"iconCardArray\"\n    >\n    </pm-icon-card>\n  `\n})"
             },
             {
                 "name": "Template",
@@ -8303,7 +8293,17 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "StoryFn<TabsComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-tabs\n        [orientation]=\"orientation\"\n        [sticky]=\"sticky\"\n    >\n      <mat-tab-group>\n        <mat-tab label=\"First\"> Content 1 </mat-tab>\n        <mat-tab label=\"Second\"> Content 2 </mat-tab>\n        <mat-tab label=\"Third\"> Content 3 </mat-tab>\n      </mat-tab-group>\n    </pm-tabs>\n  `\n})"
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-tabs\n        [orientation]=\"orientation\"\n        [sticky]=\"sticky\"\n    >\n      <mat-tab-group\n        mat-stretch-tabs\n        preserveContent\n      >\n        <mat-tab>\n          <ng-template mat-tab-label>\n            <i class=\"uil uil-lg uil-apps\"></i>\n            <span>Apps</span>\n          </ng-template>\n          <div>Content 1</div>\n        </mat-tab>\n        <mat-tab label=\"Second\"> Content 2 </mat-tab>\n        <mat-tab label=\"Third\"> Content 3 </mat-tab>\n      </mat-tab-group>\n    </pm-tabs>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/containers/expansion-panel/expansion-panel.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<ExpansionPanelComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-expansion-panel\n    >\n        Conteúdo aqui\n    </pm-expansion-panel>\n  `\n})"
             },
             {
                 "name": "Template",
@@ -8339,16 +8339,6 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/components/inputs/copy-content-input/copy-content-input.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story<CopyContentInputComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-copy-content-input\n      [text]=\"text\"\n      [disabled]=\"disabled\"\n      [copyCallback]=\"copyCallback\"\n      [fillHeight]=\"fillHeight\"\n      [btnColor]=\"btnColor\"\n      [borderRadius]=\"borderRadius\"\n    >\n    </pm-copy-content-input>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "src/components/inputs/dropdown-actions/dropdown-actions.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
@@ -8374,6 +8364,16 @@
                 "deprecationMessage": "",
                 "type": "Story<RadioButtonComponent>",
                 "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-radio-button\n      [orientation]=\"orientation\"\n      [values]=\"values\"\n      [selectedValue]=\"selectedValue\"\n      [disabled]=\"disabled\"\n    >\n    </pm-radio-button>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/inputs/copy-content-input/copy-content-input.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<CopyContentInputComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-copy-content-input\n      [text]=\"text\"\n      [disabled]=\"disabled\"\n      [copyCallback]=\"copyCallback\"\n      [fillHeight]=\"fillHeight\"\n      [btnColor]=\"btnColor\"\n      [borderRadius]=\"borderRadius\"\n    >\n    </pm-copy-content-input>\n  `\n})"
             },
             {
                 "name": "Template",
@@ -9205,6 +9205,38 @@
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-basic-card\n      [hoverable]=\"hoverable\"\n      [borderRadius]=\"borderRadius\"\n      [paddingClass]=\"paddingClass\"\n    >\n    </pm-basic-card>\n  `\n})"
                 }
             ],
+            "src/components/containers/tabs/tabs.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/containers/tabs/tabs.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "object",
+                    "defaultValue": "{\n  orientation: 'horizontal',\n  sticky: true\n}"
+                },
+                {
+                    "name": "DefaultTabs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/containers/tabs/tabs.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/containers/tabs/tabs.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "StoryFn<TabsComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-tabs\n        [orientation]=\"orientation\"\n        [sticky]=\"sticky\"\n    >\n      <mat-tab-group\n        mat-stretch-tabs\n        preserveContent\n      >\n        <mat-tab>\n          <ng-template mat-tab-label>\n            <i class=\"uil uil-lg uil-apps\"></i>\n            <span>Apps</span>\n          </ng-template>\n          <div>Content 1</div>\n        </mat-tab>\n        <mat-tab label=\"Second\"> Content 2 </mat-tab>\n        <mat-tab label=\"Third\"> Content 3 </mat-tab>\n      </mat-tab-group>\n    </pm-tabs>\n  `\n})"
+                }
+            ],
             "src/components/containers/expansion-panel/expansion-panel.stories.ts": [
                 {
                     "name": "defaultArgs",
@@ -9235,38 +9267,6 @@
                     "deprecationMessage": "",
                     "type": "Story<ExpansionPanelComponent>",
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-expansion-panel\n    >\n        Conteúdo aqui\n    </pm-expansion-panel>\n  `\n})"
-                }
-            ],
-            "src/components/containers/tabs/tabs.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/containers/tabs/tabs.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "object",
-                    "defaultValue": "{\n  orientation: 'horizontal',\n  sticky: true\n}"
-                },
-                {
-                    "name": "DefaultTabs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/containers/tabs/tabs.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/containers/tabs/tabs.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "StoryFn<TabsComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-tabs\n        [orientation]=\"orientation\"\n        [sticky]=\"sticky\"\n    >\n      <mat-tab-group>\n        <mat-tab label=\"First\"> Content 1 </mat-tab>\n        <mat-tab label=\"Second\"> Content 2 </mat-tab>\n        <mat-tab label=\"Third\"> Content 3 </mat-tab>\n      </mat-tab-group>\n    </pm-tabs>\n  `\n})"
                 }
             ],
             "src/components/inputs/checkbox/checkbox.stories.ts": [
@@ -9351,38 +9351,6 @@
                     "deprecationMessage": "",
                     "type": "Story<ComboBoxComponent>",
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-combo-box\n      [items]=\"items\"\n      [disabled]=\"disabled\"\n      [selectedItem]=\"selectedItem\"\n    >\n    </pm-combo-box>\n  `\n})"
-                }
-            ],
-            "src/components/inputs/copy-content-input/copy-content-input.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/inputs/copy-content-input/copy-content-input.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "object",
-                    "defaultValue": "{\n  disabled: false,\n  text: '',\n  copyCallback: undefined,\n  fillHeight: false,\n  btnColor: MainColors.primary,\n  borderRadius: Sizes.md\n}"
-                },
-                {
-                    "name": "DefaultCopyContentInput",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/inputs/copy-content-input/copy-content-input.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/inputs/copy-content-input/copy-content-input.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Story<CopyContentInputComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-copy-content-input\n      [text]=\"text\"\n      [disabled]=\"disabled\"\n      [copyCallback]=\"copyCallback\"\n      [fillHeight]=\"fillHeight\"\n      [btnColor]=\"btnColor\"\n      [borderRadius]=\"borderRadius\"\n    >\n    </pm-copy-content-input>\n  `\n})"
                 }
             ],
             "src/components/inputs/dropdown-actions/dropdown-actions.stories.ts": [
@@ -9519,6 +9487,38 @@
                     "deprecationMessage": "",
                     "type": "Story<RadioButtonComponent>",
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-radio-button\n      [orientation]=\"orientation\"\n      [values]=\"values\"\n      [selectedValue]=\"selectedValue\"\n      [disabled]=\"disabled\"\n    >\n    </pm-radio-button>\n  `\n})"
+                }
+            ],
+            "src/components/inputs/copy-content-input/copy-content-input.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/inputs/copy-content-input/copy-content-input.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "object",
+                    "defaultValue": "{\n  disabled: false,\n  text: '',\n  copyCallback: undefined,\n  fillHeight: false,\n  btnColor: MainColors.primary,\n  borderRadius: Sizes.md\n}"
+                },
+                {
+                    "name": "DefaultCopyContentInput",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/inputs/copy-content-input/copy-content-input.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/inputs/copy-content-input/copy-content-input.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story<CopyContentInputComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-copy-content-input\n      [text]=\"text\"\n      [disabled]=\"disabled\"\n      [copyCallback]=\"copyCallback\"\n      [fillHeight]=\"fillHeight\"\n      [btnColor]=\"btnColor\"\n      [borderRadius]=\"borderRadius\"\n    >\n    </pm-copy-content-input>\n  `\n})"
                 }
             ],
             "src/components/layout/sidebar/sidebar.stories.ts": [
