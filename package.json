@@ -11,7 +11,7 @@
     "start": "ng serve",
     "prebuild": "npm i node-sass && node scripts/update-color-themes.js && node scripts/remove-styles-from-build.js",
     "build": "npm run build:lib",
-    "postbuild": "node scripts/revert-git-changes.js && npm uninstall node-sass",
+    "postbuild": "node scripts/revert-git-changes.js && npm uninstall node-sass && npm i",
     "build:lib": "ng build --configuration=production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",

@@ -6,7 +6,6 @@ const filesToRevert = [
 ]
 
 filesToRevert.forEach(filePath => {
-  shell.exec(`git reset HEAD ${filePath}`);
   shell.exec(`git checkout -- ${filePath}`);
 })
 console.log(`Alteração nos arquivos ${filesToRevert} revertidos`);
