@@ -1,3 +1,3 @@
-<div class="pm-tabs {{orientation}}-tabs w-100" [ngClass]="{'sticky-tabs': sticky}">
+<div class="pm-tabs w-100 {{orientation}}-tabs {{sticky ? 'sticky-tabs' : ''}}">
   <ng-content select="mat-tab-group"></ng-content>
 </div>
