@@ -1,4 +1,8 @@
-<div #multiselect class="pm-multi-select cursor-pointer border-radius-{{borderRadius}}" (click)="$event.stopPropagation(); openSelect();">
+<div #multiselect
+     class="pm-multi-select cursor-pointer border-radius-{{borderRadius}}"
+     (click)="$event.stopPropagation(); openSelect();"
+     (blur)="blurInputSelect()"
+>
   <div class="d-flex flex-wrap p-1 rad-md position-relative" (click)="openSelect()">
     <div class="d-flex flex-row justify-content-start flex-wrap">
       <div *ngFor="let selected of selectedOptions; let first = first" [ngClass]="{'m-1 chip-container': true}">
@@ -17,6 +21,7 @@
     <form style="min-height: 31px">
       <input #inputBox
              #trigger="matAutocompleteTrigger"
+             (blur)="closeSelect()"
              name="searchInput"
              [hidden]="isLimitReached() === true"
              matInput
@@ -63,7 +68,10 @@
 </div>
 
 <ng-template #thumbnailContainer let-option let-marginStart="marginStart">
-  <div *ngIf="option?.thumbnail" class="pm-multi-select-thumbnail-container" [ngClass]="{'ms-2': marginStart, 'circular': roundedThumbnail, 'mx-2': roundedThumbnail}">
+  <div *ngIf="option?.thumbnail"
+       class="pm-multi-select-thumbnail-container"
+       [ngClass]="{'ms-2': marginStart, 'circular': roundedThumbnail, 'mx-2': roundedThumbnail}"
+  >
     <img
       aria-hidden
       [src]="option.thumbnail"

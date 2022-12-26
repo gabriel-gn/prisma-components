@@ -181,6 +181,13 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
     }
   }
 
+  /**
+   * Use this method instead of "trigger.closePanel()" because it has some validations before closing the panel
+   */
+  public closeSelect(): void {
+    this.trigger.closePanel();
+  }
+
   public clearSelected(): void {
     this.selectedOptions = [];
     this.selectedOptionsChanged.emit(this.selectedOptions);
@@ -191,7 +198,7 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
     if (this.trigger.panelOpen === false) {
       this.openSelect();
     } else {
-      this.trigger.closePanel();
+      this.closeSelect();
     }
   }
 
@@ -203,7 +210,11 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
   public blurInputSelect() {
     if (this.unfocusOnSelect) {
       setTimeout(() => {
-        try { this.inputBoxEl.nativeElement.blur(); } catch (e) {}
+        try {
+          this.inputBoxEl.nativeElement.blur();
+          (document.activeElement as HTMLElement).blur();
+        } catch (e) {}
+        this.closeSelect();
       });
     }
   }

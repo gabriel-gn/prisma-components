@@ -7,15 +7,38 @@
     }
 
     .mdc-tab {
-      font-size: 15px;
       background-color: transparent;
       border-radius: var(--border-radius-xl) !important;
+      color: var(--color-gray-medium);
+      font-size: 15px;
+      font-weight: 500;
       height: 45px;
+      margin: 0px 0.5em !important;
       min-width: 25px !important;
       padding: 0.5em;
-      color: var(--color-default) !important;
-      font-weight: 500;
       width: 120px !important;
+
+      * {
+        color: var(--color-gray-medium);
+      }
+
+      &:first-child {
+        margin-left: 0em !important;
+      }
+
+      &:last-child {
+        margin-right: 0em !important;
+      }
+
+      &__content {
+        align-self: center;
+      }
+
+      &__text-label {
+        i {
+          display: none;
+        }
+      }
 
       &__ripple {
         display: none;
@@ -24,8 +47,12 @@
       &:hover,
       &--active {
         background-color: rgba(var(--color-primary-states-rgb), 0.1);
-        color: var(--color-primary-states);
+        color: var(--color-primary);
         font-weight: 600;
+
+        * {
+          color: var(--color-primary);
+        }
       }
     }
 
@@ -77,28 +104,6 @@
       }
     }
 
-    .mdc-tab {
-      margin: 0px 0.5em !important;
-
-      &:first-child {
-        margin-left: 0em !important;
-      }
-
-      &:last-child {
-        margin-right: 0em !important;
-      }
-
-      &__content {
-        align-self: center;
-      }
-
-      &__text-label {
-        i {
-          display: none;
-        }
-      }
-    }
-
     &.sticky-tabs {
       .mat-mdc-tab-header {
         position: sticky;
@@ -119,10 +124,6 @@
       @media screen and (max-width: 991px) {
         .mdc-tab {
           margin: 0px !important;
-
-          * {
-            color: var(--color-gray-medium) !important;
-          }
 
           &__text-label {
             i {
@@ -150,6 +151,7 @@
 
           &--active {
             background-color: transparent !important;
+            color: var(--color-primary) !important;
 
             * {
               color: var(--color-primary) !important;

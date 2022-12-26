@@ -6296,7 +6296,7 @@
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": ".pm-tabs {\n  &.horizontal-tabs {\n    --mdc-typography-button-letter-spacing: normal;\n\n    .mat-mdc-tab-body-content {\n      overflow: hidden;\n    }\n\n    .mdc-tab {\n      font-size: 15px;\n      background-color: transparent;\n      border-radius: var(--border-radius-xl) !important;\n      height: 45px;\n      min-width: 25px !important;\n      padding: 0.5em;\n      color: var(--color-default) !important;\n      font-weight: 500;\n      width: 120px !important;\n\n      &__ripple {\n        display: none;\n      }\n\n      &:hover,\n      &--active {\n        background-color: rgba(var(--color-primary-states-rgb), 0.1);\n        color: var(--color-primary-states);\n        font-weight: 600;\n      }\n    }\n\n    .mat-mdc-tab-header {\n      border-bottom: none;\n    }\n\n    .mat-mdc-tab-header-pagination {\n      display: none !important;\n    }\n\n    .mdc-tab-indicator {\n\n      &--active {\n        .mdc-tab-indicator__content {\n          &--underline {\n            display: none;\n          }\n        }\n\n        * {\n          color: var(--color-primary) !important;\n        }\n      }\n    }\n\n    .mat-mdc-tab-body-wrapper {\n      flex: 1 1 auto;\n      padding: 0px;\n      overflow-y: auto;\n      overflow-x: hidden;\n\n      label {\n        margin-top: 12px;\n        margin-bottom: 5px;\n        color: var(--color-default);\n      }\n\n      .btn-tooltip-sm {\n        height: 20px;\n        width: 20px;\n        border-radius: 50%;\n        padding: 0px;\n      }\n\n      .bool-div-container {\n        margin-top: 12px;\n        margin-bottom: 5px;\n      }\n    }\n\n    .mdc-tab {\n      margin: 0px 0.5em !important;\n\n      &:first-child {\n        margin-left: 0em !important;\n      }\n\n      &:last-child {\n        margin-right: 0em !important;\n      }\n\n      &__content {\n        align-self: center;\n      }\n\n      &__text-label {\n        i {\n          display: none;\n        }\n      }\n    }\n\n    &.sticky-tabs {\n      .mat-mdc-tab-header {\n        position: sticky;\n        top: 0;\n        background: rgba(var(--bg-default-rgb), 0.3);\n        backdrop-filter: blur(5px);\n        padding: 0.5em 0px;\n        width: inherit;\n        z-index: 2;\n        padding: 0.5em;\n        border-radius: var(--border-radius-xl);\n      }\n\n      .mat-mdc-tab-body-content {\n        padding: 0px 1em;\n      }\n\n      @media screen and (max-width: 991px) {\n        .mdc-tab {\n          margin: 0px !important;\n\n          * {\n            color: var(--color-gray-medium) !important;\n          }\n\n          &__text-label {\n            i {\n              display: block;\n            }\n          }\n\n          &:hover {\n            background-color: transparent !important;\n          }\n        }\n\n        .mdc-tab-indicator {\n          &__content {\n            &--underline {\n              align-self: flex-start;\n              border-color: var(--color-primary);\n              height: 3px;\n              background-color: var(--color-primary) !important;\n              border-radius: 50px;\n              width: 50%;\n              display: block;\n            }\n          }\n\n          &--active {\n            background-color: transparent !important;\n\n            * {\n              color: var(--color-primary) !important;\n            }\n          }\n        }\n\n        .mat-mdc-tab-header {\n          backdrop-filter: blur(2px);\n          background: rgba(var(--bg-default-rgb), 1);\n          border-top: 1px solid var(--color-gray-medium);\n          bottom: 0 !important;\n          left: 0 !important;\n          padding: 0px !important;\n          position: fixed !important;\n          top: unset !important;\n          width: 100%;\n          z-index: 999;\n          border-radius: 0px;\n\n          .mat-mdc-tab-list {\n            transform: unset !important;\n          }\n\n          mat-tab-group {\n            height: auto !important;\n          }\n\n          .mat-mdc-tab {\n            height: auto;\n            opacity: 1;\n          }\n\n          .mdc-tab__text-label {\n            display: flex;\n            flex-direction: column;\n\n            * {\n              &:not(:last-child) {\n                margin-bottom: 5px;\n              }\n            }\n\n            span {\n              font-size: 0.8em !important;\n            }\n          }\n        }\n\n        .mat-mdc-tab-body-wrapper {\n          padding-bottom: 60px !important;\n        }\n\n        .filter-dialog-panel {\n          .mat-mdc-dialog-container {\n            background-color: var(--bg-default);\n          }\n        }\n      }\n    }\n\n  }\n\n  &.vertical-tabs {\n    @extend .horizontal-tabs;\n\n    .mat-mdc-tab {\n      margin-top: 5px;\n    }\n\n    .mat-mdc-tab-group {\n      flex-direction: row;\n    }\n\n    .mat-mdc-tab-labels {\n      flex-direction: column;\n    }\n\n    .mat-mdc-tab-body-wrapper {\n      padding-left: 10px;\n    }\n\n    .mat-mdc-tab-container {\n      overflow-y: auto;\n    }\n\n    mat-tab-body {\n      min-height: 100px;\n    }\n  }\n}\n",
+                    "data": ".pm-tabs {\n  &.horizontal-tabs {\n    --mdc-typography-button-letter-spacing: normal;\n\n    .mat-mdc-tab-body-content {\n      overflow: hidden;\n    }\n\n    .mdc-tab {\n      background-color: transparent;\n      border-radius: var(--border-radius-xl) !important;\n      color: var(--color-gray-medium);\n      font-size: 15px;\n      font-weight: 500;\n      height: 45px;\n      margin: 0px 0.5em !important;\n      min-width: 25px !important;\n      padding: 0.5em;\n      width: 120px !important;\n\n      * {\n        color: var(--color-gray-medium);\n      }\n\n      &:first-child {\n        margin-left: 0em !important;\n      }\n\n      &:last-child {\n        margin-right: 0em !important;\n      }\n\n      &__content {\n        align-self: center;\n      }\n\n      &__text-label {\n        i {\n          display: none;\n        }\n      }\n\n      &__ripple {\n        display: none;\n      }\n\n      &:hover,\n      &--active {\n        background-color: rgba(var(--color-primary-states-rgb), 0.1);\n        color: var(--color-primary);\n        font-weight: 600;\n\n        * {\n          color: var(--color-primary);\n        }\n      }\n    }\n\n    .mat-mdc-tab-header {\n      border-bottom: none;\n    }\n\n    .mat-mdc-tab-header-pagination {\n      display: none !important;\n    }\n\n    .mdc-tab-indicator {\n\n      &--active {\n        .mdc-tab-indicator__content {\n          &--underline {\n            display: none;\n          }\n        }\n\n        * {\n          color: var(--color-primary) !important;\n        }\n      }\n    }\n\n    .mat-mdc-tab-body-wrapper {\n      flex: 1 1 auto;\n      padding: 0px;\n      overflow-y: auto;\n      overflow-x: hidden;\n\n      label {\n        margin-top: 12px;\n        margin-bottom: 5px;\n        color: var(--color-default);\n      }\n\n      .btn-tooltip-sm {\n        height: 20px;\n        width: 20px;\n        border-radius: 50%;\n        padding: 0px;\n      }\n\n      .bool-div-container {\n        margin-top: 12px;\n        margin-bottom: 5px;\n      }\n    }\n\n    &.sticky-tabs {\n      .mat-mdc-tab-header {\n        position: sticky;\n        top: 0;\n        background: rgba(var(--bg-default-rgb), 0.3);\n        backdrop-filter: blur(5px);\n        padding: 0.5em 0px;\n        width: inherit;\n        z-index: 2;\n        padding: 0.5em;\n        border-radius: var(--border-radius-xl);\n      }\n\n      .mat-mdc-tab-body-content {\n        padding: 0px 1em;\n      }\n\n      @media screen and (max-width: 991px) {\n        .mdc-tab {\n          margin: 0px !important;\n\n          &__text-label {\n            i {\n              display: block;\n            }\n          }\n\n          &:hover {\n            background-color: transparent !important;\n          }\n        }\n\n        .mdc-tab-indicator {\n          &__content {\n            &--underline {\n              align-self: flex-start;\n              border-color: var(--color-primary);\n              height: 3px;\n              background-color: var(--color-primary) !important;\n              border-radius: 50px;\n              width: 50%;\n              display: block;\n            }\n          }\n\n          &--active {\n            background-color: transparent !important;\n            color: var(--color-primary) !important;\n\n            * {\n              color: var(--color-primary) !important;\n            }\n          }\n        }\n\n        .mat-mdc-tab-header {\n          backdrop-filter: blur(2px);\n          background: rgba(var(--bg-default-rgb), 1);\n          border-top: 1px solid var(--color-gray-medium);\n          bottom: 0 !important;\n          left: 0 !important;\n          padding: 0px !important;\n          position: fixed !important;\n          top: unset !important;\n          width: 100%;\n          z-index: 999;\n          border-radius: 0px;\n\n          .mat-mdc-tab-list {\n            transform: unset !important;\n          }\n\n          mat-tab-group {\n            height: auto !important;\n          }\n\n          .mat-mdc-tab {\n            height: auto;\n            opacity: 1;\n          }\n\n          .mdc-tab__text-label {\n            display: flex;\n            flex-direction: column;\n\n            * {\n              &:not(:last-child) {\n                margin-bottom: 5px;\n              }\n            }\n\n            span {\n              font-size: 0.8em !important;\n            }\n          }\n        }\n\n        .mat-mdc-tab-body-wrapper {\n          padding-bottom: 60px !important;\n        }\n\n        .filter-dialog-panel {\n          .mat-mdc-dialog-container {\n            background-color: var(--bg-default);\n          }\n        }\n      }\n    }\n\n  }\n\n  &.vertical-tabs {\n    @extend .horizontal-tabs;\n\n    .mat-mdc-tab {\n      margin-top: 5px;\n    }\n\n    .mat-mdc-tab-group {\n      flex-direction: row;\n    }\n\n    .mat-mdc-tab-labels {\n      flex-direction: column;\n    }\n\n    .mat-mdc-tab-body-wrapper {\n      padding-left: 10px;\n    }\n\n    .mat-mdc-tab-container {\n      overflow-y: auto;\n    }\n\n    mat-tab-body {\n      min-height: 100px;\n    }\n  }\n}\n",
                     "styleUrl": "./tabs.component.scss"
                 }
             ],
@@ -7721,16 +7721,6 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/components/inputs/copy-content-input/copy-content-input.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "object",
-                "defaultValue": "{\n  disabled: false,\n  text: '',\n  copyCallback: undefined,\n  fillHeight: false,\n  btnColor: MainColors.primary,\n  borderRadius: Sizes.md\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "src/components/inputs/dropdown-actions/dropdown-actions.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
@@ -7746,6 +7736,16 @@
                 "deprecationMessage": "",
                 "type": "object",
                 "defaultValue": "{\n  options: [],\n  placeholder: '',\n  borderRadius: Sizes.md,\n  roundedThumbnail: true,\n  limit: 0,\n  selectedOptions: [],\n  sortSelectedItems: true,\n  observableInput: undefined,\n  observableDebounce: 100,\n  unfocusOnSelect: true\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/inputs/copy-content-input/copy-content-input.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\n  disabled: false,\n  text: '',\n  copyCallback: undefined,\n  fillHeight: false,\n  btnColor: MainColors.primary,\n  borderRadius: Sizes.md\n}"
             },
             {
                 "name": "defaultArgs",
@@ -8341,16 +8341,6 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/components/inputs/copy-content-input/copy-content-input.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story<CopyContentInputComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-copy-content-input\n      [text]=\"text\"\n      [disabled]=\"disabled\"\n      [copyCallback]=\"copyCallback\"\n      [fillHeight]=\"fillHeight\"\n      [btnColor]=\"btnColor\"\n      [borderRadius]=\"borderRadius\"\n    >\n    </pm-copy-content-input>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "src/components/inputs/dropdown-actions/dropdown-actions.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
@@ -8366,6 +8356,16 @@
                 "deprecationMessage": "",
                 "type": "Story<MultiSelectComponent>",
                 "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-multi-select\n        [options]=\"options\"\n        [placeholder]=\"placeholder\"\n        [borderRadius]=\"borderRadius\"\n        [roundedThumbnail]=\"roundedThumbnail\"\n        [limit]=\"limit\"\n        [selectedOptions]=\"selectedOptions\"\n        [sortSelectedItems]=\"sortSelectedItems\"\n        [observableInput]=\"observableInput\"\n        [observableDebounce]=\"observableDebounce\"\n        [unfocusOnSelect]=\"unfocusOnSelect\"\n    >\n    </pm-multi-select>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/inputs/copy-content-input/copy-content-input.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<CopyContentInputComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-copy-content-input\n      [text]=\"text\"\n      [disabled]=\"disabled\"\n      [copyCallback]=\"copyCallback\"\n      [fillHeight]=\"fillHeight\"\n      [btnColor]=\"btnColor\"\n      [borderRadius]=\"borderRadius\"\n    >\n    </pm-copy-content-input>\n  `\n})"
             },
             {
                 "name": "Template",
@@ -9355,38 +9355,6 @@
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-combo-box\n      [items]=\"items\"\n      [disabled]=\"disabled\"\n      [selectedItem]=\"selectedItem\"\n    >\n    </pm-combo-box>\n  `\n})"
                 }
             ],
-            "src/components/inputs/copy-content-input/copy-content-input.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/inputs/copy-content-input/copy-content-input.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "object",
-                    "defaultValue": "{\n  disabled: false,\n  text: '',\n  copyCallback: undefined,\n  fillHeight: false,\n  btnColor: MainColors.primary,\n  borderRadius: Sizes.md\n}"
-                },
-                {
-                    "name": "DefaultCopyContentInput",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/inputs/copy-content-input/copy-content-input.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/inputs/copy-content-input/copy-content-input.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Story<CopyContentInputComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-copy-content-input\n      [text]=\"text\"\n      [disabled]=\"disabled\"\n      [copyCallback]=\"copyCallback\"\n      [fillHeight]=\"fillHeight\"\n      [btnColor]=\"btnColor\"\n      [borderRadius]=\"borderRadius\"\n    >\n    </pm-copy-content-input>\n  `\n})"
-                }
-            ],
             "src/components/inputs/dropdown-actions/dropdown-actions.stories.ts": [
                 {
                     "name": "defaultArgs",
@@ -9479,6 +9447,38 @@
                     "deprecationMessage": "",
                     "type": "",
                     "defaultValue": "Template.bind({})"
+                }
+            ],
+            "src/components/inputs/copy-content-input/copy-content-input.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/inputs/copy-content-input/copy-content-input.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "object",
+                    "defaultValue": "{\n  disabled: false,\n  text: '',\n  copyCallback: undefined,\n  fillHeight: false,\n  btnColor: MainColors.primary,\n  borderRadius: Sizes.md\n}"
+                },
+                {
+                    "name": "DefaultCopyContentInput",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/inputs/copy-content-input/copy-content-input.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/inputs/copy-content-input/copy-content-input.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story<CopyContentInputComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-copy-content-input\n      [text]=\"text\"\n      [disabled]=\"disabled\"\n      [copyCallback]=\"copyCallback\"\n      [fillHeight]=\"fillHeight\"\n      [btnColor]=\"btnColor\"\n      [borderRadius]=\"borderRadius\"\n    >\n    </pm-copy-content-input>\n  `\n})"
                 }
             ],
             "src/components/inputs/radio-button/radio-button.stories.ts": [
