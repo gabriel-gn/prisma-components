@@ -7,6 +7,11 @@
       color: white;
       border-radius: var(--border-radius-md);
 
+      max-height: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
       * {
         color: white;
         font-weight: 600 !important;
