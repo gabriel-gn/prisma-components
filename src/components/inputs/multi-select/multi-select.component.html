@@ -18,7 +18,7 @@
         </div>
       </div>
     </div>
-    <form style="min-height: 31px">
+    <form style="min-height: 31px" [hidden]="isLimitReached() === true">
       <input #inputBox
              #trigger="matAutocompleteTrigger"
              name="searchInput"
