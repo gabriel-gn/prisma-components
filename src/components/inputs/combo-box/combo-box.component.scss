@@ -1,0 +1,55 @@
+.pm-combo-box {
+  mat-form-field {
+    border-radius: var(--border-radius-md);
+
+    .mat-mdc-text-field-wrapper {
+      background-color: var(--color-primary);
+      color: white;
+      border-radius: var(--border-radius-md);
+
+      * {
+        color: white;
+        font-weight: 600 !important;
+      }
+
+      &.mdc-text-field--focused {
+        border-radius: var(--border-radius-md);
+      }
+    }
+
+
+
+    &.mat-focused {
+      border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;
+    }
+
+    .mdc-line-ripple {
+      display: none;
+    }
+  }
+}
+
+.pm-combo-box-overlay {
+  $combo-box-overlay-background-color: var(--color-primary);
+  $combo-box-overlay-border-color: var(--color-primary-states);
+
+  background-color: $combo-box-overlay-background-color;
+  border-radius: var(--border-radius-md) !important;
+  box-shadow: none;
+  margin-top: 0.25em !important;
+  // comentar as duas linhas de baixo para remover a borda degradê
+  //background: linear-gradient($combo-box-overlay-background-color, $combo-box-overlay-background-color) padding-box, linear-gradient(to top, $combo-box-overlay-border-color, transparent) border-box;
+  //border: 2px solid transparent;
+
+  * {
+    color: white !important;
+    font-weight: 600 !important;
+  }
+
+  .mat-list-item--selected,
+  .mat-mdc-option-active {
+    * {
+      color: var(--color-default) !important;
+    }
+  }
+}

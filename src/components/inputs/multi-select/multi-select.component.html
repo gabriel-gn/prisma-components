@@ -1,27 +1,26 @@
 <div #multiselect
      class="pm-multi-select cursor-pointer border-radius-{{borderRadius}}"
      (click)="$event.stopPropagation(); openSelect();"
-     (blur)="blurInputSelect()"
 >
   <div class="d-flex flex-wrap p-1 rad-md position-relative" (click)="openSelect()">
     <div class="d-flex flex-row justify-content-start flex-wrap">
       <div *ngFor="let selected of selectedOptions; let first = first" [ngClass]="{'m-1 chip-container': true}">
-        <div class="d-flex flex-row align-items-center">
+        <div (click)="$event.stopPropagation(); removeSelectedOption(selected)"
+             class="d-flex flex-row align-items-center"
+             [ngClass]="{'p-0 ps-2': showRemoveButton, 'py-1 px-2': !showRemoveButton}"
+        >
           <ng-container *ngTemplateOutlet="thumbnailContainer; context: {$implicit: selected, marginStart: true}"></ng-container>
-          <p class="m-0 ms-1">{{selected.label}}</p>
+          <p class="m-0" [ngClass]="{'ms-1': selected?.thumbnail}">{{selected.label}}</p>
           <button *ngIf="showRemoveButton"
-                  class="btn btn-light"
                   (click)="$event.stopPropagation(); removeSelectedOption(selected)"
-          >
-            x
-          </button>
+                  class="btn btn-light"
+          >x</button>
         </div>
       </div>
     </div>
     <form style="min-height: 31px">
       <input #inputBox
              #trigger="matAutocompleteTrigger"
-             (blur)="closeSelect()"
              name="searchInput"
              [hidden]="isLimitReached() === true"
              matInput
@@ -70,7 +69,7 @@
 <ng-template #thumbnailContainer let-option let-marginStart="marginStart">
   <div *ngIf="option?.thumbnail"
        class="pm-multi-select-thumbnail-container"
-       [ngClass]="{'ms-2': marginStart, 'circular': roundedThumbnail, 'mx-2': roundedThumbnail}"
+       [ngClass]="{'ms-2': marginStart, 'circular': roundedThumbnail, 'mx-2': roundedThumbnail, 'ms-0': showRemoveButton}"
   >
     <img
       aria-hidden

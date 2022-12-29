@@ -1,13 +1,16 @@
-<mat-form-field class="w-100">
-  <mat-select
-    [disabled]="disabled"
-    [disableRipple]="true"
-    [(ngModel)]="selectedItem"
-    disableOptionCentering
-    (selectionChange)="selectionChanged($event)"
-  >
-    <mat-option *ngFor="let item of items" [value]="item.value">
-      {{item.label}}
-    </mat-option>
-  </mat-select>
-</mat-form-field>
+<div class="pm-combo-box">
+  <mat-form-field class="w-100">
+    <mat-select
+      [disabled]="disabled"
+      [disableRipple]="true"
+      [(ngModel)]="selectedItem"
+      disableOptionCentering
+      [panelClass]="{'pm-combo-box-overlay': true}"
+      (selectionChange)="selectionChanged($event)"
+    >
+      <mat-option *ngFor="let item of items" [value]="item.value">
+        {{item.label}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>

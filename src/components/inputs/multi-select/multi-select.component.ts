@@ -79,10 +79,10 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
    */
   @Input() unfocusOnSelect: boolean = true;
   /**
-   * Caso a flag seja "true", mostra o botão de remover os itens da lista de selecionados.
+   * Caso a flag seja "true", mostra o botão "X" de remover cada item da lista de selecionados.
    * Caso contrário, ao clicar sobre um item, remove ele da lista de selecionados
    */
-  @Input() showRemoveButton: boolean = true;
+  @Input() showRemoveButton: boolean = false;
   public _observableInputLoading: boolean = false;
 
   public readonly myControl: UntypedFormControl;
@@ -212,9 +212,7 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
       setTimeout(() => {
         try {
           this.inputBoxEl.nativeElement.blur();
-          (document.activeElement as HTMLElement).blur();
         } catch (e) {}
-        this.closeSelect();
       });
     }
   }
