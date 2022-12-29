@@ -9,7 +9,7 @@
              class="d-flex flex-row align-items-center"
              [ngClass]="{'p-0 ps-2': showRemoveButton, 'py-1 px-2': !showRemoveButton}"
         >
-          <ng-container *ngTemplateOutlet="thumbnailContainer; context: {$implicit: selected, marginStart: true}"></ng-container>
+          <ng-container *ngTemplateOutlet="thumbnailContainer; context: {$implicit: selected}"></ng-container>
           <p class="m-0" [ngClass]="{'ms-1': selected?.thumbnail}">{{selected.label}}</p>
           <button *ngIf="showRemoveButton"
                   (click)="$event.stopPropagation(); removeSelectedOption(selected)"
@@ -36,6 +36,7 @@
                         (optionSelected)="selectOption($event.option.value);"
                         [panelWidth]="multiselect?.offsetWidth"
                         [displayWith]="displayFn"
+                        [classList]="['pm-multi-select-autocomplete-panel']"
       >
         <ng-container *ngIf="(filteredOptions | async) as fOptions; else loadingObservableNoResultsTemplate">
           <mat-option *ngIf="fOptions?.length <= 0 && _observableInputLoading">
@@ -66,10 +67,10 @@
   </div>
 </div>
 
-<ng-template #thumbnailContainer let-option let-marginStart="marginStart">
+<ng-template #thumbnailContainer let-option>
   <div *ngIf="option?.thumbnail"
        class="pm-multi-select-thumbnail-container"
-       [ngClass]="{'ms-2': marginStart, 'circular': roundedThumbnail, 'mx-2': roundedThumbnail, 'ms-0': showRemoveButton}"
+       [ngClass]="{'circular': roundedThumbnail, 'mx-2': roundedThumbnail, 'ms-0': showRemoveButton}"
   >
     <img
       aria-hidden

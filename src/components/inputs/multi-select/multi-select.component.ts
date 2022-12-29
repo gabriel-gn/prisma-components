@@ -7,10 +7,11 @@ import {
   Input,
   OnInit,
   Output,
-  ViewChild
+  ViewChild,
+  ViewEncapsulation
 } from '@angular/core';
 import {UntypedFormControl} from '@angular/forms';
-import {catchError, concatMap, debounceTime, distinctUntilChanged, Observable, of, tap, throwError} from 'rxjs';
+import {catchError, concatMap, debounceTime, distinctUntilChanged, Observable, of, tap} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import _ from 'lodash';
 import {MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, MatAutocompleteTrigger} from '@angular/material/autocomplete';
@@ -26,6 +27,7 @@ export interface MultiSelectOption {
   selector: 'pm-multi-select',
   templateUrl: './multi-select.component.html',
   styleUrls: ['./multi-select.component.scss'],
+  encapsulation: ViewEncapsulation.None,
   providers: [
     {
       provide: MAT_AUTOCOMPLETE_DEFAULT_OPTIONS,

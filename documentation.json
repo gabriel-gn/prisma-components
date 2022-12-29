@@ -35,12 +35,12 @@
         },
         {
             "name": "ComboItem",
-            "id": "interface-ComboItem-2e78f36ede67be77ee94a6ec0f96081c10cd55302031c8b614ecf1a31b66f042f4d3b62613ced213f3566a8c72fd68b52b948831a3b37820fba3fc114e70527f",
+            "id": "interface-ComboItem-1490f64ce724d6ba147af618e1af1380af9a6f48ef5fb88020c9336bb5b803ce21d933a687e8a2c45a5da4dab7ff9d275c278caf01b3a57a3377c35f39707410",
             "file": "src/components/inputs/combo-box/combo-box.component.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation} from '@angular/core';\n\nexport interface ComboItem {\n  label: string;\n  value: any;\n}\n\n@Component({\n  selector: 'pm-combo-box',\n  templateUrl: './combo-box.component.html',\n  styleUrls: ['./combo-box.component.scss'],\n})\nexport class ComboBoxComponent implements OnInit {\n\n  /**\n   * Itens que serão exibidos na combo box.\n   * Devem ser obrigatoriamente do tipo `ComboItem[]`\n   */\n  @Input() items: ComboItem[] = [];\n  /**\n   * Item selecionado da combobox. Pode ser carregado previamente\n   */\n  @Input() selectedItem: any;\n  /**\n   * Desabilita a interação com os valores da combo box.\n   */\n  @Input() disabled: boolean = false;\n  /**\n   * Emite um valor booleano com o novo valor do item selecionado na combo box.\n   */\n  @Output() selectionChange: EventEmitter<any> = new EventEmitter<any>();\n\n  constructor(private ref: ChangeDetectorRef) {\n  }\n\n  ngOnInit(): void {\n    this.ref.detectChanges();\n  }\n\n  public setSelected(item: any): void {\n    this.selectedItem = item;\n    this.selectionChange.emit(item);\n  }\n\n  public selectionChanged(event: any): void {\n    this.selectionChange.emit(event.value);\n    this.ref.detectChanges();\n  }\n\n}\n",
+            "sourceCode": "import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation} from '@angular/core';\n\nexport interface ComboItem {\n  label: string;\n  value: any;\n}\n\n@Component({\n  selector: 'pm-combo-box',\n  templateUrl: './combo-box.component.html',\n  styleUrls: ['./combo-box.component.scss'],\n  encapsulation: ViewEncapsulation.None\n})\nexport class ComboBoxComponent implements OnInit {\n\n  /**\n   * Itens que serão exibidos na combo box.\n   * Devem ser obrigatoriamente do tipo `ComboItem[]`\n   */\n  @Input() items: ComboItem[] = [];\n  /**\n   * Item selecionado da combobox. Pode ser carregado previamente\n   */\n  @Input() selectedItem: any;\n  /**\n   * Desabilita a interação com os valores da combo box.\n   */\n  @Input() disabled: boolean = false;\n  /**\n   * Emite um valor booleano com o novo valor do item selecionado na combo box.\n   */\n  @Output() selectionChange: EventEmitter<any> = new EventEmitter<any>();\n\n  constructor(private ref: ChangeDetectorRef) {\n  }\n\n  ngOnInit(): void {\n    this.ref.detectChanges();\n  }\n\n  public setSelected(item: any): void {\n    this.selectedItem = item;\n    this.selectionChange.emit(item);\n  }\n\n  public selectionChanged(event: any): void {\n    this.selectionChange.emit(event.value);\n    this.ref.detectChanges();\n  }\n\n}\n",
             "properties": [
                 {
                     "name": "label",
@@ -262,12 +262,12 @@
         },
         {
             "name": "MultiSelectOption",
-            "id": "interface-MultiSelectOption-9e49d26cfdb88a7aee94ccff25617e6d01415e7e62c7529d0672f99760370c6dc4b9c059c08746128f450fc2ad829dcdd77ef105b4075d9e0bea7f6f24f99139",
+            "id": "interface-MultiSelectOption-24231f0a4d7a75c569987fe295355f09b9fd0f1e1408948d953dfbfbf946dee12e3ec6a9de9706211abc863d034bddc5ebd9b4bd3e89328cb479530d7d158d67",
             "file": "src/components/inputs/multi-select/multi-select.component.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "import {\n  AfterViewInit,\n  ChangeDetectorRef,\n  Component,\n  ElementRef,\n  EventEmitter,\n  Input,\n  OnInit,\n  Output,\n  ViewChild\n} from '@angular/core';\nimport {UntypedFormControl} from '@angular/forms';\nimport {catchError, concatMap, debounceTime, distinctUntilChanged, Observable, of, tap, throwError} from 'rxjs';\nimport {map, startWith} from 'rxjs/operators';\nimport _ from 'lodash';\nimport {MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, MatAutocompleteTrigger} from '@angular/material/autocomplete';\nimport {Sizes} from '../../../models/sizes';\n\nexport interface MultiSelectOption {\n  label: string;\n  value: any;\n  thumbnail?: string;\n}\n\n@Component({\n  selector: 'pm-multi-select',\n  templateUrl: './multi-select.component.html',\n  styleUrls: ['./multi-select.component.scss'],\n  providers: [\n    {\n      provide: MAT_AUTOCOMPLETE_DEFAULT_OPTIONS,\n      useValue: {\n        autoActiveFirstOption: false,\n        overlayPanelClass: 'pm-multi-select-autocomplete-panel'\n      }\n    }\n  ]\n})\nexport class MultiSelectComponent implements OnInit, AfterViewInit {\n\n  @ViewChild('inputBox', {static: true}) inputBoxEl: ElementRef;\n  @ViewChild('trigger', {static: true}) trigger: MatAutocompleteTrigger;\n  /**\n   * Ao ser selecionada uma opção nova, emite\n   */\n  @Output() selectedOptionsChanged = new EventEmitter<MultiSelectOption[]>();\n  /**\n   * Texto a ser exibido no input\n   */\n  @Input() placeholder: string = '';\n  /**\n   * opções a serem exibidas no input\n   */\n  @Input() options: MultiSelectOption[] = [];\n  @Input() borderRadius: Sizes = Sizes.md;\n  /**\n   * se as thumbnails serão arredondadas\n   */\n  @Input() roundedThumbnail: boolean = true;\n  /**\n   * limite máximo de seleções de itens\n   */\n  @Input() limit: number = 0;\n  /**\n   * Opções que ja vem selecionadas\n   */\n  @Input() selectedOptions: MultiSelectOption[] = [];\n  /**\n   * sort selected items instead of showing them in selected sequence\n   */\n  @Input() sortSelectedItems: boolean = true;\n  @Input() observableInput: (search: string) => Observable<MultiSelectOption[]>;\n  /**\n   * Tempo de espera em cada execução de chamada do observable ao digitar no campo de input\n   */\n  @Input() observableDebounce: number = 100;\n  /**\n   * Caso a flag seja \"true\", desativa o foco no input, escondendo o teclado virtual no mobile\n   */\n  @Input() unfocusOnSelect: boolean = true;\n  /**\n   * Caso a flag seja \"true\", mostra o botão de remover os itens da lista de selecionados.\n   * Caso contrário, ao clicar sobre um item, remove ele da lista de selecionados\n   */\n  @Input() showRemoveButton: boolean = true;\n  public _observableInputLoading: boolean = false;\n\n  public readonly myControl: UntypedFormControl;\n  public inputValue: string = '';\n  public filteredOptions: Observable<MultiSelectOption[]>;\n\n  constructor(\n    private cdr: ChangeDetectorRef\n  ) {\n    this.myControl = new UntypedFormControl();\n  }\n\n  ngOnInit(): void {\n    if (this.observableInput) {\n      this.filteredOptions = this.myControl.valueChanges.pipe(\n        debounceTime(this.observableDebounce),\n        distinctUntilChanged(),\n        tap(() => {this.observableInputLoading = true}),\n        concatMap(() => this.observableInput(`${this.myControl.value}`).pipe(\n          catchError(error => {this.observableInputLoading = false; return of(null); }),\n        )),\n        tap(() => {this.observableInputLoading = false}),\n      );\n    } else {\n      this.filteredOptions = this.myControl.valueChanges.pipe(\n        startWith(''),\n        map(value => (typeof value === 'string' ? value : `${value.label}`)),\n        map(label => this._filter(label)),\n      );\n    }\n  }\n\n  ngAfterViewInit(): void {\n    this.clearInput();\n  }\n\n  public set observableInputLoading(state: boolean) {\n    this._observableInputLoading = state;\n    this.cdr.detectChanges();\n  }\n\n  /**\n   * Função utilizada para colocar texto na caixa de input ao selecionar uma opção\n   * @param user\n   */\n  displayFn(option: MultiSelectOption): string {\n    return '';\n    // return option && option.label ? option.label : '';\n  }\n\n  private _filter(label: string): MultiSelectOption[] {\n    const filterValue = label.toLowerCase();\n\n    return _.difference(\n      this.options.filter(option => option.label.toLowerCase().includes(filterValue)),\n      this.selectedOptions\n    );\n  }\n\n  public selectOption(option: any): void {\n    this.selectedOptions.push(option);\n\n    if (this.sortSelectedItems) {\n      this.selectedOptions = this.selectedOptions.sort((a, b) => {\n        return this.options.indexOf(a) - this.options.indexOf(b);\n      });\n    }\n\n    this.selectedOptionsChanged.emit(this.selectedOptions);\n    this.blurInputSelect();\n    this.clearInput();\n  }\n\n  private clearInput(): void {\n    this.inputValue = '';\n    this.myControl.setValue(this.inputValue);\n    this.cdr.detectChanges();\n  }\n\n  public removeSelectedOption(option: MultiSelectOption): void {\n    _.remove(this.selectedOptions, option);\n    this.trigger.closePanel();\n    this.clearInput();\n  }\n\n  public isOptionSelected(option: MultiSelectOption): boolean {\n    return !!this.selectedOptions.find(sOptions => _.isEqual(sOptions, option));\n  }\n\n  /**\n   * Use this method instead of \"trigger.openPanel()\" because it has some validations before opening the panel\n   */\n  public openSelect(): void {\n    if (this.isLimitReached() === false) {\n      this.trigger.openPanel();\n    }\n  }\n\n  /**\n   * Use this method instead of \"trigger.closePanel()\" because it has some validations before closing the panel\n   */\n  public closeSelect(): void {\n    this.trigger.closePanel();\n  }\n\n  public clearSelected(): void {\n    this.selectedOptions = [];\n    this.selectedOptionsChanged.emit(this.selectedOptions);\n    this.clearInput();\n  }\n\n  public togglePanel(): void {\n    if (this.trigger.panelOpen === false) {\n      this.openSelect();\n    } else {\n      this.closeSelect();\n    }\n  }\n\n  public isLimitReached() {\n    return !this.observableInput // caso tenha observable input, as options são dinâmicas, e não armazenadas no componente\n      && (this.selectedOptions.length === this.options.length || (!!this.limit && this.selectedOptions.length >= this.limit))\n  }\n\n  public blurInputSelect() {\n    if (this.unfocusOnSelect) {\n      setTimeout(() => {\n        try {\n          this.inputBoxEl.nativeElement.blur();\n        } catch (e) {}\n      });\n    }\n  }\n\n}\n",
+            "sourceCode": "import {\n  AfterViewInit,\n  ChangeDetectorRef,\n  Component,\n  ElementRef,\n  EventEmitter,\n  Input,\n  OnInit,\n  Output,\n  ViewChild,\n  ViewEncapsulation\n} from '@angular/core';\nimport {UntypedFormControl} from '@angular/forms';\nimport {catchError, concatMap, debounceTime, distinctUntilChanged, Observable, of, tap} from 'rxjs';\nimport {map, startWith} from 'rxjs/operators';\nimport _ from 'lodash';\nimport {MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, MatAutocompleteTrigger} from '@angular/material/autocomplete';\nimport {Sizes} from '../../../models/sizes';\n\nexport interface MultiSelectOption {\n  label: string;\n  value: any;\n  thumbnail?: string;\n}\n\n@Component({\n  selector: 'pm-multi-select',\n  templateUrl: './multi-select.component.html',\n  styleUrls: ['./multi-select.component.scss'],\n  encapsulation: ViewEncapsulation.None,\n  providers: [\n    {\n      provide: MAT_AUTOCOMPLETE_DEFAULT_OPTIONS,\n      useValue: {\n        autoActiveFirstOption: false,\n        overlayPanelClass: 'pm-multi-select-autocomplete-panel'\n      }\n    }\n  ]\n})\nexport class MultiSelectComponent implements OnInit, AfterViewInit {\n\n  @ViewChild('inputBox', {static: true}) inputBoxEl: ElementRef;\n  @ViewChild('trigger', {static: true}) trigger: MatAutocompleteTrigger;\n  /**\n   * Ao ser selecionada uma opção nova, emite\n   */\n  @Output() selectedOptionsChanged = new EventEmitter<MultiSelectOption[]>();\n  /**\n   * Texto a ser exibido no input\n   */\n  @Input() placeholder: string = '';\n  /**\n   * opções a serem exibidas no input\n   */\n  @Input() options: MultiSelectOption[] = [];\n  @Input() borderRadius: Sizes = Sizes.md;\n  /**\n   * se as thumbnails serão arredondadas\n   */\n  @Input() roundedThumbnail: boolean = true;\n  /**\n   * limite máximo de seleções de itens\n   */\n  @Input() limit: number = 0;\n  /**\n   * Opções que ja vem selecionadas\n   */\n  @Input() selectedOptions: MultiSelectOption[] = [];\n  /**\n   * sort selected items instead of showing them in selected sequence\n   */\n  @Input() sortSelectedItems: boolean = true;\n  @Input() observableInput: (search: string) => Observable<MultiSelectOption[]>;\n  /**\n   * Tempo de espera em cada execução de chamada do observable ao digitar no campo de input\n   */\n  @Input() observableDebounce: number = 100;\n  /**\n   * Caso a flag seja \"true\", desativa o foco no input, escondendo o teclado virtual no mobile\n   */\n  @Input() unfocusOnSelect: boolean = true;\n  /**\n   * Caso a flag seja \"true\", mostra o botão \"X\" de remover cada item da lista de selecionados.\n   * Caso contrário, ao clicar sobre um item, remove ele da lista de selecionados\n   */\n  @Input() showRemoveButton: boolean = false;\n  public _observableInputLoading: boolean = false;\n\n  public readonly myControl: UntypedFormControl;\n  public inputValue: string = '';\n  public filteredOptions: Observable<MultiSelectOption[]>;\n\n  constructor(\n    private cdr: ChangeDetectorRef\n  ) {\n    this.myControl = new UntypedFormControl();\n  }\n\n  ngOnInit(): void {\n    if (this.observableInput) {\n      this.filteredOptions = this.myControl.valueChanges.pipe(\n        debounceTime(this.observableDebounce),\n        distinctUntilChanged(),\n        tap(() => {this.observableInputLoading = true}),\n        concatMap(() => this.observableInput(`${this.myControl.value}`).pipe(\n          catchError(error => {this.observableInputLoading = false; return of(null); }),\n        )),\n        tap(() => {this.observableInputLoading = false}),\n      );\n    } else {\n      this.filteredOptions = this.myControl.valueChanges.pipe(\n        startWith(''),\n        map(value => (typeof value === 'string' ? value : `${value.label}`)),\n        map(label => this._filter(label)),\n      );\n    }\n  }\n\n  ngAfterViewInit(): void {\n    this.clearInput();\n  }\n\n  public set observableInputLoading(state: boolean) {\n    this._observableInputLoading = state;\n    this.cdr.detectChanges();\n  }\n\n  /**\n   * Função utilizada para colocar texto na caixa de input ao selecionar uma opção\n   * @param user\n   */\n  displayFn(option: MultiSelectOption): string {\n    return '';\n    // return option && option.label ? option.label : '';\n  }\n\n  private _filter(label: string): MultiSelectOption[] {\n    const filterValue = label.toLowerCase();\n\n    return _.difference(\n      this.options.filter(option => option.label.toLowerCase().includes(filterValue)),\n      this.selectedOptions\n    );\n  }\n\n  public selectOption(option: any): void {\n    this.selectedOptions.push(option);\n\n    if (this.sortSelectedItems) {\n      this.selectedOptions = this.selectedOptions.sort((a, b) => {\n        return this.options.indexOf(a) - this.options.indexOf(b);\n      });\n    }\n\n    this.selectedOptionsChanged.emit(this.selectedOptions);\n    this.blurInputSelect();\n    this.clearInput();\n  }\n\n  private clearInput(): void {\n    this.inputValue = '';\n    this.myControl.setValue(this.inputValue);\n    this.cdr.detectChanges();\n  }\n\n  public removeSelectedOption(option: MultiSelectOption): void {\n    _.remove(this.selectedOptions, option);\n    this.trigger.closePanel();\n    this.clearInput();\n  }\n\n  public isOptionSelected(option: MultiSelectOption): boolean {\n    return !!this.selectedOptions.find(sOptions => _.isEqual(sOptions, option));\n  }\n\n  /**\n   * Use this method instead of \"trigger.openPanel()\" because it has some validations before opening the panel\n   */\n  public openSelect(): void {\n    if (this.isLimitReached() === false) {\n      this.trigger.openPanel();\n    }\n  }\n\n  /**\n   * Use this method instead of \"trigger.closePanel()\" because it has some validations before closing the panel\n   */\n  public closeSelect(): void {\n    this.trigger.closePanel();\n  }\n\n  public clearSelected(): void {\n    this.selectedOptions = [];\n    this.selectedOptionsChanged.emit(this.selectedOptions);\n    this.clearInput();\n  }\n\n  public togglePanel(): void {\n    if (this.trigger.panelOpen === false) {\n      this.openSelect();\n    } else {\n      this.closeSelect();\n    }\n  }\n\n  public isLimitReached() {\n    return !this.observableInput // caso tenha observable input, as options são dinâmicas, e não armazenadas no componente\n      && (this.selectedOptions.length === this.options.length || (!!this.limit && this.selectedOptions.length >= this.limit))\n  }\n\n  public blurInputSelect() {\n    if (this.unfocusOnSelect) {\n      setTimeout(() => {\n        try {\n          this.inputBoxEl.nativeElement.blur();\n        } catch (e) {}\n      });\n    }\n  }\n\n}\n",
             "properties": [
                 {
                     "name": "label",
@@ -276,7 +276,7 @@
                     "type": "string",
                     "optional": false,
                     "description": "",
-                    "line": 20
+                    "line": 21
                 },
                 {
                     "name": "thumbnail",
@@ -285,7 +285,7 @@
                     "type": "string",
                     "optional": true,
                     "description": "",
-                    "line": 22
+                    "line": 23
                 },
                 {
                     "name": "value",
@@ -294,7 +294,7 @@
                     "type": "any",
                     "optional": false,
                     "description": "",
-                    "line": 21
+                    "line": 22
                 }
             ],
             "indexSignatures": [],
@@ -2233,9 +2233,11 @@
         },
         {
             "name": "ComboBoxComponent",
-            "id": "component-ComboBoxComponent-2e78f36ede67be77ee94a6ec0f96081c10cd55302031c8b614ecf1a31b66f042f4d3b62613ced213f3566a8c72fd68b52b948831a3b37820fba3fc114e70527f",
+            "id": "component-ComboBoxComponent-1490f64ce724d6ba147af618e1af1380af9a6f48ef5fb88020c9336bb5b803ce21d933a687e8a2c45a5da4dab7ff9d275c278caf01b3a57a3377c35f39707410",
             "file": "src/components/inputs/combo-box/combo-box.component.ts",
-            "encapsulation": [],
+            "encapsulation": [
+                "ViewEncapsulation.None"
+            ],
             "entryComponents": [],
             "inputs": [],
             "outputs": [],
@@ -2257,7 +2259,7 @@
                     "deprecationMessage": "",
                     "rawdescription": "\n\nDesabilita a interação com os valores da combo box.\n",
                     "description": "<p>Desabilita a interação com os valores da combo box.</p>\n",
-                    "line": 27,
+                    "line": 28,
                     "type": "boolean",
                     "decorators": []
                 },
@@ -2268,7 +2270,7 @@
                     "deprecationMessage": "",
                     "rawdescription": "\n\nItens que serão exibidos na combo box.\nDevem ser obrigatoriamente do tipo `ComboItem[]`\n",
                     "description": "<p>Itens que serão exibidos na combo box.\nDevem ser obrigatoriamente do tipo <code>ComboItem[]</code></p>\n",
-                    "line": 19,
+                    "line": 20,
                     "type": "ComboItem[]",
                     "decorators": []
                 },
@@ -2278,7 +2280,7 @@
                     "deprecationMessage": "",
                     "rawdescription": "\n\nItem selecionado da combobox. Pode ser carregado previamente\n",
                     "description": "<p>Item selecionado da combobox. Pode ser carregado previamente</p>\n",
-                    "line": 23,
+                    "line": 24,
                     "type": "any",
                     "decorators": []
                 }
@@ -2291,7 +2293,7 @@
                     "deprecationMessage": "",
                     "rawdescription": "\n\nEmite um valor booleano com o novo valor do item selecionado na combo box.\n",
                     "description": "<p>Emite um valor booleano com o novo valor do item selecionado na combo box.</p>\n",
-                    "line": 31,
+                    "line": 32,
                     "type": "EventEmitter<any>"
                 }
             ],
@@ -2303,7 +2305,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 36,
+                    "line": 37,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -2320,7 +2322,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 45,
+                    "line": 46,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -2351,7 +2353,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 40,
+                    "line": 41,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -2377,11 +2379,11 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation} from '@angular/core';\n\nexport interface ComboItem {\n  label: string;\n  value: any;\n}\n\n@Component({\n  selector: 'pm-combo-box',\n  templateUrl: './combo-box.component.html',\n  styleUrls: ['./combo-box.component.scss'],\n})\nexport class ComboBoxComponent implements OnInit {\n\n  /**\n   * Itens que serão exibidos na combo box.\n   * Devem ser obrigatoriamente do tipo `ComboItem[]`\n   */\n  @Input() items: ComboItem[] = [];\n  /**\n   * Item selecionado da combobox. Pode ser carregado previamente\n   */\n  @Input() selectedItem: any;\n  /**\n   * Desabilita a interação com os valores da combo box.\n   */\n  @Input() disabled: boolean = false;\n  /**\n   * Emite um valor booleano com o novo valor do item selecionado na combo box.\n   */\n  @Output() selectionChange: EventEmitter<any> = new EventEmitter<any>();\n\n  constructor(private ref: ChangeDetectorRef) {\n  }\n\n  ngOnInit(): void {\n    this.ref.detectChanges();\n  }\n\n  public setSelected(item: any): void {\n    this.selectedItem = item;\n    this.selectionChange.emit(item);\n  }\n\n  public selectionChanged(event: any): void {\n    this.selectionChange.emit(event.value);\n    this.ref.detectChanges();\n  }\n\n}\n",
+            "sourceCode": "import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation} from '@angular/core';\n\nexport interface ComboItem {\n  label: string;\n  value: any;\n}\n\n@Component({\n  selector: 'pm-combo-box',\n  templateUrl: './combo-box.component.html',\n  styleUrls: ['./combo-box.component.scss'],\n  encapsulation: ViewEncapsulation.None\n})\nexport class ComboBoxComponent implements OnInit {\n\n  /**\n   * Itens que serão exibidos na combo box.\n   * Devem ser obrigatoriamente do tipo `ComboItem[]`\n   */\n  @Input() items: ComboItem[] = [];\n  /**\n   * Item selecionado da combobox. Pode ser carregado previamente\n   */\n  @Input() selectedItem: any;\n  /**\n   * Desabilita a interação com os valores da combo box.\n   */\n  @Input() disabled: boolean = false;\n  /**\n   * Emite um valor booleano com o novo valor do item selecionado na combo box.\n   */\n  @Output() selectionChange: EventEmitter<any> = new EventEmitter<any>();\n\n  constructor(private ref: ChangeDetectorRef) {\n  }\n\n  ngOnInit(): void {\n    this.ref.detectChanges();\n  }\n\n  public setSelected(item: any): void {\n    this.selectedItem = item;\n    this.selectionChange.emit(item);\n  }\n\n  public selectionChanged(event: any): void {\n    this.selectionChange.emit(event.value);\n    this.ref.detectChanges();\n  }\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": ".pm-combo-box {\n  mat-form-field {\n    border-radius: var(--border-radius-md);\n\n    .mat-mdc-text-field-wrapper {\n      background-color: var(--color-primary);\n      color: white;\n      border-radius: var(--border-radius-md);\n\n      * {\n        color: white;\n        font-weight: 600 !important;\n      }\n\n      &.mdc-text-field--focused {\n        border-radius: var(--border-radius-md);\n      }\n    }\n\n\n\n    &.mat-focused {\n      border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;\n    }\n\n    .mdc-line-ripple {\n      display: none;\n    }\n  }\n}\n\n.pm-combo-box-overlay {\n  $combo-box-overlay-background-color: var(--color-primary);\n  $combo-box-overlay-border-color: var(--color-primary-states);\n\n  background-color: $combo-box-overlay-background-color;\n  border-radius: var(--border-radius-md) !important;\n  box-shadow: none;\n  margin-top: 0.25em !important;\n  // comentar as duas linhas de baixo para remover a borda degradê\n  background: linear-gradient($combo-box-overlay-background-color, $combo-box-overlay-background-color) padding-box, linear-gradient(to top, $combo-box-overlay-border-color, transparent) border-box;\n  border: 2px solid transparent;\n\n  * {\n    color: white !important;\n    font-weight: 600 !important;\n  }\n\n  .mat-list-item--selected,\n  .mat-mdc-option-active {\n    * {\n      color: var(--color-default) !important;\n    }\n  }\n}\n",
+                    "data": ".pm-combo-box {\n  mat-form-field {\n    border-radius: var(--border-radius-md);\n\n    .mat-mdc-text-field-wrapper {\n      background-color: var(--color-primary);\n      color: white;\n      border-radius: var(--border-radius-md);\n\n      max-height: 40px;\n      display: flex;\n      justify-content: center;\n      align-items: center;\n\n      * {\n        color: white;\n        font-weight: 600 !important;\n      }\n\n      &.mdc-text-field--focused {\n        border-radius: var(--border-radius-md);\n      }\n    }\n\n    &.mat-focused {\n      border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;\n    }\n\n    .mdc-line-ripple {\n      display: none;\n    }\n  }\n}\n\n.pm-combo-box-overlay {\n  $combo-box-overlay-background-color: var(--color-primary);\n  $combo-box-overlay-border-color: var(--color-primary-states);\n\n  background-color: $combo-box-overlay-background-color;\n  border-radius: var(--border-radius-md) !important;\n  box-shadow: none;\n  margin-top: 0.25em !important;\n  // comentar as duas linhas de baixo para remover a borda degradê\n  //background: linear-gradient($combo-box-overlay-background-color, $combo-box-overlay-background-color) padding-box, linear-gradient(to top, $combo-box-overlay-border-color, transparent) border-box;\n  //border: 2px solid transparent;\n\n  * {\n    color: white !important;\n    font-weight: 600 !important;\n  }\n\n  .mat-list-item--selected,\n  .mat-mdc-option-active {\n    * {\n      color: var(--color-gray-darker) !important\n    }\n  }\n}\n",
                     "styleUrl": "./combo-box.component.scss"
                 }
             ],
@@ -2399,7 +2401,7 @@
                         "deprecationMessage": ""
                     }
                 ],
-                "line": 31,
+                "line": 32,
                 "jsdoctags": [
                     {
                         "name": "ref",
@@ -4382,9 +4384,11 @@
         },
         {
             "name": "MultiSelectComponent",
-            "id": "component-MultiSelectComponent-9e49d26cfdb88a7aee94ccff25617e6d01415e7e62c7529d0672f99760370c6dc4b9c059c08746128f450fc2ad829dcdd77ef105b4075d9e0bea7f6f24f99139",
+            "id": "component-MultiSelectComponent-24231f0a4d7a75c569987fe295355f09b9fd0f1e1408948d953dfbfbf946dee12e3ec6a9de9706211abc863d034bddc5ebd9b4bd3e89328cb479530d7d158d67",
             "file": "src/components/inputs/multi-select/multi-select.component.ts",
-            "encapsulation": [],
+            "encapsulation": [
+                "ViewEncapsulation.None"
+            ],
             "entryComponents": [],
             "inputs": [],
             "outputs": [],
@@ -4408,7 +4412,7 @@
                     "defaultValue": "Sizes.md",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 55,
+                    "line": 57,
                     "type": "Sizes",
                     "decorators": []
                 },
@@ -4419,7 +4423,7 @@
                     "deprecationMessage": "",
                     "rawdescription": "\n\nlimite máximo de seleções de itens\n",
                     "description": "<p>limite máximo de seleções de itens</p>\n",
-                    "line": 63,
+                    "line": 65,
                     "type": "number",
                     "decorators": []
                 },
@@ -4430,7 +4434,7 @@
                     "deprecationMessage": "",
                     "rawdescription": "\n\nTempo de espera em cada execução de chamada do observable ao digitar no campo de input\n",
                     "description": "<p>Tempo de espera em cada execução de chamada do observable ao digitar no campo de input</p>\n",
-                    "line": 76,
+                    "line": 78,
                     "type": "number",
                     "decorators": []
                 },
@@ -4438,7 +4442,7 @@
                     "name": "observableInput",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 72,
+                    "line": 74,
                     "type": "function",
                     "decorators": []
                 },
@@ -4449,7 +4453,7 @@
                     "deprecationMessage": "",
                     "rawdescription": "\n\nopções a serem exibidas no input\n",
                     "description": "<p>opções a serem exibidas no input</p>\n",
-                    "line": 54,
+                    "line": 56,
                     "type": "MultiSelectOption[]",
                     "decorators": []
                 },
@@ -4460,7 +4464,7 @@
                     "deprecationMessage": "",
                     "rawdescription": "\n\nTexto a ser exibido no input\n",
                     "description": "<p>Texto a ser exibido no input</p>\n",
-                    "line": 50,
+                    "line": 52,
                     "type": "string",
                     "decorators": []
                 },
@@ -4471,7 +4475,7 @@
                     "deprecationMessage": "",
                     "rawdescription": "\n\nse as thumbnails serão arredondadas\n",
                     "description": "<p>se as thumbnails serão arredondadas</p>\n",
-                    "line": 59,
+                    "line": 61,
                     "type": "boolean",
                     "decorators": []
                 },
@@ -4482,18 +4486,18 @@
                     "deprecationMessage": "",
                     "rawdescription": "\n\nOpções que ja vem selecionadas\n",
                     "description": "<p>Opções que ja vem selecionadas</p>\n",
-                    "line": 67,
+                    "line": 69,
                     "type": "MultiSelectOption[]",
                     "decorators": []
                 },
                 {
                     "name": "showRemoveButton",
-                    "defaultValue": "true",
+                    "defaultValue": "false",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "rawdescription": "\n\nCaso a flag seja \"true\", mostra o botão de remover os itens da lista de selecionados.\nCaso contrário, ao clicar sobre um item, remove ele da lista de selecionados\n",
-                    "description": "<p>Caso a flag seja &quot;true&quot;, mostra o botão de remover os itens da lista de selecionados.\nCaso contrário, ao clicar sobre um item, remove ele da lista de selecionados</p>\n",
-                    "line": 85,
+                    "rawdescription": "\n\nCaso a flag seja \"true\", mostra o botão \"X\" de remover cada item da lista de selecionados.\nCaso contrário, ao clicar sobre um item, remove ele da lista de selecionados\n",
+                    "description": "<p>Caso a flag seja &quot;true&quot;, mostra o botão &quot;X&quot; de remover cada item da lista de selecionados.\nCaso contrário, ao clicar sobre um item, remove ele da lista de selecionados</p>\n",
+                    "line": 87,
                     "type": "boolean",
                     "decorators": []
                 },
@@ -4504,7 +4508,7 @@
                     "deprecationMessage": "",
                     "rawdescription": "\n\nsort selected items instead of showing them in selected sequence\n",
                     "description": "<p>sort selected items instead of showing them in selected sequence</p>\n",
-                    "line": 71,
+                    "line": 73,
                     "type": "boolean",
                     "decorators": []
                 },
@@ -4515,7 +4519,7 @@
                     "deprecationMessage": "",
                     "rawdescription": "\n\nCaso a flag seja \"true\", desativa o foco no input, escondendo o teclado virtual no mobile\n",
                     "description": "<p>Caso a flag seja &quot;true&quot;, desativa o foco no input, escondendo o teclado virtual no mobile</p>\n",
-                    "line": 80,
+                    "line": 82,
                     "type": "boolean",
                     "decorators": []
                 }
@@ -4528,7 +4532,7 @@
                     "deprecationMessage": "",
                     "rawdescription": "\n\nAo ser selecionada uma opção nova, emite\n",
                     "description": "<p>Ao ser selecionada uma opção nova, emite</p>\n",
-                    "line": 46,
+                    "line": 48,
                     "type": "EventEmitter"
                 }
             ],
@@ -4541,7 +4545,7 @@
                     "type": "boolean",
                     "optional": false,
                     "description": "",
-                    "line": 86,
+                    "line": 88,
                     "modifierKind": [
                         123
                     ]
@@ -4553,7 +4557,7 @@
                     "type": "Observable<MultiSelectOption[]>",
                     "optional": false,
                     "description": "",
-                    "line": 90,
+                    "line": 92,
                     "modifierKind": [
                         123
                     ]
@@ -4565,7 +4569,7 @@
                     "type": "ElementRef",
                     "optional": false,
                     "description": "",
-                    "line": 41,
+                    "line": 43,
                     "decorators": [
                         {
                             "name": "ViewChild",
@@ -4581,7 +4585,7 @@
                     "type": "string",
                     "optional": false,
                     "description": "",
-                    "line": 89,
+                    "line": 91,
                     "modifierKind": [
                         123
                     ]
@@ -4593,7 +4597,7 @@
                     "type": "UntypedFormControl",
                     "optional": false,
                     "description": "",
-                    "line": 88,
+                    "line": 90,
                     "modifierKind": [
                         123,
                         144
@@ -4606,7 +4610,7 @@
                     "type": "MatAutocompleteTrigger",
                     "optional": false,
                     "description": "",
-                    "line": 42,
+                    "line": 44,
                     "decorators": [
                         {
                             "name": "ViewChild",
@@ -4629,7 +4633,7 @@
                     "optional": false,
                     "returnType": "MultiSelectOption[]",
                     "typeParameters": [],
-                    "line": 136,
+                    "line": 138,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -4653,7 +4657,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 210,
+                    "line": 212,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -4666,7 +4670,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 159,
+                    "line": 161,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -4679,7 +4683,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 191,
+                    "line": 193,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -4692,7 +4696,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 187,
+                    "line": 189,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "rawdescription": "\n\nUse this method instead of \"trigger.closePanel()\" because it has some validations before closing the panel\n",
@@ -4714,7 +4718,7 @@
                     "optional": false,
                     "returnType": "string",
                     "typeParameters": [],
-                    "line": 131,
+                    "line": 133,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "rawdescription": "\n\nFunção utilizada para colocar texto na caixa de input ao selecionar uma opção\n",
@@ -4737,7 +4741,7 @@
                     "optional": false,
                     "returnType": "boolean",
                     "typeParameters": [],
-                    "line": 205,
+                    "line": 207,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -4757,7 +4761,7 @@
                     "optional": false,
                     "returnType": "boolean",
                     "typeParameters": [],
-                    "line": 171,
+                    "line": 173,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -4781,7 +4785,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 118,
+                    "line": 120,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -4791,7 +4795,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 98,
+                    "line": 100,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -4801,7 +4805,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 178,
+                    "line": 180,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "rawdescription": "\n\nUse this method instead of \"trigger.openPanel()\" because it has some validations before opening the panel\n",
@@ -4823,7 +4827,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 165,
+                    "line": 167,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -4854,7 +4858,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 145,
+                    "line": 147,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -4878,7 +4882,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 197,
+                    "line": 199,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -4893,11 +4897,11 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {\n  AfterViewInit,\n  ChangeDetectorRef,\n  Component,\n  ElementRef,\n  EventEmitter,\n  Input,\n  OnInit,\n  Output,\n  ViewChild\n} from '@angular/core';\nimport {UntypedFormControl} from '@angular/forms';\nimport {catchError, concatMap, debounceTime, distinctUntilChanged, Observable, of, tap, throwError} from 'rxjs';\nimport {map, startWith} from 'rxjs/operators';\nimport _ from 'lodash';\nimport {MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, MatAutocompleteTrigger} from '@angular/material/autocomplete';\nimport {Sizes} from '../../../models/sizes';\n\nexport interface MultiSelectOption {\n  label: string;\n  value: any;\n  thumbnail?: string;\n}\n\n@Component({\n  selector: 'pm-multi-select',\n  templateUrl: './multi-select.component.html',\n  styleUrls: ['./multi-select.component.scss'],\n  providers: [\n    {\n      provide: MAT_AUTOCOMPLETE_DEFAULT_OPTIONS,\n      useValue: {\n        autoActiveFirstOption: false,\n        overlayPanelClass: 'pm-multi-select-autocomplete-panel'\n      }\n    }\n  ]\n})\nexport class MultiSelectComponent implements OnInit, AfterViewInit {\n\n  @ViewChild('inputBox', {static: true}) inputBoxEl: ElementRef;\n  @ViewChild('trigger', {static: true}) trigger: MatAutocompleteTrigger;\n  /**\n   * Ao ser selecionada uma opção nova, emite\n   */\n  @Output() selectedOptionsChanged = new EventEmitter<MultiSelectOption[]>();\n  /**\n   * Texto a ser exibido no input\n   */\n  @Input() placeholder: string = '';\n  /**\n   * opções a serem exibidas no input\n   */\n  @Input() options: MultiSelectOption[] = [];\n  @Input() borderRadius: Sizes = Sizes.md;\n  /**\n   * se as thumbnails serão arredondadas\n   */\n  @Input() roundedThumbnail: boolean = true;\n  /**\n   * limite máximo de seleções de itens\n   */\n  @Input() limit: number = 0;\n  /**\n   * Opções que ja vem selecionadas\n   */\n  @Input() selectedOptions: MultiSelectOption[] = [];\n  /**\n   * sort selected items instead of showing them in selected sequence\n   */\n  @Input() sortSelectedItems: boolean = true;\n  @Input() observableInput: (search: string) => Observable<MultiSelectOption[]>;\n  /**\n   * Tempo de espera em cada execução de chamada do observable ao digitar no campo de input\n   */\n  @Input() observableDebounce: number = 100;\n  /**\n   * Caso a flag seja \"true\", desativa o foco no input, escondendo o teclado virtual no mobile\n   */\n  @Input() unfocusOnSelect: boolean = true;\n  /**\n   * Caso a flag seja \"true\", mostra o botão de remover os itens da lista de selecionados.\n   * Caso contrário, ao clicar sobre um item, remove ele da lista de selecionados\n   */\n  @Input() showRemoveButton: boolean = true;\n  public _observableInputLoading: boolean = false;\n\n  public readonly myControl: UntypedFormControl;\n  public inputValue: string = '';\n  public filteredOptions: Observable<MultiSelectOption[]>;\n\n  constructor(\n    private cdr: ChangeDetectorRef\n  ) {\n    this.myControl = new UntypedFormControl();\n  }\n\n  ngOnInit(): void {\n    if (this.observableInput) {\n      this.filteredOptions = this.myControl.valueChanges.pipe(\n        debounceTime(this.observableDebounce),\n        distinctUntilChanged(),\n        tap(() => {this.observableInputLoading = true}),\n        concatMap(() => this.observableInput(`${this.myControl.value}`).pipe(\n          catchError(error => {this.observableInputLoading = false; return of(null); }),\n        )),\n        tap(() => {this.observableInputLoading = false}),\n      );\n    } else {\n      this.filteredOptions = this.myControl.valueChanges.pipe(\n        startWith(''),\n        map(value => (typeof value === 'string' ? value : `${value.label}`)),\n        map(label => this._filter(label)),\n      );\n    }\n  }\n\n  ngAfterViewInit(): void {\n    this.clearInput();\n  }\n\n  public set observableInputLoading(state: boolean) {\n    this._observableInputLoading = state;\n    this.cdr.detectChanges();\n  }\n\n  /**\n   * Função utilizada para colocar texto na caixa de input ao selecionar uma opção\n   * @param user\n   */\n  displayFn(option: MultiSelectOption): string {\n    return '';\n    // return option && option.label ? option.label : '';\n  }\n\n  private _filter(label: string): MultiSelectOption[] {\n    const filterValue = label.toLowerCase();\n\n    return _.difference(\n      this.options.filter(option => option.label.toLowerCase().includes(filterValue)),\n      this.selectedOptions\n    );\n  }\n\n  public selectOption(option: any): void {\n    this.selectedOptions.push(option);\n\n    if (this.sortSelectedItems) {\n      this.selectedOptions = this.selectedOptions.sort((a, b) => {\n        return this.options.indexOf(a) - this.options.indexOf(b);\n      });\n    }\n\n    this.selectedOptionsChanged.emit(this.selectedOptions);\n    this.blurInputSelect();\n    this.clearInput();\n  }\n\n  private clearInput(): void {\n    this.inputValue = '';\n    this.myControl.setValue(this.inputValue);\n    this.cdr.detectChanges();\n  }\n\n  public removeSelectedOption(option: MultiSelectOption): void {\n    _.remove(this.selectedOptions, option);\n    this.trigger.closePanel();\n    this.clearInput();\n  }\n\n  public isOptionSelected(option: MultiSelectOption): boolean {\n    return !!this.selectedOptions.find(sOptions => _.isEqual(sOptions, option));\n  }\n\n  /**\n   * Use this method instead of \"trigger.openPanel()\" because it has some validations before opening the panel\n   */\n  public openSelect(): void {\n    if (this.isLimitReached() === false) {\n      this.trigger.openPanel();\n    }\n  }\n\n  /**\n   * Use this method instead of \"trigger.closePanel()\" because it has some validations before closing the panel\n   */\n  public closeSelect(): void {\n    this.trigger.closePanel();\n  }\n\n  public clearSelected(): void {\n    this.selectedOptions = [];\n    this.selectedOptionsChanged.emit(this.selectedOptions);\n    this.clearInput();\n  }\n\n  public togglePanel(): void {\n    if (this.trigger.panelOpen === false) {\n      this.openSelect();\n    } else {\n      this.closeSelect();\n    }\n  }\n\n  public isLimitReached() {\n    return !this.observableInput // caso tenha observable input, as options são dinâmicas, e não armazenadas no componente\n      && (this.selectedOptions.length === this.options.length || (!!this.limit && this.selectedOptions.length >= this.limit))\n  }\n\n  public blurInputSelect() {\n    if (this.unfocusOnSelect) {\n      setTimeout(() => {\n        try {\n          this.inputBoxEl.nativeElement.blur();\n        } catch (e) {}\n      });\n    }\n  }\n\n}\n",
+            "sourceCode": "import {\n  AfterViewInit,\n  ChangeDetectorRef,\n  Component,\n  ElementRef,\n  EventEmitter,\n  Input,\n  OnInit,\n  Output,\n  ViewChild,\n  ViewEncapsulation\n} from '@angular/core';\nimport {UntypedFormControl} from '@angular/forms';\nimport {catchError, concatMap, debounceTime, distinctUntilChanged, Observable, of, tap} from 'rxjs';\nimport {map, startWith} from 'rxjs/operators';\nimport _ from 'lodash';\nimport {MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, MatAutocompleteTrigger} from '@angular/material/autocomplete';\nimport {Sizes} from '../../../models/sizes';\n\nexport interface MultiSelectOption {\n  label: string;\n  value: any;\n  thumbnail?: string;\n}\n\n@Component({\n  selector: 'pm-multi-select',\n  templateUrl: './multi-select.component.html',\n  styleUrls: ['./multi-select.component.scss'],\n  encapsulation: ViewEncapsulation.None,\n  providers: [\n    {\n      provide: MAT_AUTOCOMPLETE_DEFAULT_OPTIONS,\n      useValue: {\n        autoActiveFirstOption: false,\n        overlayPanelClass: 'pm-multi-select-autocomplete-panel'\n      }\n    }\n  ]\n})\nexport class MultiSelectComponent implements OnInit, AfterViewInit {\n\n  @ViewChild('inputBox', {static: true}) inputBoxEl: ElementRef;\n  @ViewChild('trigger', {static: true}) trigger: MatAutocompleteTrigger;\n  /**\n   * Ao ser selecionada uma opção nova, emite\n   */\n  @Output() selectedOptionsChanged = new EventEmitter<MultiSelectOption[]>();\n  /**\n   * Texto a ser exibido no input\n   */\n  @Input() placeholder: string = '';\n  /**\n   * opções a serem exibidas no input\n   */\n  @Input() options: MultiSelectOption[] = [];\n  @Input() borderRadius: Sizes = Sizes.md;\n  /**\n   * se as thumbnails serão arredondadas\n   */\n  @Input() roundedThumbnail: boolean = true;\n  /**\n   * limite máximo de seleções de itens\n   */\n  @Input() limit: number = 0;\n  /**\n   * Opções que ja vem selecionadas\n   */\n  @Input() selectedOptions: MultiSelectOption[] = [];\n  /**\n   * sort selected items instead of showing them in selected sequence\n   */\n  @Input() sortSelectedItems: boolean = true;\n  @Input() observableInput: (search: string) => Observable<MultiSelectOption[]>;\n  /**\n   * Tempo de espera em cada execução de chamada do observable ao digitar no campo de input\n   */\n  @Input() observableDebounce: number = 100;\n  /**\n   * Caso a flag seja \"true\", desativa o foco no input, escondendo o teclado virtual no mobile\n   */\n  @Input() unfocusOnSelect: boolean = true;\n  /**\n   * Caso a flag seja \"true\", mostra o botão \"X\" de remover cada item da lista de selecionados.\n   * Caso contrário, ao clicar sobre um item, remove ele da lista de selecionados\n   */\n  @Input() showRemoveButton: boolean = false;\n  public _observableInputLoading: boolean = false;\n\n  public readonly myControl: UntypedFormControl;\n  public inputValue: string = '';\n  public filteredOptions: Observable<MultiSelectOption[]>;\n\n  constructor(\n    private cdr: ChangeDetectorRef\n  ) {\n    this.myControl = new UntypedFormControl();\n  }\n\n  ngOnInit(): void {\n    if (this.observableInput) {\n      this.filteredOptions = this.myControl.valueChanges.pipe(\n        debounceTime(this.observableDebounce),\n        distinctUntilChanged(),\n        tap(() => {this.observableInputLoading = true}),\n        concatMap(() => this.observableInput(`${this.myControl.value}`).pipe(\n          catchError(error => {this.observableInputLoading = false; return of(null); }),\n        )),\n        tap(() => {this.observableInputLoading = false}),\n      );\n    } else {\n      this.filteredOptions = this.myControl.valueChanges.pipe(\n        startWith(''),\n        map(value => (typeof value === 'string' ? value : `${value.label}`)),\n        map(label => this._filter(label)),\n      );\n    }\n  }\n\n  ngAfterViewInit(): void {\n    this.clearInput();\n  }\n\n  public set observableInputLoading(state: boolean) {\n    this._observableInputLoading = state;\n    this.cdr.detectChanges();\n  }\n\n  /**\n   * Função utilizada para colocar texto na caixa de input ao selecionar uma opção\n   * @param user\n   */\n  displayFn(option: MultiSelectOption): string {\n    return '';\n    // return option && option.label ? option.label : '';\n  }\n\n  private _filter(label: string): MultiSelectOption[] {\n    const filterValue = label.toLowerCase();\n\n    return _.difference(\n      this.options.filter(option => option.label.toLowerCase().includes(filterValue)),\n      this.selectedOptions\n    );\n  }\n\n  public selectOption(option: any): void {\n    this.selectedOptions.push(option);\n\n    if (this.sortSelectedItems) {\n      this.selectedOptions = this.selectedOptions.sort((a, b) => {\n        return this.options.indexOf(a) - this.options.indexOf(b);\n      });\n    }\n\n    this.selectedOptionsChanged.emit(this.selectedOptions);\n    this.blurInputSelect();\n    this.clearInput();\n  }\n\n  private clearInput(): void {\n    this.inputValue = '';\n    this.myControl.setValue(this.inputValue);\n    this.cdr.detectChanges();\n  }\n\n  public removeSelectedOption(option: MultiSelectOption): void {\n    _.remove(this.selectedOptions, option);\n    this.trigger.closePanel();\n    this.clearInput();\n  }\n\n  public isOptionSelected(option: MultiSelectOption): boolean {\n    return !!this.selectedOptions.find(sOptions => _.isEqual(sOptions, option));\n  }\n\n  /**\n   * Use this method instead of \"trigger.openPanel()\" because it has some validations before opening the panel\n   */\n  public openSelect(): void {\n    if (this.isLimitReached() === false) {\n      this.trigger.openPanel();\n    }\n  }\n\n  /**\n   * Use this method instead of \"trigger.closePanel()\" because it has some validations before closing the panel\n   */\n  public closeSelect(): void {\n    this.trigger.closePanel();\n  }\n\n  public clearSelected(): void {\n    this.selectedOptions = [];\n    this.selectedOptionsChanged.emit(this.selectedOptions);\n    this.clearInput();\n  }\n\n  public togglePanel(): void {\n    if (this.trigger.panelOpen === false) {\n      this.openSelect();\n    } else {\n      this.closeSelect();\n    }\n  }\n\n  public isLimitReached() {\n    return !this.observableInput // caso tenha observable input, as options são dinâmicas, e não armazenadas no componente\n      && (this.selectedOptions.length === this.options.length || (!!this.limit && this.selectedOptions.length >= this.limit))\n  }\n\n  public blurInputSelect() {\n    if (this.unfocusOnSelect) {\n      setTimeout(() => {\n        try {\n          this.inputBoxEl.nativeElement.blur();\n        } catch (e) {}\n      });\n    }\n  }\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": "@import '../../../styles/default/mixins/buttons';\n\n.pm-multi-select {\n  @include btn-styles(var(--color-light), var(--color-light-sat), false);\n\n  form, input {\n    width: -webkit-fill-available;\n  }\n\n  form {\n    padding-top: 1px;\n  }\n\n  input {\n    padding: 0px 0.5em;\n    background-color: transparent;\n    color: var(--color-gray-darker) !important;\n  }\n\n  .chip-container {\n    background-color: var(--color-light);\n    border: 1px solid var(--color-light-states);\n    border-radius: var(--border-radius-md);\n    padding: 3px;\n    color: var(--color-gray-dark);\n\n    button {\n      border: none !important;\n    }\n  }\n\n  i,\n  span {\n    color: var(--color-light-states);\n  }\n\n  i {\n    right: 0.5em;\n    height: 100%;\n    display: flex;\n    flex-direction: row;\n    align-content: center;\n    justify-content: center;\n    margin-top: -4px;\n\n    &:before {\n      align-self: center;\n    }\n  }\n\n}\n\n::ng-deep {\n  .pm-multi-select-autocomplete-panel {\n    margin-left: -4px;\n\n    * {\n      box-shadow: none !important;\n    }\n\n    .mat-autocomplete-panel {\n      background-color: var(--color-light);\n      margin-top: -2px;\n    }\n  }\n\n  .pm-multi-select-thumbnail-container {\n    width: 25px;\n    height: 25px;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    box-sizing: border-box;\n    outline: none;\n    flex: 0 0 auto;\n\n    &.circular {\n      border-radius: 50%;\n      margin: 0;\n      overflow: hidden;\n      border: 1px solid var(--color-light-states);\n    }\n\n    img {\n      object-fit: cover;\n    }\n  }\n}\n",
+                    "data": "@import '../../../styles/default/mixins/buttons';\n\n.pm-multi-select {\n  @include btn-styles(var(--color-light), var(--color-light-sat), false);\n\n  form, input {\n    width: -webkit-fill-available;\n  }\n\n  form {\n    padding-top: 1px;\n  }\n\n  input {\n    padding: 0px 0.5em;\n    background-color: transparent;\n    color: var(--color-gray-darker) !important;\n  }\n\n  .chip-container {\n    background-color: var(--color-light);\n    border: 1px solid var(--color-light-states);\n    border-radius: var(--border-radius-md);\n    padding: 3px;\n    color: var(--color-gray-dark);\n\n    button {\n      border: none !important;\n    }\n  }\n\n  i,\n  span {\n    color: var(--color-light-states);\n  }\n\n  i {\n    right: 0.5em;\n    height: 100%;\n    display: flex;\n    flex-direction: row;\n    align-content: center;\n    justify-content: center;\n    margin-top: -4px;\n\n    &:before {\n      align-self: center;\n    }\n  }\n\n}\n\n.pm-multi-select-autocomplete-panel {\n  margin-left: -4px !important;\n  margin-top: -4px !important;\n  border-radius: 0 0 var(--border-radius-md) var(--border-radius-md);\n  overflow: hidden;\n\n  .mat-mdc-autocomplete-panel {\n    background-color: var(--color-light);\n  }\n\n  * {\n    box-shadow: none !important;\n  }\n}\n\n.pm-multi-select-thumbnail-container {\n  width: 25px;\n  height: 25px;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  box-sizing: border-box;\n  outline: none;\n  flex: 0 0 auto;\n\n  &.circular {\n    border-radius: 50%;\n    margin: 0 auto !important;\n    overflow: hidden;\n    border: 1px solid var(--color-light-states);\n  }\n\n  img {\n    object-fit: cover;\n  }\n}\n",
                     "styleUrl": "./multi-select.component.scss"
                 }
             ],
@@ -4915,7 +4919,7 @@
                         "deprecationMessage": ""
                     }
                 ],
-                "line": 90,
+                "line": 92,
                 "jsdoctags": [
                     {
                         "name": "cdr",
@@ -4949,7 +4953,7 @@
                             }
                         ],
                         "returnType": "void",
-                        "line": 122,
+                        "line": 124,
                         "jsdoctags": [
                             {
                                 "name": "state",
@@ -4964,7 +4968,7 @@
                     }
                 }
             },
-            "templateData": "<div #multiselect\n     class=\"pm-multi-select cursor-pointer border-radius-{{borderRadius}}\"\n     (click)=\"$event.stopPropagation(); openSelect();\"\n>\n  <div class=\"d-flex flex-wrap p-1 rad-md position-relative\" (click)=\"openSelect()\">\n    <div class=\"d-flex flex-row justify-content-start flex-wrap\">\n      <div *ngFor=\"let selected of selectedOptions; let first = first\" [ngClass]=\"{'m-1 chip-container': true}\">\n        <div class=\"d-flex flex-row align-items-center\" (click)=\"removeSelectedOption(selected)\">\n          <ng-container *ngTemplateOutlet=\"thumbnailContainer; context: {$implicit: selected, marginStart: true}\"></ng-container>\n          <p class=\"m-0 ms-1\">{{selected.label}}</p>\n          <button *ngIf=\"showRemoveButton\"\n                  (click)=\"$event.stopPropagation(); removeSelectedOption(selected)\"\n                  class=\"btn btn-light\"\n          >x</button>\n        </div>\n      </div>\n    </div>\n    <form style=\"min-height: 31px\">\n      <input #inputBox\n             #trigger=\"matAutocompleteTrigger\"\n             name=\"searchInput\"\n             [hidden]=\"isLimitReached() === true\"\n             matInput\n             class=\"form-control h-100 border-0\"\n             type=\"text\"\n             [formControl]=\"myControl\"\n             [placeholder]=\"placeholder\"\n             [matAutocomplete]=\"auto\"\n             [required]=\"false\"\n      >\n\n      <mat-autocomplete #auto=\"matAutocomplete\"\n                        (optionSelected)=\"selectOption($event.option.value);\"\n                        [panelWidth]=\"multiselect?.offsetWidth\"\n                        [displayWith]=\"displayFn\"\n      >\n        <ng-container *ngIf=\"(filteredOptions | async) as fOptions; else loadingObservableNoResultsTemplate\">\n          <mat-option *ngIf=\"fOptions?.length <= 0 && _observableInputLoading\">\n            <ng-container *ngTemplateOutlet=\"loadingObservableTemplate\"></ng-container>\n          </mat-option>\n          <ng-container *ngIf=\"fOptions?.length > 0\">\n            <ng-container *ngFor=\"let option of fOptions\">\n              <mat-option\n                [hidden]=\"isOptionSelected(option)\"\n                [value]=\"option\"\n              >\n                <div class=\"d-flex flex-row align-items-center\">\n                  <ng-container *ngTemplateOutlet=\"thumbnailContainer; context: {$implicit: option}\"></ng-container>\n                  <span class=\"color-gray-dark\" [ngClass]=\"{'ms-2': option?.thumbnail}\">{{option.label}}</span>\n                </div>\n              </mat-option>\n            </ng-container>\n          </ng-container>\n        </ng-container>\n      </mat-autocomplete>\n    </form>\n    <div class=\"position-absolute d-flex h-100 justify-content-center align-items-center mx-3\" style=\"right: 0;\">\n      <ng-container [ngSwitch]=\"_observableInputLoading\">\n        <span *ngSwitchCase=\"true\" class=\"spinner-border spinner-border-sm\" role=\"status\" aria-hidden=\"true\"></span>\n        <i *ngSwitchCase=\"false\" class=\"uil uil-lg uil-angle-down\"></i>\n      </ng-container>\n    </div>\n  </div>\n</div>\n\n<ng-template #thumbnailContainer let-option let-marginStart=\"marginStart\">\n  <div *ngIf=\"option?.thumbnail\"\n       class=\"pm-multi-select-thumbnail-container\"\n       [ngClass]=\"{'ms-2': marginStart, 'circular': roundedThumbnail, 'mx-2': roundedThumbnail}\"\n  >\n    <img\n      aria-hidden\n      [src]=\"option.thumbnail\"\n      height=\"25\"\n    >\n  </div>\n</ng-template>\n\n<ng-template #loadingObservableTemplate>\n  <div class=\"p-3\">\n    <div *ngIfLoaded=\"false\"></div>\n  </div>\n</ng-template>\n\n<ng-template #loadingObservableNoResultsTemplate>\n  <mat-option>\n    <div class=\"p-3\">\n      <p>Nada aqui</p>\n    </div>\n  </mat-option>\n</ng-template>\n"
+            "templateData": "<div #multiselect\n     class=\"pm-multi-select cursor-pointer border-radius-{{borderRadius}}\"\n     (click)=\"$event.stopPropagation(); openSelect();\"\n>\n  <div class=\"d-flex flex-wrap p-1 rad-md position-relative\" (click)=\"openSelect()\">\n    <div class=\"d-flex flex-row justify-content-start flex-wrap\">\n      <div *ngFor=\"let selected of selectedOptions; let first = first\" [ngClass]=\"{'m-1 chip-container': true}\">\n        <div (click)=\"$event.stopPropagation(); removeSelectedOption(selected)\"\n             class=\"d-flex flex-row align-items-center\"\n             [ngClass]=\"{'p-0 ps-2': showRemoveButton, 'py-1 px-2': !showRemoveButton}\"\n        >\n          <ng-container *ngTemplateOutlet=\"thumbnailContainer; context: {$implicit: selected, marginStart: true}\"></ng-container>\n          <p class=\"m-0\" [ngClass]=\"{'ms-1': selected?.thumbnail}\">{{selected.label}}</p>\n          <button *ngIf=\"showRemoveButton\"\n                  (click)=\"$event.stopPropagation(); removeSelectedOption(selected)\"\n                  class=\"btn btn-light\"\n          >x</button>\n        </div>\n      </div>\n    </div>\n    <form style=\"min-height: 31px\">\n      <input #inputBox\n             #trigger=\"matAutocompleteTrigger\"\n             name=\"searchInput\"\n             [hidden]=\"isLimitReached() === true\"\n             matInput\n             class=\"form-control h-100 border-0\"\n             type=\"text\"\n             [formControl]=\"myControl\"\n             [placeholder]=\"placeholder\"\n             [matAutocomplete]=\"auto\"\n             [required]=\"false\"\n      >\n\n      <mat-autocomplete #auto=\"matAutocomplete\"\n                        (optionSelected)=\"selectOption($event.option.value);\"\n                        [panelWidth]=\"multiselect?.offsetWidth\"\n                        [displayWith]=\"displayFn\"\n                        [classList]=\"['pm-multi-select-autocomplete-panel']\"\n      >\n        <ng-container *ngIf=\"(filteredOptions | async) as fOptions; else loadingObservableNoResultsTemplate\">\n          <mat-option *ngIf=\"fOptions?.length <= 0 && _observableInputLoading\">\n            <ng-container *ngTemplateOutlet=\"loadingObservableTemplate\"></ng-container>\n          </mat-option>\n          <ng-container *ngIf=\"fOptions?.length > 0\">\n            <ng-container *ngFor=\"let option of fOptions\">\n              <mat-option\n                [hidden]=\"isOptionSelected(option)\"\n                [value]=\"option\"\n              >\n                <div class=\"d-flex flex-row align-items-center\">\n                  <ng-container *ngTemplateOutlet=\"thumbnailContainer; context: {$implicit: option}\"></ng-container>\n                  <span class=\"color-gray-dark\" [ngClass]=\"{'ms-2': option?.thumbnail}\">{{option.label}}</span>\n                </div>\n              </mat-option>\n            </ng-container>\n          </ng-container>\n        </ng-container>\n      </mat-autocomplete>\n    </form>\n    <div class=\"position-absolute d-flex h-100 justify-content-center align-items-center mx-3\" style=\"right: 0;\">\n      <ng-container [ngSwitch]=\"_observableInputLoading\">\n        <span *ngSwitchCase=\"true\" class=\"spinner-border spinner-border-sm\" role=\"status\" aria-hidden=\"true\"></span>\n        <i *ngSwitchCase=\"false\" class=\"uil uil-lg uil-angle-down\"></i>\n      </ng-container>\n    </div>\n  </div>\n</div>\n\n<ng-template #thumbnailContainer let-option>\n  <div *ngIf=\"option?.thumbnail\"\n       class=\"pm-multi-select-thumbnail-container\"\n       [ngClass]=\"{'circular': roundedThumbnail, 'mx-2': roundedThumbnail, 'ms-0': showRemoveButton}\"\n  >\n    <img\n      aria-hidden\n      [src]=\"option.thumbnail\"\n      height=\"25\"\n    >\n  </div>\n</ng-template>\n\n<ng-template #loadingObservableTemplate>\n  <div class=\"p-3\">\n    <div *ngIfLoaded=\"false\"></div>\n  </div>\n</ng-template>\n\n<ng-template #loadingObservableNoResultsTemplate>\n  <mat-option>\n    <div class=\"p-3\">\n      <p>Nada aqui</p>\n    </div>\n  </mat-option>\n</ng-template>\n"
         },
         {
             "name": "RadioButtonComponent",
@@ -7726,16 +7730,6 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/components/inputs/combo-box/combo-box.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "object",
-                "defaultValue": "{\n  items: [],\n  disabled: false,\n  selectedItem: undefined\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "src/components/inputs/copy-content-input/copy-content-input.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
@@ -7821,6 +7815,16 @@
                 "deprecationMessage": "",
                 "type": "object",
                 "defaultValue": "{}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/inputs/combo-box/combo-box.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\n  items: [],\n  disabled: false,\n  selectedItem: undefined\n}"
             },
             {
                 "name": "defaultArgs",
@@ -8346,16 +8350,6 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/components/inputs/combo-box/combo-box.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story<ComboBoxComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-combo-box\n      [items]=\"items\"\n      [disabled]=\"disabled\"\n      [selectedItem]=\"selectedItem\"\n    >\n    </pm-combo-box>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "src/components/inputs/copy-content-input/copy-content-input.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
@@ -8441,6 +8435,16 @@
                 "deprecationMessage": "",
                 "type": "Story<StepperComponent>",
                 "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-stepper>\n      <cdk-step> <p>This is any content of \"Step 1\"</p> </cdk-step>\n      <cdk-step> <p>This is any content of \"Step 2\"</p> </cdk-step>\n    </pm-stepper>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/inputs/combo-box/combo-box.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<ComboBoxComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-combo-box\n      [items]=\"items\"\n      [disabled]=\"disabled\"\n      [selectedItem]=\"selectedItem\"\n    >\n    </pm-combo-box>\n  `\n})"
             },
             {
                 "name": "Template",
@@ -9328,48 +9332,6 @@
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-checkbox\n      [checked]=\"checked\"\n      [disabled]=\"disabled\"\n    >\n        Checkbox\n    </pm-checkbox>\n  `\n})"
                 }
             ],
-            "src/components/inputs/combo-box/combo-box.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/inputs/combo-box/combo-box.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "object",
-                    "defaultValue": "{\n  items: [],\n  disabled: false,\n  selectedItem: undefined\n}"
-                },
-                {
-                    "name": "DefaultComboBox",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/inputs/combo-box/combo-box.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "defaultItems",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/inputs/combo-box/combo-box.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "[]",
-                    "defaultValue": "[\n  {\n    label: 'Value 1',\n    value: 1\n  },\n  {\n    label: 'Value 2',\n    value: 2\n  },\n  {\n    label: 'Value 3',\n    value: 3\n  }\n]"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/inputs/combo-box/combo-box.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Story<ComboBoxComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-combo-box\n      [items]=\"items\"\n      [disabled]=\"disabled\"\n      [selectedItem]=\"selectedItem\"\n    >\n    </pm-combo-box>\n  `\n})"
-                }
-            ],
             "src/components/inputs/copy-content-input/copy-content-input.stories.ts": [
                 {
                     "name": "defaultArgs",
@@ -9694,6 +9656,48 @@
                     "deprecationMessage": "",
                     "type": "Story<StepperComponent>",
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-stepper>\n      <cdk-step> <p>This is any content of \"Step 1\"</p> </cdk-step>\n      <cdk-step> <p>This is any content of \"Step 2\"</p> </cdk-step>\n    </pm-stepper>\n  `\n})"
+                }
+            ],
+            "src/components/inputs/combo-box/combo-box.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/inputs/combo-box/combo-box.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "object",
+                    "defaultValue": "{\n  items: [],\n  disabled: false,\n  selectedItem: undefined\n}"
+                },
+                {
+                    "name": "DefaultComboBox",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/inputs/combo-box/combo-box.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "defaultItems",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/inputs/combo-box/combo-box.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "[]",
+                    "defaultValue": "[\n  {\n    label: 'Value 1',\n    value: 1\n  },\n  {\n    label: 'Value 2',\n    value: 2\n  },\n  {\n    label: 'Value 3',\n    value: 3\n  }\n]"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/inputs/combo-box/combo-box.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story<ComboBoxComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-combo-box\n      [items]=\"items\"\n      [disabled]=\"disabled\"\n      [selectedItem]=\"selectedItem\"\n    >\n    </pm-combo-box>\n  `\n})"
                 }
             ],
             "src/directives/ng-if-loaded/spinner/spinner.stories.ts": [
