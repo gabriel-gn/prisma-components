@@ -17,8 +17,6 @@
       }
     }
 
-
-
     &.mat-focused {
       border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;
     }
@@ -49,7 +47,7 @@
   .mat-list-item--selected,
   .mat-mdc-option-active {
     * {
-      color: var(--color-default) !important;
+      color: var(--color-gray-darker) !important
     }
   }
 }

@@ -9,6 +9,7 @@ export interface ComboItem {
   selector: 'pm-combo-box',
   templateUrl: './combo-box.component.html',
   styleUrls: ['./combo-box.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class ComboBoxComponent implements OnInit {
 
