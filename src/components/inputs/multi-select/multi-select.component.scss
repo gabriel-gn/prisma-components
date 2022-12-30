@@ -50,39 +50,39 @@
 
 }
 
-::ng-deep {
-  .pm-multi-select-autocomplete-panel {
-    margin-left: -4px;
+.pm-multi-select-autocomplete-panel {
+  margin-left: -4px !important;
+  margin-top: -4px !important;
+  border-radius: 0 0 var(--border-radius-md) var(--border-radius-md);
+  overflow: hidden;
 
-    * {
-      box-shadow: none !important;
-    }
-
-    .mat-autocomplete-panel {
-      background-color: var(--color-light);
-      margin-top: -2px;
-    }
+  .mat-mdc-autocomplete-panel {
+    background-color: var(--color-light);
   }
 
-  .pm-multi-select-thumbnail-container {
-    width: 25px;
-    height: 25px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-sizing: border-box;
-    outline: none;
-    flex: 0 0 auto;
+  * {
+    box-shadow: none !important;
+  }
+}
 
-    &.circular {
-      border-radius: 50%;
-      margin: 0;
-      overflow: hidden;
-      border: 1px solid var(--color-light-states);
-    }
+.pm-multi-select-thumbnail-container {
+  width: 25px;
+  height: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  outline: none;
+  flex: 0 0 auto;
 
-    img {
-      object-fit: cover;
-    }
+  &.circular {
+    border-radius: 50%;
+    margin: 0 auto !important;
+    overflow: hidden;
+    border: 1px solid var(--color-light-states);
+  }
+
+  img {
+    object-fit: cover;
   }
 }

@@ -7,10 +7,11 @@ import {
   Input,
   OnInit,
   Output,
-  ViewChild
+  ViewChild,
+  ViewEncapsulation
 } from '@angular/core';
-import {FormControl} from '@angular/forms';
-import {catchError, concatMap, debounceTime, distinctUntilChanged, Observable, of, tap, throwError} from 'rxjs';
+import {UntypedFormControl} from '@angular/forms';
+import {catchError, concatMap, debounceTime, distinctUntilChanged, Observable, of, tap} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import _ from 'lodash';
 import {MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, MatAutocompleteTrigger} from '@angular/material/autocomplete';
@@ -26,6 +27,7 @@ export interface MultiSelectOption {
   selector: 'pm-multi-select',
   templateUrl: './multi-select.component.html',
   styleUrls: ['./multi-select.component.scss'],
+  encapsulation: ViewEncapsulation.None,
   providers: [
     {
       provide: MAT_AUTOCOMPLETE_DEFAULT_OPTIONS,
@@ -78,16 +80,21 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
    * Caso a flag seja "true", desativa o foco no input, escondendo o teclado virtual no mobile
    */
   @Input() unfocusOnSelect: boolean = true;
+  /**
+   * Caso a flag seja "true", mostra o botão "X" de remover cada item da lista de selecionados.
+   * Caso contrário, ao clicar sobre um item, remove ele da lista de selecionados
+   */
+  @Input() showRemoveButton: boolean = false;
   public _observableInputLoading: boolean = false;
 
-  public readonly myControl: FormControl;
+  public readonly myControl: UntypedFormControl;
   public inputValue: string = '';
   public filteredOptions: Observable<MultiSelectOption[]>;
 
   constructor(
     private cdr: ChangeDetectorRef
   ) {
-    this.myControl = new FormControl();
+    this.myControl = new UntypedFormControl();
   }
 
   ngOnInit(): void {
@@ -176,6 +183,13 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
     }
   }
 
+  /**
+   * Use this method instead of "trigger.closePanel()" because it has some validations before closing the panel
+   */
+  public closeSelect(): void {
+    this.trigger.closePanel();
+  }
+
   public clearSelected(): void {
     this.selectedOptions = [];
     this.selectedOptionsChanged.emit(this.selectedOptions);
@@ -186,7 +200,7 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
     if (this.trigger.panelOpen === false) {
       this.openSelect();
     } else {
-      this.trigger.closePanel();
+      this.closeSelect();
     }
   }
 
@@ -198,7 +212,9 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
   public blurInputSelect() {
     if (this.unfocusOnSelect) {
       setTimeout(() => {
-        try { this.inputBoxEl.nativeElement.blur(); } catch (e) {}
+        try {
+          this.inputBoxEl.nativeElement.blur();
+        } catch (e) {}
       });
     }
   }

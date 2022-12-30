@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation} from '@angular/core';
 
 export interface ComboItem {
   label: string;
@@ -8,7 +8,8 @@ export interface ComboItem {
 @Component({
   selector: 'pm-combo-box',
   templateUrl: './combo-box.component.html',
-  styleUrls: ['./combo-box.component.scss']
+  styleUrls: ['./combo-box.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class ComboBoxComponent implements OnInit {
 

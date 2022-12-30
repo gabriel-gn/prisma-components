@@ -1,6 +1,5 @@
 import {BasicCardComponent} from './basic-card.component';
-import {Meta} from '@storybook/angular/types-6-0';
-import {Story} from '@storybook/angular';
+import {Meta, Story} from '@storybook/angular';
 import {Sizes} from '../../../models/sizes';
 
 export default {

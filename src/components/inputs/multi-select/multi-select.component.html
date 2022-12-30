@@ -1,15 +1,24 @@
-<div #multiselect class="pm-multi-select cursor-pointer border-radius-{{borderRadius}}" (click)="$event.stopPropagation(); openSelect();">
+<div #multiselect
+     class="pm-multi-select cursor-pointer border-radius-{{borderRadius}}"
+     (click)="$event.stopPropagation(); openSelect();"
+>
   <div class="d-flex flex-wrap p-1 rad-md position-relative" (click)="openSelect()">
     <div class="d-flex flex-row justify-content-start flex-wrap">
       <div *ngFor="let selected of selectedOptions; let first = first" [ngClass]="{'m-1 chip-container': true}">
-        <div class="d-flex flex-row align-items-center">
-          <ng-container *ngTemplateOutlet="thumbnailContainer; context: {$implicit: selected, marginStart: true}"></ng-container>
-          <p class="m-0 ms-1">{{selected.label}}</p>
-          <button class="btn btn-light" (click)="$event.stopPropagation(); removeSelectedOption(selected)">x</button>
+        <div (click)="$event.stopPropagation(); removeSelectedOption(selected)"
+             class="d-flex flex-row align-items-center"
+             [ngClass]="{'p-0 ps-2': showRemoveButton, 'py-1 px-2': !showRemoveButton}"
+        >
+          <ng-container *ngTemplateOutlet="thumbnailContainer; context: {$implicit: selected}"></ng-container>
+          <p class="m-0" [ngClass]="{'ms-1': selected?.thumbnail}">{{selected.label}}</p>
+          <button *ngIf="showRemoveButton"
+                  (click)="$event.stopPropagation(); removeSelectedOption(selected)"
+                  class="btn btn-light"
+          >x</button>
         </div>
       </div>
     </div>
-    <form style="min-height: 31px">
+    <form style="min-height: 31px" [hidden]="isLimitReached() === true">
       <input #inputBox
              #trigger="matAutocompleteTrigger"
              name="searchInput"
@@ -27,6 +36,7 @@
                         (optionSelected)="selectOption($event.option.value);"
                         [panelWidth]="multiselect?.offsetWidth"
                         [displayWith]="displayFn"
+                        [classList]="['pm-multi-select-autocomplete-panel']"
       >
         <ng-container *ngIf="(filteredOptions | async) as fOptions; else loadingObservableNoResultsTemplate">
           <mat-option *ngIf="fOptions?.length <= 0 && _observableInputLoading">
@@ -57,8 +67,11 @@
   </div>
 </div>
 
-<ng-template #thumbnailContainer let-option let-marginStart="marginStart">
-  <div *ngIf="option?.thumbnail" class="pm-multi-select-thumbnail-container" [ngClass]="{'ms-2': marginStart, 'circular': roundedThumbnail, 'mx-2': roundedThumbnail}">
+<ng-template #thumbnailContainer let-option>
+  <div *ngIf="option?.thumbnail"
+       class="pm-multi-select-thumbnail-container"
+       [ngClass]="{'circular': roundedThumbnail, 'mx-2': roundedThumbnail, 'ms-0': showRemoveButton}"
+  >
     <img
       aria-hidden
       [src]="option.thumbnail"

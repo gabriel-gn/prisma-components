@@ -1,7 +1,7 @@
 @import 'mixins/misc';
 
 .form-control {
-  background-color: #FFFFFF;
+  background-color: var(--color-light);
   border: 1px solid var(--color-gray-medium);
   border-radius: var(--border-radius-md);
   color: var(--color-font-default);
@@ -9,6 +9,10 @@
   height: auto;
   font-size: 15px;
   @include box-shadow(none);
+
+  &:focus {
+    background-color: var(--color-light);
+  }
 
   &::placeholder {
     color: var(--color-gray-medium)
