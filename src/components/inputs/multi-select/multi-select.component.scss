@@ -60,6 +60,10 @@
     background-color: var(--color-light);
   }
 
+  &.mat-mdc-autocomplete-panel-above {
+    border-radius: var(--border-radius-md) var(--border-radius-md) 0 0 !important;
+  }
+
   * {
     box-shadow: none !important;
   }

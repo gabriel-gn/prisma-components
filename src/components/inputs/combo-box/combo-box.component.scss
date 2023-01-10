@@ -38,11 +38,12 @@
 
 .pm-combo-box-overlay {
   $combo-box-overlay-background-color: var(--color-primary);
+  $combo-box-overlay-background-color-hover: rgba(var(--color-light-rgb), 0.35);
   $combo-box-overlay-border-color: var(--color-primary-states);
 
   background-color: $combo-box-overlay-background-color;
-  border-radius: var(--border-radius-md) !important;
   box-shadow: none;
+  border-radius: var(--border-radius-md) !important;
   margin-top: 0.25em !important;
   // comentar as duas linhas de baixo para remover a borda degradê
   //background: linear-gradient($combo-box-overlay-background-color, $combo-box-overlay-background-color) padding-box, linear-gradient(to top, $combo-box-overlay-border-color, transparent) border-box;
@@ -55,8 +56,22 @@
 
   .mat-list-item--selected,
   .mat-mdc-option-active {
+    background: $combo-box-overlay-background-color-hover !important;
+
     * {
-      color: var(--color-gray-darker) !important
+      color: var(--color-primary-states) !important
     }
+  }
+
+  .mat-mdc-option {
+    &:hover {
+      background: $combo-box-overlay-background-color-hover !important;
+    }
+  }
+}
+
+.mat-mdc-select-panel-above {
+  .pm-combo-box-overlay {
+    margin-bottom: 0.25em !important;
   }
 }
