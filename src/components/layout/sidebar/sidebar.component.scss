@@ -5,6 +5,10 @@
   $gradient-offset: $navbar-content-height * 0.7;
   --navbar-height: calc(#{$navbar-content-height} + #{2 * $navbar-padding} + #{$gradient-offset});
 
+  .mat-drawer-content:after {
+    position: absolute;
+  }
+
   .mat-drawer {
     background-color: $navbar-bg;
     border-right: 1px solid var(--color-gray-light);
