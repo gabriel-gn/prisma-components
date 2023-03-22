@@ -1,4 +1,7 @@
-<button [className]="getClassName()" [disabled]="busy || disabled">
+<button
+  [className]="getClassName()"
+  [ngClass]="{'disabled': disabled}" [disabled]="busy || disabled"
+>
   <ng-container *ngIf="busy; else buttonContent">
     <span class="spinner-border spinner-border-sm mx-2" role="status" aria-hidden="true"></span>
     {{busyText ? busyText : ''}}
@@ -7,18 +10,21 @@
 
 <ng-template #buttonContent>
   <i *ngIf="iconClass && busy === false && iconPosition === 'start'" class="{{iconClass}}"></i>
-  <ng-container *ngIf="label; else noLabel">
+  <ng-container>
     <span
       class="align-self-center text-overflow"
-      [ngClass]="{'ms-2': !!label && iconPosition === 'start', 'me-2': !!label && iconPosition === 'end'}"
+      [ngClass]="{'ms-2': iconClass && iconPosition === 'start', 'me-2': iconClass && iconPosition === 'end'}"
     >
-      {{label}}
+      <ng-container [ngSwitch]="!!label">
+        <ng-container *ngSwitchCase="true">
+          {{label}}
+        </ng-container>
+        <ng-container *ngSwitchCase="false">
+          <ng-content></ng-content>
+        </ng-container>
+      </ng-container>
     </span>
   </ng-container>
   <i *ngIf="iconClass && busy === false && iconPosition === 'end'" class="{{iconClass}}"></i>
-</ng-template>
-
-<ng-template #noLabel>
-  <ng-content></ng-content>
 </ng-template>
 

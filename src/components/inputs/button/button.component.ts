@@ -1,12 +1,14 @@
-import {Component, Input} from '@angular/core';
+import {Component, HostBinding, Input, ViewEncapsulation} from '@angular/core';
 import {MainColors} from '../../../models/colors';
 
 @Component({
   selector: 'pm-button',
   templateUrl: './button.component.html',
-  styleUrls: ['./button.component.scss']
+  styleUrls: ['./button.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class ButtonComponent {
+  @HostBinding('className') componentClass: string;
   @Input('label') label: string | null = '';  // Usada só pra aparecer no storybook
   /**
    * Cor do botão que será exibido.
@@ -47,10 +49,12 @@ export class ButtonComponent {
    */
   @Input('fillWidth') fillWidth: boolean = false;
 
-  constructor() { }
+  constructor() {
+    this.componentClass = 'pm-button';
+  }
 
   public getClassName(): string {
-    let name = 'pm-button btn';
+    let name = 'text-overflow overflow-hidden btn';
     if (this.size !== 'md') {
       name += ` ${this.size}`;
     }
@@ -68,6 +72,10 @@ export class ButtonComponent {
       name += ` d-flex flex-row`;
     }
     return name;
+  }
+
+  public logEvent = (event: any) => {
+    console.log(event);
   }
 
 }

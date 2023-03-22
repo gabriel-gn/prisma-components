@@ -1905,9 +1905,11 @@
         },
         {
             "name": "ButtonComponent",
-            "id": "component-ButtonComponent-d80e8a9ef21ddcb6d72a77b33b9c90142f57ded3e9675705b699a5b2ec77528f2d15cf6a7b76127014a9031a4c4e6f0f138fd54a1c3bfea715decb71d795a38e",
+            "id": "component-ButtonComponent-6cee71acce347844e4e68896b0cc4c51549f2a11449c5d761558fa9f26d8278653e5dc58147b16115433711a5640b2b7a07cd150a4c84b28cc78deb2f7603935",
             "file": "src/components/inputs/button/button.component.ts",
-            "encapsulation": [],
+            "encapsulation": [
+                "ViewEncapsulation.None"
+            ],
             "entryComponents": [],
             "inputs": [],
             "outputs": [],
@@ -1929,7 +1931,7 @@
                     "deprecationMessage": "",
                     "rawdescription": "\n\nExibe botão de \"carregamento\" e desabilita o botão.\nPara alterar o texto, utilizar a propriedade `busyText`\n",
                     "description": "<p>Exibe botão de &quot;carregamento&quot; e desabilita o botão.\nPara alterar o texto, utilizar a propriedade <code>busyText</code></p>\n",
-                    "line": 20,
+                    "line": 22,
                     "type": "boolean",
                     "decorators": []
                 },
@@ -1939,7 +1941,7 @@
                     "deprecationMessage": "",
                     "rawdescription": "\n\nTexto exibido junto ao botão de \"carregando\" quando a propriedade `busy` está como `true`\n",
                     "description": "<p>Texto exibido junto ao botão de &quot;carregando&quot; quando a propriedade <code>busy</code> está como <code>true</code></p>\n",
-                    "line": 24,
+                    "line": 26,
                     "type": "string",
                     "decorators": []
                 },
@@ -1950,7 +1952,7 @@
                     "deprecationMessage": "",
                     "rawdescription": "\n\nPropriedade de habilitado ou desabilitado\n",
                     "description": "<p>Propriedade de habilitado ou desabilitado</p>\n",
-                    "line": 40,
+                    "line": 42,
                     "type": "boolean",
                     "decorators": []
                 },
@@ -1961,7 +1963,7 @@
                     "deprecationMessage": "",
                     "rawdescription": "\n\nFaz ou não o botão preencher a largura do container. (classe w-100)\n",
                     "description": "<p>Faz ou não o botão preencher a largura do container. (classe w-100)</p>\n",
-                    "line": 48,
+                    "line": 50,
                     "type": "boolean",
                     "decorators": []
                 },
@@ -1971,7 +1973,7 @@
                     "deprecationMessage": "",
                     "rawdescription": "\n\nÍcone que será exibido no botão junto ao texto. Ex: `uil uil-md uil-tabs`\n",
                     "description": "<p>Ícone que será exibido no botão junto ao texto. Ex: <code>uil uil-md uil-tabs</code></p>\n",
-                    "line": 28,
+                    "line": 30,
                     "type": "string",
                     "decorators": []
                 },
@@ -1982,7 +1984,7 @@
                     "deprecationMessage": "",
                     "rawdescription": "\n\nCaso tenha ícone, indica se o ícone estará no começo ou fim do botão\n",
                     "description": "<p>Caso tenha ícone, indica se o ícone estará no começo ou fim do botão</p>\n",
-                    "line": 32,
+                    "line": 34,
                     "type": "\"start\" | \"end\"",
                     "decorators": []
                 },
@@ -1991,7 +1993,7 @@
                     "defaultValue": "''",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 10,
+                    "line": 12,
                     "type": "string | null",
                     "decorators": []
                 },
@@ -2002,7 +2004,7 @@
                     "deprecationMessage": "",
                     "rawdescription": "\n\nSe o botão será cheio ou apenas contornado pela borda\n",
                     "description": "<p>Se o botão será cheio ou apenas contornado pela borda</p>\n",
-                    "line": 36,
+                    "line": 38,
                     "type": "boolean",
                     "decorators": []
                 },
@@ -2013,7 +2015,7 @@
                     "deprecationMessage": "",
                     "rawdescription": "\n\nTamanho do botão\n",
                     "description": "<p>Tamanho do botão</p>\n",
-                    "line": 44,
+                    "line": 46,
                     "type": "\"sm\" | \"md\"",
                     "decorators": []
                 },
@@ -2024,13 +2026,42 @@
                     "deprecationMessage": "",
                     "rawdescription": "\n\nCor do botão que será exibido.\nUtilizar as propriedades do tipo \"MainColors\"\n",
                     "description": "<p>Cor do botão que será exibido.\nUtilizar as propriedades do tipo &quot;MainColors&quot;</p>\n",
-                    "line": 15,
+                    "line": 17,
                     "type": "MainColors | string",
                     "decorators": []
                 }
             ],
             "outputsClass": [],
-            "propertiesClass": [],
+            "propertiesClass": [
+                {
+                    "name": "componentClass",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 11,
+                    "decorators": [
+                        {
+                            "name": "HostBinding",
+                            "stringifiedArguments": "'className'"
+                        }
+                    ]
+                },
+                {
+                    "name": "logEvent",
+                    "defaultValue": "() => {...}",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 77,
+                    "modifierKind": [
+                        123
+                    ]
+                }
+            ],
             "methodsClass": [
                 {
                     "name": "getClassName",
@@ -2038,7 +2069,7 @@
                     "optional": false,
                     "returnType": "string",
                     "typeParameters": [],
-                    "line": 52,
+                    "line": 56,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -2048,16 +2079,25 @@
             ],
             "deprecated": false,
             "deprecationMessage": "",
-            "hostBindings": [],
+            "hostBindings": [
+                {
+                    "name": "className",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 11,
+                    "type": "string",
+                    "decorators": []
+                }
+            ],
             "hostListeners": [],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {Component, Input} from '@angular/core';\nimport {MainColors} from '../../../models/colors';\n\n@Component({\n  selector: 'pm-button',\n  templateUrl: './button.component.html',\n  styleUrls: ['./button.component.scss']\n})\nexport class ButtonComponent {\n  @Input('label') label: string | null = '';  // Usada só pra aparecer no storybook\n  /**\n   * Cor do botão que será exibido.\n   * Utilizar as propriedades do tipo \"MainColors\"\n   */\n  @Input('type') type: MainColors | string = `${MainColors.default}`;\n  /**\n   * Exibe botão de \"carregamento\" e desabilita o botão.\n   * Para alterar o texto, utilizar a propriedade `busyText`\n   */\n  @Input('busy') busy: boolean = false;\n  /**\n   * Texto exibido junto ao botão de \"carregando\" quando a propriedade `busy` está como `true`\n   */\n  @Input('busyText') busyText: string;\n  /**\n   * Ícone que será exibido no botão junto ao texto. Ex: `uil uil-md uil-tabs`\n   */\n  @Input('iconClass') iconClass: string;\n  /**\n   * Caso tenha ícone, indica se o ícone estará no começo ou fim do botão\n   */\n  @Input('iconPosition') iconPosition: 'start' | 'end' = 'start';\n  /**\n   * Se o botão será cheio ou apenas contornado pela borda\n   */\n  @Input('outline') outline: boolean = false;\n  /**\n   * Propriedade de habilitado ou desabilitado\n   */\n  @Input('disabled') disabled: boolean = false;\n  /**\n   * Tamanho do botão\n   */\n  @Input('size') size: 'sm' | 'md' = 'md';\n  /**\n   * Faz ou não o botão preencher a largura do container. (classe w-100)\n   */\n  @Input('fillWidth') fillWidth: boolean = false;\n\n  constructor() { }\n\n  public getClassName(): string {\n    let name = 'pm-button btn';\n    if (this.size !== 'md') {\n      name += ` ${this.size}`;\n    }\n    if (this.fillWidth) {\n      name += ' w-100';\n    }\n    if (this.type) {\n      if (this.outline) {\n        name += ` btn-outline-${this.type}`;\n      } else {\n        name += ` btn-${this.type}`;\n      }\n    }\n    if (this.iconClass) {\n      name += ` d-flex flex-row`;\n    }\n    return name;\n  }\n\n}\n",
+            "sourceCode": "import {Component, HostBinding, Input, ViewEncapsulation} from '@angular/core';\nimport {MainColors} from '../../../models/colors';\n\n@Component({\n  selector: 'pm-button',\n  templateUrl: './button.component.html',\n  styleUrls: ['./button.component.scss'],\n  encapsulation: ViewEncapsulation.None\n})\nexport class ButtonComponent {\n  @HostBinding('className') componentClass: string;\n  @Input('label') label: string | null = '';  // Usada só pra aparecer no storybook\n  /**\n   * Cor do botão que será exibido.\n   * Utilizar as propriedades do tipo \"MainColors\"\n   */\n  @Input('type') type: MainColors | string = `${MainColors.default}`;\n  /**\n   * Exibe botão de \"carregamento\" e desabilita o botão.\n   * Para alterar o texto, utilizar a propriedade `busyText`\n   */\n  @Input('busy') busy: boolean = false;\n  /**\n   * Texto exibido junto ao botão de \"carregando\" quando a propriedade `busy` está como `true`\n   */\n  @Input('busyText') busyText: string;\n  /**\n   * Ícone que será exibido no botão junto ao texto. Ex: `uil uil-md uil-tabs`\n   */\n  @Input('iconClass') iconClass: string;\n  /**\n   * Caso tenha ícone, indica se o ícone estará no começo ou fim do botão\n   */\n  @Input('iconPosition') iconPosition: 'start' | 'end' = 'start';\n  /**\n   * Se o botão será cheio ou apenas contornado pela borda\n   */\n  @Input('outline') outline: boolean = false;\n  /**\n   * Propriedade de habilitado ou desabilitado\n   */\n  @Input('disabled') disabled: boolean = false;\n  /**\n   * Tamanho do botão\n   */\n  @Input('size') size: 'sm' | 'md' = 'md';\n  /**\n   * Faz ou não o botão preencher a largura do container. (classe w-100)\n   */\n  @Input('fillWidth') fillWidth: boolean = false;\n\n  constructor() {\n    this.componentClass = 'pm-button';\n  }\n\n  public getClassName(): string {\n    let name = 'text-overflow overflow-hidden btn';\n    if (this.size !== 'md') {\n      name += ` ${this.size}`;\n    }\n    if (this.fillWidth) {\n      name += ' w-100';\n    }\n    if (this.type) {\n      if (this.outline) {\n        name += ` btn-outline-${this.type}`;\n      } else {\n        name += ` btn-${this.type}`;\n      }\n    }\n    if (this.iconClass) {\n      name += ` d-flex flex-row`;\n    }\n    return name;\n  }\n\n  public logEvent = (event: any) => {\n    console.log(event);\n  }\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": "button {\n  &.pm-button {\n    &:disabled {\n      cursor: not-allowed;\n      pointer-events: none;\n    }\n\n    &.sm {\n      font-size: 0.7rem !important;\n      padding: 0.2rem 0.5rem !important;\n    }\n  }\n}\n",
+                    "data": "@function str-split($string, $separator) {\n  $split-arr: ();\n  $index : str-index($string, $separator);\n\n  @while $index != null {\n    $item: str-slice($string, 1, $index - 1);\n    $split-arr: append($split-arr, $item);\n    $string: str-slice($string, $index + 1);\n    $index : str-index($string, $separator);\n  }\n\n  $split-arr: append($split-arr, $string);\n\n  @return $split-arr;\n}\n\n@function str-replace($string, $search, $replace: '') {\n  $index: str-index($string, $search);\n\n  @if $index {\n    @return str-slice($string, 1, $index - 1) + $replace + str-replace(str-slice($string, $index + str-length($search)), $search, $replace);\n  }\n\n  @return $string;\n}\n\n@function parent-selector ($appendix) {\n  $separator: ' ';\n  $startAt: 1;\n  $type: '';\n  $sibling: ();\n  $owner: ();\n  $parent: ();\n\n  $workStr: str-slice(#{&}, $startAt);\n  $split-values: str-split(#{&}, $separator);\n  $lengthValues: length($split-values);\n  $indexOfFirstSpace: str-index($workStr, $separator);\n\n  @each $current-selector in $split-values {\n    $index: index($split-values, $current-selector);\n\n    @if ($index == $lengthValues) {\n      $parent: $current-selector;\n    } @else {\n      $owner: append($owner, $current-selector)\n    }\n  }\n\n  $ampersandExists: str-index($appendix, '&');\n\n  @if ($ampersandExists) {\n    $replaceAmpersand: str-replace($appendix, '&', $parent);\n    @return #{$owner $replaceAmpersand};\n  }\n\n  @return #{$owner $parent $appendix};\n\n}\n\n@mixin BEM-parent-selector ($appendix...) {\n  $list: ();\n\n  @each $key in $appendix {\n    $index: index($appendix, $key);\n    $length: length($appendix);\n    $separator: ', ';\n\n    @if ($index == $length) {\n      $separator: '';\n    }\n\n    $list: append($list, '#{parent-selector($key)+$separator}');\n  }\n\n  @at-root #{$list} {\n    @content;\n  }\n}\n\npm-button:has(button:disabled) {\n  cursor: not-allowed;\n  pointer-events: none;\n  background-color: #3a3a3a;\n}\n\n.pm-button {\n  button:disabled {\n    cursor: not-allowed;\n    pointer-events: none;\n  }\n\n  .sm {\n    font-size: 0.7rem !important;\n    padding: 0.2rem 0.5rem !important;\n  }\n}\n",
                     "styleUrl": "./button.component.scss"
                 }
             ],
@@ -2068,9 +2108,9 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "args": [],
-                "line": 48
+                "line": 50
             },
-            "templateData": "<button [className]=\"getClassName()\" [disabled]=\"busy || disabled\">\n  <ng-container *ngIf=\"busy; else buttonContent\">\n    <span class=\"spinner-border spinner-border-sm mx-2\" role=\"status\" aria-hidden=\"true\"></span>\n    {{busyText ? busyText : ''}}\n  </ng-container>\n</button>\n\n<ng-template #buttonContent>\n  <i *ngIf=\"iconClass && busy === false && iconPosition === 'start'\" class=\"{{iconClass}}\"></i>\n  <ng-container *ngIf=\"label; else noLabel\">\n    <span\n      class=\"align-self-center text-overflow\"\n      [ngClass]=\"{'ms-2': !!label && iconPosition === 'start', 'me-2': !!label && iconPosition === 'end'}\"\n    >\n      {{label}}\n    </span>\n  </ng-container>\n  <i *ngIf=\"iconClass && busy === false && iconPosition === 'end'\" class=\"{{iconClass}}\"></i>\n</ng-template>\n\n<ng-template #noLabel>\n  <ng-content></ng-content>\n</ng-template>\n\n"
+            "templateData": "<button\n  [className]=\"getClassName()\"\n  [ngClass]=\"{'disabled': disabled}\" [disabled]=\"busy || disabled\"\n>\n  <ng-container *ngIf=\"busy; else buttonContent\">\n    <span class=\"spinner-border spinner-border-sm mx-2\" role=\"status\" aria-hidden=\"true\"></span>\n    {{busyText ? busyText : ''}}\n  </ng-container>\n</button>\n\n<ng-template #buttonContent>\n  <i *ngIf=\"iconClass && busy === false && iconPosition === 'start'\" class=\"{{iconClass}}\"></i>\n  <ng-container>\n    <span\n      class=\"align-self-center text-overflow\"\n      [ngClass]=\"{'ms-2': iconClass && iconPosition === 'start', 'me-2': iconClass && iconPosition === 'end'}\"\n    >\n      <ng-container [ngSwitch]=\"!!label\">\n        <ng-container *ngSwitchCase=\"true\">\n          {{label}}\n        </ng-container>\n        <ng-container *ngSwitchCase=\"false\">\n          <ng-content></ng-content>\n        </ng-container>\n      </ng-container>\n    </span>\n  </ng-container>\n  <i *ngIf=\"iconClass && busy === false && iconPosition === 'end'\" class=\"{{iconClass}}\"></i>\n</ng-template>\n\n"
         },
         {
             "name": "CheckboxComponent",
@@ -2383,7 +2423,7 @@
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": ".pm-combo-box {\n  mat-form-field {\n    border-radius: var(--border-radius-md);\n\n    .mat-mdc-text-field-wrapper {\n      background-color: var(--color-primary);\n      color: white;\n      border-radius: var(--border-radius-md);\n\n      max-height: 40px;\n      display: flex;\n      justify-content: center;\n      align-items: center;\n\n      * {\n        color: white;\n        font-weight: 600 !important;\n      }\n\n      &.mdc-text-field--focused {\n        border-radius: var(--border-radius-md);\n      }\n    }\n\n    &.mat-focused {\n      border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;\n    }\n\n    .mdc-line-ripple {\n      display: none;\n    }\n  }\n}\n\n.pm-combo-box-overlay {\n  $combo-box-overlay-background-color: var(--color-primary);\n  $combo-box-overlay-border-color: var(--color-primary-states);\n\n  background-color: $combo-box-overlay-background-color;\n  border-radius: var(--border-radius-md) !important;\n  box-shadow: none;\n  margin-top: 0.25em !important;\n  // comentar as duas linhas de baixo para remover a borda degradê\n  //background: linear-gradient($combo-box-overlay-background-color, $combo-box-overlay-background-color) padding-box, linear-gradient(to top, $combo-box-overlay-border-color, transparent) border-box;\n  //border: 2px solid transparent;\n\n  * {\n    color: white !important;\n    font-weight: 600 !important;\n  }\n\n  .mat-list-item--selected,\n  .mat-mdc-option-active {\n    * {\n      color: var(--color-gray-darker) !important\n    }\n  }\n}\n",
+                    "data": ".pm-combo-box {\n  mat-form-field {\n    border-radius: var(--border-radius-md);\n\n    .mat-mdc-text-field-wrapper {\n      background-color: var(--color-primary);\n      color: white;\n      border-radius: var(--border-radius-md);\n\n      max-height: 40px;\n      display: flex;\n      justify-content: center;\n      align-items: center;\n\n      * {\n        color: white;\n        font-weight: 600 !important;\n      }\n\n      &.mdc-text-field--focused {\n        border-radius: var(--border-radius-md);\n      }\n    }\n\n    .mat-mdc-form-field-bottom-align {\n      height: 0px;\n    }\n\n    &.mat-focused {\n      border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;\n    }\n\n    .mdc-line-ripple {\n      display: none;\n    }\n  }\n}\n\n.pm-combo-box-overlay {\n  $combo-box-overlay-background-color: var(--color-primary);\n  $combo-box-overlay-background-color-hover: rgba(var(--color-light-rgb), 0.35);\n  $combo-box-overlay-border-color: var(--color-primary-states);\n\n  background-color: $combo-box-overlay-background-color;\n  box-shadow: none;\n  border-radius: var(--border-radius-md) !important;\n  margin-top: 0.25em !important;\n  // comentar as duas linhas de baixo para remover a borda degradê\n  //background: linear-gradient($combo-box-overlay-background-color, $combo-box-overlay-background-color) padding-box, linear-gradient(to top, $combo-box-overlay-border-color, transparent) border-box;\n  //border: 2px solid transparent;\n\n  * {\n    color: white !important;\n    font-weight: 600 !important;\n  }\n\n  .mat-list-item--selected,\n  .mat-mdc-option-active {\n    background: $combo-box-overlay-background-color-hover !important;\n\n    * {\n      color: var(--color-primary-states) !important\n    }\n  }\n\n  .mat-mdc-option {\n    &:hover {\n      background: $combo-box-overlay-background-color-hover !important;\n    }\n  }\n}\n\n.mat-mdc-select-panel-above {\n  .pm-combo-box-overlay {\n    margin-bottom: 0.25em !important;\n  }\n}\n",
                     "styleUrl": "./combo-box.component.scss"
                 }
             ],
@@ -3843,7 +3883,7 @@
                     "deprecationMessage": "",
                     "rawdescription": "\n\nExibe botão de \"carregamento\" e desabilita o botão.\nPara alterar o texto, utilizar a propriedade `busyText`\n",
                     "description": "<p>Exibe botão de &quot;carregamento&quot; e desabilita o botão.\nPara alterar o texto, utilizar a propriedade <code>busyText</code></p>\n",
-                    "line": 20,
+                    "line": 22,
                     "type": "boolean",
                     "decorators": [],
                     "inheritance": {
@@ -3856,7 +3896,7 @@
                     "deprecationMessage": "",
                     "rawdescription": "\n\nTexto exibido junto ao botão de \"carregando\" quando a propriedade `busy` está como `true`\n",
                     "description": "<p>Texto exibido junto ao botão de &quot;carregando&quot; quando a propriedade <code>busy</code> está como <code>true</code></p>\n",
-                    "line": 24,
+                    "line": 26,
                     "type": "string",
                     "decorators": [],
                     "inheritance": {
@@ -3870,7 +3910,7 @@
                     "deprecationMessage": "",
                     "rawdescription": "\n\nPropriedade de habilitado ou desabilitado\n",
                     "description": "<p>Propriedade de habilitado ou desabilitado</p>\n",
-                    "line": 40,
+                    "line": 42,
                     "type": "boolean",
                     "decorators": [],
                     "inheritance": {
@@ -3884,7 +3924,7 @@
                     "deprecationMessage": "",
                     "rawdescription": "\n\nFaz ou não o botão preencher a largura do container. (classe w-100)\n",
                     "description": "<p>Faz ou não o botão preencher a largura do container. (classe w-100)</p>\n",
-                    "line": 48,
+                    "line": 50,
                     "type": "boolean",
                     "decorators": [],
                     "inheritance": {
@@ -3898,7 +3938,7 @@
                     "deprecationMessage": "",
                     "rawdescription": "\n\nCaso tenha ícone, indica se o ícone estará no começo ou fim do botão\n",
                     "description": "<p>Caso tenha ícone, indica se o ícone estará no começo ou fim do botão</p>\n",
-                    "line": 32,
+                    "line": 34,
                     "type": "\"start\" | \"end\"",
                     "decorators": [],
                     "inheritance": {
@@ -3910,7 +3950,7 @@
                     "defaultValue": "''",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 10,
+                    "line": 12,
                     "type": "string | null",
                     "decorators": [],
                     "inheritance": {
@@ -3924,7 +3964,7 @@
                     "deprecationMessage": "",
                     "rawdescription": "\n\nSe o botão será cheio ou apenas contornado pela borda\n",
                     "description": "<p>Se o botão será cheio ou apenas contornado pela borda</p>\n",
-                    "line": 36,
+                    "line": 38,
                     "type": "boolean",
                     "decorators": [],
                     "inheritance": {
@@ -3938,7 +3978,7 @@
                     "deprecationMessage": "",
                     "rawdescription": "\n\nTamanho do botão\n",
                     "description": "<p>Tamanho do botão</p>\n",
-                    "line": 44,
+                    "line": 46,
                     "type": "\"sm\" | \"md\"",
                     "decorators": [],
                     "inheritance": {
@@ -3947,7 +3987,42 @@
                 }
             ],
             "outputsClass": [],
-            "propertiesClass": [],
+            "propertiesClass": [
+                {
+                    "name": "componentClass",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 11,
+                    "decorators": [
+                        {
+                            "name": "HostBinding",
+                            "stringifiedArguments": "'className'"
+                        }
+                    ],
+                    "inheritance": {
+                        "file": "ButtonComponent"
+                    }
+                },
+                {
+                    "name": "logEvent",
+                    "defaultValue": "() => {...}",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 77,
+                    "modifierKind": [
+                        123
+                    ],
+                    "inheritance": {
+                        "file": "ButtonComponent"
+                    }
+                }
+            ],
             "methodsClass": [
                 {
                     "name": "callMethod",
@@ -4001,7 +4076,7 @@
                     "optional": false,
                     "returnType": "string",
                     "typeParameters": [],
-                    "line": 52,
+                    "line": 56,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -4014,7 +4089,19 @@
             ],
             "deprecated": false,
             "deprecationMessage": "",
-            "hostBindings": [],
+            "hostBindings": [
+                {
+                    "name": "className",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 11,
+                    "type": "string",
+                    "decorators": [],
+                    "inheritance": {
+                        "file": "ButtonComponent"
+                    }
+                }
+            ],
             "hostListeners": [],
             "description": "",
             "rawdescription": "\n",
@@ -4901,7 +4988,7 @@
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": "@import '../../../styles/default/mixins/buttons';\n\n.pm-multi-select {\n  @include btn-styles(var(--color-light), var(--color-light-sat), false);\n\n  form, input {\n    width: -webkit-fill-available;\n  }\n\n  form {\n    padding-top: 1px;\n  }\n\n  input {\n    padding: 0px 0.5em;\n    background-color: transparent;\n    color: var(--color-gray-darker) !important;\n  }\n\n  .chip-container {\n    background-color: var(--color-light);\n    border: 1px solid var(--color-light-states);\n    border-radius: var(--border-radius-md);\n    padding: 3px;\n    color: var(--color-gray-dark);\n\n    button {\n      border: none !important;\n    }\n  }\n\n  i,\n  span {\n    color: var(--color-light-states);\n  }\n\n  i {\n    right: 0.5em;\n    height: 100%;\n    display: flex;\n    flex-direction: row;\n    align-content: center;\n    justify-content: center;\n    margin-top: -4px;\n\n    &:before {\n      align-self: center;\n    }\n  }\n\n}\n\n.pm-multi-select-autocomplete-panel {\n  margin-left: -4px !important;\n  margin-top: -4px !important;\n  border-radius: 0 0 var(--border-radius-md) var(--border-radius-md);\n  overflow: hidden;\n\n  .mat-mdc-autocomplete-panel {\n    background-color: var(--color-light);\n  }\n\n  * {\n    box-shadow: none !important;\n  }\n}\n\n.pm-multi-select-thumbnail-container {\n  width: 25px;\n  height: 25px;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  box-sizing: border-box;\n  outline: none;\n  flex: 0 0 auto;\n\n  &.circular {\n    border-radius: 50%;\n    margin: 0 auto !important;\n    overflow: hidden;\n    border: 1px solid var(--color-light-states);\n  }\n\n  img {\n    object-fit: cover;\n  }\n}\n",
+                    "data": "@import '../../../styles/default/mixins/buttons';\n\n.pm-multi-select {\n  @include btn-styles(var(--color-light), var(--color-light-sat), false);\n\n  form, input {\n    width: -webkit-fill-available;\n  }\n\n  form {\n    padding-top: 1px;\n  }\n\n  input {\n    padding: 0px 0.5em;\n    background-color: transparent;\n    color: var(--color-gray-darker) !important;\n  }\n\n  .chip-container {\n    background-color: var(--color-light);\n    border: 1px solid var(--color-light-states);\n    border-radius: var(--border-radius-md);\n    padding: 3px;\n    color: var(--color-gray-dark);\n\n    button {\n      border: none !important;\n    }\n  }\n\n  i,\n  span {\n    color: var(--color-light-states);\n  }\n\n  i {\n    right: 0.5em;\n    height: 100%;\n    display: flex;\n    flex-direction: row;\n    align-content: center;\n    justify-content: center;\n    margin-top: -4px;\n\n    &:before {\n      align-self: center;\n    }\n  }\n\n}\n\n.pm-multi-select-autocomplete-panel {\n  margin-left: -4px !important;\n  margin-top: -4px !important;\n  border-radius: 0 0 var(--border-radius-md) var(--border-radius-md);\n  overflow: hidden;\n\n  .mat-mdc-autocomplete-panel {\n    background-color: var(--color-light);\n  }\n\n  &.mat-mdc-autocomplete-panel-above {\n    border-radius: var(--border-radius-md) var(--border-radius-md) 0 0 !important;\n  }\n\n  * {\n    box-shadow: none !important;\n  }\n}\n\n.pm-multi-select-thumbnail-container {\n  width: 25px;\n  height: 25px;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  box-sizing: border-box;\n  outline: none;\n  flex: 0 0 auto;\n\n  &.circular {\n    border-radius: 50%;\n    margin: 0 auto !important;\n    overflow: hidden;\n    border: 1px solid var(--color-light-states);\n  }\n\n  img {\n    object-fit: cover;\n  }\n}\n",
                     "styleUrl": "./multi-select.component.scss"
                 }
             ],
@@ -4968,7 +5055,7 @@
                     }
                 }
             },
-            "templateData": "<div #multiselect\n     class=\"pm-multi-select cursor-pointer border-radius-{{borderRadius}}\"\n     (click)=\"$event.stopPropagation(); openSelect();\"\n>\n  <div class=\"d-flex flex-wrap p-1 rad-md position-relative\" (click)=\"openSelect()\">\n    <div class=\"d-flex flex-row justify-content-start flex-wrap\">\n      <div *ngFor=\"let selected of selectedOptions; let first = first\" [ngClass]=\"{'m-1 chip-container': true}\">\n        <div (click)=\"$event.stopPropagation(); removeSelectedOption(selected)\"\n             class=\"d-flex flex-row align-items-center\"\n             [ngClass]=\"{'p-0 ps-2': showRemoveButton, 'py-1 px-2': !showRemoveButton}\"\n        >\n          <ng-container *ngTemplateOutlet=\"thumbnailContainer; context: {$implicit: selected, marginStart: true}\"></ng-container>\n          <p class=\"m-0\" [ngClass]=\"{'ms-1': selected?.thumbnail}\">{{selected.label}}</p>\n          <button *ngIf=\"showRemoveButton\"\n                  (click)=\"$event.stopPropagation(); removeSelectedOption(selected)\"\n                  class=\"btn btn-light\"\n          >x</button>\n        </div>\n      </div>\n    </div>\n    <form style=\"min-height: 31px\">\n      <input #inputBox\n             #trigger=\"matAutocompleteTrigger\"\n             name=\"searchInput\"\n             [hidden]=\"isLimitReached() === true\"\n             matInput\n             class=\"form-control h-100 border-0\"\n             type=\"text\"\n             [formControl]=\"myControl\"\n             [placeholder]=\"placeholder\"\n             [matAutocomplete]=\"auto\"\n             [required]=\"false\"\n      >\n\n      <mat-autocomplete #auto=\"matAutocomplete\"\n                        (optionSelected)=\"selectOption($event.option.value);\"\n                        [panelWidth]=\"multiselect?.offsetWidth\"\n                        [displayWith]=\"displayFn\"\n                        [classList]=\"['pm-multi-select-autocomplete-panel']\"\n      >\n        <ng-container *ngIf=\"(filteredOptions | async) as fOptions; else loadingObservableNoResultsTemplate\">\n          <mat-option *ngIf=\"fOptions?.length <= 0 && _observableInputLoading\">\n            <ng-container *ngTemplateOutlet=\"loadingObservableTemplate\"></ng-container>\n          </mat-option>\n          <ng-container *ngIf=\"fOptions?.length > 0\">\n            <ng-container *ngFor=\"let option of fOptions\">\n              <mat-option\n                [hidden]=\"isOptionSelected(option)\"\n                [value]=\"option\"\n              >\n                <div class=\"d-flex flex-row align-items-center\">\n                  <ng-container *ngTemplateOutlet=\"thumbnailContainer; context: {$implicit: option}\"></ng-container>\n                  <span class=\"color-gray-dark\" [ngClass]=\"{'ms-2': option?.thumbnail}\">{{option.label}}</span>\n                </div>\n              </mat-option>\n            </ng-container>\n          </ng-container>\n        </ng-container>\n      </mat-autocomplete>\n    </form>\n    <div class=\"position-absolute d-flex h-100 justify-content-center align-items-center mx-3\" style=\"right: 0;\">\n      <ng-container [ngSwitch]=\"_observableInputLoading\">\n        <span *ngSwitchCase=\"true\" class=\"spinner-border spinner-border-sm\" role=\"status\" aria-hidden=\"true\"></span>\n        <i *ngSwitchCase=\"false\" class=\"uil uil-lg uil-angle-down\"></i>\n      </ng-container>\n    </div>\n  </div>\n</div>\n\n<ng-template #thumbnailContainer let-option>\n  <div *ngIf=\"option?.thumbnail\"\n       class=\"pm-multi-select-thumbnail-container\"\n       [ngClass]=\"{'circular': roundedThumbnail, 'mx-2': roundedThumbnail, 'ms-0': showRemoveButton}\"\n  >\n    <img\n      aria-hidden\n      [src]=\"option.thumbnail\"\n      height=\"25\"\n    >\n  </div>\n</ng-template>\n\n<ng-template #loadingObservableTemplate>\n  <div class=\"p-3\">\n    <div *ngIfLoaded=\"false\"></div>\n  </div>\n</ng-template>\n\n<ng-template #loadingObservableNoResultsTemplate>\n  <mat-option>\n    <div class=\"p-3\">\n      <p>Nada aqui</p>\n    </div>\n  </mat-option>\n</ng-template>\n"
+            "templateData": "<div #multiselect\n     class=\"pm-multi-select cursor-pointer border-radius-{{borderRadius}}\"\n     (click)=\"$event.stopPropagation(); openSelect();\"\n>\n  <div class=\"d-flex flex-wrap p-1 rad-md position-relative\" (click)=\"openSelect()\">\n    <div class=\"d-flex flex-row justify-content-start flex-wrap\">\n      <div *ngFor=\"let selected of selectedOptions; let first = first\" [ngClass]=\"{'m-1 chip-container': true}\">\n        <div (click)=\"$event.stopPropagation(); removeSelectedOption(selected)\"\n             class=\"d-flex flex-row align-items-center\"\n             [ngClass]=\"{'p-0 ps-2': showRemoveButton, 'py-1 px-2': !showRemoveButton}\"\n        >\n          <ng-container *ngTemplateOutlet=\"thumbnailContainer; context: {$implicit: selected}\"></ng-container>\n          <p class=\"m-0\" [ngClass]=\"{'ms-1': selected?.thumbnail}\">{{selected.label}}</p>\n          <button *ngIf=\"showRemoveButton\"\n                  (click)=\"$event.stopPropagation(); removeSelectedOption(selected)\"\n                  class=\"btn btn-light\"\n          >x</button>\n        </div>\n      </div>\n    </div>\n    <form style=\"min-height: 31px\" [hidden]=\"isLimitReached() === true\">\n      <input #inputBox\n             #trigger=\"matAutocompleteTrigger\"\n             name=\"searchInput\"\n             [hidden]=\"isLimitReached() === true\"\n             matInput\n             class=\"form-control h-100 border-0\"\n             type=\"text\"\n             [formControl]=\"myControl\"\n             [placeholder]=\"placeholder\"\n             [matAutocomplete]=\"auto\"\n             [required]=\"false\"\n      >\n\n      <mat-autocomplete #auto=\"matAutocomplete\"\n                        (optionSelected)=\"selectOption($event.option.value);\"\n                        [panelWidth]=\"multiselect?.offsetWidth\"\n                        [displayWith]=\"displayFn\"\n                        [classList]=\"['pm-multi-select-autocomplete-panel']\"\n      >\n        <ng-container *ngIf=\"(filteredOptions | async) as fOptions; else loadingObservableNoResultsTemplate\">\n          <mat-option *ngIf=\"fOptions?.length <= 0 && _observableInputLoading\">\n            <ng-container *ngTemplateOutlet=\"loadingObservableTemplate\"></ng-container>\n          </mat-option>\n          <ng-container *ngIf=\"fOptions?.length > 0\">\n            <ng-container *ngFor=\"let option of fOptions\">\n              <mat-option\n                [hidden]=\"isOptionSelected(option)\"\n                [value]=\"option\"\n              >\n                <div class=\"d-flex flex-row align-items-center\">\n                  <ng-container *ngTemplateOutlet=\"thumbnailContainer; context: {$implicit: option}\"></ng-container>\n                  <span class=\"color-gray-dark\" [ngClass]=\"{'ms-2': option?.thumbnail}\">{{option.label}}</span>\n                </div>\n              </mat-option>\n            </ng-container>\n          </ng-container>\n        </ng-container>\n      </mat-autocomplete>\n    </form>\n    <div class=\"position-absolute d-flex h-100 justify-content-center align-items-center mx-3\" style=\"right: 0;\">\n      <ng-container [ngSwitch]=\"_observableInputLoading\">\n        <span *ngSwitchCase=\"true\" class=\"spinner-border spinner-border-sm\" role=\"status\" aria-hidden=\"true\"></span>\n        <i *ngSwitchCase=\"false\" class=\"uil uil-lg uil-angle-down\"></i>\n      </ng-container>\n    </div>\n  </div>\n</div>\n\n<ng-template #thumbnailContainer let-option>\n  <div *ngIf=\"option?.thumbnail\"\n       class=\"pm-multi-select-thumbnail-container\"\n       [ngClass]=\"{'circular': roundedThumbnail, 'mx-2': roundedThumbnail, 'ms-0': showRemoveButton}\"\n  >\n    <img\n      aria-hidden\n      [src]=\"option.thumbnail\"\n      height=\"25\"\n    >\n  </div>\n</ng-template>\n\n<ng-template #loadingObservableTemplate>\n  <div class=\"p-3\">\n    <div *ngIfLoaded=\"false\"></div>\n  </div>\n</ng-template>\n\n<ng-template #loadingObservableNoResultsTemplate>\n  <mat-option>\n    <div class=\"p-3\">\n      <p>Nada aqui</p>\n    </div>\n  </mat-option>\n</ng-template>\n"
         },
         {
             "name": "RadioButtonComponent",
@@ -5107,9 +5194,12 @@
         },
         {
             "name": "SidebarComponent",
-            "id": "component-SidebarComponent-b94e1b39bff4d809e30a57aa8ae03a5c736b067ac6f43ff7b47969bfcc8f03b47a6f8b6ede334b1a669f77a3e1a3e5777f76065d9002317cd9078000ba557b22",
+            "id": "component-SidebarComponent-f3b555504dd2794c1fcb86f424bcbc46069739c171bd4bfebca6d665e1714fa7a84a8fb65d6a5685aa11d277f0ad04e9e36ef503a612f7bd7056762d79df281f",
             "file": "src/components/layout/sidebar/sidebar.component.ts",
-            "encapsulation": [],
+            "changeDetection": "ChangeDetectionStrategy.OnPush",
+            "encapsulation": [
+                "ViewEncapsulation.None"
+            ],
             "entryComponents": [],
             "inputs": [],
             "outputs": [],
@@ -5128,7 +5218,7 @@
                     "name": "label",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 16,
+                    "line": 18,
                     "type": "",
                     "decorators": []
                 },
@@ -5137,7 +5227,7 @@
                     "defaultValue": "false",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 12,
+                    "line": 14,
                     "type": "boolean",
                     "decorators": []
                 },
@@ -5146,7 +5236,7 @@
                     "defaultValue": "[]",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 13,
+                    "line": 15,
                     "type": "SidebarItem[]",
                     "decorators": []
                 }
@@ -5160,7 +5250,7 @@
                     "type": "Observable<string>",
                     "optional": false,
                     "description": "",
-                    "line": 15,
+                    "line": 17,
                     "modifierKind": [
                         121
                     ]
@@ -5173,7 +5263,7 @@
                     "optional": false,
                     "returnType": "boolean",
                     "typeParameters": [],
-                    "line": 31,
+                    "line": 33,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -5186,7 +5276,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 28,
+                    "line": 30,
                     "deprecated": false,
                     "deprecationMessage": ""
                 }
@@ -5198,11 +5288,11 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {Component, Input, OnInit} from '@angular/core';\nimport {SidebarItem} from \"./sidebar-content/models\";\nimport {isObservable, Observable, of} from \"rxjs\";\n\n@Component({\n  selector: 'pm-sidebar',\n  templateUrl: './sidebar.component.html',\n  styleUrls: ['./sidebar.component.scss']\n})\nexport class SidebarComponent implements OnInit {\n\n  @Input() showBackButton: boolean = false;\n  @Input() sidebarEntries: SidebarItem[] = [];\n\n  private _label: Observable<string>;\n  @Input() set label(value: string | Observable<string>) {\n    if (isObservable(value) === false) {\n      value = of(`${value}`);\n    }\n    this._label = value as Observable<string>;\n  }\n  get label(): Observable<string> {\n    return this._label;\n  }\n\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n\n  public isWindowWidthMobile(): boolean {\n    return window.innerWidth <= 991;\n  }\n\n}\n",
+            "sourceCode": "import {ChangeDetectionStrategy, Component, Input, OnInit, ViewEncapsulation} from '@angular/core';\nimport {SidebarItem} from \"./sidebar-content/models\";\nimport {isObservable, Observable, of} from \"rxjs\";\n\n@Component({\n  selector: 'pm-sidebar',\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  templateUrl: './sidebar.component.html',\n  styleUrls: ['./sidebar.component.scss'],\n  encapsulation: ViewEncapsulation.None\n})\nexport class SidebarComponent implements OnInit {\n\n  @Input() showBackButton: boolean = false;\n  @Input() sidebarEntries: SidebarItem[] = [];\n\n  private _label: Observable<string>;\n  @Input() set label(value: string | Observable<string>) {\n    if (isObservable(value) === false) {\n      value = of(`${value}`);\n    }\n    this._label = value as Observable<string>;\n  }\n  get label(): Observable<string> {\n    return this._label;\n  }\n\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n\n  public isWindowWidthMobile(): boolean {\n    return window.innerWidth <= 991;\n  }\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": ".pm-sidebar {\n  $navbar-bg: rgba(var(--bg-default-rgb), 1);\n  $navbar-content-height: 40px; // necessário para saber\n  $navbar-padding: 0.5em;\n  $gradient-offset: $navbar-content-height * 0.7;\n  --navbar-height: calc(#{$navbar-content-height} + #{2 * $navbar-padding} + #{$gradient-offset});\n\n  .mat-drawer {\n    background-color: $navbar-bg;\n    border-right: 1px solid var(--color-gray-light);\n  }\n\n  .drawer-content {\n    position: relative;\n    background-color: var(--bg-default);\n    padding-top: var(--navbar-height);\n    max-width: 100vw;\n    overflow-x: hidden;\n\n    .navbar {\n      // border-bottom: 1px solid var(--color-gray-light);\n\n      height: var(--navbar-height);\n      max-height: var(--navbar-height);\n      position: sticky;\n      top: calc(-1 * var(--navbar-height));\n      margin-top: calc(-1 * var(--navbar-height));\n      z-index: 3;\n      padding: 0;\n\n      .navbar-bg {\n        position: absolute;\n        height: 100%;\n        width: 100%;\n        background-color: $navbar-bg;\n        -webkit-mask-image: linear-gradient(to bottom, $navbar-bg 60%, transparent 100%);\n        mask-image: linear-gradient(to bottom, $navbar-bg 60%, transparent 100%);\n        // backdrop-filter: blur(4px);\n        // -webkit-backdrop-filter: blur(4px);\n      }\n\n      .navbar-content {\n        padding: $navbar-padding $navbar-padding calc(#{$navbar-padding} + #{$gradient-offset}) $navbar-padding;\n        z-index: 1;\n        display: flex;\n        justify-content: flex-start;\n        align-items: center;\n\n        .ham {\n          cursor: pointer;\n          -webkit-tap-highlight-color: transparent;\n          transition: transform 400ms;\n          -moz-user-select: none;\n          -webkit-user-select: none;\n          -ms-user-select: none;\n          user-select: none;\n\n          .line {\n            fill: none;\n            transition: stroke-dasharray 400ms, stroke-dashoffset 400ms;\n            stroke: var(--color-gray-dark);\n            stroke-width: 6;\n            stroke-linecap: round;\n          }\n\n          .top, .bottom {\n            stroke-dasharray: 40 121;\n          }\n\n          &.active {\n            .top, .bottom {\n              stroke-dashoffset: -102px;\n            }\n          }\n        }\n\n        .hamRotate.active {\n          transform: rotate(45deg);\n        }\n\n        .hamRotate180.active {\n          transform: rotate(180deg);\n        }\n\n      }\n    }\n  }\n}\n",
+                    "data": ".pm-sidebar {\n  $navbar-bg: rgba(var(--bg-default-rgb), 1);\n  $navbar-content-height: 40px; // necessário para saber\n  $navbar-padding: 0.5em;\n  $gradient-offset: $navbar-content-height * 0.7;\n  --navbar-height: calc(#{$navbar-content-height} + #{2 * $navbar-padding} + #{$gradient-offset});\n\n  .mat-drawer-content:after {\n    position: absolute;\n  }\n\n  .mat-drawer {\n    background-color: $navbar-bg;\n    border-right: 1px solid var(--color-gray-light);\n  }\n\n  .drawer-content {\n    position: relative;\n    background-color: var(--bg-default);\n    padding-top: var(--navbar-height);\n    max-width: 100vw;\n    overflow-x: hidden;\n\n    .navbar {\n      // border-bottom: 1px solid var(--color-gray-light);\n\n      height: var(--navbar-height);\n      max-height: var(--navbar-height);\n      position: sticky;\n      top: calc(-1 * var(--navbar-height));\n      margin-top: calc(-1 * var(--navbar-height));\n      z-index: 3;\n      padding: 0;\n\n      .navbar-bg {\n        position: absolute;\n        height: 100%;\n        width: 100%;\n        background-color: $navbar-bg;\n        -webkit-mask-image: linear-gradient(to bottom, $navbar-bg 60%, transparent 100%);\n        mask-image: linear-gradient(to bottom, $navbar-bg 60%, transparent 100%);\n        // backdrop-filter: blur(4px);\n        // -webkit-backdrop-filter: blur(4px);\n      }\n\n      .navbar-content {\n        padding: $navbar-padding $navbar-padding calc(#{$navbar-padding} + #{$gradient-offset}) $navbar-padding;\n        z-index: 1;\n        display: flex;\n        justify-content: flex-start;\n        align-items: center;\n\n        .ham {\n          cursor: pointer;\n          -webkit-tap-highlight-color: transparent;\n          transition: transform 400ms;\n          -moz-user-select: none;\n          -webkit-user-select: none;\n          -ms-user-select: none;\n          user-select: none;\n\n          .line {\n            fill: none;\n            transition: stroke-dasharray 400ms, stroke-dashoffset 400ms;\n            stroke: var(--color-gray-dark);\n            stroke-width: 6;\n            stroke-linecap: round;\n          }\n\n          .top, .bottom {\n            stroke-dasharray: 40 121;\n          }\n\n          &.active {\n            .top, .bottom {\n              stroke-dashoffset: -102px;\n            }\n          }\n        }\n\n        .hamRotate.active {\n          transform: rotate(45deg);\n        }\n\n        .hamRotate180.active {\n          transform: rotate(180deg);\n        }\n\n      }\n    }\n  }\n}\n",
                     "styleUrl": "./sidebar.component.scss"
                 }
             ],
@@ -5213,7 +5303,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "args": [],
-                "line": 24
+                "line": 26
             },
             "implements": [
                 "OnInit"
@@ -5235,7 +5325,7 @@
                             }
                         ],
                         "returnType": "void",
-                        "line": 16,
+                        "line": 18,
                         "jsdoctags": [
                             {
                                 "name": "value",
@@ -5252,7 +5342,7 @@
                         "name": "label",
                         "type": "",
                         "returnType": "Observable<string>",
-                        "line": 22
+                        "line": 24
                     }
                 }
             },
@@ -7720,6 +7810,16 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
+                "file": "src/components/inputs/combo-box/combo-box.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\n  items: [],\n  disabled: false,\n  selectedItem: undefined\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
                 "file": "src/components/inputs/checkbox/checkbox.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
@@ -7815,16 +7915,6 @@
                 "deprecationMessage": "",
                 "type": "object",
                 "defaultValue": "{}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/components/inputs/combo-box/combo-box.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "object",
-                "defaultValue": "{\n  items: [],\n  disabled: false,\n  selectedItem: undefined\n}"
             },
             {
                 "name": "defaultArgs",
@@ -8334,7 +8424,17 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story<ButtonComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-button\n        [label]=\"label\"\n        [type]=\"type\"\n        [busy]=\"busy\"\n        [busyText]=\"busyText\"\n        [iconClass]=\"iconClass\"\n        [iconPosition]=\"iconPosition\"\n        [outline]=\"outline\"\n        [disabled]=\"disabled\"\n        [size]=\"size\"\n        [fillWidth]=\"fillWidth\"\n    >\n        Button Content\n    </pm-button>\n  `\n})"
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-button\n        #btn\n        (click)=\"btn.logEvent($event)\"\n        [label]=\"label\"\n        [type]=\"type\"\n        [busy]=\"busy\"\n        [busyText]=\"busyText\"\n        [iconClass]=\"iconClass\"\n        [iconPosition]=\"iconPosition\"\n        [outline]=\"outline\"\n        [disabled]=\"disabled\"\n        [size]=\"size\"\n        [fillWidth]=\"fillWidth\"\n    >\n        Button Content\n    </pm-button>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/inputs/combo-box/combo-box.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<ComboBoxComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-combo-box\n      [items]=\"items\"\n      [disabled]=\"disabled\"\n      [selectedItem]=\"selectedItem\"\n    >\n    </pm-combo-box>\n  `\n})"
             },
             {
                 "name": "Template",
@@ -8440,16 +8540,6 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/components/inputs/combo-box/combo-box.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story<ComboBoxComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-combo-box\n      [items]=\"items\"\n      [disabled]=\"disabled\"\n      [selectedItem]=\"selectedItem\"\n    >\n    </pm-combo-box>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "src/directives/ng-if-loaded/spinner/spinner.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
@@ -8487,7 +8577,36 @@
                 "defaultValue": "Template.bind({})"
             }
         ],
-        "functions": [],
+        "functions": [
+            {
+                "name": "logEvent",
+                "file": "src/components/inputs/button/button.stories.ts",
+                "ctype": "miscellaneous",
+                "subtype": "function",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "",
+                "args": [
+                    {
+                        "name": "event",
+                        "type": "any",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "jsdoctags": [
+                    {
+                        "name": "event",
+                        "type": "any",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            }
+        ],
         "typealiases": [],
         "enumerations": [
             {
@@ -9061,7 +9180,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story<ButtonComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-button\n        [label]=\"label\"\n        [type]=\"type\"\n        [busy]=\"busy\"\n        [busyText]=\"busyText\"\n        [iconClass]=\"iconClass\"\n        [iconPosition]=\"iconPosition\"\n        [outline]=\"outline\"\n        [disabled]=\"disabled\"\n        [size]=\"size\"\n        [fillWidth]=\"fillWidth\"\n    >\n        Button Content\n    </pm-button>\n  `\n})"
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-button\n        #btn\n        (click)=\"btn.logEvent($event)\"\n        [label]=\"label\"\n        [type]=\"type\"\n        [busy]=\"busy\"\n        [busyText]=\"busyText\"\n        [iconClass]=\"iconClass\"\n        [iconPosition]=\"iconPosition\"\n        [outline]=\"outline\"\n        [disabled]=\"disabled\"\n        [size]=\"size\"\n        [fillWidth]=\"fillWidth\"\n    >\n        Button Content\n    </pm-button>\n  `\n})"
                 },
                 {
                     "name": "WarningButton",
@@ -9288,6 +9407,48 @@
                     "deprecationMessage": "",
                     "type": "StoryFn<TabsComponent>",
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-tabs\n        [orientation]=\"orientation\"\n        [sticky]=\"sticky\"\n    >\n      <mat-tab-group\n        mat-stretch-tabs\n        preserveContent\n        [disableRipple]=\"true\"\n      >\n        <mat-tab>\n          <ng-template mat-tab-label>\n            <i class=\"uil uil-lg uil-apps\"></i>\n            <span>Apps</span>\n          </ng-template>\n          <div>Content 1</div>\n        </mat-tab>\n        <mat-tab label=\"Second\"> Content 2 </mat-tab>\n        <mat-tab label=\"Third\"> Content 3 </mat-tab>\n      </mat-tab-group>\n    </pm-tabs>\n  `\n})"
+                }
+            ],
+            "src/components/inputs/combo-box/combo-box.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/inputs/combo-box/combo-box.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "object",
+                    "defaultValue": "{\n  items: [],\n  disabled: false,\n  selectedItem: undefined\n}"
+                },
+                {
+                    "name": "DefaultComboBox",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/inputs/combo-box/combo-box.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "defaultItems",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/inputs/combo-box/combo-box.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "[]",
+                    "defaultValue": "[\n  {\n    label: 'Value 1',\n    value: 1\n  },\n  {\n    label: 'Value 2',\n    value: 2\n  },\n  {\n    label: 'Value 3',\n    value: 3\n  }\n]"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/inputs/combo-box/combo-box.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story<ComboBoxComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-combo-box\n      [items]=\"items\"\n      [disabled]=\"disabled\"\n      [selectedItem]=\"selectedItem\"\n    >\n    </pm-combo-box>\n  `\n})"
                 }
             ],
             "src/components/inputs/checkbox/checkbox.stories.ts": [
@@ -9658,48 +9819,6 @@
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-stepper>\n      <cdk-step> <p>This is any content of \"Step 1\"</p> </cdk-step>\n      <cdk-step> <p>This is any content of \"Step 2\"</p> </cdk-step>\n    </pm-stepper>\n  `\n})"
                 }
             ],
-            "src/components/inputs/combo-box/combo-box.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/inputs/combo-box/combo-box.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "object",
-                    "defaultValue": "{\n  items: [],\n  disabled: false,\n  selectedItem: undefined\n}"
-                },
-                {
-                    "name": "DefaultComboBox",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/inputs/combo-box/combo-box.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "defaultItems",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/inputs/combo-box/combo-box.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "[]",
-                    "defaultValue": "[\n  {\n    label: 'Value 1',\n    value: 1\n  },\n  {\n    label: 'Value 2',\n    value: 2\n  },\n  {\n    label: 'Value 3',\n    value: 3\n  }\n]"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/inputs/combo-box/combo-box.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Story<ComboBoxComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-combo-box\n      [items]=\"items\"\n      [disabled]=\"disabled\"\n      [selectedItem]=\"selectedItem\"\n    >\n    </pm-combo-box>\n  `\n})"
-                }
-            ],
             "src/directives/ng-if-loaded/spinner/spinner.stories.ts": [
                 {
                     "name": "defaultArgs",
@@ -9789,7 +9908,38 @@
                 }
             ]
         },
-        "groupedFunctions": {},
+        "groupedFunctions": {
+            "src/components/inputs/button/button.stories.ts": [
+                {
+                    "name": "logEvent",
+                    "file": "src/components/inputs/button/button.stories.ts",
+                    "ctype": "miscellaneous",
+                    "subtype": "function",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "args": [
+                        {
+                            "name": "event",
+                            "type": "any",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "event",
+                            "type": "any",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
         "groupedEnumerations": {
             "src/models/colors.ts": [
                 {
@@ -10321,9 +10471,19 @@
                 "type": "component",
                 "linktype": "component",
                 "name": "ButtonComponent",
-                "coveragePercent": 69,
-                "coverageCount": "9/13",
+                "coveragePercent": 56,
+                "coverageCount": "9/16",
                 "status": "good"
+            },
+            {
+                "filePath": "src/components/inputs/button/button.stories.ts",
+                "type": "function",
+                "linktype": "miscellaneous",
+                "linksubtype": "function",
+                "name": "logEvent",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
             },
             {
                 "filePath": "src/components/inputs/button/button.stories.ts",
@@ -10606,8 +10766,8 @@
                 "type": "component",
                 "linktype": "component",
                 "name": "DropdownActionsComponent",
-                "coveragePercent": 41,
-                "coverageCount": "7/17",
+                "coveragePercent": 35,
+                "coverageCount": "7/20",
                 "status": "medium"
             },
             {

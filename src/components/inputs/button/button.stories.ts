@@ -11,6 +11,8 @@ export const Template: Story<ButtonComponent> = (args) => ({
   props: args,
   template: `
     <pm-button
+        #btn
+        (click)="btn.logEvent($event)"
         [label]="label"
         [type]="type"
         [busy]="busy"
@@ -26,6 +28,10 @@ export const Template: Story<ButtonComponent> = (args) => ({
     </pm-button>
   `
 });
+
+export function logEvent(event: any) {
+  console.log(event);
+}
 
 export const defaultArgs = {
   label: '',
