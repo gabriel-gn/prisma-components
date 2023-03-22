@@ -43,7 +43,8 @@ export const defaultArgs = {
   outline: false,
   disabled: false,
   size: 'md',
-  fillWidth: false
+  fillWidth: false,
+  justifyContent: 'center'
 };
 
 export const DefaultButton = Template.bind({});

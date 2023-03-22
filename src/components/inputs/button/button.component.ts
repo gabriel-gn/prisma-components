@@ -1,8 +1,9 @@
-import {Component, HostBinding, Input, ViewEncapsulation} from '@angular/core';
+import {ChangeDetectionStrategy, Component, HostBinding, Input, ViewEncapsulation} from '@angular/core';
 import {MainColors} from '../../../models/colors';
 
 @Component({
   selector: 'pm-button',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './button.component.html',
   styleUrls: ['./button.component.scss'],
   encapsulation: ViewEncapsulation.None
@@ -48,13 +49,17 @@ export class ButtonComponent {
    * Faz ou não o botão preencher a largura do container. (classe w-100)
    */
   @Input('fillWidth') fillWidth: boolean = false;
+  /**
+   * Alinha o conteúdo do botão
+   */
+  @Input('justifyContent') justifyContent: 'start' | 'center' = 'center';
 
   constructor() {
     this.componentClass = 'pm-button';
   }
 
   public getClassName(): string {
-    let name = 'text-overflow overflow-hidden btn';
+    let name = `d-flex align-items-center text-overflow overflow-hidden btn`;
     if (this.size !== 'md') {
       name += ` ${this.size}`;
     }

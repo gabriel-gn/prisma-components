@@ -1,6 +1,11 @@
 <button
   [className]="getClassName()"
-  [ngClass]="{'disabled': disabled}" [disabled]="busy || disabled"
+  [ngClass]="{
+    'disabled': disabled,
+    'justify-content-center': justifyContent === 'center',
+    'justify-content-start': justifyContent === 'start'
+  }"
+  [disabled]="busy || disabled"
 >
   <ng-container *ngIf="busy; else buttonContent">
     <span class="spinner-border spinner-border-sm mx-2" role="status" aria-hidden="true"></span>
@@ -13,7 +18,7 @@
   <ng-container>
     <span
       class="align-self-center text-overflow"
-      [ngClass]="{'ms-2': iconClass && iconPosition === 'start', 'me-2': iconClass && iconPosition === 'end'}"
+      [ngClass]="{'ms-2': iconClass && label && iconPosition === 'start', 'me-2': iconClass && label && iconPosition === 'end'}"
     >
       <ng-container [ngSwitch]="!!label">
         <ng-container *ngSwitchCase="true">
