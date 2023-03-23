@@ -18,7 +18,11 @@
   <ng-container>
     <span
       class="align-self-center text-overflow"
-      [ngClass]="{'ms-2': iconClass && label && iconPosition === 'start', 'me-2': iconClass && label && iconPosition === 'end'}"
+      [ngClass]="{
+      'w-100': fillWidth,
+      'ms-2': iconClass && label && iconPosition === 'start',
+      'me-2': iconClass && label && iconPosition === 'end'
+      }"
     >
       <ng-container [ngSwitch]="!!label">
         <ng-container *ngSwitchCase="true">
