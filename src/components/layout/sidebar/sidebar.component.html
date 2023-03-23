@@ -30,6 +30,13 @@
                     <i class="uil uil-2x uil-angle-left text-center inline-block"></i>
         </span>
         <h4 style="width: -webkit-fill-available;" class="color-gray-dark m-0 ms-3 text-overflow">{{ label | async }}</h4>
+        <span *ngIf="showNextButton && nextButtonAction"
+              (click)="nextButtonAction()"
+              class="d-flex justify-content-center align-items-center overflow-hidden color-gray-dark no-outline no-shadow cursor-pointer"
+              style="max-height: 20px"
+        >
+            <i class="uil uil-2x uil-angle-right text-center inline-block"></i>
+        </span>
       </div>
     </div>
     <div class="container">

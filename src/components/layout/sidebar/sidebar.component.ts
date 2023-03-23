@@ -12,6 +12,8 @@ import {isObservable, Observable, of} from "rxjs";
 export class SidebarComponent implements OnInit {
 
   @Input() showBackButton: boolean = false;
+  @Input() showNextButton: boolean = false;
+  @Input() nextButtonAction: () => void;
   @Input() sidebarEntries: SidebarItem[] = [];
 
   private _label: Observable<string>;

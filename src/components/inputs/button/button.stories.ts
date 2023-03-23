@@ -23,6 +23,7 @@ export const Template: Story<ButtonComponent> = (args) => ({
         [disabled]="disabled"
         [size]="size"
         [fillWidth]="fillWidth"
+        [justifyContent]="justifyContent"
     >
         Button Content
     </pm-button>

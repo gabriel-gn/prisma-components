@@ -12,6 +12,8 @@ export const Template: Story<SidebarComponent> = (args) => ({
   template: `
     <pm-sidebar
         [showBackButton]="showBackButton"
+        [showNextButton]="showNextButton"
+        [nextButtonAction]="nextButtonAction"
         [sidebarEntries]="sidebarEntries"
         [label]="label"
     >
@@ -25,6 +27,8 @@ export const Template: Story<SidebarComponent> = (args) => ({
 
 export const defaultArgs = {
   showBackButton: false,
+  showNextButton: false,
+  nextButtonAction: undefined,
   sidebarEntries: [],
   label: of(''),
 };
@@ -33,6 +37,9 @@ export const DefaultSidebar = Template.bind({});
 DefaultSidebar.args = {
   ...defaultArgs,
   label: of('Sidebar'),
+  showBackButton: true,
+  showNextButton: true,
+  nextButtonAction: () => { console.log('aaaa') },
   sidebarEntries: [
     {
       routerLink: `/`,
