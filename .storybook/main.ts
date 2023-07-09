@@ -7,12 +7,15 @@ const config: StorybookConfig = {
   staticDirs: ['public'],
   addons: [
     // "storybook-ng-source-addon",
-    "@storybook/addon-links", {
+    "@storybook/addon-links",
+    {
       name: '@storybook/addon-essentials',
       options: {
         actions: false
       }
-    }, "@storybook/addon-mdx-gfm"],
+    },
+    "@storybook/addon-mdx-gfm"
+  ],
   framework: {
     name: "@storybook/angular",
     options: {}
@@ -20,5 +23,5 @@ const config: StorybookConfig = {
   docs: {
     autodocs: "tag"
   }
-};
+} as StorybookConfig;
 export default config;

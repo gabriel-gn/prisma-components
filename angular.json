@@ -4,34 +4,14 @@
   "projects": {
     "lib": {
       "projectType": "library",
-      "schematics": {
-        "@schematics/angular:component": {
-          "style": "scss",
-          "path": "src/components"
-        },
-        "@schematics/angular:directive": {
-          "path": "src/directives"
-        },
-        "@schematics/angular:module": {
-          "path": "src/components"
-        },
-        "@schematics/angular:service":{
-          "path": "src/services"
-        },
-        "@schematics/angular:pipe": {
-          "path": "src/pipes"
-        },
-        "@schematics/angular:class": {
-          "path": "src/classes"
-        }
-      },
       "root": "",
       "sourceRoot": "src",
       "prefix": "pm",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
+            "project": "lib",
             "tsConfig": "tsconfig.lib.json",
             "styles": [
               "src/styles/base_css.scss",
@@ -56,24 +36,43 @@
             "karmaConfig": "karma.conf.js"
           }
         },
+        "serve-storybook": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "tsConfig": ".storybook/tsconfig.json",
+            "outputPath": "dist/storybook",
+            "assets": [],
+            "index": ".storybook/index.html",
+            "main": ".storybook/main.ts",
+            "styles": []
+          }
+        },
         "storybook": {
           "builder": "@storybook/angular:start-storybook",
           "options": {
             "configDir": ".storybook",
-            "browserTarget": "lib:build",
-            "compodoc": true,
-            "compodocArgs": ["-e", "json", "-d", "."],
-            "port": 6006
+            "browserTarget": "lib:serve-storybook",
+            "compodoc": false,
+            "port": 6006,
+            "styles": [
+              "src/styles/base_css.scss",
+              "src/styles/base.scss"
+            ]
           }
         },
         "build-storybook": {
           "builder": "@storybook/angular:build-storybook",
           "options": {
-            "browserTarget": "lib:build",
             "configDir": ".storybook",
-            "compodoc": true,
-            "compodocArgs": ["-e", "json", "-d", "."],
-            "outputDir": "dist"
+            "browserTarget": "lib:build",
+            "compodoc": false,
+            "compodocArgs": [
+              "-e",
+              "json",
+              "-d",
+              "projects/my-lib"
+            ],
+            "outputDir": "dist/storybook"
           }
         }
       }

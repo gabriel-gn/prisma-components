@@ -7777,7 +7777,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "StorybookConfig",
-                "defaultValue": "{\n  stories: [\n    // \"../stories/**/*.stories.@(js|jsx|ts|tsx|mdx)\",\n    \"../src/**/*.stories.@(mdx)\"],\n  staticDirs: ['public'],\n  addons: [\n    // \"storybook-ng-source-addon\",\n    \"@storybook/addon-links\", {\n      name: '@storybook/addon-essentials',\n      options: {\n        actions: false\n      }\n    }, \"@storybook/addon-mdx-gfm\"],\n  framework: {\n    name: \"@storybook/angular\",\n    options: {}\n  },\n  docs: {\n    autodocs: \"tag\"\n  }\n}"
+                "defaultValue": "{\n  stories: [\n    // \"../stories/**/*.stories.@(js|jsx|ts|tsx|mdx)\",\n    \"../src/**/*.stories.@(mdx)\"],\n  staticDirs: ['public'],\n  addons: [\n    // \"storybook-ng-source-addon\",\n    \"@storybook/addon-links\",\n    {\n      name: '@storybook/addon-essentials',\n      options: {\n        actions: false\n      }\n    },\n    \"@storybook/addon-mdx-gfm\"\n  ],\n  framework: {\n    name: \"@storybook/angular\",\n    options: {}\n  },\n  docs: {\n    autodocs: \"tag\"\n  }\n} as StorybookConfig"
             },
             {
                 "name": "DangerButton",
@@ -7933,16 +7933,6 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/components/navigation/stepper/stepper.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "object",
-                "defaultValue": "{}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "src/components/lists/draggable-list/draggable-list.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
@@ -7968,6 +7958,16 @@
                 "deprecationMessage": "",
                 "type": "object",
                 "defaultValue": "{\n  columns: [],\n  columnNames: [],\n  imageColumns: [],\n  imageHeight: '50px',\n  showHeader: true,\n  numberFormat: '1.2-2',\n  numberPrefix: '',\n  actionsTemplate: undefined,\n  itemList: undefined,\n  borderRadius: undefined,\n  backgroundColor: undefined,\n  expandedDetailTemplate: undefined,\n  disableExpandedOnDisabledRow: true,\n  expandedRow: undefined\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/navigation/stepper/stepper.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{}"
             },
             {
                 "name": "defaultArgs",
@@ -8563,16 +8563,6 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/components/navigation/stepper/stepper.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story<StepperComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-stepper>\n      <cdk-step> <p>This is any content of \"Step 1\"</p> </cdk-step>\n      <cdk-step> <p>This is any content of \"Step 2\"</p> </cdk-step>\n    </pm-stepper>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "src/components/lists/draggable-list/draggable-list.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
@@ -8598,6 +8588,16 @@
                 "deprecationMessage": "",
                 "type": "Story<TableListComponent>",
                 "defaultValue": "(args) => ({\n  props: args,\n  template: `<pm-table-list\n    [columns]=\"columns\"\n    [columnNames]=\"columnNames\"\n    [imageColumns]=\"imageColumns\"\n    [imageHeight]=\"imageHeight\"\n    [showHeader]=\"showHeader\"\n    [numberFormat]=\"numberFormat\"\n    [numberPrefix]=\"numberPrefix\"\n    [itemList]=\"itemList\"\n    [borderRadius]=\"borderRadius\"\n    [backgroundColor]=\"backgroundColor\"\n    [expandedDetailTemplate]=\"expandedDetailTemplate\"\n    [disableExpandedOnDisabledRow]=\"disableExpandedOnDisabledRow\"\n  ></pm-table-list>`\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/navigation/stepper/stepper.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<StepperComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-stepper>\n      <cdk-step> <p>This is any content of \"Step 1\"</p> </cdk-step>\n      <cdk-step> <p>This is any content of \"Step 2\"</p> </cdk-step>\n    </pm-stepper>\n  `\n})"
             },
             {
                 "name": "Template",
@@ -9321,7 +9321,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "StorybookConfig",
-                    "defaultValue": "{\n  stories: [\n    // \"../stories/**/*.stories.@(js|jsx|ts|tsx|mdx)\",\n    \"../src/**/*.stories.@(mdx)\"],\n  staticDirs: ['public'],\n  addons: [\n    // \"storybook-ng-source-addon\",\n    \"@storybook/addon-links\", {\n      name: '@storybook/addon-essentials',\n      options: {\n        actions: false\n      }\n    }, \"@storybook/addon-mdx-gfm\"],\n  framework: {\n    name: \"@storybook/angular\",\n    options: {}\n  },\n  docs: {\n    autodocs: \"tag\"\n  }\n}"
+                    "defaultValue": "{\n  stories: [\n    // \"../stories/**/*.stories.@(js|jsx|ts|tsx|mdx)\",\n    \"../src/**/*.stories.@(mdx)\"],\n  staticDirs: ['public'],\n  addons: [\n    // \"storybook-ng-source-addon\",\n    \"@storybook/addon-links\",\n    {\n      name: '@storybook/addon-essentials',\n      options: {\n        actions: false\n      }\n    },\n    \"@storybook/addon-mdx-gfm\"\n  ],\n  framework: {\n    name: \"@storybook/angular\",\n    options: {}\n  },\n  docs: {\n    autodocs: \"tag\"\n  }\n} as StorybookConfig"
                 }
             ],
             "src/services/color-theme/color-theme.service.ts": [
@@ -9768,38 +9768,6 @@
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-sidebar\n        [showBackButton]=\"showBackButton\"\n        [showNextButton]=\"showNextButton\"\n        [nextButtonAction]=\"nextButtonAction\"\n        [sidebarEntries]=\"sidebarEntries\"\n        [label]=\"label\"\n    >\n        <p>Conteúdo aqui! algo como router-outlet</p>\n        <ng-container *ngFor=\"let _ of [].constructor(20)\">\n            <p>.</p>\n        </ng-container>\n    </pm-sidebar>\n  `\n})"
                 }
             ],
-            "src/components/navigation/stepper/stepper.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/navigation/stepper/stepper.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "object",
-                    "defaultValue": "{}"
-                },
-                {
-                    "name": "DefaultStepper",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/navigation/stepper/stepper.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/navigation/stepper/stepper.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Story<StepperComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-stepper>\n      <cdk-step> <p>This is any content of \"Step 1\"</p> </cdk-step>\n      <cdk-step> <p>This is any content of \"Step 2\"</p> </cdk-step>\n    </pm-stepper>\n  `\n})"
-                }
-            ],
             "src/components/lists/draggable-list/draggable-list.stories.ts": [
                 {
                     "name": "defaultArgs",
@@ -9892,6 +9860,38 @@
                     "deprecationMessage": "",
                     "type": "Story<GridListComponent>",
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-grid-list\n      [items]=\"items\"\n      [displayStyle]=\"displayStyle\"\n      [gridHeaderReverse]=\"gridHeaderReverse\"\n      [bodyBackgroundColor]=\"bodyBackgroundColor\"\n      [actionTemplate]=\"undefined\"\n      [overflowGallery]=\"overflowGallery\"\n    >\n    </pm-grid-list>\n  `\n})"
+                }
+            ],
+            "src/components/navigation/stepper/stepper.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/navigation/stepper/stepper.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "object",
+                    "defaultValue": "{}"
+                },
+                {
+                    "name": "DefaultStepper",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/navigation/stepper/stepper.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/navigation/stepper/stepper.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story<StepperComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-stepper>\n      <cdk-step> <p>This is any content of \"Step 1\"</p> </cdk-step>\n      <cdk-step> <p>This is any content of \"Step 2\"</p> </cdk-step>\n    </pm-stepper>\n  `\n})"
                 }
             ],
             "src/directives/ng-if-loaded/spinner/spinner.stories.ts": [

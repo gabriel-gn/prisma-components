@@ -10,14 +10,15 @@
   "exclude": [
     "../src/test.ts",
     "../src/**/*.spec.ts",
-    "../**/*.spec.ts",
-    "/**/componentsbkp",
+    "../**/*.spec.ts"
   ],
   "include": [
     "../src/**/*",
     "../**/*"
   ],
   "files": [
-    "./typings.d.ts"
+    "./typings.d.ts",
+    "./index.html",
+    "./main.ts"
   ]
 }
