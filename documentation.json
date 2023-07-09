@@ -30,7 +30,7 @@
                 }
             ],
             "indexSignatures": [],
-            "kind": 165,
+            "kind": 168,
             "methods": []
         },
         {
@@ -62,7 +62,7 @@
                 }
             ],
             "indexSignatures": [],
-            "kind": 165,
+            "kind": 168,
             "methods": []
         },
         {
@@ -94,7 +94,7 @@
                 }
             ],
             "indexSignatures": [],
-            "kind": 165,
+            "kind": 168,
             "methods": []
         },
         {
@@ -216,7 +216,7 @@
                 }
             ],
             "indexSignatures": [],
-            "kind": 165,
+            "kind": 168,
             "methods": []
         },
         {
@@ -257,7 +257,7 @@
                 }
             ],
             "indexSignatures": [],
-            "kind": 165,
+            "kind": 168,
             "methods": []
         },
         {
@@ -298,7 +298,7 @@
                 }
             ],
             "indexSignatures": [],
-            "kind": 165,
+            "kind": 168,
             "methods": []
         },
         {
@@ -357,7 +357,7 @@
                 }
             ],
             "indexSignatures": [],
-            "kind": 165,
+            "kind": 168,
             "methods": []
         },
         {
@@ -389,7 +389,7 @@
                 }
             ],
             "indexSignatures": [],
-            "kind": 165,
+            "kind": 168,
             "methods": []
         },
         {
@@ -475,14 +475,14 @@
                 }
             ],
             "indexSignatures": [],
-            "kind": 165,
+            "kind": 168,
             "methods": []
         }
     ],
     "injectables": [
         {
             "name": "ColorThemeService",
-            "id": "injectable-ColorThemeService-b4fd4e5bba827a245ef3252a3dffc8ee67f6bd99b4f6ad04a394c367a60f7c916e66eb953ba5c471e1c2b26e17ae2bdbe979fa0914fc9b0e79a42882373f8b26",
+            "id": "injectable-ColorThemeService-58c59dbb3266b81faf822d7412d3ac28d8076e2ab57ff5937778eea93523779e8643722933f9605460e9abd0083f6cb6b8c117488b65c336fadbb4b85a72975c",
             "file": "src/services/color-theme/color-theme.service.ts",
             "properties": [
                 {
@@ -492,7 +492,7 @@
                     "type": "string",
                     "optional": false,
                     "description": "",
-                    "line": 29,
+                    "line": 14,
                     "modifierKind": [
                         121
                     ]
@@ -505,7 +505,7 @@
                     "type": "object",
                     "optional": false,
                     "description": "",
-                    "line": 31,
+                    "line": 16,
                     "modifierKind": [
                         121
                     ]
@@ -517,10 +517,10 @@
                     "type": "ColorThemeConfig",
                     "optional": false,
                     "description": "",
-                    "line": 30,
+                    "line": 15,
                     "modifierKind": [
                         121,
-                        144
+                        146
                     ]
                 }
             ],
@@ -538,7 +538,7 @@
                     "optional": false,
                     "returnType": "string",
                     "typeParameters": [],
-                    "line": 52,
+                    "line": 37,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -562,7 +562,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 98,
+                    "line": 83,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -574,7 +574,7 @@
             "deprecationMessage": "",
             "description": "",
             "rawdescription": "\n",
-            "sourceCode": "import {Inject, Injectable} from '@angular/core';\nimport {ColorThemeConfig, colorThemeConfigToken} from './injection';\nimport {CookieService} from \"ngx-cookie-service\";\n\nexport const defaultTheme = {\n  'color-primary': '#455363',\n  'color-default': '#455363',\n  'background-color': '#1f2935',\n  'text-color': '#fff'\n};\n\nexport const lightTheme = {\n  'color-primary': '#fff',\n  'color-default': '#fff',\n  'background-color': '#e5e5e5',\n  'text-color': '#2d2d2d'\n};\n\nexport const darkTheme = {\n  'color-primary': '#455363',\n  'color-default': '#455363',\n  'background-color': '#1f2935',\n  'text-color': '#fff'\n};\n\n@Injectable()\nexport class ColorThemeService {\n\n  private _theme: string;\n  private readonly themeConfig: ColorThemeConfig;\n  private availableThemes = {\n    default: defaultTheme,\n    light: lightTheme,\n    dark: darkTheme\n  }\n\n  constructor(\n    @Inject(colorThemeConfigToken) initialThemeConfig: ColorThemeConfig,\n    private cookieService: CookieService\n  ) {\n    this.themeConfig = initialThemeConfig;\n    if (initialThemeConfig && initialThemeConfig.cookie) {\n      let cookieTheme = this.cookieService.get(initialThemeConfig.cookie);\n      cookieTheme = this.normalizeTheme(cookieTheme);\n      this.theme = cookieTheme;\n    } else {\n      this.theme = initialThemeConfig.theme;\n    }\n  }\n\n  // verifica se o tema é válido, se for usa ele. Se não for usa a config, se não for ainda usa default\n  private normalizeTheme(themeString: string) {\n    themeString = Object.keys(this.availableThemes).includes(themeString) ? themeString : this.themeConfig.theme;\n    themeString = Object.keys(this.availableThemes).includes(themeString) ? themeString : 'default';\n    return themeString;\n  }\n\n  public get theme(): string {\n    return this._theme;\n  }\n\n  public set theme(theme: string) {\n    theme = this.normalizeTheme(theme);\n    let themeObj; // tema definido la em cima para virar variaveis de css\n\n    const verifyTheme = (themeString) => {\n      themeString = `${themeString}`.toLowerCase()\n      switch (themeString) {\n        case 'default':\n          themeObj = this.availableThemes.default;\n          break;\n        case 'light':\n          themeObj = this.availableThemes.light;\n          break;\n        case 'dark':\n          themeObj = this.availableThemes.dark;\n          break;\n        default:\n          themeObj = this.availableThemes[theme];\n          break;\n      }\n    }\n\n    verifyTheme(theme);\n    if (this.themeConfig && this.themeConfig.cookie) {\n      this.cookieService.set(this.themeConfig.cookie, theme);\n    }\n    Object.keys(themeObj).forEach(key => {\n      if (key !== 'color-scheme') {\n        document.documentElement.style.setProperty(`--${key}`, `${themeObj[key]}`, 'important')\n      } else {\n        document.documentElement.style.setProperty(`${key}`, `${themeObj[key]}`, 'important')\n      }\n    });\n    this._theme = theme;\n  }\n\n  public toggle(): void {\n    this.theme = this._theme === 'dark' ? 'light' : 'dark';\n  }\n}\n",
+            "sourceCode": "import {Inject, Injectable} from '@angular/core';\nimport {ColorThemeConfig, colorThemeConfigToken} from './injection';\nimport {CookieService} from \"ngx-cookie-service\";\n\nexport const defaultTheme = {\"color-scheme\":\"normal\",\"bg-default\":\"#F3F4F6\",\"bg-default-rgb\":\"243,244,246\",\"bg-pale\":\"#f5f5f5\",\"bg-pale-rgb\":\"245,245,245\",\"color-font-default\":\"#5B5F67\",\"color-font-default-rgb\":\"91,95,103\",\"color-gray-light\":\"#DDDDDD\",\"color-gray-light-rgb\":\"221,221,221\",\"color-gray-medium\":\"#CCCCCC\",\"color-gray-medium-rgb\":\"204,204,204\",\"color-gray-dark\":\"#9A9A9A\",\"color-gray-dark-rgb\":\"154,154,154\",\"color-gray-darker\":\"#505050\",\"color-gray-darker-rgb\":\"80,80,80\",\"color-primary\":\"#efa76c\",\"color-primary-rgb\":\"239,167,108\",\"color-primary-pale\":\"#e7a874\",\"color-primary-pale-rgb\":\"230.85,167.80878,116.15\",\"color-primary-states\":\"#ea8b3e\",\"color-primary-states-rgb\":\"233.99387,139.46626,62.00613\",\"color-primary-sat\":\"#ffa55c\",\"color-primary-sat-rgb\":\"255,165.41221,92\",\"color-secondary\":\"#6F5897\",\"color-secondary-rgb\":\"111,88,151\",\"color-secondary-pale\":\"#72648b\",\"color-secondary-pale-rgb\":\"114.2246,99.95,139.05\",\"color-secondary-states\":\"#574577\",\"color-secondary-states-rgb\":\"87.31381,69.22176,118.77824\",\"color-secondary-sat\":\"#6534bb\",\"color-secondary-sat-rgb\":\"101.32619,52.15,186.85\",\"color-success\":\"#6bd098\",\"color-success-rgb\":\"107,208,152\",\"color-success-pale\":\"#75c699\",\"color-success-pale-rgb\":\"116.75,198.25,153.06188\",\"color-success-states\":\"#44c47d\",\"color-success-states-rgb\":\"68.29231,195.70769,125.06154\",\"color-success-sat\":\"#4eed95\",\"color-success-sat-rgb\":\"77.75,237.25,148.81436\",\"color-info\":\"#51bcda\",\"color-info-rgb\":\"81,188,218\",\"color-info-pale\":\"#5cb6cf\",\"color-info-pale-rgb\":\"91.55,182.07044,207.45\",\"color-info-states\":\"#2ba9cd\",\"color-info-states-rgb\":\"43.48815,169.25118,204.51185\",\"color-info-sat\":\"#31cefa\",\"color-info-sat-rgb\":\"49.35,205.78869,249.65\",\"color-warning\":\"#fbc658\",\"color-warning-rgb\":\"251,198,88\",\"color-warning-pale\":\"#f2c361\",\"color-warning-pale-rgb\":\"242.45,195.01012,96.55\",\"color-warning-states\":\"#fab526\",\"color-warning-states-rgb\":\"249.80702,181,38.19298\",\"color-warning-sat\":\"#ffc754\",\"color-warning-sat-rgb\":\"255,199.39877,84\",\"color-danger\":\"#ef8157\",\"color-danger-rgb\":\"239,129,87\",\"color-danger-pale\":\"#e68560\",\"color-danger-pale-rgb\":\"229.8,133.11579,96.2\",\"color-danger-states\":\"#eb5e28\",\"color-danger-states-rgb\":\"234.56522,94.07609,40.43478\",\"color-danger-sat\":\"#ff7a47\",\"color-danger-sat-rgb\":\"255,121.84211,71\",\"color-light\":\"#eff3f8\",\"color-light-rgb\":\"239,243,248\",\"color-light-pale\":\"#f0f3f7\",\"color-light-pale-rgb\":\"240.15,243.12778,246.85\",\"color-light-states\":\"#ccd8e8\",\"color-light-states-rgb\":\"203.52174,216.3913,232.47826\",\"color-light-sat\":\"#ecf3fb\",\"color-light-sat-rgb\":\"235.55,242.61667,251.45\",\"color-default\":\"#6F5897\",\"color-default-rgb\":\"111,88,151\",\"color-default-pale\":\"#72648b\",\"color-default-pale-rgb\":\"114.2246,99.95,139.05\",\"color-default-states\":\"#574577\",\"color-default-states-rgb\":\"87.31381,69.22176,118.77824\",\"color-default-sat\":\"#6534bb\",\"color-default-sat-rgb\":\"101.32619,52.15,186.85\",\"bg-default-1\":\"#fafcfe\",\"border-radius-xxl\":\"50px\",\"border-radius-xl\":\"30px\",\"border-radius-lg\":\"20px\",\"border-radius-md\":\"10px\",\"border-radius-sm\":\"5px\",\"border-radius-default\":\"10px\",\"border-width-sm\":\"1px\",\"border-width-md\":\"2px\",\"border-width-lg\":\"3px\",\"border-width-xl\":\"4px\",\"border-width-default\":\"1px\",\"bg-disabled\":\"rgba(0,0,0,0.3)\",\"disabled-opacity\":\"0.4\",\"navbar-height\":\"64px\",\"navbar-misc-bg\":\"#9d6feb\",\"sidebar-width\":\"250px\",\"sidebar-mini-width\":\"58px\",\"general-content-width\":\"1100px\",\"gradient-default-top\":\"linear-gradient(to top,#7873ed,#9765e1)\",\"gradient-default-right\":\"linear-gradient(to right,#7873ed,#9765e1)\",\"gradient-default-bottom\":\"linear-gradient(to bottom,#7873ed,#9765e1)\",\"gradient-default-left\":\"linear-gradient(to left,#7873ed,#9765e1)\",\"gradient-default\":\"linear-gradient(to left,#7873ed,#9765e1)\"};\n\nexport const lightTheme = {\"color-scheme\":\"light\",\"bg-default\":\"#F3F4F6\",\"bg-default-rgb\":\"243,244,246\",\"bg-pale\":\"#f5f5f5\",\"bg-pale-rgb\":\"245,245,245\",\"color-font-default\":\"#5B5F67\",\"color-font-default-rgb\":\"91,95,103\",\"color-gray-light\":\"#DDDDDD\",\"color-gray-light-rgb\":\"221,221,221\",\"color-gray-medium\":\"#CCCCCC\",\"color-gray-medium-rgb\":\"204,204,204\",\"color-gray-dark\":\"#9A9A9A\",\"color-gray-dark-rgb\":\"154,154,154\",\"color-gray-darker\":\"#505050\",\"color-gray-darker-rgb\":\"80,80,80\",\"color-primary\":\"#42ADB3\",\"color-primary-rgb\":\"66,173,179\",\"color-primary-pale\":\"#4ea2a7\",\"color-primary-pale-rgb\":\"78.25,162.05088,166.75\",\"color-primary-states\":\"#34898e\",\"color-primary-states-rgb\":\"52.26122,136.98776,141.73878\",\"color-primary-sat\":\"#1dced8\",\"color-primary-sat-rgb\":\"29.25,205.84735,215.75\",\"color-secondary\":\"#646F7E\",\"color-secondary-rgb\":\"100,111,126\",\"color-secondary-pale\":\"#6f7173\",\"color-secondary-pale-rgb\":\"111.3,112.73846,114.7\",\"color-secondary-states\":\"#4d5662\",\"color-secondary-states-rgb\":\"77.43363,85.95133,97.56637\",\"color-secondary-sat\":\"#426aa0\",\"color-secondary-sat-rgb\":\"66.1,105.78462,159.9\",\"color-success\":\"#6bd098\",\"color-success-rgb\":\"107,208,152\",\"color-success-pale\":\"#75c699\",\"color-success-pale-rgb\":\"116.75,198.25,153.06188\",\"color-success-states\":\"#44c47d\",\"color-success-states-rgb\":\"68.29231,195.70769,125.06154\",\"color-success-sat\":\"#4eed95\",\"color-success-sat-rgb\":\"77.75,237.25,148.81436\",\"color-info\":\"#51bcda\",\"color-info-rgb\":\"81,188,218\",\"color-info-pale\":\"#5cb6cf\",\"color-info-pale-rgb\":\"91.55,182.07044,207.45\",\"color-info-states\":\"#2ba9cd\",\"color-info-states-rgb\":\"43.48815,169.25118,204.51185\",\"color-info-sat\":\"#31cefa\",\"color-info-sat-rgb\":\"49.35,205.78869,249.65\",\"color-warning\":\"#fbc658\",\"color-warning-rgb\":\"251,198,88\",\"color-warning-pale\":\"#f2c361\",\"color-warning-pale-rgb\":\"242.45,195.01012,96.55\",\"color-warning-states\":\"#fab526\",\"color-warning-states-rgb\":\"249.80702,181,38.19298\",\"color-warning-sat\":\"#ffc754\",\"color-warning-sat-rgb\":\"255,199.39877,84\",\"color-danger\":\"#ef8157\",\"color-danger-rgb\":\"239,129,87\",\"color-danger-pale\":\"#e68560\",\"color-danger-pale-rgb\":\"229.8,133.11579,96.2\",\"color-danger-states\":\"#eb5e28\",\"color-danger-states-rgb\":\"234.56522,94.07609,40.43478\",\"color-danger-sat\":\"#ff7a47\",\"color-danger-sat-rgb\":\"255,121.84211,71\",\"color-light\":\"#eff3f8\",\"color-light-rgb\":\"239,243,248\",\"color-light-pale\":\"#f0f3f7\",\"color-light-pale-rgb\":\"240.15,243.12778,246.85\",\"color-light-states\":\"#ccd8e8\",\"color-light-states-rgb\":\"203.52174,216.3913,232.47826\",\"color-light-sat\":\"#ecf3fb\",\"color-light-sat-rgb\":\"235.55,242.61667,251.45\",\"color-default\":\"#646F7E\",\"color-default-rgb\":\"100,111,126\",\"color-default-pale\":\"#6f7173\",\"color-default-pale-rgb\":\"111.3,112.73846,114.7\",\"color-default-states\":\"#4d5662\",\"color-default-states-rgb\":\"77.43363,85.95133,97.56637\",\"color-default-sat\":\"#426aa0\",\"color-default-sat-rgb\":\"66.1,105.78462,159.9\",\"bg-default-1\":\"#fafcfe\",\"border-radius-xxl\":\"50px\",\"border-radius-xl\":\"30px\",\"border-radius-lg\":\"20px\",\"border-radius-md\":\"10px\",\"border-radius-sm\":\"5px\",\"border-radius-default\":\"10px\",\"border-width-sm\":\"1px\",\"border-width-md\":\"2px\",\"border-width-lg\":\"3px\",\"border-width-xl\":\"4px\",\"border-width-default\":\"1px\",\"bg-disabled\":\"rgba(0,0,0,0.3)\",\"disabled-opacity\":\"0.4\",\"navbar-height\":\"64px\",\"navbar-misc-bg\":\"#9d6feb\",\"sidebar-width\":\"250px\",\"sidebar-mini-width\":\"58px\",\"general-content-width\":\"1100px\",\"gradient-default-top\":\"linear-gradient(to top,#7873ed,#9765e1)\",\"gradient-default-right\":\"linear-gradient(to right,#7873ed,#9765e1)\",\"gradient-default-bottom\":\"linear-gradient(to bottom,#7873ed,#9765e1)\",\"gradient-default-left\":\"linear-gradient(to left,#7873ed,#9765e1)\",\"gradient-default\":\"linear-gradient(to left,#7873ed,#9765e1)\"};\n\nexport const darkTheme = {\"color-scheme\":\"dark\",\"bg-default\":\"#212121\",\"bg-default-rgb\":\"33,33,33\",\"bg-pale\":\"#f5f5f5\",\"bg-pale-rgb\":\"245,245,245\",\"color-font-default\":\"#5B5F67\",\"color-font-default-rgb\":\"91,95,103\",\"color-gray-light\":\"#333333\",\"color-gray-light-rgb\":\"51,51,51\",\"color-gray-medium\":\"#525252\",\"color-gray-medium-rgb\":\"82,82,82\",\"color-gray-dark\":\"#727272\",\"color-gray-dark-rgb\":\"114,114,114\",\"color-gray-darker\":\"#919191\",\"color-gray-darker-rgb\":\"145,145,145\",\"color-primary\":\"#a57cde\",\"color-primary-rgb\":\"165,124,222\",\"color-primary-pale\":\"#a684d6\",\"color-primary-pale-rgb\":\"166.33878,132.2,213.8\",\"color-primary-states\":\"#c1a5e8\",\"color-primary-states-rgb\":\"192.9878,164.7378,232.2622\",\"color-primary-sat\":\"#9768d9\",\"color-primary-sat-rgb\":\"151.0061,103.6311,216.8689\",\"color-secondary\":\"#4f878b\",\"color-secondary-rgb\":\"79,135,139\",\"color-secondary-pale\":\"#5a7e80\",\"color-secondary-pale-rgb\":\"89.9,125.55333,128.1\",\"color-secondary-states\":\"#65a3a8\",\"color-secondary-states-rgb\":\"101.33486,163.24312,167.66514\",\"color-secondary-sat\":\"#46777b\",\"color-secondary-sat-rgb\":\"69.75917,119.20872,122.74083\",\"color-success\":\"#6bd098\",\"color-success-rgb\":\"107,208,152\",\"color-success-pale\":\"#75c699\",\"color-success-pale-rgb\":\"116.75,198.25,153.06188\",\"color-success-states\":\"#92dcb3\",\"color-success-states-rgb\":\"145.70769,220.29231,178.93846\",\"color-success-sat\":\"#58ca8b\",\"color-success-sat-rgb\":\"87.64615,201.85385,138.53077\",\"color-info\":\"#51bcda\",\"color-info-rgb\":\"81,188,218\",\"color-info-pale\":\"#5cb6cf\",\"color-info-pale-rgb\":\"91.55,182.07044,207.45\",\"color-info-states\":\"#7bcce3\",\"color-info-states-rgb\":\"123.05687,204.19431,226.94313\",\"color-info-sat\":\"#3cb4d6\",\"color-info-sat-rgb\":\"59.97156,179.90284,213.52844\",\"color-warning\":\"#fbc658\",\"color-warning-rgb\":\"251,198,88\",\"color-warning-pale\":\"#f2c361\",\"color-warning-pale-rgb\":\"242.45,195.01012,96.55\",\"color-warning-states\":\"#fcd78a\",\"color-warning-states-rgb\":\"252.19298,215,137.80702\",\"color-warning-sat\":\"#fabe3f\",\"color-warning-sat-rgb\":\"250.40351,189.5,63.09649\",\"color-danger\":\"#ef8157\",\"color-danger-rgb\":\"239,129,87\",\"color-danger-pale\":\"#e68560\",\"color-danger-pale-rgb\":\"229.8,133.11579,96.2\",\"color-danger-states\":\"#f3a486\",\"color-danger-states-rgb\":\"243.43478,163.92391,133.56522\",\"color-danger-sat\":\"#ed7040\",\"color-danger-sat-rgb\":\"236.78261,111.53804,63.71739\",\"color-light\":\"#3a3a3a\",\"color-light-rgb\":\"58,58,58\",\"color-light-pale\":\"#3a3a3a\",\"color-light-pale-rgb\":\"58.0,58.0,58.0\",\"color-light-states\":\"#545454\",\"color-light-states-rgb\":\"83.5,83.5,83.5\",\"color-light-sat\":\"#2d2d2d\",\"color-light-sat-rgb\":\"45.25,45.25,45.25\",\"color-default\":\"#4f878b\",\"color-default-rgb\":\"79,135,139\",\"color-default-pale\":\"#5a7e80\",\"color-default-pale-rgb\":\"89.9,125.55333,128.1\",\"color-default-states\":\"#65a3a8\",\"color-default-states-rgb\":\"101.33486,163.24312,167.66514\",\"color-default-sat\":\"#46777b\",\"color-default-sat-rgb\":\"69.75917,119.20872,122.74083\",\"bg-default-1\":\"#292929\",\"border-radius-xxl\":\"50px\",\"border-radius-xl\":\"30px\",\"border-radius-lg\":\"20px\",\"border-radius-md\":\"10px\",\"border-radius-sm\":\"5px\",\"border-radius-default\":\"10px\",\"border-width-sm\":\"1px\",\"border-width-md\":\"2px\",\"border-width-lg\":\"3px\",\"border-width-xl\":\"4px\",\"border-width-default\":\"1px\",\"bg-disabled\":\"rgba(0,0,0,0.3)\",\"disabled-opacity\":\"0.4\",\"navbar-height\":\"64px\",\"navbar-misc-bg\":\"#9d6feb\",\"sidebar-width\":\"250px\",\"sidebar-mini-width\":\"58px\",\"general-content-width\":\"1100px\",\"gradient-default-top\":\"linear-gradient(to top,#7873ed,#9765e1)\",\"gradient-default-right\":\"linear-gradient(to right,#7873ed,#9765e1)\",\"gradient-default-bottom\":\"linear-gradient(to bottom,#7873ed,#9765e1)\",\"gradient-default-left\":\"linear-gradient(to left,#7873ed,#9765e1)\",\"gradient-default\":\"linear-gradient(to left,#7873ed,#9765e1)\"};\n\n@Injectable()\nexport class ColorThemeService {\n\n  private _theme: string;\n  private readonly themeConfig: ColorThemeConfig;\n  private availableThemes = {\n    default: defaultTheme,\n    light: lightTheme,\n    dark: darkTheme\n  }\n\n  constructor(\n    @Inject(colorThemeConfigToken) initialThemeConfig: ColorThemeConfig,\n    private cookieService: CookieService\n  ) {\n    this.themeConfig = initialThemeConfig;\n    if (initialThemeConfig && initialThemeConfig.cookie) {\n      let cookieTheme = this.cookieService.get(initialThemeConfig.cookie);\n      cookieTheme = this.normalizeTheme(cookieTheme);\n      this.theme = cookieTheme;\n    } else {\n      this.theme = initialThemeConfig.theme;\n    }\n  }\n\n  // verifica se o tema é válido, se for usa ele. Se não for usa a config, se não for ainda usa default\n  private normalizeTheme(themeString: string) {\n    themeString = Object.keys(this.availableThemes).includes(themeString) ? themeString : this.themeConfig.theme;\n    themeString = Object.keys(this.availableThemes).includes(themeString) ? themeString : 'default';\n    return themeString;\n  }\n\n  public get theme(): string {\n    return this._theme;\n  }\n\n  public set theme(theme: string) {\n    theme = this.normalizeTheme(theme);\n    let themeObj; // tema definido la em cima para virar variaveis de css\n\n    const verifyTheme = (themeString) => {\n      themeString = `${themeString}`.toLowerCase()\n      switch (themeString) {\n        case 'default':\n          themeObj = this.availableThemes.default;\n          break;\n        case 'light':\n          themeObj = this.availableThemes.light;\n          break;\n        case 'dark':\n          themeObj = this.availableThemes.dark;\n          break;\n        default:\n          themeObj = this.availableThemes[theme];\n          break;\n      }\n    }\n\n    verifyTheme(theme);\n    if (this.themeConfig && this.themeConfig.cookie) {\n      this.cookieService.set(this.themeConfig.cookie, theme);\n    }\n    Object.keys(themeObj).forEach(key => {\n      if (key !== 'color-scheme') {\n        document.documentElement.style.setProperty(`--${key}`, `${themeObj[key]}`, 'important')\n      } else {\n        document.documentElement.style.setProperty(`${key}`, `${themeObj[key]}`, 'important')\n      }\n    });\n    this._theme = theme;\n  }\n\n  public toggle(): void {\n    this.theme = this._theme === 'dark' ? 'light' : 'dark';\n  }\n}\n",
             "constructorObj": {
                 "name": "constructor",
                 "description": "",
@@ -594,7 +594,7 @@
                         "deprecationMessage": ""
                     }
                 ],
-                "line": 35,
+                "line": 20,
                 "jsdoctags": [
                     {
                         "name": "initialThemeConfig",
@@ -633,7 +633,7 @@
                             }
                         ],
                         "returnType": "void",
-                        "line": 62,
+                        "line": 47,
                         "jsdoctags": [
                             {
                                 "name": "theme",
@@ -650,7 +650,7 @@
                         "name": "theme",
                         "type": "string",
                         "returnType": "string",
-                        "line": 58
+                        "line": 43
                     }
                 }
             },
@@ -711,7 +711,7 @@
                     "line": 13,
                     "modifierKind": [
                         123,
-                        144
+                        146
                     ]
                 },
                 {
@@ -974,7 +974,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
-                        131
+                        132
                     ],
                     "jsdoctags": [
                         {
@@ -1095,6 +1095,8 @@
             "sourceCode": "import {Directive, HostListener, Output, EventEmitter} from '@angular/core';\n\n// ref: https://stackoverflow.com/a/43629814/13335507\n\n// tslint:disable-next-line:directive-selector\n@Directive({selector: '[longPress]'})\nexport class LongPressDirective {\n\n    @Output()\n    longPress = new EventEmitter();\n\n    private _timeout: any;\n    private _isLong: boolean = true;\n\n    @HostListener('touchstart')\n    @HostListener('mousedown')\n    onMouseDown(e: Event): void {\n        this._timeout = setTimeout(() => {\n            if (this._isLong) {\n                this.longPress.emit(e);\n            }\n        }, 500);\n    }\n\n    @HostListener('touchmove')\n    onTouchScroll(e): void {\n        this._isLong = false;\n    }\n\n    @HostListener('touchend')\n    @HostListener('mouseup')\n    @HostListener('mouseleave')\n    onMouseUp(): void {\n        this._isLong = true;\n        clearTimeout(this._timeout);\n    }\n\n}\n",
             "selector": "[longPress]",
             "providers": [],
+            "hostDirectives": [],
+            "standalone": false,
             "inputsClass": [],
             "outputsClass": [
                 {
@@ -1234,6 +1236,10 @@
                             "stringifiedArguments": "'mousedown'"
                         }
                     ],
+                    "modifierKind": [
+                        167,
+                        167
+                    ],
                     "jsdoctags": [
                         {
                             "name": "e",
@@ -1268,6 +1274,11 @@
                             "name": "HostListener",
                             "stringifiedArguments": "'mouseleave'"
                         }
+                    ],
+                    "modifierKind": [
+                        167,
+                        167,
+                        167
                     ]
                 },
                 {
@@ -1291,6 +1302,9 @@
                             "name": "HostListener",
                             "stringifiedArguments": "'touchmove'"
                         }
+                    ],
+                    "modifierKind": [
+                        167
                     ],
                     "jsdoctags": [
                         {
@@ -1316,6 +1330,8 @@
             "sourceCode": "import {Directive, HostListener} from '@angular/core';\nimport {Location} from '@angular/common';\n\n@Directive({\n    // tslint:disable-next-line:directive-selector\n    selector: '[navigationBackButton]'\n})\nexport class NavigationBackClickDirective {\n    constructor(\n      private location: Location\n    ) {\n    }\n\n    @HostListener('click')\n    onClick(): void {\n        this.location.back();\n    }\n}\n",
             "selector": "[navigationBackButton]",
             "providers": [],
+            "hostDirectives": [],
+            "standalone": false,
             "inputsClass": [],
             "outputsClass": [],
             "deprecated": false,
@@ -1347,6 +1363,9 @@
                             "name": "HostListener",
                             "stringifiedArguments": "'click'"
                         }
+                    ],
+                    "modifierKind": [
+                        167
                     ]
                 }
             ],
@@ -1387,6 +1406,8 @@
             "sourceCode": "import {\n  ComponentFactoryResolver,\n  Directive,\n  Inject,\n  Input,\n  TemplateRef,\n  ViewContainerRef\n} from '@angular/core';\nimport {IF_LOADED_SPINNER} from './injection';\nimport {ComponentType} from '@angular/cdk/overlay';\n\n@Directive({\n  // tslint:disable-next-line:directive-selector\n  selector: '[ngIfLoaded]'\n})\nexport class NgIfLoadedDirective {\n\n  public spinner: ComponentType<any>;\n\n  constructor(\n    @Inject(IF_LOADED_SPINNER) spinnerComponent: ComponentType<any>,\n    private templateRef: TemplateRef<any>,\n    private viewContainer: ViewContainerRef,\n    private resolver: ComponentFactoryResolver\n  ) {\n    this.spinner = spinnerComponent;\n  }\n\n\n  @Input()\n  set ngIfLoaded(value) {\n    if (value) {\n      this.viewContainer.clear();\n      this.viewContainer.createEmbeddedView(this.templateRef);\n    } else {\n      this.viewContainer.clear();\n      const factory = this.resolver.resolveComponentFactory(this.spinner);\n      this.viewContainer.createComponent(factory);\n    }\n  }\n\n}\n",
             "selector": "[ngIfLoaded]",
             "providers": [],
+            "hostDirectives": [],
+            "standalone": false,
             "inputsClass": [
                 {
                     "name": "ngIfLoaded",
@@ -1531,6 +1552,8 @@
             "sourceCode": "import {\n  Component,\n  ElementRef,\n  AfterViewInit,\n  ViewChild,\n  Renderer2,\n  OnDestroy,\n  ViewChildren, QueryList, Directive\n} from '@angular/core';\nimport {ComponentInjectorService} from '../component-injector.service';\nimport _ from 'lodash';\nimport {PaletteEntry, PaletteTreeEntry} from '../models';\nimport {CommandPaletteEntriesService} from '../command-palette-entries.service';\n\n// tslint:disable-next-line:directive-selector directive-class-suffix\n@Directive({selector: '.palette-result-entry'}) export class ResultSearchElements {\n  //\n}\n\n@Component({\n  selector: 'pm-command-palette-dialog',\n  templateUrl: './dialog.component.html',\n  styleUrls: ['./dialog.component.scss']\n})\nexport class DialogComponent implements AfterViewInit, OnDestroy {\n\n  @ViewChild('rootPanel', {static: true}) rootPanelComponent: ElementRef;\n  @ViewChild('searchResultContainer', {static: true}) searchResultContainer: ElementRef;\n  @ViewChildren(ResultSearchElements, { read: ElementRef }) resultEntryElements: QueryList<ElementRef>;\n  public searchString = '';\n  public searchIdTree: PaletteTreeEntry[] = []; // utilizado para navegar entre os ids da lista de entradas\n  public itself: any;\n  private currentFocusedElement: ElementRef;\n  private unlistener: () => void;\n  private deleteLatestSearchEntryOnDelete: boolean = false;\n\n  public paletteEntries: PaletteEntry[] = [];\n  public currentPaletteEntries: PaletteEntry[];\n  public searchPaletteEntries: PaletteEntry[];\n\n  constructor(\n    public readonly commandPaletteEntriesService: CommandPaletteEntriesService,\n    private componentInjectorService: ComponentInjectorService,\n    private renderer2: Renderer2\n  ) {\n    document.documentElement.style.setProperty(`overflow-x`, `hidden`, 'important');\n    this.commandPaletteEntriesService.paletteEntries$.subscribe(entries => {\n      this.paletteEntries = [...entries];\n      this.currentPaletteEntries = [...this.paletteEntries];\n      this.searchPaletteEntries = [...this.paletteEntries];\n    });\n  }\n\n  public ngAfterViewInit(): void {\n    this.clearAll();\n    this.unlistener = this.renderer2.listen('window', 'focusin', event => {\n      if (!(\n        event.target === this.rootPanelComponent.nativeElement\n        || this.rootPanelComponent.nativeElement.contains(event.target)\n      )) {\n        this.destroyItself();\n      }\n    });\n  }\n\n  public ngOnDestroy(): void {\n    document.documentElement.style.removeProperty(`overflow-x`);\n  }\n\n  public destroyItself(): void {\n    this.componentInjectorService.removeComponentFromBody(this.itself);\n  }\n\n  public focusSearchInput(): void {\n    setTimeout(() => {\n      this.currentFocusedElement = this.rootPanelComponent;\n      this.rootPanelComponent.nativeElement.children[0].children[1].focus();\n    }, 50);\n  }\n\n  private isSearchInputFocused(): boolean {\n    return this.currentFocusedElement === this.rootPanelComponent;\n  }\n\n  public focusNext(): void {\n    const arrayResultEntryElements = this.resultEntryElements.toArray();\n    const currentFocusIndex = arrayResultEntryElements.findIndex(item => item === this.currentFocusedElement);\n    const focusNextIndex = currentFocusIndex + 1;\n    if (focusNextIndex >= arrayResultEntryElements.length) {\n      this.focusSearchInput();\n    }\n    else if (!isNaN(focusNextIndex)) {\n      this.currentFocusedElement = arrayResultEntryElements[focusNextIndex];\n      this.currentFocusedElement.nativeElement.focus();\n    } else {\n      this.focusSearchInput();\n    }\n  }\n\n  public focusPrevious(): void {\n    const arrayResultEntryElements = this.resultEntryElements.toArray();\n    const currentFocusIndex = arrayResultEntryElements.findIndex(item => item === this.currentFocusedElement);\n    const focusPreviousIndex = currentFocusIndex - 1;\n    if (focusPreviousIndex < 0) {\n      this.focusSearchInput();\n    }\n    else if (!isNaN(focusPreviousIndex)) {\n      this.currentFocusedElement = arrayResultEntryElements[focusPreviousIndex];\n      this.currentFocusedElement.nativeElement.focus();\n    } else {\n      this.focusSearchInput();\n    }\n  }\n\n  public buildTreeIdEntriesFromPaletteEntry(paletteEntry: PaletteEntry, entriesToVerify: PaletteEntry[]): any {\n    let result;\n    let foundEqual: boolean = false;\n\n    const verifyEqual = (entryToVerify: PaletteEntry) => {\n      result.push({id: entryToVerify.id, label: entryToVerify.label});\n      foundEqual = _.isEqual(entryToVerify, paletteEntry);\n    };\n\n    const verifyChildren = (entryToVerify: PaletteEntry) => {\n      verifyEqual(entryToVerify);\n      if (!foundEqual) {\n        if (this.hasChildEntries(entryToVerify)) {\n          //@ts-ignore\n          for (const child of entryToVerify.entries) {\n            if (!foundEqual) {\n              verifyChildren(child);\n            } else {\n              break;\n            }\n          }\n        } else {\n          result = result.slice(0, 1);\n        }\n      }\n    };\n\n    for (const entry of entriesToVerify) {\n      if (!foundEqual) {\n        result = []; // toda vez que itera sobre um novo item do array base zera a árvore de results\n        verifyChildren(entry);\n      } else {\n        break;\n      }\n    }\n    return result;\n  }\n\n  public rebuildCurrentEntriesFromTree(treeEntryIndex: number, sliceTree: boolean = true): void {\n    let resultEntries = [...this.paletteEntries];\n    if (this.searchIdTree.length > 0) {\n      const slicedTreeEntries = this.searchIdTree.slice(0, treeEntryIndex);\n      // tslint:disable-next-line:prefer-for-of\n      for (let i = 0; i < slicedTreeEntries.length; i++) {\n        const treeEntry = slicedTreeEntries[i];\n        let paletteEntry;\n        if (i === 0) {\n          paletteEntry = resultEntries.find(entry => entry.id === treeEntry.id);\n        } else {\n          //@ts-ignore\n          paletteEntry = resultEntries[0].entries.find(entry => entry.id === treeEntry.id);\n        }\n        resultEntries = [paletteEntry];\n      }\n    }\n    if (sliceTree) {\n      this.searchIdTree = this.searchIdTree.slice(0, treeEntryIndex);\n    }\n    this.searchPaletteEntries = resultEntries;\n    this.currentPaletteEntries = resultEntries;\n  }\n\n  public searchAction(searchValue: any): void {\n    searchValue = `${searchValue}`.toLowerCase(); // força string\n    let idTreeArray: string[] = [];\n\n    const isSearchValueInEntry: (paletteEntry: PaletteEntry) => boolean = (paletteEntry: PaletteEntry) => {\n      const label = !!paletteEntry?.label ? `${paletteEntry.label}`.toLowerCase() : '';\n      const id = !!paletteEntry?.id ? `${paletteEntry.id}`.toLowerCase() : '';\n      return label.includes(searchValue)\n        || id.includes(searchValue);\n    };\n\n    const entryToFlat: (paletteEntry: PaletteEntry, idPrefix: string, parentIds: string[]) => void = (paletteEntry: PaletteEntry, idPrefix: string = '', parentIds: string[] = []) => {\n      idPrefix = !!idPrefix ? `${idPrefix}` : `${paletteEntry.id}`;\n      if (this.hasChildEntries(paletteEntry)) {\n        //@ts-ignore\n        for (let i = 0; i < paletteEntry.entries.length; i++) {\n          //@ts-ignore\n          const entry = paletteEntry.entries[i];\n          const idSuffix = `.entries[${i}]`;\n          const currentEntryId = `${idPrefix}${idSuffix}`;\n          if (isSearchValueInEntry(paletteEntry)) {\n            idTreeArray.push(idPrefix);\n          }\n          entryToFlat(entry, currentEntryId, parentIds);\n        }\n      } else {\n        if (isSearchValueInEntry(paletteEntry)) {\n          parentIds.push(idPrefix);\n          idTreeArray = [...idTreeArray, ...parentIds];\n        }\n      }\n    };\n\n    const entriesToFlat: (paletteEntries: PaletteEntry[]) => string[] = (paletteEntries: PaletteEntry[]) => {\n      if (paletteEntries.length > 0 && paletteEntries[0].id === 'results') {\n        //@ts-ignore\n        paletteEntries = paletteEntries[0].entries;\n      }\n      const resultEntry: PaletteEntry = {\n        label: 'Results',\n        id: 'results',\n        entries: paletteEntries\n      };\n\n      entryToFlat(resultEntry, '', []);\n      // if (this.searchIdTree.length === 0) {\n      //   return idTreeArray.slice(0);\n      // } else {\n      // }\n      return idTreeArray;\n    };\n\n    const flatEntriesToEntries: (flatEntries: string[], entriesToCheck: PaletteEntry[]) => PaletteEntry[] = (flatEntries: string[], entriesToCheck: PaletteEntry[]) => {\n      const resultObjToCheck = {results: {entries: [...entriesToCheck]}};\n      const entries: PaletteEntry[] = [];\n      for (const flatEntry of flatEntries) {\n        const entryToAdd: PaletteEntry = _.get(resultObjToCheck, flatEntry);\n        entryToAdd.treeId = flatEntry;\n        entries.push(entryToAdd);\n      }\n      return _.uniqWith(entries, _.isEqual); // remove objetos iguais\n    };\n\n    const doSearch = () => {\n      let entries: PaletteEntry[];\n      if (this.searchIdTree.length > 0) { // caso tenha entrado em alguma subcategoria, não busca por ela mesma\n        entries = this.currentPaletteEntries[0].entries;\n      } else {\n        entries = this.currentPaletteEntries;\n      }\n      this.rebuildCurrentEntriesFromTree(this.searchIdTree.length, false);\n      this.searchPaletteEntries = [\n        {\n          label: 'Results',\n          id: 'results',\n          entries: flatEntriesToEntries(\n            entriesToFlat(entries),\n            entries\n          )\n        }\n      ];\n    }\n\n    if (!!searchValue) {\n      this.deleteLatestSearchEntryOnDelete = false;\n      doSearch();\n    } else {\n      if (this.deleteLatestSearchEntryOnDelete) {\n        this.goBackOneLevel();\n      }\n      this.deleteLatestSearchEntryOnDelete = true;\n      this.searchPaletteEntries = [...this.currentPaletteEntries];\n    }\n  }\n\n  public goBackOneLevel(): void {\n    if (this.isSearchInputFocused()) {\n      if (this.searchIdTree.length === 0) {\n        this.destroyItself();\n      } else {\n        this.rebuildCurrentEntriesFromTree(this.searchIdTree.length - 1);\n        this.focusSearchInput();\n      }\n    } else {\n      this.focusSearchInput();\n    }\n  }\n\n  public hasChildEntries(paletteEntry: PaletteEntry): boolean {\n    //@ts-ignore\n    return paletteEntry?.entries && paletteEntry.entries.length > 0;\n  }\n\n  /**\n   * Com uma palette entry, cria toda a estrutura baseado na raiz e abre o dialog nela já\n   * @param paletteEntry: Entrada da lista raiz\n   */\n  public initFromPaletteEntry(paletteEntry: PaletteEntry): void {\n    this.searchIdTree = this.buildTreeIdEntriesFromPaletteEntry(paletteEntry, this.paletteEntries);\n    this.rebuildCurrentEntriesFromTree(this.searchIdTree.length, false);\n    this.searchString = '';\n    this.focusSearchInput();\n  }\n\n  /**\n   * caso tenha child entries, atualiza o dialog, senão executa a ação da entry.\n   */\n  public paletteEntryAction(paletteEntry: PaletteEntry): void {\n    if (this.hasChildEntries(paletteEntry)) {\n      this.initFromPaletteEntry(paletteEntry);\n    } else {\n      //@ts-ignore\n      paletteEntry.action();\n      this.destroyItself();\n    }\n  }\n\n  public clearAll(): void {\n    this.searchString = '';\n    this.searchIdTree = [];\n    this.searchPaletteEntries = [...this.paletteEntries];\n    this.currentPaletteEntries = [...this.paletteEntries];\n    this.focusSearchInput();\n  }\n\n}\n",
             "selector": ".palette-result-entry",
             "providers": [],
+            "hostDirectives": [],
+            "standalone": false,
             "inputsClass": [],
             "outputsClass": [],
             "deprecated": false,
@@ -1550,6 +1573,8 @@
             "sourceCode": "import {Directive, HostListener, Output, EventEmitter} from '@angular/core';\n\n// ref: https://stackoverflow.com/a/43629814/13335507\n\n// tslint:disable-next-line:directive-selector\n@Directive({selector: '[shortPress]'})\nexport class ShortPressDirective {\n\n    @Output()\n    shortPress = new EventEmitter();\n\n    private _timeout: any;\n    private _isShort: boolean;\n\n    @HostListener('touchstart')\n    @HostListener('mousedown')\n    onMouseDown(e): void {\n        this._isShort = true;\n        this._timeout = setTimeout(() => {\n            this._isShort = false;\n        }, 500);\n    }\n\n    @HostListener('touchmove')\n    onTouchScroll(e): void {\n        this._isShort = false;\n    }\n\n    @HostListener('touchend')\n    @HostListener('mouseup')\n    onMouseUp(e): void {\n        if (this._isShort) {\n            this.shortPress.emit(e);\n        }\n        clearTimeout(this._timeout);\n    }\n\n    @HostListener('touchcancel')\n    @HostListener('mouseleave')\n    onMouseLeave(): void {\n        clearTimeout(this._timeout);\n    }\n}\n",
             "selector": "[shortPress]",
             "providers": [],
+            "hostDirectives": [],
+            "standalone": false,
             "inputsClass": [],
             "outputsClass": [
                 {
@@ -1710,6 +1735,10 @@
                             "stringifiedArguments": "'mousedown'"
                         }
                     ],
+                    "modifierKind": [
+                        167,
+                        167
+                    ],
                     "jsdoctags": [
                         {
                             "name": "e",
@@ -1740,6 +1769,10 @@
                             "name": "HostListener",
                             "stringifiedArguments": "'mouseleave'"
                         }
+                    ],
+                    "modifierKind": [
+                        167,
+                        167
                     ]
                 },
                 {
@@ -1767,6 +1800,10 @@
                             "name": "HostListener",
                             "stringifiedArguments": "'mouseup'"
                         }
+                    ],
+                    "modifierKind": [
+                        167,
+                        167
                     ],
                     "jsdoctags": [
                         {
@@ -1802,6 +1839,9 @@
                             "stringifiedArguments": "'touchmove'"
                         }
                     ],
+                    "modifierKind": [
+                        167
+                    ],
                     "jsdoctags": [
                         {
                             "name": "e",
@@ -1836,6 +1876,7 @@
                 "./basic-card.component.html"
             ],
             "viewProviders": [],
+            "hostDirectives": [],
             "inputsClass": [
                 {
                     "name": "borderRadius",
@@ -1881,6 +1922,8 @@
             "deprecationMessage": "",
             "hostBindings": [],
             "hostListeners": [],
+            "standalone": false,
+            "imports": [],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
@@ -1924,6 +1967,7 @@
                 "./button.component.html"
             ],
             "viewProviders": [],
+            "hostDirectives": [],
             "inputsClass": [
                 {
                     "name": "busy",
@@ -2058,6 +2102,9 @@
                             "name": "HostBinding",
                             "stringifiedArguments": "'className'"
                         }
+                    ],
+                    "modifierKind": [
+                        167
                     ]
                 },
                 {
@@ -2102,6 +2149,8 @@
                 }
             ],
             "hostListeners": [],
+            "standalone": false,
+            "imports": [],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
@@ -2142,6 +2191,7 @@
                 "./checkbox.component.html"
             ],
             "viewProviders": [],
+            "hostDirectives": [],
             "inputsClass": [
                 {
                     "name": "checked",
@@ -2261,6 +2311,8 @@
             "deprecationMessage": "",
             "hostBindings": [],
             "hostListeners": [],
+            "standalone": false,
+            "imports": [],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
@@ -2303,6 +2355,7 @@
                 "./combo-box.component.html"
             ],
             "viewProviders": [],
+            "hostDirectives": [],
             "inputsClass": [
                 {
                     "name": "disabled",
@@ -2428,6 +2481,8 @@
             "deprecationMessage": "",
             "hostBindings": [],
             "hostListeners": [],
+            "standalone": false,
+            "imports": [],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
@@ -2489,6 +2544,7 @@
                 "./copy-content-input.component.html"
             ],
             "viewProviders": [],
+            "hostDirectives": [],
             "inputsClass": [
                 {
                     "name": "borderRadius",
@@ -2605,6 +2661,8 @@
             "deprecationMessage": "",
             "hostBindings": [],
             "hostListeners": [],
+            "standalone": false,
+            "imports": [],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
@@ -2648,6 +2706,7 @@
                 "./dialog.component.html"
             ],
             "viewProviders": [],
+            "hostDirectives": [],
             "inputsClass": [],
             "outputsClass": [],
             "propertiesClass": [
@@ -2661,7 +2720,7 @@
                     "line": 42,
                     "modifierKind": [
                         123,
-                        144
+                        146
                     ]
                 },
                 {
@@ -2739,6 +2798,9 @@
                             "name": "ViewChildren",
                             "stringifiedArguments": "ResultSearchElements, {read: ElementRef}"
                         }
+                    ],
+                    "modifierKind": [
+                        167
                     ]
                 },
                 {
@@ -2754,6 +2816,9 @@
                             "name": "ViewChild",
                             "stringifiedArguments": "'rootPanel', {static: true}"
                         }
+                    ],
+                    "modifierKind": [
+                        167
                     ]
                 },
                 {
@@ -2794,6 +2859,9 @@
                             "name": "ViewChild",
                             "stringifiedArguments": "'searchResultContainer', {static: true}"
                         }
+                    ],
+                    "modifierKind": [
+                        167
                     ]
                 },
                 {
@@ -3004,7 +3072,7 @@
                             "name": {
                                 "pos": 10206,
                                 "end": 10218,
-                                "flags": 4227072,
+                                "flags": 8421376,
                                 "modifierFlagsCache": 0,
                                 "transformFlags": 0,
                                 "kind": 79,
@@ -3016,7 +3084,7 @@
                             "tagName": {
                                 "pos": 10200,
                                 "end": 10205,
-                                "flags": 4227072,
+                                "flags": 8421376,
                                 "modifierFlagsCache": 0,
                                 "transformFlags": 0,
                                 "kind": 79,
@@ -3182,6 +3250,8 @@
             "deprecationMessage": "",
             "hostBindings": [],
             "hostListeners": [],
+            "standalone": false,
+            "imports": [],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
@@ -3274,6 +3344,7 @@
                 "./draggable-list.component.html"
             ],
             "viewProviders": [],
+            "hostDirectives": [],
             "inputsClass": [
                 {
                     "name": "actions",
@@ -3376,6 +3447,9 @@
                             "name": "ViewChild",
                             "stringifiedArguments": "'contextMenu'"
                         }
+                    ],
+                    "modifierKind": [
+                        167
                     ]
                 },
                 {
@@ -3475,7 +3549,7 @@
                             "name": {
                                 "pos": 1811,
                                 "end": 1816,
-                                "flags": 4227072,
+                                "flags": 8421376,
                                 "modifierFlagsCache": 0,
                                 "transformFlags": 0,
                                 "kind": 79,
@@ -3487,7 +3561,7 @@
                             "tagName": {
                                 "pos": 1805,
                                 "end": 1810,
-                                "flags": 4227072,
+                                "flags": 8421376,
                                 "modifierFlagsCache": 0,
                                 "transformFlags": 0,
                                 "kind": 79,
@@ -3597,7 +3671,7 @@
                             "name": {
                                 "pos": 4279,
                                 "end": 4283,
-                                "flags": 4227072,
+                                "flags": 8421376,
                                 "modifierFlagsCache": 0,
                                 "transformFlags": 0,
                                 "kind": 79,
@@ -3609,7 +3683,7 @@
                             "tagName": {
                                 "pos": 4273,
                                 "end": 4278,
-                                "flags": 4227072,
+                                "flags": 8421376,
                                 "modifierFlagsCache": 0,
                                 "transformFlags": 0,
                                 "kind": 79,
@@ -3658,7 +3732,7 @@
                             "name": {
                                 "pos": 2168,
                                 "end": 2175,
-                                "flags": 4227072,
+                                "flags": 8421376,
                                 "modifierFlagsCache": 0,
                                 "transformFlags": 0,
                                 "kind": 79,
@@ -3670,7 +3744,7 @@
                             "tagName": {
                                 "pos": 2162,
                                 "end": 2167,
-                                "flags": 4227072,
+                                "flags": 8421376,
                                 "modifierFlagsCache": 0,
                                 "transformFlags": 0,
                                 "kind": 79,
@@ -3737,7 +3811,7 @@
                             "name": {
                                 "pos": 1568,
                                 "end": 1572,
-                                "flags": 4227072,
+                                "flags": 8421376,
                                 "modifierFlagsCache": 0,
                                 "transformFlags": 0,
                                 "kind": 79,
@@ -3749,7 +3823,7 @@
                             "tagName": {
                                 "pos": 1562,
                                 "end": 1567,
-                                "flags": 4227072,
+                                "flags": 8421376,
                                 "modifierFlagsCache": 0,
                                 "transformFlags": 0,
                                 "kind": 79,
@@ -3764,6 +3838,8 @@
             "deprecationMessage": "",
             "hostBindings": [],
             "hostListeners": [],
+            "standalone": false,
+            "imports": [],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
@@ -3837,6 +3913,7 @@
                 "./dropdown-actions.component.html"
             ],
             "viewProviders": [],
+            "hostDirectives": [],
             "inputsClass": [
                 {
                     "name": "actions",
@@ -4028,6 +4105,9 @@
                             "stringifiedArguments": "'className'"
                         }
                     ],
+                    "modifierKind": [
+                        167
+                    ],
                     "inheritance": {
                         "file": "ButtonComponent"
                     }
@@ -4129,6 +4209,8 @@
                 }
             ],
             "hostListeners": [],
+            "standalone": false,
+            "imports": [],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
@@ -4170,6 +4252,7 @@
                 "./expansion-panel.component.html"
             ],
             "viewProviders": [],
+            "hostDirectives": [],
             "inputsClass": [],
             "outputsClass": [],
             "propertiesClass": [],
@@ -4189,6 +4272,8 @@
             "deprecationMessage": "",
             "hostBindings": [],
             "hostListeners": [],
+            "standalone": false,
+            "imports": [],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
@@ -4232,6 +4317,7 @@
                 "./grid-list.component.html"
             ],
             "viewProviders": [],
+            "hostDirectives": [],
             "inputsClass": [
                 {
                     "name": "actionTemplate",
@@ -4300,6 +4386,9 @@
                             "name": "ViewChild",
                             "stringifiedArguments": "'galleryTemplate', {static: true}"
                         }
+                    ],
+                    "modifierKind": [
+                        167
                     ]
                 },
                 {
@@ -4315,6 +4404,9 @@
                             "name": "ViewChild",
                             "stringifiedArguments": "'gridTemplate', {static: true}"
                         }
+                    ],
+                    "modifierKind": [
+                        167
                     ]
                 },
                 {
@@ -4330,6 +4422,9 @@
                             "name": "ViewChild",
                             "stringifiedArguments": "'listTemplate', {static: true}"
                         }
+                    ],
+                    "modifierKind": [
+                        167
                     ]
                 }
             ],
@@ -4352,6 +4447,8 @@
             "deprecationMessage": "",
             "hostBindings": [],
             "hostListeners": [],
+            "standalone": false,
+            "imports": [],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
@@ -4392,6 +4489,7 @@
                 "./icon-card.component.html"
             ],
             "viewProviders": [],
+            "hostDirectives": [],
             "inputsClass": [
                 {
                     "name": "hoverable",
@@ -4473,6 +4571,8 @@
             "deprecationMessage": "",
             "hostBindings": [],
             "hostListeners": [],
+            "standalone": false,
+            "imports": [],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
@@ -4519,6 +4619,7 @@
                 "./multi-select.component.html"
             ],
             "viewProviders": [],
+            "hostDirectives": [],
             "inputsClass": [
                 {
                     "name": "borderRadius",
@@ -4688,6 +4789,9 @@
                             "name": "ViewChild",
                             "stringifiedArguments": "'inputBox', {static: true}"
                         }
+                    ],
+                    "modifierKind": [
+                        167
                     ]
                 },
                 {
@@ -4713,7 +4817,7 @@
                     "line": 90,
                     "modifierKind": [
                         123,
-                        144
+                        146
                     ]
                 },
                 {
@@ -4729,6 +4833,9 @@
                             "name": "ViewChild",
                             "stringifiedArguments": "'trigger', {static: true}"
                         }
+                    ],
+                    "modifierKind": [
+                        167
                     ]
                 }
             ],
@@ -5007,6 +5114,8 @@
             "deprecationMessage": "",
             "hostBindings": [],
             "hostListeners": [],
+            "standalone": false,
+            "imports": [],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
@@ -5101,6 +5210,7 @@
                 "./radio-button.component.html"
             ],
             "viewProviders": [],
+            "hostDirectives": [],
             "inputsClass": [
                 {
                     "name": "disabled",
@@ -5196,6 +5306,8 @@
             "deprecationMessage": "",
             "hostBindings": [],
             "hostListeners": [],
+            "standalone": false,
+            "imports": [],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
@@ -5239,13 +5351,14 @@
                 "./sidebar.component.html"
             ],
             "viewProviders": [],
+            "hostDirectives": [],
             "inputsClass": [
                 {
                     "name": "label",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "line": 20,
-                    "type": "",
+                    "type": "string | Observable",
                     "decorators": []
                 },
                 {
@@ -5328,6 +5441,8 @@
             "deprecationMessage": "",
             "hostBindings": [],
             "hostListeners": [],
+            "standalone": false,
+            "imports": [],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
@@ -5409,6 +5524,7 @@
                 "./sidebar-content.component.html"
             ],
             "viewProviders": [],
+            "hostDirectives": [],
             "inputsClass": [
                 {
                     "name": "drawer",
@@ -5635,6 +5751,8 @@
             "deprecationMessage": "",
             "hostBindings": [],
             "hostListeners": [],
+            "standalone": false,
+            "imports": [],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
@@ -5678,6 +5796,7 @@
                 "./spinner.component.html"
             ],
             "viewProviders": [],
+            "hostDirectives": [],
             "inputsClass": [],
             "outputsClass": [],
             "propertiesClass": [],
@@ -5697,6 +5816,8 @@
             "deprecationMessage": "",
             "hostBindings": [],
             "hostListeners": [],
+            "standalone": false,
+            "imports": [],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
@@ -5745,6 +5866,7 @@
                 "./stepper.component.html"
             ],
             "viewProviders": [],
+            "hostDirectives": [],
             "inputsClass": [],
             "outputsClass": [],
             "propertiesClass": [],
@@ -5782,6 +5904,8 @@
             "deprecationMessage": "",
             "hostBindings": [],
             "hostListeners": [],
+            "standalone": false,
+            "imports": [],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
@@ -5815,6 +5939,7 @@
                 "./table-list.component.html"
             ],
             "viewProviders": [],
+            "hostDirectives": [],
             "inputsClass": [
                 {
                     "name": "actionsTemplate",
@@ -5954,6 +6079,9 @@
                             "name": "ViewChild",
                             "stringifiedArguments": "'doubleLabelCell', {static: true}"
                         }
+                    ],
+                    "modifierKind": [
+                        167
                     ]
                 },
                 {
@@ -5981,6 +6109,9 @@
                             "name": "ViewChild",
                             "stringifiedArguments": "'formattedNumberCell', {static: true}"
                         }
+                    ],
+                    "modifierKind": [
+                        167
                     ]
                 },
                 {
@@ -5996,6 +6127,9 @@
                             "name": "ViewChild",
                             "stringifiedArguments": "'imageCell', {static: true}"
                         }
+                    ],
+                    "modifierKind": [
+                        167
                     ]
                 },
                 {
@@ -6031,6 +6165,9 @@
                             "name": "ViewChild",
                             "stringifiedArguments": "'singleLabelCell', {static: true}"
                         }
+                    ],
+                    "modifierKind": [
+                        167
                     ]
                 },
                 {
@@ -6046,6 +6183,9 @@
                             "name": "ViewChild",
                             "stringifiedArguments": "'table', {static: true}"
                         }
+                    ],
+                    "modifierKind": [
+                        167
                     ]
                 }
             ],
@@ -6112,7 +6252,7 @@
                             "name": {
                                 "pos": 4157,
                                 "end": 4161,
-                                "flags": 4227072,
+                                "flags": 8421376,
                                 "modifierFlagsCache": 0,
                                 "transformFlags": 0,
                                 "kind": 79,
@@ -6124,7 +6264,7 @@
                             "tagName": {
                                 "pos": 4151,
                                 "end": 4156,
-                                "flags": 4227072,
+                                "flags": 8421376,
                                 "modifierFlagsCache": 0,
                                 "transformFlags": 0,
                                 "kind": 79,
@@ -6136,7 +6276,7 @@
                             "name": {
                                 "pos": 4198,
                                 "end": 4204,
-                                "flags": 4227072,
+                                "flags": 8421376,
                                 "modifierFlagsCache": 0,
                                 "transformFlags": 0,
                                 "kind": 79,
@@ -6148,7 +6288,7 @@
                             "tagName": {
                                 "pos": 4192,
                                 "end": 4197,
-                                "flags": 4227072,
+                                "flags": 8421376,
                                 "modifierFlagsCache": 0,
                                 "transformFlags": 0,
                                 "kind": 79,
@@ -6199,7 +6339,7 @@
                             "name": {
                                 "pos": 3000,
                                 "end": 3003,
-                                "flags": 4227072,
+                                "flags": 8421376,
                                 "modifierFlagsCache": 0,
                                 "transformFlags": 0,
                                 "kind": 79,
@@ -6211,7 +6351,7 @@
                             "tagName": {
                                 "pos": 2994,
                                 "end": 2999,
-                                "flags": 4227072,
+                                "flags": 8421376,
                                 "modifierFlagsCache": 0,
                                 "transformFlags": 0,
                                 "kind": 79,
@@ -6250,11 +6390,10 @@
                             "tagName": {
                                 "pos": 3207,
                                 "end": 3214,
-                                "flags": 4227072,
+                                "flags": 8421376,
                                 "modifierFlagsCache": 0,
                                 "transformFlags": 0,
                                 "kind": 79,
-                                "originalKeywordKind": 121,
                                 "escapedText": "private"
                             },
                             "comment": ""
@@ -6320,7 +6459,7 @@
                             "name": {
                                 "pos": 2520,
                                 "end": 2523,
-                                "flags": 4227072,
+                                "flags": 8421376,
                                 "modifierFlagsCache": 0,
                                 "transformFlags": 0,
                                 "kind": 79,
@@ -6332,7 +6471,7 @@
                             "tagName": {
                                 "pos": 2514,
                                 "end": 2519,
-                                "flags": 4227072,
+                                "flags": 8421376,
                                 "modifierFlagsCache": 0,
                                 "transformFlags": 0,
                                 "kind": 79,
@@ -6347,6 +6486,8 @@
             "deprecationMessage": "",
             "hostBindings": [],
             "hostListeners": [],
+            "standalone": false,
+            "imports": [],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
@@ -6410,6 +6551,7 @@
                 "./tabs.component.html"
             ],
             "viewProviders": [],
+            "hostDirectives": [],
             "inputsClass": [
                 {
                     "name": "orientation",
@@ -6441,6 +6583,8 @@
             "deprecationMessage": "",
             "hostBindings": [],
             "hostListeners": [],
+            "standalone": false,
+            "imports": [],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
@@ -6481,6 +6625,7 @@
                 "./trigger-button.component.html"
             ],
             "viewProviders": [],
+            "hostDirectives": [],
             "inputsClass": [
                 {
                     "name": "iconClass",
@@ -6547,6 +6692,8 @@
             "deprecationMessage": "",
             "hostBindings": [],
             "hostListeners": [],
+            "standalone": false,
+            "imports": [],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
@@ -7770,16 +7917,6 @@
                 "defaultValue": "[\n  DialogComponent,\n  TriggerButtonComponent,\n  ResultSearchElements\n]"
             },
             {
-                "name": "config",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": ".storybook/main.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "StorybookConfig",
-                "defaultValue": "{\n  stories: [\n    // \"../stories/**/*.stories.@(js|jsx|ts|tsx|mdx)\",\n    \"../src/**/*.stories.@(mdx)\"],\n  staticDirs: ['public'],\n  addons: [\n    // \"storybook-ng-source-addon\",\n    \"@storybook/addon-links\",\n    {\n      name: '@storybook/addon-essentials',\n      options: {\n        actions: false\n      }\n    },\n    \"@storybook/addon-mdx-gfm\"\n  ],\n  framework: {\n    name: \"@storybook/angular\",\n    options: {}\n  },\n  docs: {\n    autodocs: \"tag\"\n  }\n} as StorybookConfig"
-            },
-            {
                 "name": "DangerButton",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -7797,7 +7934,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "object",
-                "defaultValue": "{\n  'color-primary': '#455363',\n  'color-default': '#455363',\n  'background-color': '#1f2935',\n  'text-color': '#fff'\n}"
+                "defaultValue": "{\"color-scheme\":\"dark\",\"bg-default\":\"#212121\",\"bg-default-rgb\":\"33,33,33\",\"bg-pale\":\"#f5f5f5\",\"bg-pale-rgb\":\"245,245,245\",\"color-font-default\":\"#5B5F67\",\"color-font-default-rgb\":\"91,95,103\",\"color-gray-light\":\"#333333\",\"color-gray-light-rgb\":\"51,51,51\",\"color-gray-medium\":\"#525252\",\"color-gray-medium-rgb\":\"82,82,82\",\"color-gray-dark\":\"#727272\",\"color-gray-dark-rgb\":\"114,114,114\",\"color-gray-darker\":\"#919191\",\"color-gray-darker-rgb\":\"145,145,145\",\"color-primary\":\"#a57cde\",\"color-primary-rgb\":\"165,124,222\",\"color-primary-pale\":\"#a684d6\",\"color-primary-pale-rgb\":\"166.33878,132.2,213.8\",\"color-primary-states\":\"#c1a5e8\",\"color-primary-states-rgb\":\"192.9878,164.7378,232.2622\",\"color-primary-sat\":\"#9768d9\",\"color-primary-sat-rgb\":\"151.0061,103.6311,216.8689\",\"color-secondary\":\"#4f878b\",\"color-secondary-rgb\":\"79,135,139\",\"color-secondary-pale\":\"#5a7e80\",\"color-secondary-pale-rgb\":\"89.9,125.55333,128.1\",\"color-secondary-states\":\"#65a3a8\",\"color-secondary-states-rgb\":\"101.33486,163.24312,167.66514\",\"color-secondary-sat\":\"#46777b\",\"color-secondary-sat-rgb\":\"69.75917,119.20872,122.74083\",\"color-success\":\"#6bd098\",\"color-success-rgb\":\"107,208,152\",\"color-success-pale\":\"#75c699\",\"color-success-pale-rgb\":\"116.75,198.25,153.06188\",\"color-success-states\":\"#92dcb3\",\"color-success-states-rgb\":\"145.70769,220.29231,178.93846\",\"color-success-sat\":\"#58ca8b\",\"color-success-sat-rgb\":\"87.64615,201.85385,138.53077\",\"color-info\":\"#51bcda\",\"color-info-rgb\":\"81,188,218\",\"color-info-pale\":\"#5cb6cf\",\"color-info-pale-rgb\":\"91.55,182.07044,207.45\",\"color-info-states\":\"#7bcce3\",\"color-info-states-rgb\":\"123.05687,204.19431,226.94313\",\"color-info-sat\":\"#3cb4d6\",\"color-info-sat-rgb\":\"59.97156,179.90284,213.52844\",\"color-warning\":\"#fbc658\",\"color-warning-rgb\":\"251,198,88\",\"color-warning-pale\":\"#f2c361\",\"color-warning-pale-rgb\":\"242.45,195.01012,96.55\",\"color-warning-states\":\"#fcd78a\",\"color-warning-states-rgb\":\"252.19298,215,137.80702\",\"color-warning-sat\":\"#fabe3f\",\"color-warning-sat-rgb\":\"250.40351,189.5,63.09649\",\"color-danger\":\"#ef8157\",\"color-danger-rgb\":\"239,129,87\",\"color-danger-pale\":\"#e68560\",\"color-danger-pale-rgb\":\"229.8,133.11579,96.2\",\"color-danger-states\":\"#f3a486\",\"color-danger-states-rgb\":\"243.43478,163.92391,133.56522\",\"color-danger-sat\":\"#ed7040\",\"color-danger-sat-rgb\":\"236.78261,111.53804,63.71739\",\"color-light\":\"#3a3a3a\",\"color-light-rgb\":\"58,58,58\",\"color-light-pale\":\"#3a3a3a\",\"color-light-pale-rgb\":\"58.0,58.0,58.0\",\"color-light-states\":\"#545454\",\"color-light-states-rgb\":\"83.5,83.5,83.5\",\"color-light-sat\":\"#2d2d2d\",\"color-light-sat-rgb\":\"45.25,45.25,45.25\",\"color-default\":\"#4f878b\",\"color-default-rgb\":\"79,135,139\",\"color-default-pale\":\"#5a7e80\",\"color-default-pale-rgb\":\"89.9,125.55333,128.1\",\"color-default-states\":\"#65a3a8\",\"color-default-states-rgb\":\"101.33486,163.24312,167.66514\",\"color-default-sat\":\"#46777b\",\"color-default-sat-rgb\":\"69.75917,119.20872,122.74083\",\"bg-default-1\":\"#292929\",\"border-radius-xxl\":\"50px\",\"border-radius-xl\":\"30px\",\"border-radius-lg\":\"20px\",\"border-radius-md\":\"10px\",\"border-radius-sm\":\"5px\",\"border-radius-default\":\"10px\",\"border-width-sm\":\"1px\",\"border-width-md\":\"2px\",\"border-width-lg\":\"3px\",\"border-width-xl\":\"4px\",\"border-width-default\":\"1px\",\"bg-disabled\":\"rgba(0,0,0,0.3)\",\"disabled-opacity\":\"0.4\",\"navbar-height\":\"64px\",\"navbar-misc-bg\":\"#9d6feb\",\"sidebar-width\":\"250px\",\"sidebar-mini-width\":\"58px\",\"general-content-width\":\"1100px\",\"gradient-default-top\":\"linear-gradient(to top,#7873ed,#9765e1)\",\"gradient-default-right\":\"linear-gradient(to right,#7873ed,#9765e1)\",\"gradient-default-bottom\":\"linear-gradient(to bottom,#7873ed,#9765e1)\",\"gradient-default-left\":\"linear-gradient(to left,#7873ed,#9765e1)\",\"gradient-default\":\"linear-gradient(to left,#7873ed,#9765e1)\"}"
             },
             {
                 "name": "defaultArgs",
@@ -7808,6 +7945,46 @@
                 "deprecationMessage": "",
                 "type": "object",
                 "defaultValue": "{\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/cards/basic-card/basic-card.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\n  hoverable: false,\n  borderRadius: Sizes.md,\n  paddingClass: 'p-3'\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/cards/icon-card/icon-card.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\n  textPosition: 'center',\n  paddingClass: 'p-3',\n  hoverable: true,\n  orientation: OrientationEnum.Y,\n  iconClass: 'uil uil-star',\n  title: '',\n  subtitle: '',\n  iconCardArray: [],\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/containers/expansion-panel/expansion-panel.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/containers/tabs/tabs.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\n  orientation: 'horizontal',\n  sticky: true\n}"
             },
             {
                 "name": "defaultArgs",
@@ -7843,21 +8020,21 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/components/inputs/dropdown-actions/dropdown-actions.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "object",
-                "defaultValue": "{\n  actions: []\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "src/components/inputs/copy-content-input/copy-content-input.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "object",
                 "defaultValue": "{\n  disabled: false,\n  text: '',\n  copyCallback: undefined,\n  fillHeight: false,\n  btnColor: MainColors.primary,\n  borderRadius: Sizes.md\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/inputs/dropdown-actions/dropdown-actions.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\n  actions: []\n}"
             },
             {
                 "name": "defaultArgs",
@@ -7878,46 +8055,6 @@
                 "deprecationMessage": "",
                 "type": "object",
                 "defaultValue": "{\n  orientation: OrientationEnum.Y,\n  values: [],\n  disabled: false,\n  selectedValue: undefined\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/components/cards/basic-card/basic-card.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "object",
-                "defaultValue": "{\n  hoverable: false,\n  borderRadius: Sizes.md,\n  paddingClass: 'p-3'\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/components/containers/expansion-panel/expansion-panel.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "object",
-                "defaultValue": "{\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/components/cards/icon-card/icon-card.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "object",
-                "defaultValue": "{\n  textPosition: 'center',\n  paddingClass: 'p-3',\n  hoverable: true,\n  orientation: OrientationEnum.Y,\n  iconClass: 'uil uil-star',\n  title: '',\n  subtitle: '',\n  iconCardArray: [],\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/components/containers/tabs/tabs.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "object",
-                "defaultValue": "{\n  orientation: 'horizontal',\n  sticky: true\n}"
             },
             {
                 "name": "defaultArgs",
@@ -8197,7 +8334,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "object",
-                "defaultValue": "{\n  'color-primary': '#455363',\n  'color-default': '#455363',\n  'background-color': '#1f2935',\n  'text-color': '#fff'\n}"
+                "defaultValue": "{\"color-scheme\":\"normal\",\"bg-default\":\"#F3F4F6\",\"bg-default-rgb\":\"243,244,246\",\"bg-pale\":\"#f5f5f5\",\"bg-pale-rgb\":\"245,245,245\",\"color-font-default\":\"#5B5F67\",\"color-font-default-rgb\":\"91,95,103\",\"color-gray-light\":\"#DDDDDD\",\"color-gray-light-rgb\":\"221,221,221\",\"color-gray-medium\":\"#CCCCCC\",\"color-gray-medium-rgb\":\"204,204,204\",\"color-gray-dark\":\"#9A9A9A\",\"color-gray-dark-rgb\":\"154,154,154\",\"color-gray-darker\":\"#505050\",\"color-gray-darker-rgb\":\"80,80,80\",\"color-primary\":\"#efa76c\",\"color-primary-rgb\":\"239,167,108\",\"color-primary-pale\":\"#e7a874\",\"color-primary-pale-rgb\":\"230.85,167.80878,116.15\",\"color-primary-states\":\"#ea8b3e\",\"color-primary-states-rgb\":\"233.99387,139.46626,62.00613\",\"color-primary-sat\":\"#ffa55c\",\"color-primary-sat-rgb\":\"255,165.41221,92\",\"color-secondary\":\"#6F5897\",\"color-secondary-rgb\":\"111,88,151\",\"color-secondary-pale\":\"#72648b\",\"color-secondary-pale-rgb\":\"114.2246,99.95,139.05\",\"color-secondary-states\":\"#574577\",\"color-secondary-states-rgb\":\"87.31381,69.22176,118.77824\",\"color-secondary-sat\":\"#6534bb\",\"color-secondary-sat-rgb\":\"101.32619,52.15,186.85\",\"color-success\":\"#6bd098\",\"color-success-rgb\":\"107,208,152\",\"color-success-pale\":\"#75c699\",\"color-success-pale-rgb\":\"116.75,198.25,153.06188\",\"color-success-states\":\"#44c47d\",\"color-success-states-rgb\":\"68.29231,195.70769,125.06154\",\"color-success-sat\":\"#4eed95\",\"color-success-sat-rgb\":\"77.75,237.25,148.81436\",\"color-info\":\"#51bcda\",\"color-info-rgb\":\"81,188,218\",\"color-info-pale\":\"#5cb6cf\",\"color-info-pale-rgb\":\"91.55,182.07044,207.45\",\"color-info-states\":\"#2ba9cd\",\"color-info-states-rgb\":\"43.48815,169.25118,204.51185\",\"color-info-sat\":\"#31cefa\",\"color-info-sat-rgb\":\"49.35,205.78869,249.65\",\"color-warning\":\"#fbc658\",\"color-warning-rgb\":\"251,198,88\",\"color-warning-pale\":\"#f2c361\",\"color-warning-pale-rgb\":\"242.45,195.01012,96.55\",\"color-warning-states\":\"#fab526\",\"color-warning-states-rgb\":\"249.80702,181,38.19298\",\"color-warning-sat\":\"#ffc754\",\"color-warning-sat-rgb\":\"255,199.39877,84\",\"color-danger\":\"#ef8157\",\"color-danger-rgb\":\"239,129,87\",\"color-danger-pale\":\"#e68560\",\"color-danger-pale-rgb\":\"229.8,133.11579,96.2\",\"color-danger-states\":\"#eb5e28\",\"color-danger-states-rgb\":\"234.56522,94.07609,40.43478\",\"color-danger-sat\":\"#ff7a47\",\"color-danger-sat-rgb\":\"255,121.84211,71\",\"color-light\":\"#eff3f8\",\"color-light-rgb\":\"239,243,248\",\"color-light-pale\":\"#f0f3f7\",\"color-light-pale-rgb\":\"240.15,243.12778,246.85\",\"color-light-states\":\"#ccd8e8\",\"color-light-states-rgb\":\"203.52174,216.3913,232.47826\",\"color-light-sat\":\"#ecf3fb\",\"color-light-sat-rgb\":\"235.55,242.61667,251.45\",\"color-default\":\"#6F5897\",\"color-default-rgb\":\"111,88,151\",\"color-default-pale\":\"#72648b\",\"color-default-pale-rgb\":\"114.2246,99.95,139.05\",\"color-default-states\":\"#574577\",\"color-default-states-rgb\":\"87.31381,69.22176,118.77824\",\"color-default-sat\":\"#6534bb\",\"color-default-sat-rgb\":\"101.32619,52.15,186.85\",\"bg-default-1\":\"#fafcfe\",\"border-radius-xxl\":\"50px\",\"border-radius-xl\":\"30px\",\"border-radius-lg\":\"20px\",\"border-radius-md\":\"10px\",\"border-radius-sm\":\"5px\",\"border-radius-default\":\"10px\",\"border-width-sm\":\"1px\",\"border-width-md\":\"2px\",\"border-width-lg\":\"3px\",\"border-width-xl\":\"4px\",\"border-width-default\":\"1px\",\"bg-disabled\":\"rgba(0,0,0,0.3)\",\"disabled-opacity\":\"0.4\",\"navbar-height\":\"64px\",\"navbar-misc-bg\":\"#9d6feb\",\"sidebar-width\":\"250px\",\"sidebar-mini-width\":\"58px\",\"general-content-width\":\"1100px\",\"gradient-default-top\":\"linear-gradient(to top,#7873ed,#9765e1)\",\"gradient-default-right\":\"linear-gradient(to right,#7873ed,#9765e1)\",\"gradient-default-bottom\":\"linear-gradient(to bottom,#7873ed,#9765e1)\",\"gradient-default-left\":\"linear-gradient(to left,#7873ed,#9765e1)\",\"gradient-default\":\"linear-gradient(to left,#7873ed,#9765e1)\"}"
             },
             {
                 "name": "DefaultXXXTitle",
@@ -8337,7 +8474,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "object",
-                "defaultValue": "{\n  'color-primary': '#fff',\n  'color-default': '#fff',\n  'background-color': '#e5e5e5',\n  'text-color': '#2d2d2d'\n}"
+                "defaultValue": "{\"color-scheme\":\"light\",\"bg-default\":\"#F3F4F6\",\"bg-default-rgb\":\"243,244,246\",\"bg-pale\":\"#f5f5f5\",\"bg-pale-rgb\":\"245,245,245\",\"color-font-default\":\"#5B5F67\",\"color-font-default-rgb\":\"91,95,103\",\"color-gray-light\":\"#DDDDDD\",\"color-gray-light-rgb\":\"221,221,221\",\"color-gray-medium\":\"#CCCCCC\",\"color-gray-medium-rgb\":\"204,204,204\",\"color-gray-dark\":\"#9A9A9A\",\"color-gray-dark-rgb\":\"154,154,154\",\"color-gray-darker\":\"#505050\",\"color-gray-darker-rgb\":\"80,80,80\",\"color-primary\":\"#42ADB3\",\"color-primary-rgb\":\"66,173,179\",\"color-primary-pale\":\"#4ea2a7\",\"color-primary-pale-rgb\":\"78.25,162.05088,166.75\",\"color-primary-states\":\"#34898e\",\"color-primary-states-rgb\":\"52.26122,136.98776,141.73878\",\"color-primary-sat\":\"#1dced8\",\"color-primary-sat-rgb\":\"29.25,205.84735,215.75\",\"color-secondary\":\"#646F7E\",\"color-secondary-rgb\":\"100,111,126\",\"color-secondary-pale\":\"#6f7173\",\"color-secondary-pale-rgb\":\"111.3,112.73846,114.7\",\"color-secondary-states\":\"#4d5662\",\"color-secondary-states-rgb\":\"77.43363,85.95133,97.56637\",\"color-secondary-sat\":\"#426aa0\",\"color-secondary-sat-rgb\":\"66.1,105.78462,159.9\",\"color-success\":\"#6bd098\",\"color-success-rgb\":\"107,208,152\",\"color-success-pale\":\"#75c699\",\"color-success-pale-rgb\":\"116.75,198.25,153.06188\",\"color-success-states\":\"#44c47d\",\"color-success-states-rgb\":\"68.29231,195.70769,125.06154\",\"color-success-sat\":\"#4eed95\",\"color-success-sat-rgb\":\"77.75,237.25,148.81436\",\"color-info\":\"#51bcda\",\"color-info-rgb\":\"81,188,218\",\"color-info-pale\":\"#5cb6cf\",\"color-info-pale-rgb\":\"91.55,182.07044,207.45\",\"color-info-states\":\"#2ba9cd\",\"color-info-states-rgb\":\"43.48815,169.25118,204.51185\",\"color-info-sat\":\"#31cefa\",\"color-info-sat-rgb\":\"49.35,205.78869,249.65\",\"color-warning\":\"#fbc658\",\"color-warning-rgb\":\"251,198,88\",\"color-warning-pale\":\"#f2c361\",\"color-warning-pale-rgb\":\"242.45,195.01012,96.55\",\"color-warning-states\":\"#fab526\",\"color-warning-states-rgb\":\"249.80702,181,38.19298\",\"color-warning-sat\":\"#ffc754\",\"color-warning-sat-rgb\":\"255,199.39877,84\",\"color-danger\":\"#ef8157\",\"color-danger-rgb\":\"239,129,87\",\"color-danger-pale\":\"#e68560\",\"color-danger-pale-rgb\":\"229.8,133.11579,96.2\",\"color-danger-states\":\"#eb5e28\",\"color-danger-states-rgb\":\"234.56522,94.07609,40.43478\",\"color-danger-sat\":\"#ff7a47\",\"color-danger-sat-rgb\":\"255,121.84211,71\",\"color-light\":\"#eff3f8\",\"color-light-rgb\":\"239,243,248\",\"color-light-pale\":\"#f0f3f7\",\"color-light-pale-rgb\":\"240.15,243.12778,246.85\",\"color-light-states\":\"#ccd8e8\",\"color-light-states-rgb\":\"203.52174,216.3913,232.47826\",\"color-light-sat\":\"#ecf3fb\",\"color-light-sat-rgb\":\"235.55,242.61667,251.45\",\"color-default\":\"#646F7E\",\"color-default-rgb\":\"100,111,126\",\"color-default-pale\":\"#6f7173\",\"color-default-pale-rgb\":\"111.3,112.73846,114.7\",\"color-default-states\":\"#4d5662\",\"color-default-states-rgb\":\"77.43363,85.95133,97.56637\",\"color-default-sat\":\"#426aa0\",\"color-default-sat-rgb\":\"66.1,105.78462,159.9\",\"bg-default-1\":\"#fafcfe\",\"border-radius-xxl\":\"50px\",\"border-radius-xl\":\"30px\",\"border-radius-lg\":\"20px\",\"border-radius-md\":\"10px\",\"border-radius-sm\":\"5px\",\"border-radius-default\":\"10px\",\"border-width-sm\":\"1px\",\"border-width-md\":\"2px\",\"border-width-lg\":\"3px\",\"border-width-xl\":\"4px\",\"border-width-default\":\"1px\",\"bg-disabled\":\"rgba(0,0,0,0.3)\",\"disabled-opacity\":\"0.4\",\"navbar-height\":\"64px\",\"navbar-misc-bg\":\"#9d6feb\",\"sidebar-width\":\"250px\",\"sidebar-mini-width\":\"58px\",\"general-content-width\":\"1100px\",\"gradient-default-top\":\"linear-gradient(to top,#7873ed,#9765e1)\",\"gradient-default-right\":\"linear-gradient(to right,#7873ed,#9765e1)\",\"gradient-default-bottom\":\"linear-gradient(to bottom,#7873ed,#9765e1)\",\"gradient-default-left\":\"linear-gradient(to left,#7873ed,#9765e1)\",\"gradient-default\":\"linear-gradient(to left,#7873ed,#9765e1)\"}"
             },
             {
                 "name": "NoHeader",
@@ -8378,16 +8515,6 @@
                 "deprecationMessage": "",
                 "type": "",
                 "defaultValue": "Template.bind({})"
-            },
-            {
-                "name": "preview",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": ".storybook/preview.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Preview",
-                "defaultValue": "{\n  parameters: {\n    actions: {argTypesRegex: \"^on[A-Z].*\"},\n    controls: {\n      matchers: {\n        color: /(background|color)$/i,\n        date: /Date$/,\n      },\n    },\n    docs: { inlineStories: true },\n  }\n}"
             },
             {
                 "name": "PrimaryButton",
@@ -8443,6 +8570,46 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
+                "file": "src/components/cards/basic-card/basic-card.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<BasicCardComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-basic-card\n      [hoverable]=\"hoverable\"\n      [borderRadius]=\"borderRadius\"\n      [paddingClass]=\"paddingClass\"\n    >\n    </pm-basic-card>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/cards/icon-card/icon-card.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<IconCardComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-icon-card\n      [textPosition]=\"textPosition\"\n      [paddingClass]=\"paddingClass\"\n      [hoverable]=\"hoverable\"\n      [orientation]=\"orientation\"\n      [iconClass]=\"iconClass\"\n      [title]=\"title\"\n      [subtitle]=\"subtitle\"\n      [iconCardArray]=\"iconCardArray\"\n    >\n    </pm-icon-card>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/containers/expansion-panel/expansion-panel.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<ExpansionPanelComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-expansion-panel\n    >\n        Conteúdo aqui\n    </pm-expansion-panel>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/containers/tabs/tabs.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "StoryFn<TabsComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-tabs\n        [orientation]=\"orientation\"\n        [sticky]=\"sticky\"\n    >\n      <mat-tab-group\n        mat-stretch-tabs\n        preserveContent\n        [disableRipple]=\"true\"\n      >\n        <mat-tab>\n          <ng-template mat-tab-label>\n            <i class=\"uil uil-lg uil-apps\"></i>\n            <span>Apps</span>\n          </ng-template>\n          <div>Content 1</div>\n        </mat-tab>\n        <mat-tab label=\"Second\"> Content 2 </mat-tab>\n        <mat-tab label=\"Third\"> Content 3 </mat-tab>\n      </mat-tab-group>\n    </pm-tabs>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
                 "file": "src/components/inputs/button/button.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
@@ -8473,21 +8640,21 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/components/inputs/dropdown-actions/dropdown-actions.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story<DropdownActionsComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-dropdown-actions\n      [actions]=\"actions\"\n    >\n    </pm-dropdown-actions>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "src/components/inputs/copy-content-input/copy-content-input.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story<CopyContentInputComponent>",
                 "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-copy-content-input\n      [text]=\"text\"\n      [disabled]=\"disabled\"\n      [copyCallback]=\"copyCallback\"\n      [fillHeight]=\"fillHeight\"\n      [btnColor]=\"btnColor\"\n      [borderRadius]=\"borderRadius\"\n    >\n    </pm-copy-content-input>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/inputs/dropdown-actions/dropdown-actions.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<DropdownActionsComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-dropdown-actions\n      [actions]=\"actions\"\n    >\n    </pm-dropdown-actions>\n  `\n})"
             },
             {
                 "name": "Template",
@@ -8508,46 +8675,6 @@
                 "deprecationMessage": "",
                 "type": "Story<RadioButtonComponent>",
                 "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-radio-button\n      [orientation]=\"orientation\"\n      [values]=\"values\"\n      [selectedValue]=\"selectedValue\"\n      [disabled]=\"disabled\"\n    >\n    </pm-radio-button>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/components/cards/basic-card/basic-card.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story<BasicCardComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-basic-card\n      [hoverable]=\"hoverable\"\n      [borderRadius]=\"borderRadius\"\n      [paddingClass]=\"paddingClass\"\n    >\n    </pm-basic-card>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/components/containers/expansion-panel/expansion-panel.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story<ExpansionPanelComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-expansion-panel\n    >\n        Conteúdo aqui\n    </pm-expansion-panel>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/components/cards/icon-card/icon-card.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story<IconCardComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-icon-card\n      [textPosition]=\"textPosition\"\n      [paddingClass]=\"paddingClass\"\n      [hoverable]=\"hoverable\"\n      [orientation]=\"orientation\"\n      [iconClass]=\"iconClass\"\n      [title]=\"title\"\n      [subtitle]=\"subtitle\"\n      [iconCardArray]=\"iconCardArray\"\n    >\n    </pm-icon-card>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/components/containers/tabs/tabs.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "StoryFn<TabsComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-tabs\n        [orientation]=\"orientation\"\n        [sticky]=\"sticky\"\n    >\n      <mat-tab-group\n        mat-stretch-tabs\n        preserveContent\n        [disableRipple]=\"true\"\n      >\n        <mat-tab>\n          <ng-template mat-tab-label>\n            <i class=\"uil uil-lg uil-apps\"></i>\n            <span>Apps</span>\n          </ng-template>\n          <div>Content 1</div>\n        </mat-tab>\n        <mat-tab label=\"Second\"> Content 2 </mat-tab>\n        <mat-tab label=\"Third\"> Content 3 </mat-tab>\n      </mat-tab-group>\n    </pm-tabs>\n  `\n})"
             },
             {
                 "name": "Template",
@@ -9312,18 +9439,6 @@
                     "defaultValue": "[\n  DialogComponent,\n  TriggerButtonComponent,\n  ResultSearchElements\n]"
                 }
             ],
-            ".storybook/main.ts": [
-                {
-                    "name": "config",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": ".storybook/main.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "StorybookConfig",
-                    "defaultValue": "{\n  stories: [\n    // \"../stories/**/*.stories.@(js|jsx|ts|tsx|mdx)\",\n    \"../src/**/*.stories.@(mdx)\"],\n  staticDirs: ['public'],\n  addons: [\n    // \"storybook-ng-source-addon\",\n    \"@storybook/addon-links\",\n    {\n      name: '@storybook/addon-essentials',\n      options: {\n        actions: false\n      }\n    },\n    \"@storybook/addon-mdx-gfm\"\n  ],\n  framework: {\n    name: \"@storybook/angular\",\n    options: {}\n  },\n  docs: {\n    autodocs: \"tag\"\n  }\n} as StorybookConfig"
-                }
-            ],
             "src/services/color-theme/color-theme.service.ts": [
                 {
                     "name": "darkTheme",
@@ -9333,7 +9448,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "object",
-                    "defaultValue": "{\n  'color-primary': '#455363',\n  'color-default': '#455363',\n  'background-color': '#1f2935',\n  'text-color': '#fff'\n}"
+                    "defaultValue": "{\"color-scheme\":\"dark\",\"bg-default\":\"#212121\",\"bg-default-rgb\":\"33,33,33\",\"bg-pale\":\"#f5f5f5\",\"bg-pale-rgb\":\"245,245,245\",\"color-font-default\":\"#5B5F67\",\"color-font-default-rgb\":\"91,95,103\",\"color-gray-light\":\"#333333\",\"color-gray-light-rgb\":\"51,51,51\",\"color-gray-medium\":\"#525252\",\"color-gray-medium-rgb\":\"82,82,82\",\"color-gray-dark\":\"#727272\",\"color-gray-dark-rgb\":\"114,114,114\",\"color-gray-darker\":\"#919191\",\"color-gray-darker-rgb\":\"145,145,145\",\"color-primary\":\"#a57cde\",\"color-primary-rgb\":\"165,124,222\",\"color-primary-pale\":\"#a684d6\",\"color-primary-pale-rgb\":\"166.33878,132.2,213.8\",\"color-primary-states\":\"#c1a5e8\",\"color-primary-states-rgb\":\"192.9878,164.7378,232.2622\",\"color-primary-sat\":\"#9768d9\",\"color-primary-sat-rgb\":\"151.0061,103.6311,216.8689\",\"color-secondary\":\"#4f878b\",\"color-secondary-rgb\":\"79,135,139\",\"color-secondary-pale\":\"#5a7e80\",\"color-secondary-pale-rgb\":\"89.9,125.55333,128.1\",\"color-secondary-states\":\"#65a3a8\",\"color-secondary-states-rgb\":\"101.33486,163.24312,167.66514\",\"color-secondary-sat\":\"#46777b\",\"color-secondary-sat-rgb\":\"69.75917,119.20872,122.74083\",\"color-success\":\"#6bd098\",\"color-success-rgb\":\"107,208,152\",\"color-success-pale\":\"#75c699\",\"color-success-pale-rgb\":\"116.75,198.25,153.06188\",\"color-success-states\":\"#92dcb3\",\"color-success-states-rgb\":\"145.70769,220.29231,178.93846\",\"color-success-sat\":\"#58ca8b\",\"color-success-sat-rgb\":\"87.64615,201.85385,138.53077\",\"color-info\":\"#51bcda\",\"color-info-rgb\":\"81,188,218\",\"color-info-pale\":\"#5cb6cf\",\"color-info-pale-rgb\":\"91.55,182.07044,207.45\",\"color-info-states\":\"#7bcce3\",\"color-info-states-rgb\":\"123.05687,204.19431,226.94313\",\"color-info-sat\":\"#3cb4d6\",\"color-info-sat-rgb\":\"59.97156,179.90284,213.52844\",\"color-warning\":\"#fbc658\",\"color-warning-rgb\":\"251,198,88\",\"color-warning-pale\":\"#f2c361\",\"color-warning-pale-rgb\":\"242.45,195.01012,96.55\",\"color-warning-states\":\"#fcd78a\",\"color-warning-states-rgb\":\"252.19298,215,137.80702\",\"color-warning-sat\":\"#fabe3f\",\"color-warning-sat-rgb\":\"250.40351,189.5,63.09649\",\"color-danger\":\"#ef8157\",\"color-danger-rgb\":\"239,129,87\",\"color-danger-pale\":\"#e68560\",\"color-danger-pale-rgb\":\"229.8,133.11579,96.2\",\"color-danger-states\":\"#f3a486\",\"color-danger-states-rgb\":\"243.43478,163.92391,133.56522\",\"color-danger-sat\":\"#ed7040\",\"color-danger-sat-rgb\":\"236.78261,111.53804,63.71739\",\"color-light\":\"#3a3a3a\",\"color-light-rgb\":\"58,58,58\",\"color-light-pale\":\"#3a3a3a\",\"color-light-pale-rgb\":\"58.0,58.0,58.0\",\"color-light-states\":\"#545454\",\"color-light-states-rgb\":\"83.5,83.5,83.5\",\"color-light-sat\":\"#2d2d2d\",\"color-light-sat-rgb\":\"45.25,45.25,45.25\",\"color-default\":\"#4f878b\",\"color-default-rgb\":\"79,135,139\",\"color-default-pale\":\"#5a7e80\",\"color-default-pale-rgb\":\"89.9,125.55333,128.1\",\"color-default-states\":\"#65a3a8\",\"color-default-states-rgb\":\"101.33486,163.24312,167.66514\",\"color-default-sat\":\"#46777b\",\"color-default-sat-rgb\":\"69.75917,119.20872,122.74083\",\"bg-default-1\":\"#292929\",\"border-radius-xxl\":\"50px\",\"border-radius-xl\":\"30px\",\"border-radius-lg\":\"20px\",\"border-radius-md\":\"10px\",\"border-radius-sm\":\"5px\",\"border-radius-default\":\"10px\",\"border-width-sm\":\"1px\",\"border-width-md\":\"2px\",\"border-width-lg\":\"3px\",\"border-width-xl\":\"4px\",\"border-width-default\":\"1px\",\"bg-disabled\":\"rgba(0,0,0,0.3)\",\"disabled-opacity\":\"0.4\",\"navbar-height\":\"64px\",\"navbar-misc-bg\":\"#9d6feb\",\"sidebar-width\":\"250px\",\"sidebar-mini-width\":\"58px\",\"general-content-width\":\"1100px\",\"gradient-default-top\":\"linear-gradient(to top,#7873ed,#9765e1)\",\"gradient-default-right\":\"linear-gradient(to right,#7873ed,#9765e1)\",\"gradient-default-bottom\":\"linear-gradient(to bottom,#7873ed,#9765e1)\",\"gradient-default-left\":\"linear-gradient(to left,#7873ed,#9765e1)\",\"gradient-default\":\"linear-gradient(to left,#7873ed,#9765e1)\"}"
                 },
                 {
                     "name": "defaultTheme",
@@ -9343,7 +9458,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "object",
-                    "defaultValue": "{\n  'color-primary': '#455363',\n  'color-default': '#455363',\n  'background-color': '#1f2935',\n  'text-color': '#fff'\n}"
+                    "defaultValue": "{\"color-scheme\":\"normal\",\"bg-default\":\"#F3F4F6\",\"bg-default-rgb\":\"243,244,246\",\"bg-pale\":\"#f5f5f5\",\"bg-pale-rgb\":\"245,245,245\",\"color-font-default\":\"#5B5F67\",\"color-font-default-rgb\":\"91,95,103\",\"color-gray-light\":\"#DDDDDD\",\"color-gray-light-rgb\":\"221,221,221\",\"color-gray-medium\":\"#CCCCCC\",\"color-gray-medium-rgb\":\"204,204,204\",\"color-gray-dark\":\"#9A9A9A\",\"color-gray-dark-rgb\":\"154,154,154\",\"color-gray-darker\":\"#505050\",\"color-gray-darker-rgb\":\"80,80,80\",\"color-primary\":\"#efa76c\",\"color-primary-rgb\":\"239,167,108\",\"color-primary-pale\":\"#e7a874\",\"color-primary-pale-rgb\":\"230.85,167.80878,116.15\",\"color-primary-states\":\"#ea8b3e\",\"color-primary-states-rgb\":\"233.99387,139.46626,62.00613\",\"color-primary-sat\":\"#ffa55c\",\"color-primary-sat-rgb\":\"255,165.41221,92\",\"color-secondary\":\"#6F5897\",\"color-secondary-rgb\":\"111,88,151\",\"color-secondary-pale\":\"#72648b\",\"color-secondary-pale-rgb\":\"114.2246,99.95,139.05\",\"color-secondary-states\":\"#574577\",\"color-secondary-states-rgb\":\"87.31381,69.22176,118.77824\",\"color-secondary-sat\":\"#6534bb\",\"color-secondary-sat-rgb\":\"101.32619,52.15,186.85\",\"color-success\":\"#6bd098\",\"color-success-rgb\":\"107,208,152\",\"color-success-pale\":\"#75c699\",\"color-success-pale-rgb\":\"116.75,198.25,153.06188\",\"color-success-states\":\"#44c47d\",\"color-success-states-rgb\":\"68.29231,195.70769,125.06154\",\"color-success-sat\":\"#4eed95\",\"color-success-sat-rgb\":\"77.75,237.25,148.81436\",\"color-info\":\"#51bcda\",\"color-info-rgb\":\"81,188,218\",\"color-info-pale\":\"#5cb6cf\",\"color-info-pale-rgb\":\"91.55,182.07044,207.45\",\"color-info-states\":\"#2ba9cd\",\"color-info-states-rgb\":\"43.48815,169.25118,204.51185\",\"color-info-sat\":\"#31cefa\",\"color-info-sat-rgb\":\"49.35,205.78869,249.65\",\"color-warning\":\"#fbc658\",\"color-warning-rgb\":\"251,198,88\",\"color-warning-pale\":\"#f2c361\",\"color-warning-pale-rgb\":\"242.45,195.01012,96.55\",\"color-warning-states\":\"#fab526\",\"color-warning-states-rgb\":\"249.80702,181,38.19298\",\"color-warning-sat\":\"#ffc754\",\"color-warning-sat-rgb\":\"255,199.39877,84\",\"color-danger\":\"#ef8157\",\"color-danger-rgb\":\"239,129,87\",\"color-danger-pale\":\"#e68560\",\"color-danger-pale-rgb\":\"229.8,133.11579,96.2\",\"color-danger-states\":\"#eb5e28\",\"color-danger-states-rgb\":\"234.56522,94.07609,40.43478\",\"color-danger-sat\":\"#ff7a47\",\"color-danger-sat-rgb\":\"255,121.84211,71\",\"color-light\":\"#eff3f8\",\"color-light-rgb\":\"239,243,248\",\"color-light-pale\":\"#f0f3f7\",\"color-light-pale-rgb\":\"240.15,243.12778,246.85\",\"color-light-states\":\"#ccd8e8\",\"color-light-states-rgb\":\"203.52174,216.3913,232.47826\",\"color-light-sat\":\"#ecf3fb\",\"color-light-sat-rgb\":\"235.55,242.61667,251.45\",\"color-default\":\"#6F5897\",\"color-default-rgb\":\"111,88,151\",\"color-default-pale\":\"#72648b\",\"color-default-pale-rgb\":\"114.2246,99.95,139.05\",\"color-default-states\":\"#574577\",\"color-default-states-rgb\":\"87.31381,69.22176,118.77824\",\"color-default-sat\":\"#6534bb\",\"color-default-sat-rgb\":\"101.32619,52.15,186.85\",\"bg-default-1\":\"#fafcfe\",\"border-radius-xxl\":\"50px\",\"border-radius-xl\":\"30px\",\"border-radius-lg\":\"20px\",\"border-radius-md\":\"10px\",\"border-radius-sm\":\"5px\",\"border-radius-default\":\"10px\",\"border-width-sm\":\"1px\",\"border-width-md\":\"2px\",\"border-width-lg\":\"3px\",\"border-width-xl\":\"4px\",\"border-width-default\":\"1px\",\"bg-disabled\":\"rgba(0,0,0,0.3)\",\"disabled-opacity\":\"0.4\",\"navbar-height\":\"64px\",\"navbar-misc-bg\":\"#9d6feb\",\"sidebar-width\":\"250px\",\"sidebar-mini-width\":\"58px\",\"general-content-width\":\"1100px\",\"gradient-default-top\":\"linear-gradient(to top,#7873ed,#9765e1)\",\"gradient-default-right\":\"linear-gradient(to right,#7873ed,#9765e1)\",\"gradient-default-bottom\":\"linear-gradient(to bottom,#7873ed,#9765e1)\",\"gradient-default-left\":\"linear-gradient(to left,#7873ed,#9765e1)\",\"gradient-default\":\"linear-gradient(to left,#7873ed,#9765e1)\"}"
                 },
                 {
                     "name": "lightTheme",
@@ -9353,7 +9468,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "object",
-                    "defaultValue": "{\n  'color-primary': '#fff',\n  'color-default': '#fff',\n  'background-color': '#e5e5e5',\n  'text-color': '#2d2d2d'\n}"
+                    "defaultValue": "{\"color-scheme\":\"light\",\"bg-default\":\"#F3F4F6\",\"bg-default-rgb\":\"243,244,246\",\"bg-pale\":\"#f5f5f5\",\"bg-pale-rgb\":\"245,245,245\",\"color-font-default\":\"#5B5F67\",\"color-font-default-rgb\":\"91,95,103\",\"color-gray-light\":\"#DDDDDD\",\"color-gray-light-rgb\":\"221,221,221\",\"color-gray-medium\":\"#CCCCCC\",\"color-gray-medium-rgb\":\"204,204,204\",\"color-gray-dark\":\"#9A9A9A\",\"color-gray-dark-rgb\":\"154,154,154\",\"color-gray-darker\":\"#505050\",\"color-gray-darker-rgb\":\"80,80,80\",\"color-primary\":\"#42ADB3\",\"color-primary-rgb\":\"66,173,179\",\"color-primary-pale\":\"#4ea2a7\",\"color-primary-pale-rgb\":\"78.25,162.05088,166.75\",\"color-primary-states\":\"#34898e\",\"color-primary-states-rgb\":\"52.26122,136.98776,141.73878\",\"color-primary-sat\":\"#1dced8\",\"color-primary-sat-rgb\":\"29.25,205.84735,215.75\",\"color-secondary\":\"#646F7E\",\"color-secondary-rgb\":\"100,111,126\",\"color-secondary-pale\":\"#6f7173\",\"color-secondary-pale-rgb\":\"111.3,112.73846,114.7\",\"color-secondary-states\":\"#4d5662\",\"color-secondary-states-rgb\":\"77.43363,85.95133,97.56637\",\"color-secondary-sat\":\"#426aa0\",\"color-secondary-sat-rgb\":\"66.1,105.78462,159.9\",\"color-success\":\"#6bd098\",\"color-success-rgb\":\"107,208,152\",\"color-success-pale\":\"#75c699\",\"color-success-pale-rgb\":\"116.75,198.25,153.06188\",\"color-success-states\":\"#44c47d\",\"color-success-states-rgb\":\"68.29231,195.70769,125.06154\",\"color-success-sat\":\"#4eed95\",\"color-success-sat-rgb\":\"77.75,237.25,148.81436\",\"color-info\":\"#51bcda\",\"color-info-rgb\":\"81,188,218\",\"color-info-pale\":\"#5cb6cf\",\"color-info-pale-rgb\":\"91.55,182.07044,207.45\",\"color-info-states\":\"#2ba9cd\",\"color-info-states-rgb\":\"43.48815,169.25118,204.51185\",\"color-info-sat\":\"#31cefa\",\"color-info-sat-rgb\":\"49.35,205.78869,249.65\",\"color-warning\":\"#fbc658\",\"color-warning-rgb\":\"251,198,88\",\"color-warning-pale\":\"#f2c361\",\"color-warning-pale-rgb\":\"242.45,195.01012,96.55\",\"color-warning-states\":\"#fab526\",\"color-warning-states-rgb\":\"249.80702,181,38.19298\",\"color-warning-sat\":\"#ffc754\",\"color-warning-sat-rgb\":\"255,199.39877,84\",\"color-danger\":\"#ef8157\",\"color-danger-rgb\":\"239,129,87\",\"color-danger-pale\":\"#e68560\",\"color-danger-pale-rgb\":\"229.8,133.11579,96.2\",\"color-danger-states\":\"#eb5e28\",\"color-danger-states-rgb\":\"234.56522,94.07609,40.43478\",\"color-danger-sat\":\"#ff7a47\",\"color-danger-sat-rgb\":\"255,121.84211,71\",\"color-light\":\"#eff3f8\",\"color-light-rgb\":\"239,243,248\",\"color-light-pale\":\"#f0f3f7\",\"color-light-pale-rgb\":\"240.15,243.12778,246.85\",\"color-light-states\":\"#ccd8e8\",\"color-light-states-rgb\":\"203.52174,216.3913,232.47826\",\"color-light-sat\":\"#ecf3fb\",\"color-light-sat-rgb\":\"235.55,242.61667,251.45\",\"color-default\":\"#646F7E\",\"color-default-rgb\":\"100,111,126\",\"color-default-pale\":\"#6f7173\",\"color-default-pale-rgb\":\"111.3,112.73846,114.7\",\"color-default-states\":\"#4d5662\",\"color-default-states-rgb\":\"77.43363,85.95133,97.56637\",\"color-default-sat\":\"#426aa0\",\"color-default-sat-rgb\":\"66.1,105.78462,159.9\",\"bg-default-1\":\"#fafcfe\",\"border-radius-xxl\":\"50px\",\"border-radius-xl\":\"30px\",\"border-radius-lg\":\"20px\",\"border-radius-md\":\"10px\",\"border-radius-sm\":\"5px\",\"border-radius-default\":\"10px\",\"border-width-sm\":\"1px\",\"border-width-md\":\"2px\",\"border-width-lg\":\"3px\",\"border-width-xl\":\"4px\",\"border-width-default\":\"1px\",\"bg-disabled\":\"rgba(0,0,0,0.3)\",\"disabled-opacity\":\"0.4\",\"navbar-height\":\"64px\",\"navbar-misc-bg\":\"#9d6feb\",\"sidebar-width\":\"250px\",\"sidebar-mini-width\":\"58px\",\"general-content-width\":\"1100px\",\"gradient-default-top\":\"linear-gradient(to top,#7873ed,#9765e1)\",\"gradient-default-right\":\"linear-gradient(to right,#7873ed,#9765e1)\",\"gradient-default-bottom\":\"linear-gradient(to bottom,#7873ed,#9765e1)\",\"gradient-default-left\":\"linear-gradient(to left,#7873ed,#9765e1)\",\"gradient-default\":\"linear-gradient(to left,#7873ed,#9765e1)\"}"
                 }
             ],
             "scripts/stories/default.ts": [
@@ -9386,6 +9501,102 @@
                     "deprecationMessage": "",
                     "type": "Story<XXXComponent>",
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-XXXName\n    >\n    </pm-XXXName>\n  `\n})"
+                }
+            ],
+            "src/components/cards/basic-card/basic-card.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/cards/basic-card/basic-card.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "object",
+                    "defaultValue": "{\n  hoverable: false,\n  borderRadius: Sizes.md,\n  paddingClass: 'p-3'\n}"
+                },
+                {
+                    "name": "DefaultBasicCard",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/cards/basic-card/basic-card.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/cards/basic-card/basic-card.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story<BasicCardComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-basic-card\n      [hoverable]=\"hoverable\"\n      [borderRadius]=\"borderRadius\"\n      [paddingClass]=\"paddingClass\"\n    >\n    </pm-basic-card>\n  `\n})"
+                }
+            ],
+            "src/components/containers/expansion-panel/expansion-panel.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/containers/expansion-panel/expansion-panel.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "object",
+                    "defaultValue": "{\n}"
+                },
+                {
+                    "name": "DefaultExpansionPanel",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/containers/expansion-panel/expansion-panel.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/containers/expansion-panel/expansion-panel.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story<ExpansionPanelComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-expansion-panel\n    >\n        Conteúdo aqui\n    </pm-expansion-panel>\n  `\n})"
+                }
+            ],
+            "src/components/containers/tabs/tabs.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/containers/tabs/tabs.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "object",
+                    "defaultValue": "{\n  orientation: 'horizontal',\n  sticky: true\n}"
+                },
+                {
+                    "name": "DefaultTabs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/containers/tabs/tabs.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/containers/tabs/tabs.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "StoryFn<TabsComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-tabs\n        [orientation]=\"orientation\"\n        [sticky]=\"sticky\"\n    >\n      <mat-tab-group\n        mat-stretch-tabs\n        preserveContent\n        [disableRipple]=\"true\"\n      >\n        <mat-tab>\n          <ng-template mat-tab-label>\n            <i class=\"uil uil-lg uil-apps\"></i>\n            <span>Apps</span>\n          </ng-template>\n          <div>Content 1</div>\n        </mat-tab>\n        <mat-tab label=\"Second\"> Content 2 </mat-tab>\n        <mat-tab label=\"Third\"> Content 3 </mat-tab>\n      </mat-tab-group>\n    </pm-tabs>\n  `\n})"
                 }
             ],
             "src/components/inputs/checkbox/checkbox.stories.ts": [
@@ -9472,38 +9683,6 @@
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-combo-box\n      [items]=\"items\"\n      [disabled]=\"disabled\"\n      [selectedItem]=\"selectedItem\"\n    >\n    </pm-combo-box>\n  `\n})"
                 }
             ],
-            "src/components/inputs/dropdown-actions/dropdown-actions.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/inputs/dropdown-actions/dropdown-actions.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "object",
-                    "defaultValue": "{\n  actions: []\n}"
-                },
-                {
-                    "name": "DefaultDropdownActions",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/inputs/dropdown-actions/dropdown-actions.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/inputs/dropdown-actions/dropdown-actions.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Story<DropdownActionsComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-dropdown-actions\n      [actions]=\"actions\"\n    >\n    </pm-dropdown-actions>\n  `\n})"
-                }
-            ],
             "src/components/inputs/copy-content-input/copy-content-input.stories.ts": [
                 {
                     "name": "defaultArgs",
@@ -9534,6 +9713,38 @@
                     "deprecationMessage": "",
                     "type": "Story<CopyContentInputComponent>",
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-copy-content-input\n      [text]=\"text\"\n      [disabled]=\"disabled\"\n      [copyCallback]=\"copyCallback\"\n      [fillHeight]=\"fillHeight\"\n      [btnColor]=\"btnColor\"\n      [borderRadius]=\"borderRadius\"\n    >\n    </pm-copy-content-input>\n  `\n})"
+                }
+            ],
+            "src/components/inputs/dropdown-actions/dropdown-actions.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/inputs/dropdown-actions/dropdown-actions.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "object",
+                    "defaultValue": "{\n  actions: []\n}"
+                },
+                {
+                    "name": "DefaultDropdownActions",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/inputs/dropdown-actions/dropdown-actions.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/inputs/dropdown-actions/dropdown-actions.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story<DropdownActionsComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-dropdown-actions\n      [actions]=\"actions\"\n    >\n    </pm-dropdown-actions>\n  `\n})"
                 }
             ],
             "src/components/inputs/multi-select/multi-select.stories.ts": [
@@ -9638,102 +9849,6 @@
                     "deprecationMessage": "",
                     "type": "Story<RadioButtonComponent>",
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-radio-button\n      [orientation]=\"orientation\"\n      [values]=\"values\"\n      [selectedValue]=\"selectedValue\"\n      [disabled]=\"disabled\"\n    >\n    </pm-radio-button>\n  `\n})"
-                }
-            ],
-            "src/components/cards/basic-card/basic-card.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/cards/basic-card/basic-card.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "object",
-                    "defaultValue": "{\n  hoverable: false,\n  borderRadius: Sizes.md,\n  paddingClass: 'p-3'\n}"
-                },
-                {
-                    "name": "DefaultBasicCard",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/cards/basic-card/basic-card.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/cards/basic-card/basic-card.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Story<BasicCardComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-basic-card\n      [hoverable]=\"hoverable\"\n      [borderRadius]=\"borderRadius\"\n      [paddingClass]=\"paddingClass\"\n    >\n    </pm-basic-card>\n  `\n})"
-                }
-            ],
-            "src/components/containers/expansion-panel/expansion-panel.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/containers/expansion-panel/expansion-panel.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "object",
-                    "defaultValue": "{\n}"
-                },
-                {
-                    "name": "DefaultExpansionPanel",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/containers/expansion-panel/expansion-panel.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/containers/expansion-panel/expansion-panel.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Story<ExpansionPanelComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-expansion-panel\n    >\n        Conteúdo aqui\n    </pm-expansion-panel>\n  `\n})"
-                }
-            ],
-            "src/components/containers/tabs/tabs.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/containers/tabs/tabs.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "object",
-                    "defaultValue": "{\n  orientation: 'horizontal',\n  sticky: true\n}"
-                },
-                {
-                    "name": "DefaultTabs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/containers/tabs/tabs.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/containers/tabs/tabs.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "StoryFn<TabsComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-tabs\n        [orientation]=\"orientation\"\n        [sticky]=\"sticky\"\n    >\n      <mat-tab-group\n        mat-stretch-tabs\n        preserveContent\n        [disableRipple]=\"true\"\n      >\n        <mat-tab>\n          <ng-template mat-tab-label>\n            <i class=\"uil uil-lg uil-apps\"></i>\n            <span>Apps</span>\n          </ng-template>\n          <div>Content 1</div>\n        </mat-tab>\n        <mat-tab label=\"Second\"> Content 2 </mat-tab>\n        <mat-tab label=\"Third\"> Content 3 </mat-tab>\n      </mat-tab-group>\n    </pm-tabs>\n  `\n})"
                 }
             ],
             "src/components/layout/sidebar/sidebar.stories.ts": [
@@ -9980,18 +10095,6 @@
                     "deprecationMessage": "",
                     "type": "[]",
                     "defaultValue": "[\n  NgIfLoadedDirective,\n  SpinnerComponent\n]"
-                }
-            ],
-            ".storybook/preview.ts": [
-                {
-                    "name": "preview",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": ".storybook/preview.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Preview",
-                    "defaultValue": "{\n  parameters: {\n    actions: {argTypesRegex: \"^on[A-Z].*\"},\n    controls: {\n      matchers: {\n        color: /(background|color)$/i,\n        date: /Date$/,\n      },\n    },\n    docs: { inlineStories: true },\n  }\n}"
                 }
             ]
         },
@@ -10348,26 +10451,6 @@
         "count": 3,
         "status": "low",
         "files": [
-            {
-                "filePath": ".storybook/main.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "config",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": ".storybook/preview.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "preview",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
             {
                 "filePath": "scripts/stories/default.ts",
                 "type": "variable",
