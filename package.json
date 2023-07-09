@@ -16,8 +16,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "docs:json": "compodoc -p ./tsconfig.json -e json -d .",
-    "storybook": "npm run docs:json && storybook dev -p 6006",
-    "storybook:ng": "npm run docs:json && ng run lib:serve-storybook",
+    "storybook": "npm run docs:json && ng run lib:storybook",
     "build-storybook": "npm run docs:json && storybook build -- -o ./dist/storybook",
     "build-storybook-dist": "ng run lib:build-storybook",
     "deploy-npm": "cd dist/components && npm publish --access=public"
