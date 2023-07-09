@@ -70,7 +70,7 @@
               "-e",
               "json",
               "-d",
-              "projects/my-lib"
+              "src"
             ],
             "outputDir": "dist/storybook"
           }
