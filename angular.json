@@ -30,10 +30,9 @@
       "prefix": "pm",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "tsConfig": "tsconfig.lib.json",
-            "project": "ng-package.json",
             "styles": [
               "src/styles/base_css.scss",
               "src/styles/base.scss"
@@ -60,14 +59,21 @@
         "storybook": {
           "builder": "@storybook/angular:start-storybook",
           "options": {
+            "configDir": ".storybook",
             "browserTarget": "lib:build",
-            "port": 4400
+            "compodoc": true,
+            "compodocArgs": ["-e", "json", "-d", "."],
+            "port": 6006
           }
         },
         "build-storybook": {
           "builder": "@storybook/angular:build-storybook",
           "options": {
-            "browserTarget": "lib:build"
+            "browserTarget": "lib:build",
+            "configDir": ".storybook",
+            "compodoc": true,
+            "compodocArgs": ["-e", "json", "-d", "."],
+            "outputDir": "dist"
           }
         }
       }
