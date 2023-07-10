@@ -29,7 +29,7 @@ export const argTypes = {
   parameters={{ badges: [ 'beta' ] }}
   decorators={[
     moduleMetadata({
-      imports: [SidebarModule, BrowserAnimationsModule, RouterModule.forRoot([])],
+      imports: [SidebarModule, BrowserAnimationsModule, RouterModule],
       providers: [{provide: APP_BASE_HREF, useValue: '/'}],
     })
   ]}
