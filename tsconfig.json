@@ -9,7 +9,7 @@
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
     "importHelpers": true,
-    "module": "es2020",
+    "module": "ES2022",
     "moduleResolution": "node",
     "noFallthroughCasesInSwitch": true,
     "noImplicitAny": false,
@@ -17,13 +17,17 @@
     "noImplicitReturns": true,
     "noPropertyAccessFromIndexSignature": true,
     "outDir": "./dist/out-tsc",
+    "resolveJsonModule": true,
     "sourceMap": true,
     "strict": true,
     "strictNullChecks": false,
     "strictPropertyInitialization": false,
     "target": "ES2022",
+    "types": [
+      "node"
+    ],
     "lib": [
-      "es2020",
+      "ES2022",
       "dom"
     ],
     "useDefineForClassFields": false

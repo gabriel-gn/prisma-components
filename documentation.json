@@ -30,7 +30,7 @@
                 }
             ],
             "indexSignatures": [],
-            "kind": 165,
+            "kind": 168,
             "methods": []
         },
         {
@@ -62,7 +62,7 @@
                 }
             ],
             "indexSignatures": [],
-            "kind": 165,
+            "kind": 168,
             "methods": []
         },
         {
@@ -94,7 +94,7 @@
                 }
             ],
             "indexSignatures": [],
-            "kind": 165,
+            "kind": 168,
             "methods": []
         },
         {
@@ -216,7 +216,7 @@
                 }
             ],
             "indexSignatures": [],
-            "kind": 165,
+            "kind": 168,
             "methods": []
         },
         {
@@ -257,7 +257,7 @@
                 }
             ],
             "indexSignatures": [],
-            "kind": 165,
+            "kind": 168,
             "methods": []
         },
         {
@@ -298,7 +298,7 @@
                 }
             ],
             "indexSignatures": [],
-            "kind": 165,
+            "kind": 168,
             "methods": []
         },
         {
@@ -357,7 +357,7 @@
                 }
             ],
             "indexSignatures": [],
-            "kind": 165,
+            "kind": 168,
             "methods": []
         },
         {
@@ -389,7 +389,7 @@
                 }
             ],
             "indexSignatures": [],
-            "kind": 165,
+            "kind": 168,
             "methods": []
         },
         {
@@ -475,7 +475,7 @@
                 }
             ],
             "indexSignatures": [],
-            "kind": 165,
+            "kind": 168,
             "methods": []
         }
     ],
@@ -520,7 +520,7 @@
                     "line": 30,
                     "modifierKind": [
                         121,
-                        144
+                        146
                     ]
                 }
             ],
@@ -711,7 +711,7 @@
                     "line": 13,
                     "modifierKind": [
                         123,
-                        144
+                        146
                     ]
                 },
                 {
@@ -974,7 +974,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
-                        131
+                        132
                     ],
                     "jsdoctags": [
                         {
@@ -1095,6 +1095,8 @@
             "sourceCode": "import {Directive, HostListener, Output, EventEmitter} from '@angular/core';\n\n// ref: https://stackoverflow.com/a/43629814/13335507\n\n// tslint:disable-next-line:directive-selector\n@Directive({selector: '[longPress]'})\nexport class LongPressDirective {\n\n    @Output()\n    longPress = new EventEmitter();\n\n    private _timeout: any;\n    private _isLong: boolean = true;\n\n    @HostListener('touchstart')\n    @HostListener('mousedown')\n    onMouseDown(e: Event): void {\n        this._timeout = setTimeout(() => {\n            if (this._isLong) {\n                this.longPress.emit(e);\n            }\n        }, 500);\n    }\n\n    @HostListener('touchmove')\n    onTouchScroll(e): void {\n        this._isLong = false;\n    }\n\n    @HostListener('touchend')\n    @HostListener('mouseup')\n    @HostListener('mouseleave')\n    onMouseUp(): void {\n        this._isLong = true;\n        clearTimeout(this._timeout);\n    }\n\n}\n",
             "selector": "[longPress]",
             "providers": [],
+            "hostDirectives": [],
+            "standalone": false,
             "inputsClass": [],
             "outputsClass": [
                 {
@@ -1234,6 +1236,10 @@
                             "stringifiedArguments": "'mousedown'"
                         }
                     ],
+                    "modifierKind": [
+                        167,
+                        167
+                    ],
                     "jsdoctags": [
                         {
                             "name": "e",
@@ -1268,6 +1274,11 @@
                             "name": "HostListener",
                             "stringifiedArguments": "'mouseleave'"
                         }
+                    ],
+                    "modifierKind": [
+                        167,
+                        167,
+                        167
                     ]
                 },
                 {
@@ -1291,6 +1302,9 @@
                             "name": "HostListener",
                             "stringifiedArguments": "'touchmove'"
                         }
+                    ],
+                    "modifierKind": [
+                        167
                     ],
                     "jsdoctags": [
                         {
@@ -1316,6 +1330,8 @@
             "sourceCode": "import {Directive, HostListener} from '@angular/core';\nimport {Location} from '@angular/common';\n\n@Directive({\n    // tslint:disable-next-line:directive-selector\n    selector: '[navigationBackButton]'\n})\nexport class NavigationBackClickDirective {\n    constructor(\n      private location: Location\n    ) {\n    }\n\n    @HostListener('click')\n    onClick(): void {\n        this.location.back();\n    }\n}\n",
             "selector": "[navigationBackButton]",
             "providers": [],
+            "hostDirectives": [],
+            "standalone": false,
             "inputsClass": [],
             "outputsClass": [],
             "deprecated": false,
@@ -1347,6 +1363,9 @@
                             "name": "HostListener",
                             "stringifiedArguments": "'click'"
                         }
+                    ],
+                    "modifierKind": [
+                        167
                     ]
                 }
             ],
@@ -1387,6 +1406,8 @@
             "sourceCode": "import {\n  ComponentFactoryResolver,\n  Directive,\n  Inject,\n  Input,\n  TemplateRef,\n  ViewContainerRef\n} from '@angular/core';\nimport {IF_LOADED_SPINNER} from './injection';\nimport {ComponentType} from '@angular/cdk/overlay';\n\n@Directive({\n  // tslint:disable-next-line:directive-selector\n  selector: '[ngIfLoaded]'\n})\nexport class NgIfLoadedDirective {\n\n  public spinner: ComponentType<any>;\n\n  constructor(\n    @Inject(IF_LOADED_SPINNER) spinnerComponent: ComponentType<any>,\n    private templateRef: TemplateRef<any>,\n    private viewContainer: ViewContainerRef,\n    private resolver: ComponentFactoryResolver\n  ) {\n    this.spinner = spinnerComponent;\n  }\n\n\n  @Input()\n  set ngIfLoaded(value) {\n    if (value) {\n      this.viewContainer.clear();\n      this.viewContainer.createEmbeddedView(this.templateRef);\n    } else {\n      this.viewContainer.clear();\n      const factory = this.resolver.resolveComponentFactory(this.spinner);\n      this.viewContainer.createComponent(factory);\n    }\n  }\n\n}\n",
             "selector": "[ngIfLoaded]",
             "providers": [],
+            "hostDirectives": [],
+            "standalone": false,
             "inputsClass": [
                 {
                     "name": "ngIfLoaded",
@@ -1531,6 +1552,8 @@
             "sourceCode": "import {\n  Component,\n  ElementRef,\n  AfterViewInit,\n  ViewChild,\n  Renderer2,\n  OnDestroy,\n  ViewChildren, QueryList, Directive\n} from '@angular/core';\nimport {ComponentInjectorService} from '../component-injector.service';\nimport _ from 'lodash';\nimport {PaletteEntry, PaletteTreeEntry} from '../models';\nimport {CommandPaletteEntriesService} from '../command-palette-entries.service';\n\n// tslint:disable-next-line:directive-selector directive-class-suffix\n@Directive({selector: '.palette-result-entry'}) export class ResultSearchElements {\n  //\n}\n\n@Component({\n  selector: 'pm-command-palette-dialog',\n  templateUrl: './dialog.component.html',\n  styleUrls: ['./dialog.component.scss']\n})\nexport class DialogComponent implements AfterViewInit, OnDestroy {\n\n  @ViewChild('rootPanel', {static: true}) rootPanelComponent: ElementRef;\n  @ViewChild('searchResultContainer', {static: true}) searchResultContainer: ElementRef;\n  @ViewChildren(ResultSearchElements, { read: ElementRef }) resultEntryElements: QueryList<ElementRef>;\n  public searchString = '';\n  public searchIdTree: PaletteTreeEntry[] = []; // utilizado para navegar entre os ids da lista de entradas\n  public itself: any;\n  private currentFocusedElement: ElementRef;\n  private unlistener: () => void;\n  private deleteLatestSearchEntryOnDelete: boolean = false;\n\n  public paletteEntries: PaletteEntry[] = [];\n  public currentPaletteEntries: PaletteEntry[];\n  public searchPaletteEntries: PaletteEntry[];\n\n  constructor(\n    public readonly commandPaletteEntriesService: CommandPaletteEntriesService,\n    private componentInjectorService: ComponentInjectorService,\n    private renderer2: Renderer2\n  ) {\n    document.documentElement.style.setProperty(`overflow-x`, `hidden`, 'important');\n    this.commandPaletteEntriesService.paletteEntries$.subscribe(entries => {\n      this.paletteEntries = [...entries];\n      this.currentPaletteEntries = [...this.paletteEntries];\n      this.searchPaletteEntries = [...this.paletteEntries];\n    });\n  }\n\n  public ngAfterViewInit(): void {\n    this.clearAll();\n    this.unlistener = this.renderer2.listen('window', 'focusin', event => {\n      if (!(\n        event.target === this.rootPanelComponent.nativeElement\n        || this.rootPanelComponent.nativeElement.contains(event.target)\n      )) {\n        this.destroyItself();\n      }\n    });\n  }\n\n  public ngOnDestroy(): void {\n    document.documentElement.style.removeProperty(`overflow-x`);\n  }\n\n  public destroyItself(): void {\n    this.componentInjectorService.removeComponentFromBody(this.itself);\n  }\n\n  public focusSearchInput(): void {\n    setTimeout(() => {\n      this.currentFocusedElement = this.rootPanelComponent;\n      this.rootPanelComponent.nativeElement.children[0].children[1].focus();\n    }, 50);\n  }\n\n  private isSearchInputFocused(): boolean {\n    return this.currentFocusedElement === this.rootPanelComponent;\n  }\n\n  public focusNext(): void {\n    const arrayResultEntryElements = this.resultEntryElements.toArray();\n    const currentFocusIndex = arrayResultEntryElements.findIndex(item => item === this.currentFocusedElement);\n    const focusNextIndex = currentFocusIndex + 1;\n    if (focusNextIndex >= arrayResultEntryElements.length) {\n      this.focusSearchInput();\n    }\n    else if (!isNaN(focusNextIndex)) {\n      this.currentFocusedElement = arrayResultEntryElements[focusNextIndex];\n      this.currentFocusedElement.nativeElement.focus();\n    } else {\n      this.focusSearchInput();\n    }\n  }\n\n  public focusPrevious(): void {\n    const arrayResultEntryElements = this.resultEntryElements.toArray();\n    const currentFocusIndex = arrayResultEntryElements.findIndex(item => item === this.currentFocusedElement);\n    const focusPreviousIndex = currentFocusIndex - 1;\n    if (focusPreviousIndex < 0) {\n      this.focusSearchInput();\n    }\n    else if (!isNaN(focusPreviousIndex)) {\n      this.currentFocusedElement = arrayResultEntryElements[focusPreviousIndex];\n      this.currentFocusedElement.nativeElement.focus();\n    } else {\n      this.focusSearchInput();\n    }\n  }\n\n  public buildTreeIdEntriesFromPaletteEntry(paletteEntry: PaletteEntry, entriesToVerify: PaletteEntry[]): any {\n    let result;\n    let foundEqual: boolean = false;\n\n    const verifyEqual = (entryToVerify: PaletteEntry) => {\n      result.push({id: entryToVerify.id, label: entryToVerify.label});\n      foundEqual = _.isEqual(entryToVerify, paletteEntry);\n    };\n\n    const verifyChildren = (entryToVerify: PaletteEntry) => {\n      verifyEqual(entryToVerify);\n      if (!foundEqual) {\n        if (this.hasChildEntries(entryToVerify)) {\n          //@ts-ignore\n          for (const child of entryToVerify.entries) {\n            if (!foundEqual) {\n              verifyChildren(child);\n            } else {\n              break;\n            }\n          }\n        } else {\n          result = result.slice(0, 1);\n        }\n      }\n    };\n\n    for (const entry of entriesToVerify) {\n      if (!foundEqual) {\n        result = []; // toda vez que itera sobre um novo item do array base zera a árvore de results\n        verifyChildren(entry);\n      } else {\n        break;\n      }\n    }\n    return result;\n  }\n\n  public rebuildCurrentEntriesFromTree(treeEntryIndex: number, sliceTree: boolean = true): void {\n    let resultEntries = [...this.paletteEntries];\n    if (this.searchIdTree.length > 0) {\n      const slicedTreeEntries = this.searchIdTree.slice(0, treeEntryIndex);\n      // tslint:disable-next-line:prefer-for-of\n      for (let i = 0; i < slicedTreeEntries.length; i++) {\n        const treeEntry = slicedTreeEntries[i];\n        let paletteEntry;\n        if (i === 0) {\n          paletteEntry = resultEntries.find(entry => entry.id === treeEntry.id);\n        } else {\n          //@ts-ignore\n          paletteEntry = resultEntries[0].entries.find(entry => entry.id === treeEntry.id);\n        }\n        resultEntries = [paletteEntry];\n      }\n    }\n    if (sliceTree) {\n      this.searchIdTree = this.searchIdTree.slice(0, treeEntryIndex);\n    }\n    this.searchPaletteEntries = resultEntries;\n    this.currentPaletteEntries = resultEntries;\n  }\n\n  public searchAction(searchValue: any): void {\n    searchValue = `${searchValue}`.toLowerCase(); // força string\n    let idTreeArray: string[] = [];\n\n    const isSearchValueInEntry: (paletteEntry: PaletteEntry) => boolean = (paletteEntry: PaletteEntry) => {\n      const label = !!paletteEntry?.label ? `${paletteEntry.label}`.toLowerCase() : '';\n      const id = !!paletteEntry?.id ? `${paletteEntry.id}`.toLowerCase() : '';\n      return label.includes(searchValue)\n        || id.includes(searchValue);\n    };\n\n    const entryToFlat: (paletteEntry: PaletteEntry, idPrefix: string, parentIds: string[]) => void = (paletteEntry: PaletteEntry, idPrefix: string = '', parentIds: string[] = []) => {\n      idPrefix = !!idPrefix ? `${idPrefix}` : `${paletteEntry.id}`;\n      if (this.hasChildEntries(paletteEntry)) {\n        //@ts-ignore\n        for (let i = 0; i < paletteEntry.entries.length; i++) {\n          //@ts-ignore\n          const entry = paletteEntry.entries[i];\n          const idSuffix = `.entries[${i}]`;\n          const currentEntryId = `${idPrefix}${idSuffix}`;\n          if (isSearchValueInEntry(paletteEntry)) {\n            idTreeArray.push(idPrefix);\n          }\n          entryToFlat(entry, currentEntryId, parentIds);\n        }\n      } else {\n        if (isSearchValueInEntry(paletteEntry)) {\n          parentIds.push(idPrefix);\n          idTreeArray = [...idTreeArray, ...parentIds];\n        }\n      }\n    };\n\n    const entriesToFlat: (paletteEntries: PaletteEntry[]) => string[] = (paletteEntries: PaletteEntry[]) => {\n      if (paletteEntries.length > 0 && paletteEntries[0].id === 'results') {\n        //@ts-ignore\n        paletteEntries = paletteEntries[0].entries;\n      }\n      const resultEntry: PaletteEntry = {\n        label: 'Results',\n        id: 'results',\n        entries: paletteEntries\n      };\n\n      entryToFlat(resultEntry, '', []);\n      // if (this.searchIdTree.length === 0) {\n      //   return idTreeArray.slice(0);\n      // } else {\n      // }\n      return idTreeArray;\n    };\n\n    const flatEntriesToEntries: (flatEntries: string[], entriesToCheck: PaletteEntry[]) => PaletteEntry[] = (flatEntries: string[], entriesToCheck: PaletteEntry[]) => {\n      const resultObjToCheck = {results: {entries: [...entriesToCheck]}};\n      const entries: PaletteEntry[] = [];\n      for (const flatEntry of flatEntries) {\n        const entryToAdd: PaletteEntry = _.get(resultObjToCheck, flatEntry);\n        entryToAdd.treeId = flatEntry;\n        entries.push(entryToAdd);\n      }\n      return _.uniqWith(entries, _.isEqual); // remove objetos iguais\n    };\n\n    const doSearch = () => {\n      let entries: PaletteEntry[];\n      if (this.searchIdTree.length > 0) { // caso tenha entrado em alguma subcategoria, não busca por ela mesma\n        entries = this.currentPaletteEntries[0].entries;\n      } else {\n        entries = this.currentPaletteEntries;\n      }\n      this.rebuildCurrentEntriesFromTree(this.searchIdTree.length, false);\n      this.searchPaletteEntries = [\n        {\n          label: 'Results',\n          id: 'results',\n          entries: flatEntriesToEntries(\n            entriesToFlat(entries),\n            entries\n          )\n        }\n      ];\n    }\n\n    if (!!searchValue) {\n      this.deleteLatestSearchEntryOnDelete = false;\n      doSearch();\n    } else {\n      if (this.deleteLatestSearchEntryOnDelete) {\n        this.goBackOneLevel();\n      }\n      this.deleteLatestSearchEntryOnDelete = true;\n      this.searchPaletteEntries = [...this.currentPaletteEntries];\n    }\n  }\n\n  public goBackOneLevel(): void {\n    if (this.isSearchInputFocused()) {\n      if (this.searchIdTree.length === 0) {\n        this.destroyItself();\n      } else {\n        this.rebuildCurrentEntriesFromTree(this.searchIdTree.length - 1);\n        this.focusSearchInput();\n      }\n    } else {\n      this.focusSearchInput();\n    }\n  }\n\n  public hasChildEntries(paletteEntry: PaletteEntry): boolean {\n    //@ts-ignore\n    return paletteEntry?.entries && paletteEntry.entries.length > 0;\n  }\n\n  /**\n   * Com uma palette entry, cria toda a estrutura baseado na raiz e abre o dialog nela já\n   * @param paletteEntry: Entrada da lista raiz\n   */\n  public initFromPaletteEntry(paletteEntry: PaletteEntry): void {\n    this.searchIdTree = this.buildTreeIdEntriesFromPaletteEntry(paletteEntry, this.paletteEntries);\n    this.rebuildCurrentEntriesFromTree(this.searchIdTree.length, false);\n    this.searchString = '';\n    this.focusSearchInput();\n  }\n\n  /**\n   * caso tenha child entries, atualiza o dialog, senão executa a ação da entry.\n   */\n  public paletteEntryAction(paletteEntry: PaletteEntry): void {\n    if (this.hasChildEntries(paletteEntry)) {\n      this.initFromPaletteEntry(paletteEntry);\n    } else {\n      //@ts-ignore\n      paletteEntry.action();\n      this.destroyItself();\n    }\n  }\n\n  public clearAll(): void {\n    this.searchString = '';\n    this.searchIdTree = [];\n    this.searchPaletteEntries = [...this.paletteEntries];\n    this.currentPaletteEntries = [...this.paletteEntries];\n    this.focusSearchInput();\n  }\n\n}\n",
             "selector": ".palette-result-entry",
             "providers": [],
+            "hostDirectives": [],
+            "standalone": false,
             "inputsClass": [],
             "outputsClass": [],
             "deprecated": false,
@@ -1550,6 +1573,8 @@
             "sourceCode": "import {Directive, HostListener, Output, EventEmitter} from '@angular/core';\n\n// ref: https://stackoverflow.com/a/43629814/13335507\n\n// tslint:disable-next-line:directive-selector\n@Directive({selector: '[shortPress]'})\nexport class ShortPressDirective {\n\n    @Output()\n    shortPress = new EventEmitter();\n\n    private _timeout: any;\n    private _isShort: boolean;\n\n    @HostListener('touchstart')\n    @HostListener('mousedown')\n    onMouseDown(e): void {\n        this._isShort = true;\n        this._timeout = setTimeout(() => {\n            this._isShort = false;\n        }, 500);\n    }\n\n    @HostListener('touchmove')\n    onTouchScroll(e): void {\n        this._isShort = false;\n    }\n\n    @HostListener('touchend')\n    @HostListener('mouseup')\n    onMouseUp(e): void {\n        if (this._isShort) {\n            this.shortPress.emit(e);\n        }\n        clearTimeout(this._timeout);\n    }\n\n    @HostListener('touchcancel')\n    @HostListener('mouseleave')\n    onMouseLeave(): void {\n        clearTimeout(this._timeout);\n    }\n}\n",
             "selector": "[shortPress]",
             "providers": [],
+            "hostDirectives": [],
+            "standalone": false,
             "inputsClass": [],
             "outputsClass": [
                 {
@@ -1710,6 +1735,10 @@
                             "stringifiedArguments": "'mousedown'"
                         }
                     ],
+                    "modifierKind": [
+                        167,
+                        167
+                    ],
                     "jsdoctags": [
                         {
                             "name": "e",
@@ -1740,6 +1769,10 @@
                             "name": "HostListener",
                             "stringifiedArguments": "'mouseleave'"
                         }
+                    ],
+                    "modifierKind": [
+                        167,
+                        167
                     ]
                 },
                 {
@@ -1767,6 +1800,10 @@
                             "name": "HostListener",
                             "stringifiedArguments": "'mouseup'"
                         }
+                    ],
+                    "modifierKind": [
+                        167,
+                        167
                     ],
                     "jsdoctags": [
                         {
@@ -1802,6 +1839,9 @@
                             "stringifiedArguments": "'touchmove'"
                         }
                     ],
+                    "modifierKind": [
+                        167
+                    ],
                     "jsdoctags": [
                         {
                             "name": "e",
@@ -1836,6 +1876,7 @@
                 "./basic-card.component.html"
             ],
             "viewProviders": [],
+            "hostDirectives": [],
             "inputsClass": [
                 {
                     "name": "borderRadius",
@@ -1881,6 +1922,8 @@
             "deprecationMessage": "",
             "hostBindings": [],
             "hostListeners": [],
+            "standalone": false,
+            "imports": [],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
@@ -1924,6 +1967,7 @@
                 "./button.component.html"
             ],
             "viewProviders": [],
+            "hostDirectives": [],
             "inputsClass": [
                 {
                     "name": "busy",
@@ -2058,6 +2102,9 @@
                             "name": "HostBinding",
                             "stringifiedArguments": "'className'"
                         }
+                    ],
+                    "modifierKind": [
+                        167
                     ]
                 },
                 {
@@ -2102,6 +2149,8 @@
                 }
             ],
             "hostListeners": [],
+            "standalone": false,
+            "imports": [],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
@@ -2122,7 +2171,7 @@
                 "args": [],
                 "line": 55
             },
-            "templateData": "<button\n  [className]=\"getClassName()\"\n  [ngClass]=\"{\n    'disabled': disabled,\n    'justify-content-center': justifyContent === 'center',\n    'justify-content-start': justifyContent === 'start'\n  }\"\n  [disabled]=\"busy || disabled\"\n>\n  <ng-container *ngIf=\"busy; else buttonContent\">\n    <span class=\"spinner-border spinner-border-sm mx-2\" role=\"status\" aria-hidden=\"true\"></span>\n    {{busyText ? busyText : ''}}\n  </ng-container>\n</button>\n\n<ng-template #buttonContent>\n  <i *ngIf=\"iconClass && busy === false && iconPosition === 'start'\" class=\"{{iconClass}}\"></i>\n  <ng-container>\n    <span\n      class=\"align-self-center text-overflow\"\n      [ngClass]=\"{'ms-2': iconClass && label && iconPosition === 'start', 'me-2': iconClass && label && iconPosition === 'end'}\"\n    >\n      <ng-container [ngSwitch]=\"!!label\">\n        <ng-container *ngSwitchCase=\"true\">\n          {{label}}\n        </ng-container>\n        <ng-container *ngSwitchCase=\"false\">\n          <ng-content></ng-content>\n        </ng-container>\n      </ng-container>\n    </span>\n  </ng-container>\n  <i *ngIf=\"iconClass && busy === false && iconPosition === 'end'\" class=\"{{iconClass}}\"></i>\n</ng-template>\n\n"
+            "templateData": "<button\n  [className]=\"getClassName()\"\n  [ngClass]=\"{\n    'disabled': disabled,\n    'justify-content-center': justifyContent === 'center',\n    'justify-content-start': justifyContent === 'start'\n  }\"\n  [disabled]=\"busy || disabled\"\n>\n  <ng-container *ngIf=\"busy; else buttonContent\">\n    <span class=\"spinner-border spinner-border-sm mx-2\" role=\"status\" aria-hidden=\"true\"></span>\n    {{busyText ? busyText : ''}}\n  </ng-container>\n</button>\n\n<ng-template #buttonContent>\n  <i *ngIf=\"iconClass && busy === false && iconPosition === 'start'\" class=\"{{iconClass}}\"></i>\n  <ng-container>\n    <span\n      class=\"align-self-center text-overflow\"\n      [ngClass]=\"{\n      'w-100': fillWidth,\n      'ms-2': iconClass && label && iconPosition === 'start',\n      'me-2': iconClass && label && iconPosition === 'end'\n      }\"\n    >\n      <ng-container [ngSwitch]=\"!!label\">\n        <ng-container *ngSwitchCase=\"true\">\n          {{label}}\n        </ng-container>\n        <ng-container *ngSwitchCase=\"false\">\n          <ng-content></ng-content>\n        </ng-container>\n      </ng-container>\n    </span>\n  </ng-container>\n  <i *ngIf=\"iconClass && busy === false && iconPosition === 'end'\" class=\"{{iconClass}}\"></i>\n</ng-template>\n\n"
         },
         {
             "name": "CheckboxComponent",
@@ -2142,6 +2191,7 @@
                 "./checkbox.component.html"
             ],
             "viewProviders": [],
+            "hostDirectives": [],
             "inputsClass": [
                 {
                     "name": "checked",
@@ -2261,6 +2311,8 @@
             "deprecationMessage": "",
             "hostBindings": [],
             "hostListeners": [],
+            "standalone": false,
+            "imports": [],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
@@ -2303,6 +2355,7 @@
                 "./combo-box.component.html"
             ],
             "viewProviders": [],
+            "hostDirectives": [],
             "inputsClass": [
                 {
                     "name": "disabled",
@@ -2428,6 +2481,8 @@
             "deprecationMessage": "",
             "hostBindings": [],
             "hostListeners": [],
+            "standalone": false,
+            "imports": [],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
@@ -2489,6 +2544,7 @@
                 "./copy-content-input.component.html"
             ],
             "viewProviders": [],
+            "hostDirectives": [],
             "inputsClass": [
                 {
                     "name": "borderRadius",
@@ -2605,6 +2661,8 @@
             "deprecationMessage": "",
             "hostBindings": [],
             "hostListeners": [],
+            "standalone": false,
+            "imports": [],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
@@ -2648,6 +2706,7 @@
                 "./dialog.component.html"
             ],
             "viewProviders": [],
+            "hostDirectives": [],
             "inputsClass": [],
             "outputsClass": [],
             "propertiesClass": [
@@ -2661,7 +2720,7 @@
                     "line": 42,
                     "modifierKind": [
                         123,
-                        144
+                        146
                     ]
                 },
                 {
@@ -2739,6 +2798,9 @@
                             "name": "ViewChildren",
                             "stringifiedArguments": "ResultSearchElements, {read: ElementRef}"
                         }
+                    ],
+                    "modifierKind": [
+                        167
                     ]
                 },
                 {
@@ -2754,6 +2816,9 @@
                             "name": "ViewChild",
                             "stringifiedArguments": "'rootPanel', {static: true}"
                         }
+                    ],
+                    "modifierKind": [
+                        167
                     ]
                 },
                 {
@@ -2794,6 +2859,9 @@
                             "name": "ViewChild",
                             "stringifiedArguments": "'searchResultContainer', {static: true}"
                         }
+                    ],
+                    "modifierKind": [
+                        167
                     ]
                 },
                 {
@@ -3004,7 +3072,7 @@
                             "name": {
                                 "pos": 10206,
                                 "end": 10218,
-                                "flags": 4227072,
+                                "flags": 8421376,
                                 "modifierFlagsCache": 0,
                                 "transformFlags": 0,
                                 "kind": 79,
@@ -3016,7 +3084,7 @@
                             "tagName": {
                                 "pos": 10200,
                                 "end": 10205,
-                                "flags": 4227072,
+                                "flags": 8421376,
                                 "modifierFlagsCache": 0,
                                 "transformFlags": 0,
                                 "kind": 79,
@@ -3182,6 +3250,8 @@
             "deprecationMessage": "",
             "hostBindings": [],
             "hostListeners": [],
+            "standalone": false,
+            "imports": [],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
@@ -3274,6 +3344,7 @@
                 "./draggable-list.component.html"
             ],
             "viewProviders": [],
+            "hostDirectives": [],
             "inputsClass": [
                 {
                     "name": "actions",
@@ -3376,6 +3447,9 @@
                             "name": "ViewChild",
                             "stringifiedArguments": "'contextMenu'"
                         }
+                    ],
+                    "modifierKind": [
+                        167
                     ]
                 },
                 {
@@ -3475,7 +3549,7 @@
                             "name": {
                                 "pos": 1811,
                                 "end": 1816,
-                                "flags": 4227072,
+                                "flags": 8421376,
                                 "modifierFlagsCache": 0,
                                 "transformFlags": 0,
                                 "kind": 79,
@@ -3487,7 +3561,7 @@
                             "tagName": {
                                 "pos": 1805,
                                 "end": 1810,
-                                "flags": 4227072,
+                                "flags": 8421376,
                                 "modifierFlagsCache": 0,
                                 "transformFlags": 0,
                                 "kind": 79,
@@ -3597,7 +3671,7 @@
                             "name": {
                                 "pos": 4279,
                                 "end": 4283,
-                                "flags": 4227072,
+                                "flags": 8421376,
                                 "modifierFlagsCache": 0,
                                 "transformFlags": 0,
                                 "kind": 79,
@@ -3609,7 +3683,7 @@
                             "tagName": {
                                 "pos": 4273,
                                 "end": 4278,
-                                "flags": 4227072,
+                                "flags": 8421376,
                                 "modifierFlagsCache": 0,
                                 "transformFlags": 0,
                                 "kind": 79,
@@ -3658,7 +3732,7 @@
                             "name": {
                                 "pos": 2168,
                                 "end": 2175,
-                                "flags": 4227072,
+                                "flags": 8421376,
                                 "modifierFlagsCache": 0,
                                 "transformFlags": 0,
                                 "kind": 79,
@@ -3670,7 +3744,7 @@
                             "tagName": {
                                 "pos": 2162,
                                 "end": 2167,
-                                "flags": 4227072,
+                                "flags": 8421376,
                                 "modifierFlagsCache": 0,
                                 "transformFlags": 0,
                                 "kind": 79,
@@ -3737,7 +3811,7 @@
                             "name": {
                                 "pos": 1568,
                                 "end": 1572,
-                                "flags": 4227072,
+                                "flags": 8421376,
                                 "modifierFlagsCache": 0,
                                 "transformFlags": 0,
                                 "kind": 79,
@@ -3749,7 +3823,7 @@
                             "tagName": {
                                 "pos": 1562,
                                 "end": 1567,
-                                "flags": 4227072,
+                                "flags": 8421376,
                                 "modifierFlagsCache": 0,
                                 "transformFlags": 0,
                                 "kind": 79,
@@ -3764,6 +3838,8 @@
             "deprecationMessage": "",
             "hostBindings": [],
             "hostListeners": [],
+            "standalone": false,
+            "imports": [],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
@@ -3837,6 +3913,7 @@
                 "./dropdown-actions.component.html"
             ],
             "viewProviders": [],
+            "hostDirectives": [],
             "inputsClass": [
                 {
                     "name": "actions",
@@ -4028,6 +4105,9 @@
                             "stringifiedArguments": "'className'"
                         }
                     ],
+                    "modifierKind": [
+                        167
+                    ],
                     "inheritance": {
                         "file": "ButtonComponent"
                     }
@@ -4129,6 +4209,8 @@
                 }
             ],
             "hostListeners": [],
+            "standalone": false,
+            "imports": [],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
@@ -4170,6 +4252,7 @@
                 "./expansion-panel.component.html"
             ],
             "viewProviders": [],
+            "hostDirectives": [],
             "inputsClass": [],
             "outputsClass": [],
             "propertiesClass": [],
@@ -4189,6 +4272,8 @@
             "deprecationMessage": "",
             "hostBindings": [],
             "hostListeners": [],
+            "standalone": false,
+            "imports": [],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
@@ -4232,6 +4317,7 @@
                 "./grid-list.component.html"
             ],
             "viewProviders": [],
+            "hostDirectives": [],
             "inputsClass": [
                 {
                     "name": "actionTemplate",
@@ -4300,6 +4386,9 @@
                             "name": "ViewChild",
                             "stringifiedArguments": "'galleryTemplate', {static: true}"
                         }
+                    ],
+                    "modifierKind": [
+                        167
                     ]
                 },
                 {
@@ -4315,6 +4404,9 @@
                             "name": "ViewChild",
                             "stringifiedArguments": "'gridTemplate', {static: true}"
                         }
+                    ],
+                    "modifierKind": [
+                        167
                     ]
                 },
                 {
@@ -4330,6 +4422,9 @@
                             "name": "ViewChild",
                             "stringifiedArguments": "'listTemplate', {static: true}"
                         }
+                    ],
+                    "modifierKind": [
+                        167
                     ]
                 }
             ],
@@ -4352,6 +4447,8 @@
             "deprecationMessage": "",
             "hostBindings": [],
             "hostListeners": [],
+            "standalone": false,
+            "imports": [],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
@@ -4392,6 +4489,7 @@
                 "./icon-card.component.html"
             ],
             "viewProviders": [],
+            "hostDirectives": [],
             "inputsClass": [
                 {
                     "name": "hoverable",
@@ -4473,6 +4571,8 @@
             "deprecationMessage": "",
             "hostBindings": [],
             "hostListeners": [],
+            "standalone": false,
+            "imports": [],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
@@ -4519,6 +4619,7 @@
                 "./multi-select.component.html"
             ],
             "viewProviders": [],
+            "hostDirectives": [],
             "inputsClass": [
                 {
                     "name": "borderRadius",
@@ -4688,6 +4789,9 @@
                             "name": "ViewChild",
                             "stringifiedArguments": "'inputBox', {static: true}"
                         }
+                    ],
+                    "modifierKind": [
+                        167
                     ]
                 },
                 {
@@ -4713,7 +4817,7 @@
                     "line": 90,
                     "modifierKind": [
                         123,
-                        144
+                        146
                     ]
                 },
                 {
@@ -4729,6 +4833,9 @@
                             "name": "ViewChild",
                             "stringifiedArguments": "'trigger', {static: true}"
                         }
+                    ],
+                    "modifierKind": [
+                        167
                     ]
                 }
             ],
@@ -5007,6 +5114,8 @@
             "deprecationMessage": "",
             "hostBindings": [],
             "hostListeners": [],
+            "standalone": false,
+            "imports": [],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
@@ -5101,6 +5210,7 @@
                 "./radio-button.component.html"
             ],
             "viewProviders": [],
+            "hostDirectives": [],
             "inputsClass": [
                 {
                     "name": "disabled",
@@ -5196,6 +5306,8 @@
             "deprecationMessage": "",
             "hostBindings": [],
             "hostListeners": [],
+            "standalone": false,
+            "imports": [],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
@@ -5239,13 +5351,14 @@
                 "./sidebar.component.html"
             ],
             "viewProviders": [],
+            "hostDirectives": [],
             "inputsClass": [
                 {
                     "name": "label",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "line": 20,
-                    "type": "",
+                    "type": "string | Observable",
                     "decorators": []
                 },
                 {
@@ -5328,6 +5441,8 @@
             "deprecationMessage": "",
             "hostBindings": [],
             "hostListeners": [],
+            "standalone": false,
+            "imports": [],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
@@ -5409,6 +5524,7 @@
                 "./sidebar-content.component.html"
             ],
             "viewProviders": [],
+            "hostDirectives": [],
             "inputsClass": [
                 {
                     "name": "drawer",
@@ -5635,6 +5751,8 @@
             "deprecationMessage": "",
             "hostBindings": [],
             "hostListeners": [],
+            "standalone": false,
+            "imports": [],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
@@ -5678,6 +5796,7 @@
                 "./spinner.component.html"
             ],
             "viewProviders": [],
+            "hostDirectives": [],
             "inputsClass": [],
             "outputsClass": [],
             "propertiesClass": [],
@@ -5697,6 +5816,8 @@
             "deprecationMessage": "",
             "hostBindings": [],
             "hostListeners": [],
+            "standalone": false,
+            "imports": [],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
@@ -5745,6 +5866,7 @@
                 "./stepper.component.html"
             ],
             "viewProviders": [],
+            "hostDirectives": [],
             "inputsClass": [],
             "outputsClass": [],
             "propertiesClass": [],
@@ -5782,6 +5904,8 @@
             "deprecationMessage": "",
             "hostBindings": [],
             "hostListeners": [],
+            "standalone": false,
+            "imports": [],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
@@ -5815,6 +5939,7 @@
                 "./table-list.component.html"
             ],
             "viewProviders": [],
+            "hostDirectives": [],
             "inputsClass": [
                 {
                     "name": "actionsTemplate",
@@ -5954,6 +6079,9 @@
                             "name": "ViewChild",
                             "stringifiedArguments": "'doubleLabelCell', {static: true}"
                         }
+                    ],
+                    "modifierKind": [
+                        167
                     ]
                 },
                 {
@@ -5981,6 +6109,9 @@
                             "name": "ViewChild",
                             "stringifiedArguments": "'formattedNumberCell', {static: true}"
                         }
+                    ],
+                    "modifierKind": [
+                        167
                     ]
                 },
                 {
@@ -5996,6 +6127,9 @@
                             "name": "ViewChild",
                             "stringifiedArguments": "'imageCell', {static: true}"
                         }
+                    ],
+                    "modifierKind": [
+                        167
                     ]
                 },
                 {
@@ -6031,6 +6165,9 @@
                             "name": "ViewChild",
                             "stringifiedArguments": "'singleLabelCell', {static: true}"
                         }
+                    ],
+                    "modifierKind": [
+                        167
                     ]
                 },
                 {
@@ -6046,6 +6183,9 @@
                             "name": "ViewChild",
                             "stringifiedArguments": "'table', {static: true}"
                         }
+                    ],
+                    "modifierKind": [
+                        167
                     ]
                 }
             ],
@@ -6112,7 +6252,7 @@
                             "name": {
                                 "pos": 4157,
                                 "end": 4161,
-                                "flags": 4227072,
+                                "flags": 8421376,
                                 "modifierFlagsCache": 0,
                                 "transformFlags": 0,
                                 "kind": 79,
@@ -6124,7 +6264,7 @@
                             "tagName": {
                                 "pos": 4151,
                                 "end": 4156,
-                                "flags": 4227072,
+                                "flags": 8421376,
                                 "modifierFlagsCache": 0,
                                 "transformFlags": 0,
                                 "kind": 79,
@@ -6136,7 +6276,7 @@
                             "name": {
                                 "pos": 4198,
                                 "end": 4204,
-                                "flags": 4227072,
+                                "flags": 8421376,
                                 "modifierFlagsCache": 0,
                                 "transformFlags": 0,
                                 "kind": 79,
@@ -6148,7 +6288,7 @@
                             "tagName": {
                                 "pos": 4192,
                                 "end": 4197,
-                                "flags": 4227072,
+                                "flags": 8421376,
                                 "modifierFlagsCache": 0,
                                 "transformFlags": 0,
                                 "kind": 79,
@@ -6199,7 +6339,7 @@
                             "name": {
                                 "pos": 3000,
                                 "end": 3003,
-                                "flags": 4227072,
+                                "flags": 8421376,
                                 "modifierFlagsCache": 0,
                                 "transformFlags": 0,
                                 "kind": 79,
@@ -6211,7 +6351,7 @@
                             "tagName": {
                                 "pos": 2994,
                                 "end": 2999,
-                                "flags": 4227072,
+                                "flags": 8421376,
                                 "modifierFlagsCache": 0,
                                 "transformFlags": 0,
                                 "kind": 79,
@@ -6250,11 +6390,10 @@
                             "tagName": {
                                 "pos": 3207,
                                 "end": 3214,
-                                "flags": 4227072,
+                                "flags": 8421376,
                                 "modifierFlagsCache": 0,
                                 "transformFlags": 0,
                                 "kind": 79,
-                                "originalKeywordKind": 121,
                                 "escapedText": "private"
                             },
                             "comment": ""
@@ -6320,7 +6459,7 @@
                             "name": {
                                 "pos": 2520,
                                 "end": 2523,
-                                "flags": 4227072,
+                                "flags": 8421376,
                                 "modifierFlagsCache": 0,
                                 "transformFlags": 0,
                                 "kind": 79,
@@ -6332,7 +6471,7 @@
                             "tagName": {
                                 "pos": 2514,
                                 "end": 2519,
-                                "flags": 4227072,
+                                "flags": 8421376,
                                 "modifierFlagsCache": 0,
                                 "transformFlags": 0,
                                 "kind": 79,
@@ -6347,6 +6486,8 @@
             "deprecationMessage": "",
             "hostBindings": [],
             "hostListeners": [],
+            "standalone": false,
+            "imports": [],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
@@ -6410,6 +6551,7 @@
                 "./tabs.component.html"
             ],
             "viewProviders": [],
+            "hostDirectives": [],
             "inputsClass": [
                 {
                     "name": "orientation",
@@ -6441,6 +6583,8 @@
             "deprecationMessage": "",
             "hostBindings": [],
             "hostListeners": [],
+            "standalone": false,
+            "imports": [],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
@@ -6481,6 +6625,7 @@
                 "./trigger-button.component.html"
             ],
             "viewProviders": [],
+            "hostDirectives": [],
             "inputsClass": [
                 {
                     "name": "iconClass",
@@ -6547,6 +6692,8 @@
             "deprecationMessage": "",
             "hostBindings": [],
             "hostListeners": [],
+            "standalone": false,
+            "imports": [],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
@@ -7813,21 +7960,21 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/components/containers/expansion-panel/expansion-panel.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "object",
-                "defaultValue": "{\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "src/components/cards/icon-card/icon-card.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "object",
                 "defaultValue": "{\n  textPosition: 'center',\n  paddingClass: 'p-3',\n  hoverable: true,\n  orientation: OrientationEnum.Y,\n  iconClass: 'uil uil-star',\n  title: '',\n  subtitle: '',\n  iconCardArray: [],\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/containers/expansion-panel/expansion-panel.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\n}"
             },
             {
                 "name": "defaultArgs",
@@ -8433,21 +8580,21 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/components/containers/expansion-panel/expansion-panel.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story<ExpansionPanelComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-expansion-panel\n    >\n        Conteúdo aqui\n    </pm-expansion-panel>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "src/components/cards/icon-card/icon-card.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story<IconCardComponent>",
                 "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-icon-card\n      [textPosition]=\"textPosition\"\n      [paddingClass]=\"paddingClass\"\n      [hoverable]=\"hoverable\"\n      [orientation]=\"orientation\"\n      [iconClass]=\"iconClass\"\n      [title]=\"title\"\n      [subtitle]=\"subtitle\"\n      [iconCardArray]=\"iconCardArray\"\n    >\n    </pm-icon-card>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/containers/expansion-panel/expansion-panel.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<ExpansionPanelComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-expansion-panel\n    >\n        Conteúdo aqui\n    </pm-expansion-panel>\n  `\n})"
             },
             {
                 "name": "Template",
