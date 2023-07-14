@@ -24,7 +24,7 @@
           },
           "configurations": {
             "production": {
-              "tsConfig": "tsconfig.lib.prod.json"
+              "tsConfig": "tsconfig.lib.json"
             }
           }
         },
