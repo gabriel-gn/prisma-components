@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
 import {SidebarItem} from "./sidebar-content/models";
 import {isObservable, Observable, of} from "rxjs";
 
@@ -22,12 +22,15 @@ export class SidebarComponent implements OnInit {
       value = of(`${value}`);
     }
     this._label = value as Observable<string>;
+    this.cdr.detectChanges();
   }
   get label(): Observable<string> {
     return this._label;
   }
 
-  constructor() { }
+  constructor(
+    public readonly cdr: ChangeDetectorRef,
+  ) { }
 
   ngOnInit(): void {
   }

@@ -13,7 +13,7 @@
     <div class="navbar">
       <div class="navbar-bg"></div>
       <div class="navbar-content w-100 mb-3">
-        <svg (click)="drawer.toggle()"
+        <svg (click)="drawer.toggle(); cdr.detectChanges()"
              class="ham"
              [ngClass]="{'active': drawer.opened}"
              viewBox="0 0 100 100" width="40"
