@@ -1398,12 +1398,12 @@
         },
         {
             "name": "NgIfLoadedDirective",
-            "id": "directive-NgIfLoadedDirective-f417be008db835d87ebebfa55c875a082595ed114474af70e98fbbef4a99560d17f885632542f14089fc825c96228e36f04ce2e2613d98c659324e0ca429a72d",
+            "id": "directive-NgIfLoadedDirective-1f39bde9a0e3d14bfec604475f06cc2bd8c5ee71c1ae37f65b0402616368496c0aad526e23a1b750c34fe9a675ab6044a471d9ca9b0ebcc6f54865d0080d38c8",
             "file": "src/directives/ng-if-loaded/ng-if-loaded.directive.ts",
             "type": "directive",
             "description": "",
             "rawdescription": "\n",
-            "sourceCode": "import {\n  ComponentFactoryResolver,\n  Directive,\n  Inject,\n  Input,\n  TemplateRef,\n  ViewContainerRef\n} from '@angular/core';\nimport {IF_LOADED_SPINNER} from './injection';\nimport {ComponentType} from '@angular/cdk/overlay';\n\n@Directive({\n  // tslint:disable-next-line:directive-selector\n  selector: '[ngIfLoaded]'\n})\nexport class NgIfLoadedDirective {\n\n  public spinner: ComponentType<any>;\n\n  constructor(\n    @Inject(IF_LOADED_SPINNER) spinnerComponent: ComponentType<any>,\n    private templateRef: TemplateRef<any>,\n    private viewContainer: ViewContainerRef,\n    private resolver: ComponentFactoryResolver\n  ) {\n    this.spinner = spinnerComponent;\n  }\n\n\n  @Input()\n  set ngIfLoaded(value) {\n    if (value) {\n      this.viewContainer.clear();\n      this.viewContainer.createEmbeddedView(this.templateRef);\n    } else {\n      this.viewContainer.clear();\n      const factory = this.resolver.resolveComponentFactory(this.spinner);\n      this.viewContainer.createComponent(factory);\n    }\n  }\n\n}\n",
+            "sourceCode": "import {\n  ChangeDetectorRef,\n  ComponentFactoryResolver,\n  Directive,\n  Inject,\n  Input,\n  TemplateRef,\n  ViewContainerRef\n} from '@angular/core';\nimport {IF_LOADED_SPINNER} from './injection';\nimport {ComponentType} from '@angular/cdk/overlay';\n\n@Directive({\n  // tslint:disable-next-line:directive-selector\n  selector: '[ngIfLoaded]'\n})\nexport class NgIfLoadedDirective {\n\n  public spinner: ComponentType<any>;\n\n  constructor(\n    @Inject(IF_LOADED_SPINNER) spinnerComponent: ComponentType<any>,\n    private templateRef: TemplateRef<any>,\n    private viewContainer: ViewContainerRef,\n    private resolver: ComponentFactoryResolver,\n    private readonly cdr: ChangeDetectorRef,\n  ) {\n    this.spinner = spinnerComponent;\n  }\n\n\n  @Input()\n  set ngIfLoaded(value) {\n    if (value) {\n      this.viewContainer.clear();\n      this.viewContainer.createEmbeddedView(this.templateRef);\n    } else {\n      this.viewContainer.clear();\n      const factory = this.resolver.resolveComponentFactory(this.spinner);\n      this.viewContainer.createComponent(factory);\n    }\n    this.cdr.detectChanges();\n  }\n\n}\n",
             "selector": "[ngIfLoaded]",
             "providers": [],
             "hostDirectives": [],
@@ -1413,7 +1413,7 @@
                     "name": "ngIfLoaded",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 31,
+                    "line": 33,
                     "type": "any",
                     "decorators": []
                 }
@@ -1431,7 +1431,7 @@
                     "type": "ComponentType<any>",
                     "optional": false,
                     "description": "",
-                    "line": 18,
+                    "line": 19,
                     "modifierKind": [
                         123
                     ]
@@ -1467,9 +1467,15 @@
                         "type": "ComponentFactoryResolver",
                         "deprecated": false,
                         "deprecationMessage": ""
+                    },
+                    {
+                        "name": "cdr",
+                        "type": "ChangeDetectorRef",
+                        "deprecated": false,
+                        "deprecationMessage": ""
                     }
                 ],
-                "line": 18,
+                "line": 19,
                 "jsdoctags": [
                     {
                         "name": "spinnerComponent",
@@ -1506,6 +1512,15 @@
                         "tagName": {
                             "text": "param"
                         }
+                    },
+                    {
+                        "name": "cdr",
+                        "type": "ChangeDetectorRef",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
                     }
                 ]
             },
@@ -1526,7 +1541,7 @@
                             }
                         ],
                         "returnType": "void",
-                        "line": 31,
+                        "line": 33,
                         "jsdoctags": [
                             {
                                 "name": "value",

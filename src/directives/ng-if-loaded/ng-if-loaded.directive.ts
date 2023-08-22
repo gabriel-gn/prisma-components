@@ -1,4 +1,5 @@
 import {
+  ChangeDetectorRef,
   ComponentFactoryResolver,
   Directive,
   Inject,
@@ -21,7 +22,8 @@ export class NgIfLoadedDirective {
     @Inject(IF_LOADED_SPINNER) spinnerComponent: ComponentType<any>,
     private templateRef: TemplateRef<any>,
     private viewContainer: ViewContainerRef,
-    private resolver: ComponentFactoryResolver
+    private resolver: ComponentFactoryResolver,
+    private readonly cdr: ChangeDetectorRef,
   ) {
     this.spinner = spinnerComponent;
   }
@@ -37,6 +39,7 @@ export class NgIfLoadedDirective {
       const factory = this.resolver.resolveComponentFactory(this.spinner);
       this.viewContainer.createComponent(factory);
     }
+    this.cdr.detectChanges();
   }
 
 }
