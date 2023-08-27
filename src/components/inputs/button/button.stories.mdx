@@ -1,7 +1,9 @@
 import {Meta, Story, ArgsTable, Canvas, Source} from '@storybook/addon-docs';
 import {ButtonComponent} from './button.component';
 import {moduleMetadata} from "@storybook/angular";
+import {MatButtonModule} from "@angular/material/button";
 import {ButtonModule} from "./button.module";
+import {PmButtonDirective} from "./pm-button.directive";
 import SourceStory from '!!raw-loader!./button.stories';
 import {
   DangerButton,
@@ -14,7 +16,8 @@ import {
   BusyButton,
   DisabledButton,
   IconButton,
-  SmallButton
+  SmallButton,
+  DirectiveButton
 } from "./button.stories";
 import {MainColors} from "../../../models/colors";
 
@@ -90,7 +93,7 @@ export const argTypes = {
   parameters={{ badges: [ 'stable' ] }}
   decorators={[
     moduleMetadata({
-      imports: [ButtonModule]
+      imports: [ButtonModule, MatButtonModule, PmButtonDirective]
     })
   ]}
 />
@@ -173,6 +176,12 @@ Os ícones podem ser conferidos na
   Download
 </pm-button>
 ```
+
+## Botões por diretiva
+
+<Canvas>
+  <Story name='Directive' story={DirectiveButton}/>
+</Canvas>
 
 ## Module Config
 

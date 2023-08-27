@@ -1558,6 +1558,389 @@
             }
         },
         {
+            "name": "PmButtonDirective",
+            "id": "directive-PmButtonDirective-764ffbfd17ddbfb027dcd3c71728eea001f734bc3438e20c328df24110589ab3e5ab423855a9d8810ad3ff055df745ddfb5aee606114c193426124f8d3881b26",
+            "file": "src/components/inputs/button/pm-button.directive.ts",
+            "type": "directive",
+            "description": "",
+            "rawdescription": "\n",
+            "sourceCode": "import {Directive, ElementRef, HostBinding, Input, OnInit} from '@angular/core';\nimport {MainColors} from \"../../../models/colors\";\n\n@Directive({\n  selector: 'button[mat-stroked-button][pm-button]',\n  standalone: true,\n})\nexport class PmButtonDirective implements OnInit {\n\n  /**\n   * Cor do botão que será exibido.\n   * Utilizar as propriedades do tipo \"MainColors\"\n   */\n  private _type: MainColors | string = `${MainColors.default}`\n  @Input('type') set type(value: MainColors | string) {\n    this._type = value;\n    this.refreshClass();\n  };\n  /**\n   * Exibe botão de \"carregamento\" e desabilita o botão.\n   * Para alterar o texto, utilizar a propriedade `busyText`\n   */\n  private _busy: boolean = true;\n  @Input('busy') set busy(value: boolean) {\n    this._busy = value;\n    if (this._busy) {\n      this.elementRef.nativeElement.insertAdjacentHTML(\n        'afterbegin',\n        '<span class=\"spinner-border spinner-border-sm mx-2\" role=\"status\" aria-hidden=\"true\"></span>'\n      );\n    } else {\n      // remove loading icon se tiver;\n      this.elementRef.nativeElement.removeChild(this.elementRef.nativeElement.getElementsByTagName('span')[0])\n    }\n  };\n  /**\n   * Texto exibido junto ao botão de \"carregando\" quando a propriedade `busy` está como `true`\n   */\n  @Input('busyText') busyText: string;\n  /**\n   * Caso tenha ícone, indica se o ícone estará no começo ou fim do botão\n   */\n  @Input('iconPosition') iconPosition: 'start' | 'end' = 'start';\n  /**\n   * Se o botão será cheio ou apenas contornado pela borda\n   */\n  @Input('outline') outline: boolean = false;\n  /**\n   * Tamanho do botão\n   */\n  private _size: 'sm' | 'md' = 'md'\n  @Input('size') set size(value: 'sm' | 'md'){\n    this._size = value;\n    this.refreshClass();\n  };\n  /**\n   * Faz ou não o botão preencher a largura do container. (classe w-100)\n   */\n  private _fillWidth: boolean = false;\n  @Input('fillWidth') set fillWidth(value: boolean) {\n    this._fillWidth = value;\n    this.refreshClass();\n  };\n  /**\n   * Alinha o conteúdo do botão\n   */\n  private _justifyContent: 'start' | 'center' = 'start';\n  @Input('justifyContent') set justifyContent(value: 'start' | 'center') {\n    this._justifyContent = value;\n    this.refreshClass();\n  };\n\n  constructor(private elementRef: ElementRef) {}\n\n  ngOnInit() {\n    this.refreshClass();\n  }\n\n  private getButtonClass(): string {\n    return `\n    d-flex\n    align-items-center\n    justify-content-${this._justifyContent}\n    text-overflow\n    overflow-hidden\n    btn\n    btn-${this._type}\n    ${this._size}\n    ${this._fillWidth ? 'w-100' : ''}\n  `;\n  }\n\n  private refreshClass(): void {\n    let css = `\n\n    `;\n    this.elementRef.nativeElement.setAttribute(\"style\", css);\n    this.elementRef.nativeElement.className = this.getButtonClass();\n  }\n\n}\n",
+            "selector": "button[mat-stroked-button][pm-button]",
+            "providers": [],
+            "hostDirectives": [],
+            "standalone": true,
+            "inputsClass": [
+                {
+                    "name": "busy",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 24,
+                    "type": "boolean",
+                    "decorators": []
+                },
+                {
+                    "name": "busyText",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n\nTexto exibido junto ao botão de \"carregando\" quando a propriedade `busy` está como `true`\n",
+                    "description": "<p>Texto exibido junto ao botão de &quot;carregando&quot; quando a propriedade <code>busy</code> está como <code>true</code></p>\n",
+                    "line": 39,
+                    "type": "string",
+                    "decorators": []
+                },
+                {
+                    "name": "fillWidth",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 60,
+                    "type": "boolean",
+                    "decorators": []
+                },
+                {
+                    "name": "iconPosition",
+                    "defaultValue": "'start'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n\nCaso tenha ícone, indica se o ícone estará no começo ou fim do botão\n",
+                    "description": "<p>Caso tenha ícone, indica se o ícone estará no começo ou fim do botão</p>\n",
+                    "line": 43,
+                    "type": "\"start\" | \"end\"",
+                    "decorators": []
+                },
+                {
+                    "name": "justifyContent",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 68,
+                    "type": "\"start\" | \"center\"",
+                    "decorators": []
+                },
+                {
+                    "name": "outline",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n\nSe o botão será cheio ou apenas contornado pela borda\n",
+                    "description": "<p>Se o botão será cheio ou apenas contornado pela borda</p>\n",
+                    "line": 47,
+                    "type": "boolean",
+                    "decorators": []
+                },
+                {
+                    "name": "size",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 52,
+                    "type": "\"sm\" | \"md\"",
+                    "decorators": []
+                },
+                {
+                    "name": "type",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 15,
+                    "type": "MainColors | string",
+                    "decorators": []
+                }
+            ],
+            "outputsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "propertiesClass": [
+                {
+                    "name": "_busy",
+                    "defaultValue": "true",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "boolean",
+                    "optional": false,
+                    "description": "<p>Exibe botão de &quot;carregamento&quot; e desabilita o botão.\nPara alterar o texto, utilizar a propriedade <code>busyText</code></p>\n",
+                    "line": 23,
+                    "rawdescription": "\n\nExibe botão de \"carregamento\" e desabilita o botão.\nPara alterar o texto, utilizar a propriedade `busyText`\n",
+                    "modifierKind": [
+                        121
+                    ]
+                },
+                {
+                    "name": "_fillWidth",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "boolean",
+                    "optional": false,
+                    "description": "<p>Faz ou não o botão preencher a largura do container. (classe w-100)</p>\n",
+                    "line": 59,
+                    "rawdescription": "\n\nFaz ou não o botão preencher a largura do container. (classe w-100)\n",
+                    "modifierKind": [
+                        121
+                    ]
+                },
+                {
+                    "name": "_justifyContent",
+                    "defaultValue": "'start'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "\"start\" | \"center\"",
+                    "optional": false,
+                    "description": "<p>Alinha o conteúdo do botão</p>\n",
+                    "line": 67,
+                    "rawdescription": "\n\nAlinha o conteúdo do botão\n",
+                    "modifierKind": [
+                        121
+                    ]
+                },
+                {
+                    "name": "_size",
+                    "defaultValue": "'md'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "\"sm\" | \"md\"",
+                    "optional": false,
+                    "description": "<p>Tamanho do botão</p>\n",
+                    "line": 51,
+                    "rawdescription": "\n\nTamanho do botão\n",
+                    "modifierKind": [
+                        121
+                    ]
+                },
+                {
+                    "name": "_type",
+                    "defaultValue": "`${MainColors.default}`",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "MainColors | string",
+                    "optional": false,
+                    "description": "<p>Cor do botão que será exibido.\nUtilizar as propriedades do tipo &quot;MainColors&quot;</p>\n",
+                    "line": 14,
+                    "rawdescription": "\n\nCor do botão que será exibido.\nUtilizar as propriedades do tipo \"MainColors\"\n",
+                    "modifierKind": [
+                        121
+                    ]
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "getButtonClass",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "string",
+                    "typeParameters": [],
+                    "line": 79,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        121
+                    ]
+                },
+                {
+                    "name": "ngOnInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 75,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "refreshClass",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 93,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        121
+                    ]
+                }
+            ],
+            "implements": [
+                "OnInit"
+            ],
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "elementRef",
+                        "type": "ElementRef",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 71,
+                "jsdoctags": [
+                    {
+                        "name": "elementRef",
+                        "type": "ElementRef",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            "accessors": {
+                "type": {
+                    "name": "type",
+                    "setSignature": {
+                        "name": "type",
+                        "type": "void",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "args": [
+                            {
+                                "name": "value",
+                                "type": "MainColors | string",
+                                "deprecated": false,
+                                "deprecationMessage": ""
+                            }
+                        ],
+                        "returnType": "void",
+                        "line": 15,
+                        "jsdoctags": [
+                            {
+                                "name": "value",
+                                "type": "MainColors | string",
+                                "deprecated": false,
+                                "deprecationMessage": "",
+                                "tagName": {
+                                    "text": "param"
+                                }
+                            }
+                        ]
+                    }
+                },
+                "busy": {
+                    "name": "busy",
+                    "setSignature": {
+                        "name": "busy",
+                        "type": "void",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "args": [
+                            {
+                                "name": "value",
+                                "type": "boolean",
+                                "deprecated": false,
+                                "deprecationMessage": ""
+                            }
+                        ],
+                        "returnType": "void",
+                        "line": 24,
+                        "jsdoctags": [
+                            {
+                                "name": "value",
+                                "type": "boolean",
+                                "deprecated": false,
+                                "deprecationMessage": "",
+                                "tagName": {
+                                    "text": "param"
+                                }
+                            }
+                        ]
+                    }
+                },
+                "size": {
+                    "name": "size",
+                    "setSignature": {
+                        "name": "size",
+                        "type": "void",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "args": [
+                            {
+                                "name": "value",
+                                "type": "\"sm\" | \"md\"",
+                                "deprecated": false,
+                                "deprecationMessage": ""
+                            }
+                        ],
+                        "returnType": "void",
+                        "line": 52,
+                        "jsdoctags": [
+                            {
+                                "name": "value",
+                                "type": "\"sm\" | \"md\"",
+                                "deprecated": false,
+                                "deprecationMessage": "",
+                                "tagName": {
+                                    "text": "param"
+                                }
+                            }
+                        ]
+                    }
+                },
+                "fillWidth": {
+                    "name": "fillWidth",
+                    "setSignature": {
+                        "name": "fillWidth",
+                        "type": "void",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "args": [
+                            {
+                                "name": "value",
+                                "type": "boolean",
+                                "deprecated": false,
+                                "deprecationMessage": ""
+                            }
+                        ],
+                        "returnType": "void",
+                        "line": 60,
+                        "jsdoctags": [
+                            {
+                                "name": "value",
+                                "type": "boolean",
+                                "deprecated": false,
+                                "deprecationMessage": "",
+                                "tagName": {
+                                    "text": "param"
+                                }
+                            }
+                        ]
+                    }
+                },
+                "justifyContent": {
+                    "name": "justifyContent",
+                    "setSignature": {
+                        "name": "justifyContent",
+                        "type": "void",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "args": [
+                            {
+                                "name": "value",
+                                "type": "\"start\" | \"center\"",
+                                "deprecated": false,
+                                "deprecationMessage": ""
+                            }
+                        ],
+                        "returnType": "void",
+                        "line": 68,
+                        "jsdoctags": [
+                            {
+                                "name": "value",
+                                "type": "\"start\" | \"center\"",
+                                "deprecated": false,
+                                "deprecationMessage": "",
+                                "tagName": {
+                                    "text": "param"
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        {
             "name": "ResultSearchElements",
             "id": "directive-ResultSearchElements-ab12a8e09d90e0d7a41885a218bb7b52599023a75d09cbcafc84c9dafafa84bab2953b9e0de8b587061e252575349f46abef3249ab76f080109d2ef3216e41a7",
             "file": "src/services/command-palette/dialog/dialog.component.ts",
@@ -2505,7 +2888,7 @@
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": ".pm-combo-box {\n  mat-form-field {\n    border-radius: var(--border-radius-md);\n\n    .mat-mdc-text-field-wrapper {\n      background-color: var(--color-primary);\n      color: white;\n      border-radius: var(--border-radius-md);\n\n      max-height: 40px;\n      display: flex;\n      justify-content: center;\n      align-items: center;\n\n      * {\n        color: white;\n        font-weight: 600 !important;\n      }\n\n      &.mdc-text-field--focused {\n        border-radius: var(--border-radius-md);\n      }\n    }\n\n    .mat-mdc-form-field-bottom-align {\n      height: 0px;\n    }\n\n    &.mat-focused {\n      border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;\n    }\n\n    .mdc-line-ripple {\n      display: none;\n    }\n  }\n}\n\n.pm-combo-box-overlay {\n  $combo-box-overlay-background-color: var(--color-primary);\n  $combo-box-overlay-background-color-hover: rgba(var(--color-light-rgb), 0.35);\n  $combo-box-overlay-border-color: var(--color-primary-states);\n\n  background-color: $combo-box-overlay-background-color;\n  box-shadow: none;\n  border-radius: var(--border-radius-md) !important;\n  margin-top: 0.25em !important;\n  // comentar as duas linhas de baixo para remover a borda degradê\n  //background: linear-gradient($combo-box-overlay-background-color, $combo-box-overlay-background-color) padding-box, linear-gradient(to top, $combo-box-overlay-border-color, transparent) border-box;\n  //border: 2px solid transparent;\n\n  * {\n    color: white !important;\n    font-weight: 600 !important;\n  }\n\n  .mat-list-item--selected,\n  .mat-mdc-option-active {\n    background: $combo-box-overlay-background-color-hover !important;\n\n    * {\n      color: var(--color-primary-states) !important\n    }\n  }\n\n  .mat-mdc-option {\n    &:hover {\n      background: $combo-box-overlay-background-color-hover !important;\n    }\n  }\n}\n\n.mat-mdc-select-panel-above {\n  .pm-combo-box-overlay {\n    margin-bottom: 0.25em !important;\n  }\n}\n",
+                    "data": ".pm-combo-box {\n  mat-form-field {\n    border-radius: var(--border-radius-md);\n\n    .mat-mdc-text-field-wrapper {\n      background-color: var(--color-primary);\n      color: white;\n      border-radius: var(--border-radius-md);\n\n      max-height: 40px;\n      display: flex;\n      justify-content: center;\n      align-items: center;\n\n      * {\n        color: white;\n        font-weight: 600 !important;\n      }\n\n      &.mdc-text-field--focused {\n        border-radius: var(--border-radius-md);\n      }\n    }\n\n    .mat-mdc-form-field-bottom-align {\n      height: 0px;\n    }\n\n    &.mat-focused {\n      border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;\n    }\n\n    .mdc-line-ripple {\n      display: none;\n    }\n  }\n}\n\n.pm-combo-box-overlay {\n  $combo-box-overlay-background-color: var(--color-primary);\n  $combo-box-overlay-background-color-hover: rgba(var(--color-light-rgb), 0.35);\n  $combo-box-overlay-border-color: var(--color-primary-states);\n\n  background-color: $combo-box-overlay-background-color;\n  box-shadow: none;\n  border-radius: var(--border-radius-md) !important;\n  margin-top: 0.25em !important;\n  // comentar as duas linhas de baixo para remover a borda degradê\n  //background: linear-gradient($combo-box-overlay-background-color, $combo-box-overlay-background-color) padding-box, linear-gradient(to top, $combo-box-overlay-border-color, transparent) border-box;\n  //border: 2px solid transparent;\n\n  * {\n    color: white !important;\n    font-weight: 600 !important;\n  }\n\n  .mdc-list-item--selected,\n  .mat-mdc-option-active {\n    background: $combo-box-overlay-background-color-hover !important;\n\n    * {\n      color: var(--color-primary-states) !important\n    }\n  }\n\n  .mat-mdc-option {\n    &:hover {\n      background: $combo-box-overlay-background-color-hover !important;\n    }\n  }\n}\n\n.mat-mdc-select-panel-above {\n  .pm-combo-box-overlay {\n    margin-bottom: 0.25em !important;\n  }\n}\n",
                     "styleUrl": "./combo-box.component.scss"
                 }
             ],
@@ -5347,7 +5730,7 @@
         },
         {
             "name": "SidebarComponent",
-            "id": "component-SidebarComponent-7251db7fda82377e1a045ab2bc57672a5cf7beb06d0b5509d8887e74e51ea19d95521e920c578bbd70626cb49dcb11a8939dfa04a3b98590f4b39bb583fa33d8",
+            "id": "component-SidebarComponent-8178cbbb4f157b4da86892556fe5314d0ad6a140fb4599710e81bcacd45bf089a47e6ffd81ca5f394fb36ffce0332396c6aba233c2435566436d8dfcbf50f3f2",
             "file": "src/components/layout/sidebar/sidebar.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [
@@ -5425,6 +5808,19 @@
                     "modifierKind": [
                         121
                     ]
+                },
+                {
+                    "name": "cdr",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "ChangeDetectorRef",
+                    "optional": false,
+                    "description": "",
+                    "line": 32,
+                    "modifierKind": [
+                        123,
+                        146
+                    ]
                 }
             ],
             "methodsClass": [
@@ -5434,7 +5830,7 @@
                     "optional": false,
                     "returnType": "boolean",
                     "typeParameters": [],
-                    "line": 35,
+                    "line": 38,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -5447,7 +5843,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 32,
+                    "line": 35,
                     "deprecated": false,
                     "deprecationMessage": ""
                 }
@@ -5461,7 +5857,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {ChangeDetectionStrategy, Component, Input, OnInit, ViewEncapsulation} from '@angular/core';\nimport {SidebarItem} from \"./sidebar-content/models\";\nimport {isObservable, Observable, of} from \"rxjs\";\n\n@Component({\n  selector: 'pm-sidebar',\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  templateUrl: './sidebar.component.html',\n  styleUrls: ['./sidebar.component.scss'],\n  encapsulation: ViewEncapsulation.None\n})\nexport class SidebarComponent implements OnInit {\n\n  @Input() showBackButton: boolean = false;\n  @Input() showNextButton: boolean = false;\n  @Input() nextButtonAction: () => void;\n  @Input() sidebarEntries: SidebarItem[] = [];\n\n  private _label: Observable<string>;\n  @Input() set label(value: string | Observable<string>) {\n    if (isObservable(value) === false) {\n      value = of(`${value}`);\n    }\n    this._label = value as Observable<string>;\n  }\n  get label(): Observable<string> {\n    return this._label;\n  }\n\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n\n  public isWindowWidthMobile(): boolean {\n    return window.innerWidth <= 991;\n  }\n\n}\n",
+            "sourceCode": "import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, ViewEncapsulation} from '@angular/core';\nimport {SidebarItem} from \"./sidebar-content/models\";\nimport {isObservable, Observable, of} from \"rxjs\";\n\n@Component({\n  selector: 'pm-sidebar',\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  templateUrl: './sidebar.component.html',\n  styleUrls: ['./sidebar.component.scss'],\n  encapsulation: ViewEncapsulation.None\n})\nexport class SidebarComponent implements OnInit {\n\n  @Input() showBackButton: boolean = false;\n  @Input() showNextButton: boolean = false;\n  @Input() nextButtonAction: () => void;\n  @Input() sidebarEntries: SidebarItem[] = [];\n\n  private _label: Observable<string>;\n  @Input() set label(value: string | Observable<string>) {\n    if (isObservable(value) === false) {\n      value = of(`${value}`);\n    }\n    this._label = value as Observable<string>;\n    this.cdr.detectChanges();\n  }\n  get label(): Observable<string> {\n    return this._label;\n  }\n\n  constructor(\n    public readonly cdr: ChangeDetectorRef,\n  ) { }\n\n  ngOnInit(): void {\n  }\n\n  public isWindowWidthMobile(): boolean {\n    return window.innerWidth <= 991;\n  }\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -5475,8 +5871,26 @@
                 "description": "",
                 "deprecated": false,
                 "deprecationMessage": "",
-                "args": [],
-                "line": 28
+                "args": [
+                    {
+                        "name": "cdr",
+                        "type": "ChangeDetectorRef",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 29,
+                "jsdoctags": [
+                    {
+                        "name": "cdr",
+                        "type": "ChangeDetectorRef",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
             },
             "implements": [
                 "OnInit"
@@ -5515,11 +5929,11 @@
                         "name": "label",
                         "type": "",
                         "returnType": "Observable<string>",
-                        "line": 26
+                        "line": 27
                     }
                 }
             },
-            "templateData": "<mat-drawer-container class=\"pm-sidebar\" [autosize]=\"true\" fullscreen>\n\n  <mat-drawer #drawer [mode]=\"isWindowWidthMobile() === true ? 'over' : 'side'\">\n    <app-sidebar-content\n      *ngIf=\"sidebarEntries.length > 0\"\n      [sidebarEntries]=\"sidebarEntries\"\n      [drawer]=\"drawer\"\n    >\n    </app-sidebar-content>\n  </mat-drawer>\n\n  <mat-drawer-content class=\"ion-content-scroll-host drawer-content\">\n    <div class=\"navbar\">\n      <div class=\"navbar-bg\"></div>\n      <div class=\"navbar-content w-100 mb-3\">\n        <svg (click)=\"drawer.toggle()\"\n             class=\"ham\"\n             [ngClass]=\"{'active': drawer.opened}\"\n             viewBox=\"0 0 100 100\" width=\"40\"\n        >\n          <path class=\"line top\" d=\"m 70,33 h -40 c -6.5909,0 -7.763966,-4.501509 -7.763966,-7.511428 0,-4.721448 3.376452,-9.583771 13.876919,-9.583771 14.786182,0 11.409257,14.896182 9.596449,21.970818 -1.812808,7.074636 -15.709402,12.124381 -15.709402,12.124381\"/>\n          <path class=\"line middle\" d=\"m 30,50 h 40\"/>\n          <path class=\"line bottom\" d=\"m 70,67 h -40 c -6.5909,0 -7.763966,4.501509 -7.763966,7.511428 0,4.721448 3.376452,9.583771 13.876919,9.583771 14.786182,0 11.409257,-14.896182 9.596449,-21.970818 -1.812808,-7.074636 -15.709402,-12.124381 -15.709402,-12.124381\"/>\n        </svg>\n        <span *ngIf=\"showBackButton\"\n              navigationBackButton\n              class=\"d-flex justify-content-center align-items-center overflow-hidden color-gray-dark no-outline no-shadow cursor-pointer\"\n              style=\"max-height: 20px\"\n        >\n                    <i class=\"uil uil-2x uil-angle-left text-center inline-block\"></i>\n        </span>\n        <h4 style=\"width: -webkit-fill-available;\" class=\"color-gray-dark m-0 ms-3 text-overflow\">{{ label | async }}</h4>\n        <span *ngIf=\"showNextButton && nextButtonAction\"\n              (click)=\"nextButtonAction()\"\n              class=\"d-flex justify-content-center align-items-center overflow-hidden color-gray-dark no-outline no-shadow cursor-pointer\"\n              style=\"max-height: 20px\"\n        >\n            <i class=\"uil uil-2x uil-angle-right text-center inline-block\"></i>\n        </span>\n      </div>\n    </div>\n    <div class=\"container\">\n      <ng-content></ng-content>\n    </div>\n  </mat-drawer-content>\n\n\n</mat-drawer-container>\n"
+            "templateData": "<mat-drawer-container class=\"pm-sidebar\" [autosize]=\"true\" fullscreen>\n\n  <mat-drawer #drawer [mode]=\"isWindowWidthMobile() === true ? 'over' : 'side'\">\n    <app-sidebar-content\n      *ngIf=\"sidebarEntries.length > 0\"\n      [sidebarEntries]=\"sidebarEntries\"\n      [drawer]=\"drawer\"\n    >\n    </app-sidebar-content>\n  </mat-drawer>\n\n  <mat-drawer-content class=\"ion-content-scroll-host drawer-content\">\n    <div class=\"navbar\">\n      <div class=\"navbar-bg\"></div>\n      <div class=\"navbar-content w-100 mb-3\">\n        <svg (click)=\"drawer.toggle(); cdr.detectChanges()\"\n             class=\"ham\"\n             [ngClass]=\"{'active': drawer.opened}\"\n             viewBox=\"0 0 100 100\" width=\"40\"\n        >\n          <path class=\"line top\" d=\"m 70,33 h -40 c -6.5909,0 -7.763966,-4.501509 -7.763966,-7.511428 0,-4.721448 3.376452,-9.583771 13.876919,-9.583771 14.786182,0 11.409257,14.896182 9.596449,21.970818 -1.812808,7.074636 -15.709402,12.124381 -15.709402,12.124381\"/>\n          <path class=\"line middle\" d=\"m 30,50 h 40\"/>\n          <path class=\"line bottom\" d=\"m 70,67 h -40 c -6.5909,0 -7.763966,4.501509 -7.763966,7.511428 0,4.721448 3.376452,9.583771 13.876919,9.583771 14.786182,0 11.409257,-14.896182 9.596449,-21.970818 -1.812808,-7.074636 -15.709402,-12.124381 -15.709402,-12.124381\"/>\n        </svg>\n        <span *ngIf=\"showBackButton\"\n              navigationBackButton\n              class=\"d-flex justify-content-center align-items-center overflow-hidden color-gray-dark no-outline no-shadow cursor-pointer\"\n              style=\"max-height: 20px\"\n        >\n                    <i class=\"uil uil-2x uil-angle-left text-center inline-block\"></i>\n        </span>\n        <h4 style=\"width: -webkit-fill-available;\" class=\"color-gray-dark m-0 ms-3 text-overflow\">{{ label | async }}</h4>\n        <span *ngIf=\"showNextButton && nextButtonAction\"\n              (click)=\"nextButtonAction()\"\n              class=\"d-flex justify-content-center align-items-center overflow-hidden color-gray-dark no-outline no-shadow cursor-pointer\"\n              style=\"max-height: 20px\"\n        >\n            <i class=\"uil uil-2x uil-angle-right text-center inline-block\"></i>\n        </span>\n      </div>\n    </div>\n    <div class=\"container\">\n      <ng-content></ng-content>\n    </div>\n  </mat-drawer-content>\n\n\n</mat-drawer-container>\n"
         },
         {
             "name": "SidebarContentComponent",
@@ -7965,26 +8379,6 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/components/cards/basic-card/basic-card.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "object",
-                "defaultValue": "{\n  hoverable: false,\n  borderRadius: Sizes.md,\n  paddingClass: 'p-3'\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/components/cards/icon-card/icon-card.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "object",
-                "defaultValue": "{\n  textPosition: 'center',\n  paddingClass: 'p-3',\n  hoverable: true,\n  orientation: OrientationEnum.Y,\n  iconClass: 'uil uil-star',\n  title: '',\n  subtitle: '',\n  iconCardArray: [],\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "src/components/containers/expansion-panel/expansion-panel.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
@@ -7995,11 +8389,31 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
+                "file": "src/components/cards/basic-card/basic-card.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\n  hoverable: false,\n  borderRadius: Sizes.md,\n  paddingClass: 'p-3'\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
                 "file": "src/components/containers/tabs/tabs.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "object",
                 "defaultValue": "{\n  orientation: 'horizontal',\n  sticky: true\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/cards/icon-card/icon-card.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\n  textPosition: 'center',\n  paddingClass: 'p-3',\n  hoverable: true,\n  orientation: OrientationEnum.Y,\n  iconClass: 'uil uil-star',\n  title: '',\n  subtitle: '',\n  iconCardArray: [],\n}"
             },
             {
                 "name": "defaultArgs",
@@ -8362,6 +8776,16 @@
                 "defaultValue": "Template.bind({})"
             },
             {
+                "name": "DirectiveButton",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/inputs/button/button.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "TemplateDirective.bind({})"
+            },
+            {
                 "name": "directives",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -8585,26 +9009,6 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/components/cards/basic-card/basic-card.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story<BasicCardComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-basic-card\n      [hoverable]=\"hoverable\"\n      [borderRadius]=\"borderRadius\"\n      [paddingClass]=\"paddingClass\"\n    >\n    </pm-basic-card>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/components/cards/icon-card/icon-card.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story<IconCardComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-icon-card\n      [textPosition]=\"textPosition\"\n      [paddingClass]=\"paddingClass\"\n      [hoverable]=\"hoverable\"\n      [orientation]=\"orientation\"\n      [iconClass]=\"iconClass\"\n      [title]=\"title\"\n      [subtitle]=\"subtitle\"\n      [iconCardArray]=\"iconCardArray\"\n    >\n    </pm-icon-card>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "src/components/containers/expansion-panel/expansion-panel.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
@@ -8615,11 +9019,31 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
+                "file": "src/components/cards/basic-card/basic-card.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<BasicCardComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-basic-card\n      [hoverable]=\"hoverable\"\n      [borderRadius]=\"borderRadius\"\n      [paddingClass]=\"paddingClass\"\n    >\n    </pm-basic-card>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
                 "file": "src/components/containers/tabs/tabs.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "StoryFn<TabsComponent>",
                 "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-tabs\n        [orientation]=\"orientation\"\n        [sticky]=\"sticky\"\n    >\n      <mat-tab-group\n        mat-stretch-tabs\n        preserveContent\n        [disableRipple]=\"true\"\n      >\n        <mat-tab>\n          <ng-template mat-tab-label>\n            <i class=\"uil uil-lg uil-apps\"></i>\n            <span>Apps</span>\n          </ng-template>\n          <div>Content 1</div>\n        </mat-tab>\n        <mat-tab label=\"Second\"> Content 2 </mat-tab>\n        <mat-tab label=\"Third\"> Content 3 </mat-tab>\n      </mat-tab-group>\n    </pm-tabs>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/cards/icon-card/icon-card.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<IconCardComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-icon-card\n      [textPosition]=\"textPosition\"\n      [paddingClass]=\"paddingClass\"\n      [hoverable]=\"hoverable\"\n      [orientation]=\"orientation\"\n      [iconClass]=\"iconClass\"\n      [title]=\"title\"\n      [subtitle]=\"subtitle\"\n      [iconCardArray]=\"iconCardArray\"\n    >\n    </pm-icon-card>\n  `\n})"
             },
             {
                 "name": "Template",
@@ -8750,6 +9174,16 @@
                 "deprecationMessage": "",
                 "type": "Story<SpinnerComponent>",
                 "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <div *ngIfLoaded=\"flag\">\n        Conteúdo normal\n    </div>\n  `\n})"
+            },
+            {
+                "name": "TemplateDirective",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/inputs/button/button.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<PmButtonDirective>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <button mat-stroked-button pm-button disabled\n        [busy]=\"busy\"\n        [size]=\"size\"\n        [type]=\"type\"\n        [fillWidth]=\"fillWidth\"\n        [justifyContent]=\"justifyContent\"\n        [disabled]=\"disabled\"\n    >\n        Button Content\n    </button>\n  `\n})"
             },
             {
                 "name": "ThumbnailMultiSelect",
@@ -9308,6 +9742,16 @@
                     "defaultValue": "Template.bind({})"
                 },
                 {
+                    "name": "DirectiveButton",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/inputs/button/button.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "TemplateDirective.bind({})"
+                },
+                {
                     "name": "DisabledButton",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
@@ -9386,6 +9830,16 @@
                     "deprecationMessage": "",
                     "type": "Story<ButtonComponent>",
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-button\n        #btn\n        (click)=\"btn.logEvent($event)\"\n        [label]=\"label\"\n        [type]=\"type\"\n        [busy]=\"busy\"\n        [busyText]=\"busyText\"\n        [iconClass]=\"iconClass\"\n        [iconPosition]=\"iconPosition\"\n        [outline]=\"outline\"\n        [disabled]=\"disabled\"\n        [size]=\"size\"\n        [fillWidth]=\"fillWidth\"\n        [justifyContent]=\"justifyContent\"\n    >\n        Button Content\n    </pm-button>\n  `\n})"
+                },
+                {
+                    "name": "TemplateDirective",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/inputs/button/button.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story<PmButtonDirective>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <button mat-stroked-button pm-button disabled\n        [busy]=\"busy\"\n        [size]=\"size\"\n        [type]=\"type\"\n        [fillWidth]=\"fillWidth\"\n        [justifyContent]=\"justifyContent\"\n        [disabled]=\"disabled\"\n    >\n        Button Content\n    </button>\n  `\n})"
                 },
                 {
                     "name": "WarningButton",
@@ -9518,38 +9972,6 @@
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-XXXName\n    >\n    </pm-XXXName>\n  `\n})"
                 }
             ],
-            "src/components/cards/basic-card/basic-card.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/cards/basic-card/basic-card.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "object",
-                    "defaultValue": "{\n  hoverable: false,\n  borderRadius: Sizes.md,\n  paddingClass: 'p-3'\n}"
-                },
-                {
-                    "name": "DefaultBasicCard",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/cards/basic-card/basic-card.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/cards/basic-card/basic-card.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Story<BasicCardComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-basic-card\n      [hoverable]=\"hoverable\"\n      [borderRadius]=\"borderRadius\"\n      [paddingClass]=\"paddingClass\"\n    >\n    </pm-basic-card>\n  `\n})"
-                }
-            ],
             "src/components/containers/expansion-panel/expansion-panel.stories.ts": [
                 {
                     "name": "defaultArgs",
@@ -9580,6 +10002,38 @@
                     "deprecationMessage": "",
                     "type": "Story<ExpansionPanelComponent>",
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-expansion-panel\n    >\n        Conteúdo aqui\n    </pm-expansion-panel>\n  `\n})"
+                }
+            ],
+            "src/components/cards/basic-card/basic-card.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/cards/basic-card/basic-card.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "object",
+                    "defaultValue": "{\n  hoverable: false,\n  borderRadius: Sizes.md,\n  paddingClass: 'p-3'\n}"
+                },
+                {
+                    "name": "DefaultBasicCard",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/cards/basic-card/basic-card.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/cards/basic-card/basic-card.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story<BasicCardComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-basic-card\n      [hoverable]=\"hoverable\"\n      [borderRadius]=\"borderRadius\"\n      [paddingClass]=\"paddingClass\"\n    >\n    </pm-basic-card>\n  `\n})"
                 }
             ],
             "src/components/containers/tabs/tabs.stories.ts": [
@@ -10735,6 +11189,16 @@
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
+                "name": "DirectiveButton",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/components/inputs/button/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
                 "name": "DisabledButton",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
@@ -10815,10 +11279,29 @@
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
+                "name": "TemplateDirective",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/components/inputs/button/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
                 "name": "WarningButton",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
+            },
+            {
+                "filePath": "src/components/inputs/button/pm-button.directive.ts",
+                "type": "directive",
+                "linktype": "directive",
+                "name": "PmButtonDirective",
+                "coveragePercent": 44,
+                "coverageCount": "8/18",
+                "status": "medium"
             },
             {
                 "filePath": "src/components/inputs/checkbox/checkbox.component.ts",
@@ -11156,7 +11639,7 @@
                 "linktype": "component",
                 "name": "SidebarComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/10",
+                "coverageCount": "0/11",
                 "status": "low"
             },
             {

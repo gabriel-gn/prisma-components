@@ -41,7 +41,7 @@
   $combo-box-overlay-background-color-hover: rgba(var(--color-light-rgb), 0.35);
   $combo-box-overlay-border-color: var(--color-primary-states);
 
-  background-color: $combo-box-overlay-background-color;
+  background-color: $combo-box-overlay-background-color !important;
   box-shadow: none;
   border-radius: var(--border-radius-md) !important;
   margin-top: 0.25em !important;
@@ -54,11 +54,12 @@
     font-weight: 600 !important;
   }
 
-  .mat-list-item--selected,
+  .mdc-list-item--selected,
   .mat-mdc-option-active {
     background: $combo-box-overlay-background-color-hover !important;
 
-    * {
+    *,
+    .mat-pseudo-checkbox:after {
       color: var(--color-primary-states) !important
     }
   }

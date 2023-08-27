@@ -1,10 +1,10 @@
 $padding-default: 12px;
 
-.mat-menu-panel {
+.mdc-menu-panel {
   border-radius: var(--border-radius-default) !important;
   font-size: 15px !important;
 
-  .mat-menu-content {
+  .mdc-menu-content {
     padding: $padding-default !important;
 
     ul {
@@ -41,7 +41,7 @@ $padding-default: 12px;
     margin: 0px;
   }
 
-  .mat-option {
+  .mat-mdc-option {
     padding-left: 16px !important;
   }
 }
