@@ -43,6 +43,7 @@ export * from './directives/long-press/long-press.module';
 
 export * from './components/inputs/button/button.component';
 export * from './components/inputs/button/button.module';
+export * from './components/inputs/button/pm-button.directive';
 
 export * from './components/lists/draggable-list/draggable-list.component';
 export * from './components/lists/draggable-list/draggable-list.module';

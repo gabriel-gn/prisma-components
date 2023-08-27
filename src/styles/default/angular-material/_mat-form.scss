@@ -28,24 +28,22 @@
   background-color: transparent !important;
 }
 
-.mat-select-panel {
+.mat-mdc-select-panel {
   border-radius: var(--border-radius-lg) !important;
-  margin-left: -4px;
-  margin-top: 29px;
 }
 
-.mat-option {
+.mat-mdc-option {
   color: var(--color-default);
 }
 
-.mat-primary .mat-option.mat-selected:not(.mat-option-disabled) {
+.mat-primary .mat-mdc-option.mat-selected:not(.mat-option-disabled) {
   color: var(--color-primary-states);
 }
 
 .mat-select-btn-sm {
   width: 0px !important;
 
-  .mat-option.mat-active {
+  .mat-mdc-option.mat-active {
     background-color: rgba(0, 0, 0, 0) !important;
   }
 
@@ -59,7 +57,7 @@
     margin: 0 4px !important;
   }
 
-  .mat-select-panel {
+  .mat-mdc-select-panel {
     border-radius: var(--border-radius-lg) !important;
     margin-left: -4px;
     margin-top: 5px;
