@@ -1,6 +1,7 @@
 import {ButtonComponent} from './button.component';
 import {Meta, Story} from '@storybook/angular';
 import {MainColors} from '../../../models/colors';
+import {PmButtonDirective} from "./pm-button.directive";
 
 export default {
   title: 'Prisma/Inputs/Buttons/Stories',
@@ -27,6 +28,22 @@ export const Template: Story<ButtonComponent> = (args) => ({
     >
         Button Content
     </pm-button>
+  `
+});
+
+export const TemplateDirective: Story<PmButtonDirective> = (args) => ({
+  props: args,
+  template: `
+    <button mat-stroked-button pm-button disabled
+        [busy]="busy"
+        [size]="size"
+        [type]="type"
+        [fillWidth]="fillWidth"
+        [justifyContent]="justifyContent"
+        [disabled]="disabled"
+    >
+        Button Content
+    </button>
   `
 });
 
@@ -120,3 +137,8 @@ SmallButton.args = {
   ...defaultArgs,
   size: 'sm'
 } as Partial<ButtonComponent>;
+
+export const DirectiveButton = TemplateDirective.bind({});
+DirectiveButton.args = {
+  ...defaultArgs,
+} as Partial<PmButtonDirective>;
