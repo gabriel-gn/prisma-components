@@ -22,7 +22,7 @@ export class SidebarComponent implements OnInit {
       value = of(`${value}`);
     }
     this._label = value as Observable<string>;
-    this.cdr.detectChanges();
+    this.cdr.markForCheck();
   }
   get label(): Observable<string> {
     return this._label;
