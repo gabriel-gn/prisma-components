@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
 import {SidebarItem} from './models';
 import {MatDrawer} from '@angular/material/sidenav';
 
@@ -13,10 +13,17 @@ export class SidebarContentComponent implements OnInit {
   @Input() drawer: MatDrawer;
   @Input() minWidth: string = '240px';
   @Input() expandCurrentItem: boolean = true;
-  @Input() sidebarEntries: SidebarItem[] = [];
+  _sidebarEntries: SidebarItem[] = []
+  @Input() set sidebarEntries(entries: SidebarItem[]) {
+    this._sidebarEntries = entries;
+    this.cdr.detectChanges();
+  }
+  public get sidebarEntries() {
+    return this._sidebarEntries;
+  }
   public currentExpandedSession: string = '';
 
-  constructor() {
+  constructor(private readonly cdr: ChangeDetectorRef) {
   }
 
   ngOnInit(): void {
