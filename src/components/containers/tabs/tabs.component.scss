@@ -140,8 +140,10 @@
           &__content {
             &--underline {
               align-self: flex-start;
-              border-color: var(--color-primary);
+              border-color: var(--color-primary) !important;
               height: 3px;
+              min-height: 3px;
+              max-height: 3px;
               background-color: var(--color-primary) !important;
               border-radius: 50px;
               width: 50%;
@@ -152,9 +154,11 @@
           &--active {
             background-color: transparent !important;
             color: var(--color-primary) !important;
+            border-color: var(--color-primary) !important;
 
             * {
               color: var(--color-primary) !important;
+              border-color: var(--color-primary) !important;
             }
           }
         }
