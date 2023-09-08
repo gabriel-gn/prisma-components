@@ -39,7 +39,7 @@ export class NgIfLoadedDirective {
       const factory = this.resolver.resolveComponentFactory(this.spinner);
       this.viewContainer.createComponent(factory);
     }
-    this.cdr.detectChanges();
+    this.cdr.markForCheck();
   }
 
 }
