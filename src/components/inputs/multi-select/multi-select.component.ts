@@ -10,7 +10,7 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import {UntypedFormControl} from '@angular/forms';
+import {ControlValueAccessor, NG_VALUE_ACCESSOR, UntypedFormControl} from '@angular/forms';
 import {catchError, concatMap, debounceTime, distinctUntilChanged, Observable, of, tap} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import _ from 'lodash';
@@ -35,10 +35,15 @@ export interface MultiSelectOption {
         autoActiveFirstOption: false,
         overlayPanelClass: 'pm-multi-select-autocomplete-panel'
       }
+    },
+    {
+      provide: NG_VALUE_ACCESSOR,
+      multi: true,
+      useExisting: MultiSelectComponent
     }
   ]
 })
-export class MultiSelectComponent implements OnInit, AfterViewInit {
+export class MultiSelectComponent implements OnInit, AfterViewInit, ControlValueAccessor {
 
   @ViewChild('inputBox', {static: true}) inputBoxEl: ElementRef;
   @ViewChild('trigger', {static: true}) trigger: MatAutocompleteTrigger;
@@ -66,7 +71,16 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
   /**
    * Opções que ja vem selecionadas
    */
-  @Input() selectedOptions: MultiSelectOption[] = [];
+  private _selectedOptions: MultiSelectOption[] = [];
+  @Input() set selectedOptions(options: MultiSelectOption[]) {
+    this._selectedOptions = options;
+    this.selectedOptionsChanged.emit(this.selectedOptions);
+    this.propagateChange(this.selectedOptions);
+    this.clearInput();
+  };
+  public get selectedOptions() {
+    return this._selectedOptions;
+  }
   /**
    * sort selected items instead of showing them in selected sequence
    */
@@ -90,6 +104,11 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
   public readonly myControl: UntypedFormControl;
   public inputValue: string = '';
   public filteredOptions: Observable<MultiSelectOption[]>;
+
+  onChange = (selectedOptions) => {};
+  onTouched = () => {};
+  touched = false;
+  disabled = false;
 
   constructor(
     private cdr: ChangeDetectorRef
@@ -144,6 +163,19 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
     );
   }
 
+  writeValue(value: MultiSelectOption[]) {
+    this.selectedOptions = value;
+  }
+
+  propagateChange = (_: any) => {};
+  registerOnChange(fn: any) {
+    this.propagateChange = fn;
+  }
+
+  registerOnTouched(onTouched: any) {
+    this.onTouched = onTouched;
+  }
+
   public selectOption(option: any): void {
     this.selectedOptions.push(option);
 
@@ -152,10 +184,7 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
         return this.options.indexOf(a) - this.options.indexOf(b);
       });
     }
-
-    this.selectedOptionsChanged.emit(this.selectedOptions);
     this.blurInputSelect();
-    this.clearInput();
   }
 
   private clearInput(): void {
@@ -192,8 +221,6 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
 
   public clearSelected(): void {
     this.selectedOptions = [];
-    this.selectedOptionsChanged.emit(this.selectedOptions);
-    this.clearInput();
   }
 
   public togglePanel(): void {
