@@ -15,6 +15,7 @@ export class SidebarComponent implements OnInit {
   @Input() showNextButton: boolean = false;
   @Input() nextButtonAction: () => void;
   @Input() sidebarEntries: SidebarItem[] = [];
+  @Input() zIndex: number;
 
   private _label: Observable<string>;
   @Input() set label(value: string | Observable<string>) {
