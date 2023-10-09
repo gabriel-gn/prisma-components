@@ -177,12 +177,15 @@ export class MultiSelectComponent implements OnInit, AfterViewInit, ControlValue
   }
 
   public selectOption(option: any): void {
-    this.selectedOptions.push(option);
+    const currentOptions = this.selectedOptions;
+    currentOptions.push(option);
 
     if (this.sortSelectedItems) {
-      this.selectedOptions = this.selectedOptions.sort((a, b) => {
+      this.selectedOptions = currentOptions.sort((a, b) => {
         return this.options.indexOf(a) - this.options.indexOf(b);
       });
+    } else {
+      this.selectedOptions = currentOptions;
     }
     this.blurInputSelect();
   }
