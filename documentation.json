@@ -262,12 +262,12 @@
         },
         {
             "name": "MultiSelectOption",
-            "id": "interface-MultiSelectOption-24231f0a4d7a75c569987fe295355f09b9fd0f1e1408948d953dfbfbf946dee12e3ec6a9de9706211abc863d034bddc5ebd9b4bd3e89328cb479530d7d158d67",
+            "id": "interface-MultiSelectOption-f3e70513ca334768566dc60c497ca3a2a02b3e11e2f4f6676fa2f6b4e12fdd149c520e6ade5c34c484eb300c4bede32bda77c6de59915b5badffab5a761ed8c5",
             "file": "src/components/inputs/multi-select/multi-select.component.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "import {\n  AfterViewInit,\n  ChangeDetectorRef,\n  Component,\n  ElementRef,\n  EventEmitter,\n  Input,\n  OnInit,\n  Output,\n  ViewChild,\n  ViewEncapsulation\n} from '@angular/core';\nimport {UntypedFormControl} from '@angular/forms';\nimport {catchError, concatMap, debounceTime, distinctUntilChanged, Observable, of, tap} from 'rxjs';\nimport {map, startWith} from 'rxjs/operators';\nimport _ from 'lodash';\nimport {MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, MatAutocompleteTrigger} from '@angular/material/autocomplete';\nimport {Sizes} from '../../../models/sizes';\n\nexport interface MultiSelectOption {\n  label: string;\n  value: any;\n  thumbnail?: string;\n}\n\n@Component({\n  selector: 'pm-multi-select',\n  templateUrl: './multi-select.component.html',\n  styleUrls: ['./multi-select.component.scss'],\n  encapsulation: ViewEncapsulation.None,\n  providers: [\n    {\n      provide: MAT_AUTOCOMPLETE_DEFAULT_OPTIONS,\n      useValue: {\n        autoActiveFirstOption: false,\n        overlayPanelClass: 'pm-multi-select-autocomplete-panel'\n      }\n    }\n  ]\n})\nexport class MultiSelectComponent implements OnInit, AfterViewInit {\n\n  @ViewChild('inputBox', {static: true}) inputBoxEl: ElementRef;\n  @ViewChild('trigger', {static: true}) trigger: MatAutocompleteTrigger;\n  /**\n   * Ao ser selecionada uma opção nova, emite\n   */\n  @Output() selectedOptionsChanged = new EventEmitter<MultiSelectOption[]>();\n  /**\n   * Texto a ser exibido no input\n   */\n  @Input() placeholder: string = '';\n  /**\n   * opções a serem exibidas no input\n   */\n  @Input() options: MultiSelectOption[] = [];\n  @Input() borderRadius: Sizes = Sizes.md;\n  /**\n   * se as thumbnails serão arredondadas\n   */\n  @Input() roundedThumbnail: boolean = true;\n  /**\n   * limite máximo de seleções de itens\n   */\n  @Input() limit: number = 0;\n  /**\n   * Opções que ja vem selecionadas\n   */\n  @Input() selectedOptions: MultiSelectOption[] = [];\n  /**\n   * sort selected items instead of showing them in selected sequence\n   */\n  @Input() sortSelectedItems: boolean = true;\n  @Input() observableInput: (search: string) => Observable<MultiSelectOption[]>;\n  /**\n   * Tempo de espera em cada execução de chamada do observable ao digitar no campo de input\n   */\n  @Input() observableDebounce: number = 100;\n  /**\n   * Caso a flag seja \"true\", desativa o foco no input, escondendo o teclado virtual no mobile\n   */\n  @Input() unfocusOnSelect: boolean = true;\n  /**\n   * Caso a flag seja \"true\", mostra o botão \"X\" de remover cada item da lista de selecionados.\n   * Caso contrário, ao clicar sobre um item, remove ele da lista de selecionados\n   */\n  @Input() showRemoveButton: boolean = false;\n  public _observableInputLoading: boolean = false;\n\n  public readonly myControl: UntypedFormControl;\n  public inputValue: string = '';\n  public filteredOptions: Observable<MultiSelectOption[]>;\n\n  constructor(\n    private cdr: ChangeDetectorRef\n  ) {\n    this.myControl = new UntypedFormControl();\n  }\n\n  ngOnInit(): void {\n    if (this.observableInput) {\n      this.filteredOptions = this.myControl.valueChanges.pipe(\n        debounceTime(this.observableDebounce),\n        distinctUntilChanged(),\n        tap(() => {this.observableInputLoading = true}),\n        concatMap(() => this.observableInput(`${this.myControl.value}`).pipe(\n          catchError(error => {this.observableInputLoading = false; return of(null); }),\n        )),\n        tap(() => {this.observableInputLoading = false}),\n      );\n    } else {\n      this.filteredOptions = this.myControl.valueChanges.pipe(\n        startWith(''),\n        map(value => (typeof value === 'string' ? value : `${value.label}`)),\n        map(label => this._filter(label)),\n      );\n    }\n  }\n\n  ngAfterViewInit(): void {\n    this.clearInput();\n  }\n\n  public set observableInputLoading(state: boolean) {\n    this._observableInputLoading = state;\n    this.cdr.detectChanges();\n  }\n\n  /**\n   * Função utilizada para colocar texto na caixa de input ao selecionar uma opção\n   * @param user\n   */\n  displayFn(option: MultiSelectOption): string {\n    return '';\n    // return option && option.label ? option.label : '';\n  }\n\n  private _filter(label: string): MultiSelectOption[] {\n    const filterValue = label.toLowerCase();\n\n    return _.difference(\n      this.options.filter(option => option.label.toLowerCase().includes(filterValue)),\n      this.selectedOptions\n    );\n  }\n\n  public selectOption(option: any): void {\n    this.selectedOptions.push(option);\n\n    if (this.sortSelectedItems) {\n      this.selectedOptions = this.selectedOptions.sort((a, b) => {\n        return this.options.indexOf(a) - this.options.indexOf(b);\n      });\n    }\n\n    this.selectedOptionsChanged.emit(this.selectedOptions);\n    this.blurInputSelect();\n    this.clearInput();\n  }\n\n  private clearInput(): void {\n    this.inputValue = '';\n    this.myControl.setValue(this.inputValue);\n    this.cdr.detectChanges();\n  }\n\n  public removeSelectedOption(option: MultiSelectOption): void {\n    _.remove(this.selectedOptions, option);\n    this.trigger.closePanel();\n    this.clearInput();\n  }\n\n  public isOptionSelected(option: MultiSelectOption): boolean {\n    return !!this.selectedOptions.find(sOptions => _.isEqual(sOptions, option));\n  }\n\n  /**\n   * Use this method instead of \"trigger.openPanel()\" because it has some validations before opening the panel\n   */\n  public openSelect(): void {\n    if (this.isLimitReached() === false) {\n      this.trigger.openPanel();\n    }\n  }\n\n  /**\n   * Use this method instead of \"trigger.closePanel()\" because it has some validations before closing the panel\n   */\n  public closeSelect(): void {\n    this.trigger.closePanel();\n  }\n\n  public clearSelected(): void {\n    this.selectedOptions = [];\n    this.selectedOptionsChanged.emit(this.selectedOptions);\n    this.clearInput();\n  }\n\n  public togglePanel(): void {\n    if (this.trigger.panelOpen === false) {\n      this.openSelect();\n    } else {\n      this.closeSelect();\n    }\n  }\n\n  public isLimitReached() {\n    return !this.observableInput // caso tenha observable input, as options são dinâmicas, e não armazenadas no componente\n      && (this.selectedOptions.length === this.options.length || (!!this.limit && this.selectedOptions.length >= this.limit))\n  }\n\n  public blurInputSelect() {\n    if (this.unfocusOnSelect) {\n      setTimeout(() => {\n        try {\n          this.inputBoxEl.nativeElement.blur();\n        } catch (e) {}\n      });\n    }\n  }\n\n}\n",
+            "sourceCode": "import {\n  AfterViewInit,\n  ChangeDetectorRef,\n  Component,\n  ElementRef,\n  EventEmitter,\n  Input,\n  OnInit,\n  Output,\n  ViewChild,\n  ViewEncapsulation\n} from '@angular/core';\nimport {ControlValueAccessor, NG_VALUE_ACCESSOR, UntypedFormControl} from '@angular/forms';\nimport {catchError, concatMap, debounceTime, distinctUntilChanged, Observable, of, tap} from 'rxjs';\nimport {map, startWith} from 'rxjs/operators';\nimport _ from 'lodash';\nimport {MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, MatAutocompleteTrigger} from '@angular/material/autocomplete';\nimport {Sizes} from '../../../models/sizes';\n\nexport interface MultiSelectOption {\n  label: string;\n  value: any;\n  thumbnail?: string;\n}\n\nfunction isMultiSelectOption(value: any) {\n  return value.hasOwnProperty('label') && value.hasOwnProperty('value');\n}\n\n@Component({\n  selector: 'pm-multi-select',\n  templateUrl: './multi-select.component.html',\n  styleUrls: ['./multi-select.component.scss'],\n  encapsulation: ViewEncapsulation.None,\n  providers: [\n    {\n      provide: MAT_AUTOCOMPLETE_DEFAULT_OPTIONS,\n      useValue: {\n        autoActiveFirstOption: false,\n        overlayPanelClass: 'pm-multi-select-autocomplete-panel'\n      }\n    },\n    {\n      provide: NG_VALUE_ACCESSOR,\n      multi: true,\n      useExisting: MultiSelectComponent\n    }\n  ]\n})\nexport class MultiSelectComponent implements OnInit, AfterViewInit, ControlValueAccessor {\n\n  @ViewChild('inputBox', {static: true}) inputBoxEl: ElementRef;\n  @ViewChild('trigger', {static: true}) trigger: MatAutocompleteTrigger;\n  /**\n   * Ao ser selecionada uma opção nova, emite\n   */\n  @Output() selectedOptionsChanged = new EventEmitter<MultiSelectOption[]>();\n  /**\n   * Texto a ser exibido no input\n   */\n  @Input() placeholder: string = '';\n  /**\n   * opções a serem exibidas no input\n   */\n  @Input() options: MultiSelectOption[] = [];\n  @Input() borderRadius: Sizes = Sizes.md;\n  /**\n   * se as thumbnails serão arredondadas\n   */\n  @Input() roundedThumbnail: boolean = true;\n  /**\n   * limite máximo de seleções de itens\n   */\n  @Input() limit: number = 0;\n  /**\n   * Opções que ja vem selecionadas\n   */\n  private _selectedOptions: MultiSelectOption[] = [];\n  @Input() set selectedOptions(options: (MultiSelectOption | any)[]) {\n    options = options.reduce((acc: any[], val: any) => {\n      if (isMultiSelectOption(val)) {\n        return [...acc, val];\n      } else {\n        return this.options.find(option => _.isEqual(option.value, val));\n      }\n    }, []) as unknown as MultiSelectOption[];\n    console.log(options)\n    this._selectedOptions = options;\n    this.selectedOptionsChanged.emit(this.selectedOptions);\n    this.propagateChange(this.selectedOptions);\n    this.clearInput();\n  };\n  public get selectedOptions() {\n    return this._selectedOptions;\n  }\n  /**\n   * sort selected items instead of showing them in selected sequence\n   */\n  @Input() sortSelectedItems: boolean = true;\n  @Input() observableInput: (search: string) => Observable<MultiSelectOption[]>;\n  /**\n   * Tempo de espera em cada execução de chamada do observable ao digitar no campo de input\n   */\n  @Input() observableDebounce: number = 100;\n  /**\n   * Caso a flag seja \"true\", desativa o foco no input, escondendo o teclado virtual no mobile\n   */\n  @Input() unfocusOnSelect: boolean = true;\n  /**\n   * Caso a flag seja \"true\", mostra o botão \"X\" de remover cada item da lista de selecionados.\n   * Caso contrário, ao clicar sobre um item, remove ele da lista de selecionados\n   */\n  @Input() showRemoveButton: boolean = false;\n  public _observableInputLoading: boolean = false;\n\n  public readonly myControl: UntypedFormControl;\n  public inputValue: string = '';\n  public filteredOptions: Observable<MultiSelectOption[]>;\n\n  onChange = (selectedOptions) => {};\n  onTouched = () => {};\n  touched = false;\n  disabled = false;\n\n  constructor(\n    private cdr: ChangeDetectorRef\n  ) {\n    this.myControl = new UntypedFormControl();\n  }\n\n  ngOnInit(): void {\n    if (this.observableInput) {\n      this.filteredOptions = this.myControl.valueChanges.pipe(\n        debounceTime(this.observableDebounce),\n        distinctUntilChanged(),\n        tap(() => {this.observableInputLoading = true}),\n        concatMap(() => this.observableInput(`${this.myControl.value}`).pipe(\n          catchError(error => {this.observableInputLoading = false; return of(null); }),\n        )),\n        tap(() => {this.observableInputLoading = false}),\n      );\n    } else {\n      this.filteredOptions = this.myControl.valueChanges.pipe(\n        startWith(''),\n        map(value => (typeof value === 'string' ? value : `${value.label}`)),\n        map(label => this._filter(label)),\n      );\n    }\n  }\n\n  ngAfterViewInit(): void {\n    this.clearInput();\n  }\n\n  public set observableInputLoading(state: boolean) {\n    this._observableInputLoading = state;\n    this.cdr.detectChanges();\n  }\n\n  /**\n   * Função utilizada para colocar texto na caixa de input ao selecionar uma opção\n   * @param user\n   */\n  displayFn(option: MultiSelectOption): string {\n    return '';\n    // return option && option.label ? option.label : '';\n  }\n\n  private _filter(label: string): MultiSelectOption[] {\n    const filterValue = label.toLowerCase();\n\n    return _.difference(\n      this.options.filter(option => option.label.toLowerCase().includes(filterValue)),\n      this.selectedOptions\n    );\n  }\n\n  writeValue(value: MultiSelectOption[]) {\n    this.selectedOptions = value;\n  }\n\n  propagateChange = (_: any) => {};\n  registerOnChange(fn: any) {\n    this.propagateChange = fn;\n  }\n\n  registerOnTouched(onTouched: any) {\n    this.onTouched = onTouched;\n  }\n\n  public selectOption(option: any): void {\n    const currentOptions = this.selectedOptions;\n    currentOptions.push(option);\n\n    if (this.sortSelectedItems) {\n      this.selectedOptions = currentOptions.sort((a, b) => {\n        return this.options.indexOf(a) - this.options.indexOf(b);\n      });\n    } else {\n      this.selectedOptions = currentOptions;\n    }\n    this.blurInputSelect();\n  }\n\n  private clearInput(): void {\n    this.inputValue = '';\n    this.myControl.setValue(this.inputValue);\n    this.cdr.detectChanges();\n  }\n\n  public removeSelectedOption(option: MultiSelectOption): void {\n    _.remove(this.selectedOptions, option);\n    this.selectedOptions = this.selectedOptions;\n    this.trigger.closePanel();\n    this.clearInput();\n  }\n\n  public isOptionSelected(option: (MultiSelectOption|any)): boolean {\n    if (isMultiSelectOption(option)) {\n      return !!this.selectedOptions.find(sOptions => _.isEqual(sOptions, option));\n    } else {\n      return !!this.selectedOptions.find((sOptions) => _.isEqual(sOptions.value, option));\n    }\n  }\n\n  /**\n   * Use this method instead of \"trigger.openPanel()\" because it has some validations before opening the panel\n   */\n  public openSelect(): void {\n    if (this.isLimitReached() === false) {\n      this.trigger.openPanel();\n    }\n  }\n\n  /**\n   * Use this method instead of \"trigger.closePanel()\" because it has some validations before closing the panel\n   */\n  public closeSelect(): void {\n    this.trigger.closePanel();\n  }\n\n  public clearSelected(): void {\n    this.selectedOptions = [];\n  }\n\n  public togglePanel(): void {\n    if (this.trigger.panelOpen === false) {\n      this.openSelect();\n    } else {\n      this.closeSelect();\n    }\n  }\n\n  public isLimitReached() {\n    return !this.observableInput // caso tenha observable input, as options são dinâmicas, e não armazenadas no componente\n      && (this.selectedOptions.length === this.options.length || (!!this.limit && this.selectedOptions.length >= this.limit))\n  }\n\n  public blurInputSelect() {\n    if (this.unfocusOnSelect) {\n      setTimeout(() => {\n        try {\n          this.inputBoxEl.nativeElement.blur();\n        } catch (e) {}\n      });\n    }\n  }\n\n}\n",
             "properties": [
                 {
                     "name": "label",
@@ -1398,12 +1398,12 @@
         },
         {
             "name": "NgIfLoadedDirective",
-            "id": "directive-NgIfLoadedDirective-1f39bde9a0e3d14bfec604475f06cc2bd8c5ee71c1ae37f65b0402616368496c0aad526e23a1b750c34fe9a675ab6044a471d9ca9b0ebcc6f54865d0080d38c8",
+            "id": "directive-NgIfLoadedDirective-7fedf9da058ccfc60309328aadc7606e14465957648dbb81518e6fbfdb54b103a0687f923bfae355b371f45460d42af238698f037d1629b8118f2d92cc344b15",
             "file": "src/directives/ng-if-loaded/ng-if-loaded.directive.ts",
             "type": "directive",
             "description": "",
             "rawdescription": "\n",
-            "sourceCode": "import {\n  ChangeDetectorRef,\n  ComponentFactoryResolver,\n  Directive,\n  Inject,\n  Input,\n  TemplateRef,\n  ViewContainerRef\n} from '@angular/core';\nimport {IF_LOADED_SPINNER} from './injection';\nimport {ComponentType} from '@angular/cdk/overlay';\n\n@Directive({\n  // tslint:disable-next-line:directive-selector\n  selector: '[ngIfLoaded]'\n})\nexport class NgIfLoadedDirective {\n\n  public spinner: ComponentType<any>;\n\n  constructor(\n    @Inject(IF_LOADED_SPINNER) spinnerComponent: ComponentType<any>,\n    private templateRef: TemplateRef<any>,\n    private viewContainer: ViewContainerRef,\n    private resolver: ComponentFactoryResolver,\n    private readonly cdr: ChangeDetectorRef,\n  ) {\n    this.spinner = spinnerComponent;\n  }\n\n\n  @Input()\n  set ngIfLoaded(value) {\n    if (value) {\n      this.viewContainer.clear();\n      this.viewContainer.createEmbeddedView(this.templateRef);\n    } else {\n      this.viewContainer.clear();\n      const factory = this.resolver.resolveComponentFactory(this.spinner);\n      this.viewContainer.createComponent(factory);\n    }\n    this.cdr.detectChanges();\n  }\n\n}\n",
+            "sourceCode": "import {\n  ChangeDetectorRef,\n  ComponentFactoryResolver,\n  Directive,\n  Inject,\n  Input,\n  TemplateRef,\n  ViewContainerRef\n} from '@angular/core';\nimport {IF_LOADED_SPINNER} from './injection';\nimport {ComponentType} from '@angular/cdk/overlay';\n\n@Directive({\n  // tslint:disable-next-line:directive-selector\n  selector: '[ngIfLoaded]'\n})\nexport class NgIfLoadedDirective {\n\n  public spinner: ComponentType<any>;\n\n  constructor(\n    @Inject(IF_LOADED_SPINNER) spinnerComponent: ComponentType<any>,\n    private templateRef: TemplateRef<any>,\n    private viewContainer: ViewContainerRef,\n    private resolver: ComponentFactoryResolver,\n    private readonly cdr: ChangeDetectorRef,\n  ) {\n    this.spinner = spinnerComponent;\n  }\n\n\n  @Input()\n  set ngIfLoaded(value) {\n    if (value) {\n      this.viewContainer.clear();\n      this.viewContainer.createEmbeddedView(this.templateRef);\n    } else {\n      this.viewContainer.clear();\n      const factory = this.resolver.resolveComponentFactory(this.spinner);\n      this.viewContainer.createComponent(factory);\n    }\n    this.cdr.markForCheck();\n  }\n\n}\n",
             "selector": "[ngIfLoaded]",
             "providers": [],
             "hostDirectives": [],
@@ -2888,7 +2888,7 @@
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": ".pm-combo-box {\n  mat-form-field {\n    border-radius: var(--border-radius-md);\n\n    .mat-mdc-text-field-wrapper {\n      background-color: var(--color-primary);\n      color: white;\n      border-radius: var(--border-radius-md);\n\n      max-height: 40px;\n      display: flex;\n      justify-content: center;\n      align-items: center;\n\n      * {\n        color: white;\n        font-weight: 600 !important;\n      }\n\n      &.mdc-text-field--focused {\n        border-radius: var(--border-radius-md);\n      }\n    }\n\n    .mat-mdc-form-field-bottom-align {\n      height: 0px;\n    }\n\n    &.mat-focused {\n      border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;\n    }\n\n    .mdc-line-ripple {\n      display: none;\n    }\n  }\n}\n\n.pm-combo-box-overlay {\n  $combo-box-overlay-background-color: var(--color-primary);\n  $combo-box-overlay-background-color-hover: rgba(var(--color-light-rgb), 0.35);\n  $combo-box-overlay-border-color: var(--color-primary-states);\n\n  background-color: $combo-box-overlay-background-color;\n  box-shadow: none;\n  border-radius: var(--border-radius-md) !important;\n  margin-top: 0.25em !important;\n  // comentar as duas linhas de baixo para remover a borda degradê\n  //background: linear-gradient($combo-box-overlay-background-color, $combo-box-overlay-background-color) padding-box, linear-gradient(to top, $combo-box-overlay-border-color, transparent) border-box;\n  //border: 2px solid transparent;\n\n  * {\n    color: white !important;\n    font-weight: 600 !important;\n  }\n\n  .mdc-list-item--selected,\n  .mat-mdc-option-active {\n    background: $combo-box-overlay-background-color-hover !important;\n\n    * {\n      color: var(--color-primary-states) !important\n    }\n  }\n\n  .mat-mdc-option {\n    &:hover {\n      background: $combo-box-overlay-background-color-hover !important;\n    }\n  }\n}\n\n.mat-mdc-select-panel-above {\n  .pm-combo-box-overlay {\n    margin-bottom: 0.25em !important;\n  }\n}\n",
+                    "data": ".pm-combo-box {\n  mat-form-field {\n    border-radius: var(--border-radius-md);\n\n    .mat-mdc-text-field-wrapper {\n      background-color: var(--color-primary);\n      color: white;\n      border-radius: var(--border-radius-md);\n\n      max-height: 40px;\n      display: flex;\n      justify-content: center;\n      align-items: center;\n\n      * {\n        color: white;\n        font-weight: 600 !important;\n      }\n\n      &.mdc-text-field--focused {\n        border-radius: var(--border-radius-md);\n      }\n    }\n\n    .mat-mdc-form-field-bottom-align {\n      height: 0px;\n    }\n\n    &.mat-focused {\n      border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;\n    }\n\n    .mdc-line-ripple {\n      display: none;\n    }\n  }\n}\n\n.pm-combo-box-overlay {\n  $combo-box-overlay-background-color: var(--color-primary);\n  $combo-box-overlay-background-color-hover: rgba(var(--color-light-rgb), 0.35);\n  $combo-box-overlay-border-color: var(--color-primary-states);\n\n  background-color: $combo-box-overlay-background-color !important;\n  box-shadow: none;\n  border-radius: var(--border-radius-md) !important;\n  margin-top: 0.25em !important;\n  // comentar as duas linhas de baixo para remover a borda degradê\n  //background: linear-gradient($combo-box-overlay-background-color, $combo-box-overlay-background-color) padding-box, linear-gradient(to top, $combo-box-overlay-border-color, transparent) border-box;\n  //border: 2px solid transparent;\n\n  * {\n    color: white !important;\n    font-weight: 600 !important;\n  }\n\n  .mdc-list-item--selected,\n  .mat-mdc-option-active {\n    background: $combo-box-overlay-background-color-hover !important;\n\n    *,\n    .mat-pseudo-checkbox:after {\n      color: var(--color-primary-states) !important\n    }\n  }\n\n  .mat-mdc-option {\n    &:hover {\n      background: $combo-box-overlay-background-color-hover !important;\n    }\n  }\n}\n\n.mat-mdc-select-panel-above {\n  .pm-combo-box-overlay {\n    margin-bottom: 0.25em !important;\n  }\n}\n",
                     "styleUrl": "./combo-box.component.scss"
                 }
             ],
@@ -4995,7 +4995,7 @@
         },
         {
             "name": "MultiSelectComponent",
-            "id": "component-MultiSelectComponent-24231f0a4d7a75c569987fe295355f09b9fd0f1e1408948d953dfbfbf946dee12e3ec6a9de9706211abc863d034bddc5ebd9b4bd3e89328cb479530d7d158d67",
+            "id": "component-MultiSelectComponent-f3e70513ca334768566dc60c497ca3a2a02b3e11e2f4f6676fa2f6b4e12fdd149c520e6ade5c34c484eb300c4bede32bda77c6de59915b5badffab5a761ed8c5",
             "file": "src/components/inputs/multi-select/multi-select.component.ts",
             "encapsulation": [
                 "ViewEncapsulation.None"
@@ -5006,6 +5006,10 @@
             "providers": [
                 {
                     "name": "{\n    provide: MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, useValue: {\n        autoActiveFirstOption: false, overlayPanelClass: \n    }\n}"
+                },
+                {
+                    "name": "{\n    provide: NG_VALUE_ACCESSOR, multi: true, useExisting: MultiSelectComponent\n}",
+                    "type": "component"
                 }
             ],
             "selector": "pm-multi-select",
@@ -5024,7 +5028,7 @@
                     "defaultValue": "Sizes.md",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 57,
+                    "line": 66,
                     "type": "Sizes",
                     "decorators": []
                 },
@@ -5035,7 +5039,7 @@
                     "deprecationMessage": "",
                     "rawdescription": "\n\nlimite máximo de seleções de itens\n",
                     "description": "<p>limite máximo de seleções de itens</p>\n",
-                    "line": 65,
+                    "line": 74,
                     "type": "number",
                     "decorators": []
                 },
@@ -5046,7 +5050,7 @@
                     "deprecationMessage": "",
                     "rawdescription": "\n\nTempo de espera em cada execução de chamada do observable ao digitar no campo de input\n",
                     "description": "<p>Tempo de espera em cada execução de chamada do observable ao digitar no campo de input</p>\n",
-                    "line": 78,
+                    "line": 104,
                     "type": "number",
                     "decorators": []
                 },
@@ -5054,7 +5058,7 @@
                     "name": "observableInput",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 74,
+                    "line": 100,
                     "type": "function",
                     "decorators": []
                 },
@@ -5065,7 +5069,7 @@
                     "deprecationMessage": "",
                     "rawdescription": "\n\nopções a serem exibidas no input\n",
                     "description": "<p>opções a serem exibidas no input</p>\n",
-                    "line": 56,
+                    "line": 65,
                     "type": "MultiSelectOption[]",
                     "decorators": []
                 },
@@ -5076,7 +5080,7 @@
                     "deprecationMessage": "",
                     "rawdescription": "\n\nTexto a ser exibido no input\n",
                     "description": "<p>Texto a ser exibido no input</p>\n",
-                    "line": 52,
+                    "line": 61,
                     "type": "string",
                     "decorators": []
                 },
@@ -5087,19 +5091,16 @@
                     "deprecationMessage": "",
                     "rawdescription": "\n\nse as thumbnails serão arredondadas\n",
                     "description": "<p>se as thumbnails serão arredondadas</p>\n",
-                    "line": 61,
+                    "line": 70,
                     "type": "boolean",
                     "decorators": []
                 },
                 {
                     "name": "selectedOptions",
-                    "defaultValue": "[]",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "rawdescription": "\n\nOpções que ja vem selecionadas\n",
-                    "description": "<p>Opções que ja vem selecionadas</p>\n",
-                    "line": 69,
-                    "type": "MultiSelectOption[]",
+                    "line": 79,
+                    "type": "[]",
                     "decorators": []
                 },
                 {
@@ -5109,7 +5110,7 @@
                     "deprecationMessage": "",
                     "rawdescription": "\n\nCaso a flag seja \"true\", mostra o botão \"X\" de remover cada item da lista de selecionados.\nCaso contrário, ao clicar sobre um item, remove ele da lista de selecionados\n",
                     "description": "<p>Caso a flag seja &quot;true&quot;, mostra o botão &quot;X&quot; de remover cada item da lista de selecionados.\nCaso contrário, ao clicar sobre um item, remove ele da lista de selecionados</p>\n",
-                    "line": 87,
+                    "line": 113,
                     "type": "boolean",
                     "decorators": []
                 },
@@ -5120,7 +5121,7 @@
                     "deprecationMessage": "",
                     "rawdescription": "\n\nsort selected items instead of showing them in selected sequence\n",
                     "description": "<p>sort selected items instead of showing them in selected sequence</p>\n",
-                    "line": 73,
+                    "line": 99,
                     "type": "boolean",
                     "decorators": []
                 },
@@ -5131,7 +5132,7 @@
                     "deprecationMessage": "",
                     "rawdescription": "\n\nCaso a flag seja \"true\", desativa o foco no input, escondendo o teclado virtual no mobile\n",
                     "description": "<p>Caso a flag seja &quot;true&quot;, desativa o foco no input, escondendo o teclado virtual no mobile</p>\n",
-                    "line": 82,
+                    "line": 108,
                     "type": "boolean",
                     "decorators": []
                 }
@@ -5144,7 +5145,7 @@
                     "deprecationMessage": "",
                     "rawdescription": "\n\nAo ser selecionada uma opção nova, emite\n",
                     "description": "<p>Ao ser selecionada uma opção nova, emite</p>\n",
-                    "line": 48,
+                    "line": 57,
                     "type": "EventEmitter"
                 }
             ],
@@ -5157,10 +5158,34 @@
                     "type": "boolean",
                     "optional": false,
                     "description": "",
-                    "line": 88,
+                    "line": 114,
                     "modifierKind": [
                         123
                     ]
+                },
+                {
+                    "name": "_selectedOptions",
+                    "defaultValue": "[]",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "MultiSelectOption[]",
+                    "optional": false,
+                    "description": "<p>Opções que ja vem selecionadas</p>\n",
+                    "line": 78,
+                    "rawdescription": "\n\nOpções que ja vem selecionadas\n",
+                    "modifierKind": [
+                        121
+                    ]
+                },
+                {
+                    "name": "disabled",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 123
                 },
                 {
                     "name": "filteredOptions",
@@ -5169,7 +5194,7 @@
                     "type": "Observable<MultiSelectOption[]>",
                     "optional": false,
                     "description": "",
-                    "line": 92,
+                    "line": 118,
                     "modifierKind": [
                         123
                     ]
@@ -5181,7 +5206,7 @@
                     "type": "ElementRef",
                     "optional": false,
                     "description": "",
-                    "line": 43,
+                    "line": 52,
                     "decorators": [
                         {
                             "name": "ViewChild",
@@ -5200,7 +5225,7 @@
                     "type": "string",
                     "optional": false,
                     "description": "",
-                    "line": 91,
+                    "line": 117,
                     "modifierKind": [
                         123
                     ]
@@ -5212,11 +5237,51 @@
                     "type": "UntypedFormControl",
                     "optional": false,
                     "description": "",
-                    "line": 90,
+                    "line": 116,
                     "modifierKind": [
                         123,
                         146
                     ]
+                },
+                {
+                    "name": "onChange",
+                    "defaultValue": "() => {...}",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 120
+                },
+                {
+                    "name": "onTouched",
+                    "defaultValue": "() => {...}",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 121
+                },
+                {
+                    "name": "propagateChange",
+                    "defaultValue": "() => {...}",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 182
+                },
+                {
+                    "name": "touched",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 122
                 },
                 {
                     "name": "trigger",
@@ -5225,7 +5290,7 @@
                     "type": "MatAutocompleteTrigger",
                     "optional": false,
                     "description": "",
-                    "line": 44,
+                    "line": 53,
                     "decorators": [
                         {
                             "name": "ViewChild",
@@ -5251,7 +5316,7 @@
                     "optional": false,
                     "returnType": "MultiSelectOption[]",
                     "typeParameters": [],
-                    "line": 138,
+                    "line": 169,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -5275,7 +5340,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 212,
+                    "line": 259,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -5288,7 +5353,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 161,
+                    "line": 205,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -5301,7 +5366,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 193,
+                    "line": 242,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -5314,7 +5379,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 189,
+                    "line": 238,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "rawdescription": "\n\nUse this method instead of \"trigger.closePanel()\" because it has some validations before closing the panel\n",
@@ -5336,7 +5401,7 @@
                     "optional": false,
                     "returnType": "string",
                     "typeParameters": [],
-                    "line": 133,
+                    "line": 164,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "rawdescription": "\n\nFunção utilizada para colocar texto na caixa de input ao selecionar uma opção\n",
@@ -5359,7 +5424,7 @@
                     "optional": false,
                     "returnType": "boolean",
                     "typeParameters": [],
-                    "line": 207,
+                    "line": 254,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -5371,7 +5436,7 @@
                     "args": [
                         {
                             "name": "option",
-                            "type": "MultiSelectOption",
+                            "type": "",
                             "deprecated": false,
                             "deprecationMessage": ""
                         }
@@ -5379,7 +5444,7 @@
                     "optional": false,
                     "returnType": "boolean",
                     "typeParameters": [],
-                    "line": 173,
+                    "line": 218,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -5388,7 +5453,7 @@
                     "jsdoctags": [
                         {
                             "name": "option",
-                            "type": "MultiSelectOption",
+                            "type": "",
                             "deprecated": false,
                             "deprecationMessage": "",
                             "tagName": {
@@ -5403,7 +5468,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 120,
+                    "line": 151,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -5413,7 +5478,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 100,
+                    "line": 131,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -5423,13 +5488,69 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 180,
+                    "line": 229,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "rawdescription": "\n\nUse this method instead of \"trigger.openPanel()\" because it has some validations before opening the panel\n",
                     "description": "<p>Use this method instead of &quot;trigger.openPanel()&quot; because it has some validations before opening the panel</p>\n",
                     "modifierKind": [
                         123
+                    ]
+                },
+                {
+                    "name": "registerOnChange",
+                    "args": [
+                        {
+                            "name": "fn",
+                            "type": "any",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 183,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "fn",
+                            "type": "any",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "registerOnTouched",
+                    "args": [
+                        {
+                            "name": "onTouched",
+                            "type": "any",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 187,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "onTouched",
+                            "type": "any",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
                     ]
                 },
                 {
@@ -5445,7 +5566,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 167,
+                    "line": 211,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -5476,7 +5597,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 147,
+                    "line": 191,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -5500,11 +5621,39 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 199,
+                    "line": 246,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
                         123
+                    ]
+                },
+                {
+                    "name": "writeValue",
+                    "args": [
+                        {
+                            "name": "value",
+                            "type": "MultiSelectOption[]",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 178,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "value",
+                            "type": "MultiSelectOption[]",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
                     ]
                 }
             ],
@@ -5517,7 +5666,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {\n  AfterViewInit,\n  ChangeDetectorRef,\n  Component,\n  ElementRef,\n  EventEmitter,\n  Input,\n  OnInit,\n  Output,\n  ViewChild,\n  ViewEncapsulation\n} from '@angular/core';\nimport {UntypedFormControl} from '@angular/forms';\nimport {catchError, concatMap, debounceTime, distinctUntilChanged, Observable, of, tap} from 'rxjs';\nimport {map, startWith} from 'rxjs/operators';\nimport _ from 'lodash';\nimport {MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, MatAutocompleteTrigger} from '@angular/material/autocomplete';\nimport {Sizes} from '../../../models/sizes';\n\nexport interface MultiSelectOption {\n  label: string;\n  value: any;\n  thumbnail?: string;\n}\n\n@Component({\n  selector: 'pm-multi-select',\n  templateUrl: './multi-select.component.html',\n  styleUrls: ['./multi-select.component.scss'],\n  encapsulation: ViewEncapsulation.None,\n  providers: [\n    {\n      provide: MAT_AUTOCOMPLETE_DEFAULT_OPTIONS,\n      useValue: {\n        autoActiveFirstOption: false,\n        overlayPanelClass: 'pm-multi-select-autocomplete-panel'\n      }\n    }\n  ]\n})\nexport class MultiSelectComponent implements OnInit, AfterViewInit {\n\n  @ViewChild('inputBox', {static: true}) inputBoxEl: ElementRef;\n  @ViewChild('trigger', {static: true}) trigger: MatAutocompleteTrigger;\n  /**\n   * Ao ser selecionada uma opção nova, emite\n   */\n  @Output() selectedOptionsChanged = new EventEmitter<MultiSelectOption[]>();\n  /**\n   * Texto a ser exibido no input\n   */\n  @Input() placeholder: string = '';\n  /**\n   * opções a serem exibidas no input\n   */\n  @Input() options: MultiSelectOption[] = [];\n  @Input() borderRadius: Sizes = Sizes.md;\n  /**\n   * se as thumbnails serão arredondadas\n   */\n  @Input() roundedThumbnail: boolean = true;\n  /**\n   * limite máximo de seleções de itens\n   */\n  @Input() limit: number = 0;\n  /**\n   * Opções que ja vem selecionadas\n   */\n  @Input() selectedOptions: MultiSelectOption[] = [];\n  /**\n   * sort selected items instead of showing them in selected sequence\n   */\n  @Input() sortSelectedItems: boolean = true;\n  @Input() observableInput: (search: string) => Observable<MultiSelectOption[]>;\n  /**\n   * Tempo de espera em cada execução de chamada do observable ao digitar no campo de input\n   */\n  @Input() observableDebounce: number = 100;\n  /**\n   * Caso a flag seja \"true\", desativa o foco no input, escondendo o teclado virtual no mobile\n   */\n  @Input() unfocusOnSelect: boolean = true;\n  /**\n   * Caso a flag seja \"true\", mostra o botão \"X\" de remover cada item da lista de selecionados.\n   * Caso contrário, ao clicar sobre um item, remove ele da lista de selecionados\n   */\n  @Input() showRemoveButton: boolean = false;\n  public _observableInputLoading: boolean = false;\n\n  public readonly myControl: UntypedFormControl;\n  public inputValue: string = '';\n  public filteredOptions: Observable<MultiSelectOption[]>;\n\n  constructor(\n    private cdr: ChangeDetectorRef\n  ) {\n    this.myControl = new UntypedFormControl();\n  }\n\n  ngOnInit(): void {\n    if (this.observableInput) {\n      this.filteredOptions = this.myControl.valueChanges.pipe(\n        debounceTime(this.observableDebounce),\n        distinctUntilChanged(),\n        tap(() => {this.observableInputLoading = true}),\n        concatMap(() => this.observableInput(`${this.myControl.value}`).pipe(\n          catchError(error => {this.observableInputLoading = false; return of(null); }),\n        )),\n        tap(() => {this.observableInputLoading = false}),\n      );\n    } else {\n      this.filteredOptions = this.myControl.valueChanges.pipe(\n        startWith(''),\n        map(value => (typeof value === 'string' ? value : `${value.label}`)),\n        map(label => this._filter(label)),\n      );\n    }\n  }\n\n  ngAfterViewInit(): void {\n    this.clearInput();\n  }\n\n  public set observableInputLoading(state: boolean) {\n    this._observableInputLoading = state;\n    this.cdr.detectChanges();\n  }\n\n  /**\n   * Função utilizada para colocar texto na caixa de input ao selecionar uma opção\n   * @param user\n   */\n  displayFn(option: MultiSelectOption): string {\n    return '';\n    // return option && option.label ? option.label : '';\n  }\n\n  private _filter(label: string): MultiSelectOption[] {\n    const filterValue = label.toLowerCase();\n\n    return _.difference(\n      this.options.filter(option => option.label.toLowerCase().includes(filterValue)),\n      this.selectedOptions\n    );\n  }\n\n  public selectOption(option: any): void {\n    this.selectedOptions.push(option);\n\n    if (this.sortSelectedItems) {\n      this.selectedOptions = this.selectedOptions.sort((a, b) => {\n        return this.options.indexOf(a) - this.options.indexOf(b);\n      });\n    }\n\n    this.selectedOptionsChanged.emit(this.selectedOptions);\n    this.blurInputSelect();\n    this.clearInput();\n  }\n\n  private clearInput(): void {\n    this.inputValue = '';\n    this.myControl.setValue(this.inputValue);\n    this.cdr.detectChanges();\n  }\n\n  public removeSelectedOption(option: MultiSelectOption): void {\n    _.remove(this.selectedOptions, option);\n    this.trigger.closePanel();\n    this.clearInput();\n  }\n\n  public isOptionSelected(option: MultiSelectOption): boolean {\n    return !!this.selectedOptions.find(sOptions => _.isEqual(sOptions, option));\n  }\n\n  /**\n   * Use this method instead of \"trigger.openPanel()\" because it has some validations before opening the panel\n   */\n  public openSelect(): void {\n    if (this.isLimitReached() === false) {\n      this.trigger.openPanel();\n    }\n  }\n\n  /**\n   * Use this method instead of \"trigger.closePanel()\" because it has some validations before closing the panel\n   */\n  public closeSelect(): void {\n    this.trigger.closePanel();\n  }\n\n  public clearSelected(): void {\n    this.selectedOptions = [];\n    this.selectedOptionsChanged.emit(this.selectedOptions);\n    this.clearInput();\n  }\n\n  public togglePanel(): void {\n    if (this.trigger.panelOpen === false) {\n      this.openSelect();\n    } else {\n      this.closeSelect();\n    }\n  }\n\n  public isLimitReached() {\n    return !this.observableInput // caso tenha observable input, as options são dinâmicas, e não armazenadas no componente\n      && (this.selectedOptions.length === this.options.length || (!!this.limit && this.selectedOptions.length >= this.limit))\n  }\n\n  public blurInputSelect() {\n    if (this.unfocusOnSelect) {\n      setTimeout(() => {\n        try {\n          this.inputBoxEl.nativeElement.blur();\n        } catch (e) {}\n      });\n    }\n  }\n\n}\n",
+            "sourceCode": "import {\n  AfterViewInit,\n  ChangeDetectorRef,\n  Component,\n  ElementRef,\n  EventEmitter,\n  Input,\n  OnInit,\n  Output,\n  ViewChild,\n  ViewEncapsulation\n} from '@angular/core';\nimport {ControlValueAccessor, NG_VALUE_ACCESSOR, UntypedFormControl} from '@angular/forms';\nimport {catchError, concatMap, debounceTime, distinctUntilChanged, Observable, of, tap} from 'rxjs';\nimport {map, startWith} from 'rxjs/operators';\nimport _ from 'lodash';\nimport {MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, MatAutocompleteTrigger} from '@angular/material/autocomplete';\nimport {Sizes} from '../../../models/sizes';\n\nexport interface MultiSelectOption {\n  label: string;\n  value: any;\n  thumbnail?: string;\n}\n\nfunction isMultiSelectOption(value: any) {\n  return value.hasOwnProperty('label') && value.hasOwnProperty('value');\n}\n\n@Component({\n  selector: 'pm-multi-select',\n  templateUrl: './multi-select.component.html',\n  styleUrls: ['./multi-select.component.scss'],\n  encapsulation: ViewEncapsulation.None,\n  providers: [\n    {\n      provide: MAT_AUTOCOMPLETE_DEFAULT_OPTIONS,\n      useValue: {\n        autoActiveFirstOption: false,\n        overlayPanelClass: 'pm-multi-select-autocomplete-panel'\n      }\n    },\n    {\n      provide: NG_VALUE_ACCESSOR,\n      multi: true,\n      useExisting: MultiSelectComponent\n    }\n  ]\n})\nexport class MultiSelectComponent implements OnInit, AfterViewInit, ControlValueAccessor {\n\n  @ViewChild('inputBox', {static: true}) inputBoxEl: ElementRef;\n  @ViewChild('trigger', {static: true}) trigger: MatAutocompleteTrigger;\n  /**\n   * Ao ser selecionada uma opção nova, emite\n   */\n  @Output() selectedOptionsChanged = new EventEmitter<MultiSelectOption[]>();\n  /**\n   * Texto a ser exibido no input\n   */\n  @Input() placeholder: string = '';\n  /**\n   * opções a serem exibidas no input\n   */\n  @Input() options: MultiSelectOption[] = [];\n  @Input() borderRadius: Sizes = Sizes.md;\n  /**\n   * se as thumbnails serão arredondadas\n   */\n  @Input() roundedThumbnail: boolean = true;\n  /**\n   * limite máximo de seleções de itens\n   */\n  @Input() limit: number = 0;\n  /**\n   * Opções que ja vem selecionadas\n   */\n  private _selectedOptions: MultiSelectOption[] = [];\n  @Input() set selectedOptions(options: (MultiSelectOption | any)[]) {\n    options = options.reduce((acc: any[], val: any) => {\n      if (isMultiSelectOption(val)) {\n        return [...acc, val];\n      } else {\n        return this.options.find(option => _.isEqual(option.value, val));\n      }\n    }, []) as unknown as MultiSelectOption[];\n    console.log(options)\n    this._selectedOptions = options;\n    this.selectedOptionsChanged.emit(this.selectedOptions);\n    this.propagateChange(this.selectedOptions);\n    this.clearInput();\n  };\n  public get selectedOptions() {\n    return this._selectedOptions;\n  }\n  /**\n   * sort selected items instead of showing them in selected sequence\n   */\n  @Input() sortSelectedItems: boolean = true;\n  @Input() observableInput: (search: string) => Observable<MultiSelectOption[]>;\n  /**\n   * Tempo de espera em cada execução de chamada do observable ao digitar no campo de input\n   */\n  @Input() observableDebounce: number = 100;\n  /**\n   * Caso a flag seja \"true\", desativa o foco no input, escondendo o teclado virtual no mobile\n   */\n  @Input() unfocusOnSelect: boolean = true;\n  /**\n   * Caso a flag seja \"true\", mostra o botão \"X\" de remover cada item da lista de selecionados.\n   * Caso contrário, ao clicar sobre um item, remove ele da lista de selecionados\n   */\n  @Input() showRemoveButton: boolean = false;\n  public _observableInputLoading: boolean = false;\n\n  public readonly myControl: UntypedFormControl;\n  public inputValue: string = '';\n  public filteredOptions: Observable<MultiSelectOption[]>;\n\n  onChange = (selectedOptions) => {};\n  onTouched = () => {};\n  touched = false;\n  disabled = false;\n\n  constructor(\n    private cdr: ChangeDetectorRef\n  ) {\n    this.myControl = new UntypedFormControl();\n  }\n\n  ngOnInit(): void {\n    if (this.observableInput) {\n      this.filteredOptions = this.myControl.valueChanges.pipe(\n        debounceTime(this.observableDebounce),\n        distinctUntilChanged(),\n        tap(() => {this.observableInputLoading = true}),\n        concatMap(() => this.observableInput(`${this.myControl.value}`).pipe(\n          catchError(error => {this.observableInputLoading = false; return of(null); }),\n        )),\n        tap(() => {this.observableInputLoading = false}),\n      );\n    } else {\n      this.filteredOptions = this.myControl.valueChanges.pipe(\n        startWith(''),\n        map(value => (typeof value === 'string' ? value : `${value.label}`)),\n        map(label => this._filter(label)),\n      );\n    }\n  }\n\n  ngAfterViewInit(): void {\n    this.clearInput();\n  }\n\n  public set observableInputLoading(state: boolean) {\n    this._observableInputLoading = state;\n    this.cdr.detectChanges();\n  }\n\n  /**\n   * Função utilizada para colocar texto na caixa de input ao selecionar uma opção\n   * @param user\n   */\n  displayFn(option: MultiSelectOption): string {\n    return '';\n    // return option && option.label ? option.label : '';\n  }\n\n  private _filter(label: string): MultiSelectOption[] {\n    const filterValue = label.toLowerCase();\n\n    return _.difference(\n      this.options.filter(option => option.label.toLowerCase().includes(filterValue)),\n      this.selectedOptions\n    );\n  }\n\n  writeValue(value: MultiSelectOption[]) {\n    this.selectedOptions = value;\n  }\n\n  propagateChange = (_: any) => {};\n  registerOnChange(fn: any) {\n    this.propagateChange = fn;\n  }\n\n  registerOnTouched(onTouched: any) {\n    this.onTouched = onTouched;\n  }\n\n  public selectOption(option: any): void {\n    const currentOptions = this.selectedOptions;\n    currentOptions.push(option);\n\n    if (this.sortSelectedItems) {\n      this.selectedOptions = currentOptions.sort((a, b) => {\n        return this.options.indexOf(a) - this.options.indexOf(b);\n      });\n    } else {\n      this.selectedOptions = currentOptions;\n    }\n    this.blurInputSelect();\n  }\n\n  private clearInput(): void {\n    this.inputValue = '';\n    this.myControl.setValue(this.inputValue);\n    this.cdr.detectChanges();\n  }\n\n  public removeSelectedOption(option: MultiSelectOption): void {\n    _.remove(this.selectedOptions, option);\n    this.selectedOptions = this.selectedOptions;\n    this.trigger.closePanel();\n    this.clearInput();\n  }\n\n  public isOptionSelected(option: (MultiSelectOption|any)): boolean {\n    if (isMultiSelectOption(option)) {\n      return !!this.selectedOptions.find(sOptions => _.isEqual(sOptions, option));\n    } else {\n      return !!this.selectedOptions.find((sOptions) => _.isEqual(sOptions.value, option));\n    }\n  }\n\n  /**\n   * Use this method instead of \"trigger.openPanel()\" because it has some validations before opening the panel\n   */\n  public openSelect(): void {\n    if (this.isLimitReached() === false) {\n      this.trigger.openPanel();\n    }\n  }\n\n  /**\n   * Use this method instead of \"trigger.closePanel()\" because it has some validations before closing the panel\n   */\n  public closeSelect(): void {\n    this.trigger.closePanel();\n  }\n\n  public clearSelected(): void {\n    this.selectedOptions = [];\n  }\n\n  public togglePanel(): void {\n    if (this.trigger.panelOpen === false) {\n      this.openSelect();\n    } else {\n      this.closeSelect();\n    }\n  }\n\n  public isLimitReached() {\n    return !this.observableInput // caso tenha observable input, as options são dinâmicas, e não armazenadas no componente\n      && (this.selectedOptions.length === this.options.length || (!!this.limit && this.selectedOptions.length >= this.limit))\n  }\n\n  public blurInputSelect() {\n    if (this.unfocusOnSelect) {\n      setTimeout(() => {\n        try {\n          this.inputBoxEl.nativeElement.blur();\n        } catch (e) {}\n      });\n    }\n  }\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -5539,7 +5688,7 @@
                         "deprecationMessage": ""
                     }
                 ],
-                "line": 92,
+                "line": 123,
                 "jsdoctags": [
                     {
                         "name": "cdr",
@@ -5554,9 +5703,46 @@
             },
             "implements": [
                 "OnInit",
-                "AfterViewInit"
+                "AfterViewInit",
+                "ControlValueAccessor"
             ],
             "accessors": {
+                "selectedOptions": {
+                    "name": "selectedOptions",
+                    "setSignature": {
+                        "name": "selectedOptions",
+                        "type": "void",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "args": [
+                            {
+                                "name": "options",
+                                "type": "(MultiSelectOption | any)[]",
+                                "deprecated": false,
+                                "deprecationMessage": ""
+                            }
+                        ],
+                        "returnType": "void",
+                        "line": 79,
+                        "jsdoctags": [
+                            {
+                                "name": "options",
+                                "type": "(MultiSelectOption | any)[]",
+                                "deprecated": false,
+                                "deprecationMessage": "",
+                                "tagName": {
+                                    "text": "param"
+                                }
+                            }
+                        ]
+                    },
+                    "getSignature": {
+                        "name": "selectedOptions",
+                        "type": "",
+                        "returnType": "",
+                        "line": 93
+                    }
+                },
                 "observableInputLoading": {
                     "name": "observableInputLoading",
                     "setSignature": {
@@ -5573,7 +5759,7 @@
                             }
                         ],
                         "returnType": "void",
-                        "line": 124,
+                        "line": 155,
                         "jsdoctags": [
                             {
                                 "name": "state",
@@ -5730,7 +5916,7 @@
         },
         {
             "name": "SidebarComponent",
-            "id": "component-SidebarComponent-8178cbbb4f157b4da86892556fe5314d0ad6a140fb4599710e81bcacd45bf089a47e6ffd81ca5f394fb36ffce0332396c6aba233c2435566436d8dfcbf50f3f2",
+            "id": "component-SidebarComponent-e1d41692728382aa6552bacc5974d2b54506bf191067e662bf614dd826c383078b34a3203f6a271b41ac8e753f86c0d53dc37ea6eea9d50cf6fa305d1acf74c8",
             "file": "src/components/layout/sidebar/sidebar.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [
@@ -5755,7 +5941,7 @@
                     "name": "label",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 20,
+                    "line": 21,
                     "type": "string | Observable",
                     "decorators": []
                 },
@@ -5793,6 +5979,14 @@
                     "line": 17,
                     "type": "SidebarItem[]",
                     "decorators": []
+                },
+                {
+                    "name": "zIndex",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 18,
+                    "type": "number",
+                    "decorators": []
                 }
             ],
             "outputsClass": [],
@@ -5804,7 +5998,7 @@
                     "type": "Observable<string>",
                     "optional": false,
                     "description": "",
-                    "line": 19,
+                    "line": 20,
                     "modifierKind": [
                         121
                     ]
@@ -5816,7 +6010,7 @@
                     "type": "ChangeDetectorRef",
                     "optional": false,
                     "description": "",
-                    "line": 32,
+                    "line": 33,
                     "modifierKind": [
                         123,
                         146
@@ -5830,7 +6024,7 @@
                     "optional": false,
                     "returnType": "boolean",
                     "typeParameters": [],
-                    "line": 38,
+                    "line": 39,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -5843,7 +6037,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 35,
+                    "line": 36,
                     "deprecated": false,
                     "deprecationMessage": ""
                 }
@@ -5857,7 +6051,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, ViewEncapsulation} from '@angular/core';\nimport {SidebarItem} from \"./sidebar-content/models\";\nimport {isObservable, Observable, of} from \"rxjs\";\n\n@Component({\n  selector: 'pm-sidebar',\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  templateUrl: './sidebar.component.html',\n  styleUrls: ['./sidebar.component.scss'],\n  encapsulation: ViewEncapsulation.None\n})\nexport class SidebarComponent implements OnInit {\n\n  @Input() showBackButton: boolean = false;\n  @Input() showNextButton: boolean = false;\n  @Input() nextButtonAction: () => void;\n  @Input() sidebarEntries: SidebarItem[] = [];\n\n  private _label: Observable<string>;\n  @Input() set label(value: string | Observable<string>) {\n    if (isObservable(value) === false) {\n      value = of(`${value}`);\n    }\n    this._label = value as Observable<string>;\n    this.cdr.detectChanges();\n  }\n  get label(): Observable<string> {\n    return this._label;\n  }\n\n  constructor(\n    public readonly cdr: ChangeDetectorRef,\n  ) { }\n\n  ngOnInit(): void {\n  }\n\n  public isWindowWidthMobile(): boolean {\n    return window.innerWidth <= 991;\n  }\n\n}\n",
+            "sourceCode": "import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, ViewEncapsulation} from '@angular/core';\nimport {SidebarItem} from \"./sidebar-content/models\";\nimport {isObservable, Observable, of} from \"rxjs\";\n\n@Component({\n  selector: 'pm-sidebar',\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  templateUrl: './sidebar.component.html',\n  styleUrls: ['./sidebar.component.scss'],\n  encapsulation: ViewEncapsulation.None\n})\nexport class SidebarComponent implements OnInit {\n\n  @Input() showBackButton: boolean = false;\n  @Input() showNextButton: boolean = false;\n  @Input() nextButtonAction: () => void;\n  @Input() sidebarEntries: SidebarItem[] = [];\n  @Input() zIndex: number;\n\n  private _label: Observable<string>;\n  @Input() set label(value: string | Observable<string>) {\n    if (isObservable(value) === false) {\n      value = of(`${value}`);\n    }\n    this._label = value as Observable<string>;\n    this.cdr.markForCheck();\n  }\n  get label(): Observable<string> {\n    return this._label;\n  }\n\n  constructor(\n    public readonly cdr: ChangeDetectorRef,\n  ) { }\n\n  ngOnInit(): void {\n  }\n\n  public isWindowWidthMobile(): boolean {\n    return window.innerWidth <= 991;\n  }\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -5879,7 +6073,7 @@
                         "deprecationMessage": ""
                     }
                 ],
-                "line": 29,
+                "line": 30,
                 "jsdoctags": [
                     {
                         "name": "cdr",
@@ -5912,7 +6106,7 @@
                             }
                         ],
                         "returnType": "void",
-                        "line": 20,
+                        "line": 21,
                         "jsdoctags": [
                             {
                                 "name": "value",
@@ -5929,16 +6123,17 @@
                         "name": "label",
                         "type": "",
                         "returnType": "Observable<string>",
-                        "line": 27
+                        "line": 28
                     }
                 }
             },
-            "templateData": "<mat-drawer-container class=\"pm-sidebar\" [autosize]=\"true\" fullscreen>\n\n  <mat-drawer #drawer [mode]=\"isWindowWidthMobile() === true ? 'over' : 'side'\">\n    <app-sidebar-content\n      *ngIf=\"sidebarEntries.length > 0\"\n      [sidebarEntries]=\"sidebarEntries\"\n      [drawer]=\"drawer\"\n    >\n    </app-sidebar-content>\n  </mat-drawer>\n\n  <mat-drawer-content class=\"ion-content-scroll-host drawer-content\">\n    <div class=\"navbar\">\n      <div class=\"navbar-bg\"></div>\n      <div class=\"navbar-content w-100 mb-3\">\n        <svg (click)=\"drawer.toggle(); cdr.detectChanges()\"\n             class=\"ham\"\n             [ngClass]=\"{'active': drawer.opened}\"\n             viewBox=\"0 0 100 100\" width=\"40\"\n        >\n          <path class=\"line top\" d=\"m 70,33 h -40 c -6.5909,0 -7.763966,-4.501509 -7.763966,-7.511428 0,-4.721448 3.376452,-9.583771 13.876919,-9.583771 14.786182,0 11.409257,14.896182 9.596449,21.970818 -1.812808,7.074636 -15.709402,12.124381 -15.709402,12.124381\"/>\n          <path class=\"line middle\" d=\"m 30,50 h 40\"/>\n          <path class=\"line bottom\" d=\"m 70,67 h -40 c -6.5909,0 -7.763966,4.501509 -7.763966,7.511428 0,4.721448 3.376452,9.583771 13.876919,9.583771 14.786182,0 11.409257,-14.896182 9.596449,-21.970818 -1.812808,-7.074636 -15.709402,-12.124381 -15.709402,-12.124381\"/>\n        </svg>\n        <span *ngIf=\"showBackButton\"\n              navigationBackButton\n              class=\"d-flex justify-content-center align-items-center overflow-hidden color-gray-dark no-outline no-shadow cursor-pointer\"\n              style=\"max-height: 20px\"\n        >\n                    <i class=\"uil uil-2x uil-angle-left text-center inline-block\"></i>\n        </span>\n        <h4 style=\"width: -webkit-fill-available;\" class=\"color-gray-dark m-0 ms-3 text-overflow\">{{ label | async }}</h4>\n        <span *ngIf=\"showNextButton && nextButtonAction\"\n              (click)=\"nextButtonAction()\"\n              class=\"d-flex justify-content-center align-items-center overflow-hidden color-gray-dark no-outline no-shadow cursor-pointer\"\n              style=\"max-height: 20px\"\n        >\n            <i class=\"uil uil-2x uil-angle-right text-center inline-block\"></i>\n        </span>\n      </div>\n    </div>\n    <div class=\"container\">\n      <ng-content></ng-content>\n    </div>\n  </mat-drawer-content>\n\n\n</mat-drawer-container>\n"
+            "templateData": "<mat-drawer-container class=\"pm-sidebar\" [autosize]=\"true\" fullscreen>\n\n  <mat-drawer #drawer [mode]=\"isWindowWidthMobile() === true ? 'over' : 'side'\">\n    <app-sidebar-content\n      *ngIf=\"sidebarEntries.length > 0\"\n      [sidebarEntries]=\"sidebarEntries\"\n      [drawer]=\"drawer\"\n    >\n    </app-sidebar-content>\n  </mat-drawer>\n\n  <mat-drawer-content class=\"ion-content-scroll-host drawer-content\">\n    <div class=\"navbar\" [ngStyle]=\"{'z-index': zIndex}\">\n      <div class=\"navbar-bg\"></div>\n      <div class=\"navbar-content w-100 mb-3\">\n        <svg (click)=\"drawer.toggle(); cdr.detectChanges()\"\n             class=\"ham\"\n             [ngClass]=\"{'active': drawer.opened}\"\n             viewBox=\"0 0 100 100\" width=\"40\"\n        >\n          <path class=\"line top\" d=\"m 70,33 h -40 c -6.5909,0 -7.763966,-4.501509 -7.763966,-7.511428 0,-4.721448 3.376452,-9.583771 13.876919,-9.583771 14.786182,0 11.409257,14.896182 9.596449,21.970818 -1.812808,7.074636 -15.709402,12.124381 -15.709402,12.124381\"/>\n          <path class=\"line middle\" d=\"m 30,50 h 40\"/>\n          <path class=\"line bottom\" d=\"m 70,67 h -40 c -6.5909,0 -7.763966,4.501509 -7.763966,7.511428 0,4.721448 3.376452,9.583771 13.876919,9.583771 14.786182,0 11.409257,-14.896182 9.596449,-21.970818 -1.812808,-7.074636 -15.709402,-12.124381 -15.709402,-12.124381\"/>\n        </svg>\n        <span *ngIf=\"showBackButton\"\n              navigationBackButton\n              class=\"d-flex justify-content-center align-items-center overflow-hidden color-gray-dark no-outline no-shadow cursor-pointer\"\n              style=\"max-height: 20px\"\n        >\n                    <i class=\"uil uil-2x uil-angle-left text-center inline-block\"></i>\n        </span>\n        <h4 style=\"width: -webkit-fill-available;\" class=\"color-gray-dark m-0 ms-3 text-overflow\">{{ label | async }}</h4>\n        <span *ngIf=\"showNextButton && nextButtonAction\"\n              (click)=\"nextButtonAction()\"\n              class=\"d-flex justify-content-center align-items-center overflow-hidden color-gray-dark no-outline no-shadow cursor-pointer\"\n              style=\"max-height: 20px\"\n        >\n            <i class=\"uil uil-2x uil-angle-right text-center inline-block\"></i>\n        </span>\n      </div>\n    </div>\n    <div class=\"container\">\n      <ng-content></ng-content>\n    </div>\n  </mat-drawer-content>\n\n\n</mat-drawer-container>\n"
         },
         {
             "name": "SidebarContentComponent",
-            "id": "component-SidebarContentComponent-4e841bb9cc0d027a90fbe36ed7b59d20e1f76fab4f54e031903ebec32fa73c84e553e1d541ddc314c311300bb8ce1b1a6f3b18b4588e5c01bc12d4499ca132a2",
+            "id": "component-SidebarContentComponent-de741d0e35db4a58be3d0ed8d50135db193750d03a14fe385512fdfcf75189d717099b2e0efac59c1248c0a296d2e3e15b3edfb297f84c43814078390fd10977",
             "file": "src/components/layout/sidebar/sidebar-content/sidebar-content.component.ts",
+            "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
             "entryComponents": [],
             "inputs": [],
@@ -5959,7 +6154,7 @@
                     "name": "drawer",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 12,
+                    "line": 13,
                     "type": "MatDrawer",
                     "decorators": []
                 },
@@ -5968,7 +6163,7 @@
                     "defaultValue": "true",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 14,
+                    "line": 15,
                     "type": "boolean",
                     "decorators": []
                 },
@@ -5977,22 +6172,31 @@
                     "defaultValue": "'240px'",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 13,
+                    "line": 14,
                     "type": "string",
                     "decorators": []
                 },
                 {
                     "name": "sidebarEntries",
-                    "defaultValue": "[]",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 15,
+                    "line": 17,
                     "type": "SidebarItem[]",
                     "decorators": []
                 }
             ],
             "outputsClass": [],
             "propertiesClass": [
+                {
+                    "name": "_sidebarEntries",
+                    "defaultValue": "[]",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "SidebarItem[]",
+                    "optional": false,
+                    "description": "",
+                    "line": 16
+                },
                 {
                     "name": "currentExpandedSession",
                     "defaultValue": "''",
@@ -6001,7 +6205,7 @@
                     "type": "string",
                     "optional": false,
                     "description": "",
-                    "line": 16,
+                    "line": 24,
                     "modifierKind": [
                         123
                     ]
@@ -6034,7 +6238,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 25,
+                    "line": 32,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -6091,7 +6295,7 @@
                     "optional": false,
                     "returnType": "string",
                     "typeParameters": [],
-                    "line": 46,
+                    "line": 53,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -6138,7 +6342,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 36,
+                    "line": 43,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -6171,7 +6375,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 22,
+                    "line": 29,
                     "deprecated": false,
                     "deprecationMessage": ""
                 }
@@ -6185,7 +6389,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {Component, Input, OnInit} from '@angular/core';\nimport {SidebarItem} from './models';\nimport {MatDrawer} from '@angular/material/sidenav';\n\n@Component({\n    selector: 'app-sidebar-content',\n    templateUrl: './sidebar-content.component.html',\n    styleUrls: ['./sidebar-content.component.scss']\n})\nexport class SidebarContentComponent implements OnInit {\n\n    @Input() drawer: MatDrawer;\n    @Input() minWidth: string = '240px';\n    @Input() expandCurrentItem: boolean = true;\n    @Input() sidebarEntries: SidebarItem[] = [];\n    public currentExpandedSession: string = '';\n\n    constructor(\n    ) {\n    }\n\n    ngOnInit(): void {\n    }\n\n    public executeAction(event: any, entry: SidebarItem, closeDrawer: boolean = true): void {\n        if (entry?.action) {\n            event.stopPropagation();\n            entry.action();\n        }\n\n        if (closeDrawer && this.drawer) {\n            this.drawer.close();\n        }\n    }\n\n    public keepSessionExpanded(event: any, treeId: string): void {\n        if (\n            event === true\n            && this.expandCurrentItem\n            && !!treeId\n        ) {\n            this.currentExpandedSession = `${treeId}`;\n        }\n    }\n\n    public getIdForEntry(entry: SidebarItem, prefix: string = ''): string {\n        let entryId = entry.label.replace(/[^a-zA-Z0-9,._-]/g, '');\n        entryId = prefix ? `${prefix}${entryId}` : entryId; // não pode ter \".\" senão o id não é reconhecido direito pelo bootstrap\n        return entryId;\n    }\n\n}\n",
+            "sourceCode": "import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';\nimport {SidebarItem} from './models';\nimport {MatDrawer} from '@angular/material/sidenav';\n\n@Component({\n  selector: 'app-sidebar-content',\n  templateUrl: './sidebar-content.component.html',\n  styleUrls: ['./sidebar-content.component.scss'],\n  changeDetection: ChangeDetectionStrategy.OnPush\n})\nexport class SidebarContentComponent implements OnInit {\n\n  @Input() drawer: MatDrawer;\n  @Input() minWidth: string = '240px';\n  @Input() expandCurrentItem: boolean = true;\n  _sidebarEntries: SidebarItem[] = []\n  @Input() set sidebarEntries(entries: SidebarItem[]) {\n    this._sidebarEntries = entries;\n    this.cdr.detectChanges();\n  }\n  public get sidebarEntries() {\n    return this._sidebarEntries;\n  }\n  public currentExpandedSession: string = '';\n\n  constructor(private readonly cdr: ChangeDetectorRef) {\n  }\n\n  ngOnInit(): void {\n  }\n\n  public executeAction(event: any, entry: SidebarItem, closeDrawer: boolean = true): void {\n    if (entry?.action) {\n      event.stopPropagation();\n      entry.action();\n    }\n\n    if (closeDrawer && this.drawer) {\n      this.drawer.close();\n    }\n  }\n\n  public keepSessionExpanded(event: any, treeId: string): void {\n    if (\n      event === true\n      && this.expandCurrentItem\n      && !!treeId\n    ) {\n      this.currentExpandedSession = `${treeId}`;\n    }\n  }\n\n  public getIdForEntry(entry: SidebarItem, prefix: string = ''): string {\n    let entryId = entry.label.replace(/[^a-zA-Z0-9,._-]/g, '');\n    entryId = prefix ? `${prefix}${entryId}` : entryId; // não pode ter \".\" senão o id não é reconhecido direito pelo bootstrap\n    return entryId;\n  }\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -6199,12 +6403,68 @@
                 "description": "",
                 "deprecated": false,
                 "deprecationMessage": "",
-                "args": [],
-                "line": 16
+                "args": [
+                    {
+                        "name": "cdr",
+                        "type": "ChangeDetectorRef",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 24,
+                "jsdoctags": [
+                    {
+                        "name": "cdr",
+                        "type": "ChangeDetectorRef",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
             },
             "implements": [
                 "OnInit"
             ],
+            "accessors": {
+                "sidebarEntries": {
+                    "name": "sidebarEntries",
+                    "setSignature": {
+                        "name": "sidebarEntries",
+                        "type": "void",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "args": [
+                            {
+                                "name": "entries",
+                                "type": "SidebarItem[]",
+                                "deprecated": false,
+                                "deprecationMessage": ""
+                            }
+                        ],
+                        "returnType": "void",
+                        "line": 17,
+                        "jsdoctags": [
+                            {
+                                "name": "entries",
+                                "type": "SidebarItem[]",
+                                "deprecated": false,
+                                "deprecationMessage": "",
+                                "tagName": {
+                                    "text": "param"
+                                }
+                            }
+                        ]
+                    },
+                    "getSignature": {
+                        "name": "sidebarEntries",
+                        "type": "",
+                        "returnType": "",
+                        "line": 21
+                    }
+                }
+            },
             "templateData": "<div class=\"app-sidebar-content\"\n     [ngStyle]=\"{'min-width': minWidth}\"\n>\n    <ul class=\"sidebar-nav\">\n        <ng-container *ngFor=\"let entry of sidebarEntries\">\n            <ng-container *ngTemplateOutlet=\"entryChecker; context: {$implicit: entry, prefixId: getIdForEntry(entry)}\"></ng-container>\n        </ng-container>\n    </ul>\n</div>\n\n<ng-template #entryChecker let-entry let-prefixId=\"prefixId\">\n    <li routerLinkActive=\"active\"\n        [routerLinkActiveOptions]=\"{exact: true}\"\n        [ngClass]=\"{'active': currentExpandedSession.startsWith(prefixId)}\"\n    >\n        <ng-container [ngSwitch]=\"!!entry?.children\">\n            <!--Se for um item sem submenus-->\n            <ng-container *ngSwitchCase=\"false\">\n                <ng-container *ngTemplateOutlet=\"noSubmenuEntry; context: {$implicit: entry}\"></ng-container>\n            </ng-container>\n\n            <!--Se for um item com submenus-->\n            <ng-container *ngSwitchCase=\"true\">\n                <ng-container *ngTemplateOutlet=\"submenuEntry; context: {$implicit: entry, prefixId: prefixId}\"></ng-container>\n            </ng-container>\n        </ng-container>\n    </li>\n</ng-template>\n\n<ng-template #noSubmenuEntry let-entry>\n    <a (click)=\"executeAction($event, entry)\"\n       [routerLink]=\"entry?.routerLink\"\n       [queryParams]=\"entry?.queryParams\"\n    >\n        <ng-container *ngTemplateOutlet=\"entryContent; context: {$implicit: entry}\"></ng-container>\n    </a>\n</ng-template>\n\n<ng-template #submenuEntry let-entry let-prefixId=\"prefixId\" let-isSub=\"isSub\">\n    <a [ngClass]=\"{'sub': isSub}\"\n       [attr.data-bs-toggle]=\"'collapse'\"\n       [attr.data-bs-target]=\"'#collapse' + prefixId\"\n    >\n        <ng-container *ngTemplateOutlet=\"entryContent; context: {$implicit: entry}\"></ng-container>\n    </a>\n\n    <!--Exibe os itens do submenu-->\n    <ng-container *ngTemplateOutlet=\"childEntryContent; context: {$implicit: entry, prefixId: prefixId}\"></ng-container>\n</ng-template>\n\n<ng-template #entryContent let-entry>\n    <i class=\"{{ entry.iconClass }}\"></i>\n    <p class=\"ms-2\">\n        {{entry.label}}\n        <b *ngIf=\"entry?.children\" class=\"caret ms-3\"></b>\n    </p>\n</ng-template>\n\n<ng-template #childEntryContent let-entry let-prefixId=\"prefixId\">\n    <div *ngIf=\"entry?.children\"\n         [attr.id]=\"'collapse' + prefixId\"\n         class=\"{{currentExpandedSession.startsWith(getIdForEntry(entry, prefixId)) ? 'show' : 'collapse'}}\"\n    >\n        <div class=\"d-flex\">\n            <div class=\"aux-bar\"></div>\n            <ul class=\"sidebar-nav\">\n                <ng-container *ngFor=\"let childEntry of entry.children\">\n                <li routerLinkActive=\"active\"\n                    [routerLinkActiveOptions]=\"{exact: true}\"\n                    (isActiveChange)=\"keepSessionExpanded($event, getIdForEntry(entry, prefixId))\"\n                    [ngClass]=\"{'active': currentExpandedSession.startsWith(getIdForEntry(childEntry, prefixId))}\"\n                >\n                    <ng-container [ngSwitch]=\"!!childEntry?.children\">\n                        <!--Se for um item sem submenus-->\n                        <ng-container *ngSwitchCase=\"false\">\n                            <a class=\"sub\"\n                               (click)=\"executeAction($event, childEntry)\"\n                               [routerLink]=\"childEntry?.routerLink\"\n                               [queryParams]=\"childEntry?.queryParams\"\n                            >\n                                <ng-container *ngTemplateOutlet=\"entryContent; context: {$implicit: childEntry}\"></ng-container>\n                            </a>\n                        </ng-container>\n\n                        <!--Se for um item com submenus-->\n                        <ng-container *ngSwitchCase=\"true\">\n                            <ng-container *ngTemplateOutlet=\"submenuEntry; context: {$implicit: childEntry, prefixId: getIdForEntry(childEntry, prefixId), isSub: true}\"></ng-container>\n                        </ng-container>\n                    </ng-container>\n                </li>\n                </ng-container>\n            </ul>\n        </div>\n    </div>\n</ng-template>\n"
         },
         {
@@ -7021,7 +7281,7 @@
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": ".pm-tabs {\n  &.horizontal-tabs {\n    --mdc-typography-button-letter-spacing: normal;\n\n    .mat-mdc-tab-body-content {\n      overflow: hidden;\n    }\n\n    .mdc-tab {\n      background-color: transparent;\n      border-radius: var(--border-radius-xl) !important;\n      color: var(--color-gray-medium);\n      font-size: 15px;\n      font-weight: 500;\n      height: 45px;\n      margin: 0px 0.5em !important;\n      min-width: 25px !important;\n      padding: 0.5em;\n      width: 120px !important;\n\n      * {\n        color: var(--color-gray-medium);\n      }\n\n      &:first-child {\n        margin-left: 0em !important;\n      }\n\n      &:last-child {\n        margin-right: 0em !important;\n      }\n\n      &__content {\n        align-self: center;\n      }\n\n      &__text-label {\n        i {\n          display: none;\n        }\n      }\n\n      &__ripple {\n        display: none;\n      }\n\n      &:hover,\n      &--active {\n        background-color: rgba(var(--color-primary-states-rgb), 0.1);\n        color: var(--color-primary);\n        font-weight: 600;\n\n        * {\n          color: var(--color-primary);\n        }\n      }\n    }\n\n    .mat-mdc-tab-header {\n      border-bottom: none;\n    }\n\n    .mat-mdc-tab-header-pagination {\n      display: none !important;\n    }\n\n    .mdc-tab-indicator {\n\n      &--active {\n        .mdc-tab-indicator__content {\n          &--underline {\n            display: none;\n          }\n        }\n\n        * {\n          color: var(--color-primary) !important;\n        }\n      }\n    }\n\n    .mat-mdc-tab-body-wrapper {\n      flex: 1 1 auto;\n      padding: 0px;\n      overflow-y: auto;\n      overflow-x: hidden;\n\n      label {\n        margin-top: 12px;\n        margin-bottom: 5px;\n        color: var(--color-default);\n      }\n\n      .btn-tooltip-sm {\n        height: 20px;\n        width: 20px;\n        border-radius: 50%;\n        padding: 0px;\n      }\n\n      .bool-div-container {\n        margin-top: 12px;\n        margin-bottom: 5px;\n      }\n    }\n\n    &.sticky-tabs {\n      .mat-mdc-tab-header {\n        position: sticky;\n        top: 0;\n        background: rgba(var(--bg-default-rgb), 0.3);\n        backdrop-filter: blur(5px);\n        padding: 0.5em 0px;\n        width: inherit;\n        z-index: 2;\n        padding: 0.5em;\n        border-radius: var(--border-radius-xl);\n      }\n\n      .mat-mdc-tab-body-content {\n        padding: 0px 1em;\n      }\n\n      @media screen and (max-width: 991px) {\n        .mdc-tab {\n          margin: 0px !important;\n\n          &__text-label {\n            i {\n              display: block;\n            }\n          }\n\n          &:hover {\n            background-color: transparent !important;\n          }\n        }\n\n        .mdc-tab-indicator {\n          &__content {\n            &--underline {\n              align-self: flex-start;\n              border-color: var(--color-primary);\n              height: 3px;\n              background-color: var(--color-primary) !important;\n              border-radius: 50px;\n              width: 50%;\n              display: block;\n            }\n          }\n\n          &--active {\n            background-color: transparent !important;\n            color: var(--color-primary) !important;\n\n            * {\n              color: var(--color-primary) !important;\n            }\n          }\n        }\n\n        .mat-mdc-tab-header {\n          backdrop-filter: blur(2px);\n          background: rgba(var(--bg-default-rgb), 1);\n          border-top: 1px solid var(--color-gray-medium);\n          bottom: 0 !important;\n          left: 0 !important;\n          padding: 0px !important;\n          position: fixed !important;\n          top: unset !important;\n          width: 100%;\n          z-index: 999;\n          border-radius: 0px;\n\n          .mat-mdc-tab-list {\n            transform: unset !important;\n          }\n\n          mat-tab-group {\n            height: auto !important;\n          }\n\n          .mat-mdc-tab {\n            height: auto;\n            opacity: 1;\n          }\n\n          .mdc-tab__text-label {\n            display: flex;\n            flex-direction: column;\n\n            * {\n              &:not(:last-child) {\n                margin-bottom: 5px;\n              }\n            }\n\n            span {\n              font-size: 0.8em !important;\n            }\n          }\n        }\n\n        .mat-mdc-tab-body-wrapper {\n          padding-bottom: 60px !important;\n        }\n\n        .filter-dialog-panel {\n          .mat-mdc-dialog-container {\n            background-color: var(--bg-default);\n          }\n        }\n      }\n    }\n\n  }\n\n  &.vertical-tabs {\n    @extend .horizontal-tabs;\n\n    .mat-mdc-tab {\n      margin-top: 5px;\n    }\n\n    .mat-mdc-tab-group {\n      flex-direction: row;\n    }\n\n    .mat-mdc-tab-labels {\n      flex-direction: column;\n    }\n\n    .mat-mdc-tab-body-wrapper {\n      padding-left: 10px;\n    }\n\n    .mat-mdc-tab-container {\n      overflow-y: auto;\n    }\n\n    mat-tab-body {\n      min-height: 100px;\n    }\n  }\n}\n",
+                    "data": ".pm-tabs {\n  &.horizontal-tabs {\n    --mdc-typography-button-letter-spacing: normal;\n\n    .mat-mdc-tab-body-content {\n      overflow: hidden;\n    }\n\n    .mdc-tab {\n      background-color: transparent;\n      border-radius: var(--border-radius-xl) !important;\n      color: var(--color-gray-medium);\n      font-size: 15px;\n      font-weight: 500;\n      height: 45px;\n      margin: 0px 0.5em !important;\n      min-width: 25px !important;\n      padding: 0.5em;\n      width: 120px !important;\n\n      * {\n        color: var(--color-gray-medium);\n      }\n\n      &:first-child {\n        margin-left: 0em !important;\n      }\n\n      &:last-child {\n        margin-right: 0em !important;\n      }\n\n      &__content {\n        align-self: center;\n      }\n\n      &__text-label {\n        i {\n          display: none;\n        }\n      }\n\n      &__ripple {\n        display: none;\n      }\n\n      &:hover,\n      &--active {\n        background-color: rgba(var(--color-primary-states-rgb), 0.1);\n        color: var(--color-primary);\n        font-weight: 600;\n\n        * {\n          color: var(--color-primary);\n        }\n      }\n    }\n\n    .mat-mdc-tab-header {\n      border-bottom: none;\n    }\n\n    .mat-mdc-tab-header-pagination {\n      display: none !important;\n    }\n\n    .mdc-tab-indicator {\n\n      &--active {\n        .mdc-tab-indicator__content {\n          &--underline {\n            display: none;\n          }\n        }\n\n        * {\n          color: var(--color-primary) !important;\n        }\n      }\n    }\n\n    .mat-mdc-tab-body-wrapper {\n      flex: 1 1 auto;\n      padding: 0px;\n      overflow-y: auto;\n      overflow-x: hidden;\n\n      label {\n        margin-top: 12px;\n        margin-bottom: 5px;\n        color: var(--color-default);\n      }\n\n      .btn-tooltip-sm {\n        height: 20px;\n        width: 20px;\n        border-radius: 50%;\n        padding: 0px;\n      }\n\n      .bool-div-container {\n        margin-top: 12px;\n        margin-bottom: 5px;\n      }\n    }\n\n    &.sticky-tabs {\n      .mat-mdc-tab-header {\n        position: sticky;\n        top: 0;\n        background: rgba(var(--bg-default-rgb), 0.3);\n        backdrop-filter: blur(5px);\n        padding: 0.5em 0px;\n        width: inherit;\n        z-index: 2;\n        padding: 0.5em;\n        border-radius: var(--border-radius-xl);\n      }\n\n      .mat-mdc-tab-body-content {\n        padding: 0px 1em;\n      }\n\n      @media screen and (max-width: 991px) {\n        .mdc-tab {\n          margin: 0px !important;\n\n          &__text-label {\n            i {\n              display: block;\n            }\n          }\n\n          &:hover {\n            background-color: transparent !important;\n          }\n        }\n\n        .mdc-tab-indicator {\n          &__content {\n            &--underline {\n              align-self: flex-start;\n              border-color: var(--color-primary) !important;\n              height: 3px;\n              min-height: 3px;\n              max-height: 3px;\n              background-color: var(--color-primary) !important;\n              border-radius: 50px;\n              width: 50%;\n              display: block;\n            }\n          }\n\n          &--active {\n            background-color: transparent !important;\n            color: var(--color-primary) !important;\n            border-color: var(--color-primary) !important;\n\n            * {\n              color: var(--color-primary) !important;\n              border-color: var(--color-primary) !important;\n            }\n          }\n        }\n\n        .mat-mdc-tab-header {\n          backdrop-filter: blur(2px);\n          background: rgba(var(--bg-default-rgb), 1);\n          border-top: 1px solid var(--color-gray-medium);\n          bottom: 0 !important;\n          left: 0 !important;\n          padding: 0px !important;\n          position: fixed !important;\n          top: unset !important;\n          width: 100%;\n          z-index: 999;\n          border-radius: 0px;\n\n          .mat-mdc-tab-list {\n            transform: unset !important;\n          }\n\n          mat-tab-group {\n            height: auto !important;\n          }\n\n          .mat-mdc-tab {\n            height: auto;\n            opacity: 1;\n          }\n\n          .mdc-tab__text-label {\n            display: flex;\n            flex-direction: column;\n\n            * {\n              &:not(:last-child) {\n                margin-bottom: 5px;\n              }\n            }\n\n            span {\n              font-size: 0.8em !important;\n            }\n          }\n        }\n\n        .mat-mdc-tab-body-wrapper {\n          padding-bottom: 60px !important;\n        }\n\n        .filter-dialog-panel {\n          .mat-mdc-dialog-container {\n            background-color: var(--bg-default);\n          }\n        }\n      }\n    }\n\n  }\n\n  &.vertical-tabs {\n    @extend .horizontal-tabs;\n\n    .mat-mdc-tab {\n      margin-top: 5px;\n    }\n\n    .mat-mdc-tab-group {\n      flex-direction: row;\n    }\n\n    .mat-mdc-tab-labels {\n      flex-direction: column;\n    }\n\n    .mat-mdc-tab-body-wrapper {\n      padding-left: 10px;\n    }\n\n    .mat-mdc-tab-container {\n      overflow-y: auto;\n    }\n\n    mat-tab-body {\n      min-height: 100px;\n    }\n  }\n}\n",
                     "styleUrl": "./tabs.component.scss"
                 }
             ],
@@ -7229,13 +7489,13 @@
         },
         {
             "name": "ButtonModule",
-            "id": "module-ButtonModule-429426c026f3f89d6e4cc225446dc200ac92e71492f798cd2ad7ed108d22035782c9a12407dcca6df5939e5fce530061034f9b0fce4963d9d26d6154f9856ae5",
+            "id": "module-ButtonModule-80d8bffcafddf23db6e59f5b065c855cd93e28fa64888fc35adc416549191f8ba129c35b585e887d731312bbcb7a4d4d1f20b307ff8d2b1fb62056bb9b467b9f",
             "description": "",
             "deprecationMessage": "",
             "deprecated": false,
             "file": "src/components/inputs/button/button.module.ts",
             "methods": [],
-            "sourceCode": "import {NgModule} from '@angular/core';\nimport {CommonModule} from '@angular/common';\nimport {ButtonComponent} from './button.component';\n\n\n@NgModule({\n  declarations: [ButtonComponent],\n  exports: [ButtonComponent],\n  imports: [\n    CommonModule\n  ]\n})\nexport class ButtonModule {\n}\n",
+            "sourceCode": "import {NgModule} from '@angular/core';\nimport {CommonModule} from '@angular/common';\nimport {ButtonComponent} from './button.component';\nimport {PmButtonDirective} from \"./pm-button.directive\";\n\n\n@NgModule({\n  declarations: [\n    ButtonComponent,\n  ],\n  exports: [\n    ButtonComponent,\n  ],\n  imports: [\n    CommonModule,\n    PmButtonDirective\n  ]\n})\nexport class ButtonModule {\n}\n",
             "children": [
                 {
                     "type": "providers",
@@ -7251,7 +7511,11 @@
                 },
                 {
                     "type": "imports",
-                    "elements": []
+                    "elements": [
+                        {
+                            "name": "PmButtonDirective"
+                        }
+                    ]
                 },
                 {
                     "type": "exports",
@@ -8379,16 +8643,6 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/components/containers/expansion-panel/expansion-panel.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "object",
-                "defaultValue": "{\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "src/components/cards/basic-card/basic-card.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
@@ -8399,21 +8653,31 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/components/containers/tabs/tabs.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "object",
-                "defaultValue": "{\n  orientation: 'horizontal',\n  sticky: true\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "src/components/cards/icon-card/icon-card.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "object",
                 "defaultValue": "{\n  textPosition: 'center',\n  paddingClass: 'p-3',\n  hoverable: true,\n  orientation: OrientationEnum.Y,\n  iconClass: 'uil uil-star',\n  title: '',\n  subtitle: '',\n  iconCardArray: [],\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/containers/expansion-panel/expansion-panel.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/containers/tabs/tabs.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\n  orientation: 'horizontal',\n  sticky: true\n}"
             },
             {
                 "name": "defaultArgs",
@@ -9009,16 +9273,6 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/components/containers/expansion-panel/expansion-panel.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story<ExpansionPanelComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-expansion-panel\n    >\n        Conteúdo aqui\n    </pm-expansion-panel>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "src/components/cards/basic-card/basic-card.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
@@ -9029,21 +9283,31 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/components/containers/tabs/tabs.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "StoryFn<TabsComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-tabs\n        [orientation]=\"orientation\"\n        [sticky]=\"sticky\"\n    >\n      <mat-tab-group\n        mat-stretch-tabs\n        preserveContent\n        [disableRipple]=\"true\"\n      >\n        <mat-tab>\n          <ng-template mat-tab-label>\n            <i class=\"uil uil-lg uil-apps\"></i>\n            <span>Apps</span>\n          </ng-template>\n          <div>Content 1</div>\n        </mat-tab>\n        <mat-tab label=\"Second\"> Content 2 </mat-tab>\n        <mat-tab label=\"Third\"> Content 3 </mat-tab>\n      </mat-tab-group>\n    </pm-tabs>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "src/components/cards/icon-card/icon-card.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story<IconCardComponent>",
                 "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-icon-card\n      [textPosition]=\"textPosition\"\n      [paddingClass]=\"paddingClass\"\n      [hoverable]=\"hoverable\"\n      [orientation]=\"orientation\"\n      [iconClass]=\"iconClass\"\n      [title]=\"title\"\n      [subtitle]=\"subtitle\"\n      [iconCardArray]=\"iconCardArray\"\n    >\n    </pm-icon-card>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/containers/expansion-panel/expansion-panel.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<ExpansionPanelComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-expansion-panel\n    >\n        Conteúdo aqui\n    </pm-expansion-panel>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/components/containers/tabs/tabs.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "StoryFn<TabsComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-tabs\n        [orientation]=\"orientation\"\n        [sticky]=\"sticky\"\n    >\n      <mat-tab-group\n        mat-stretch-tabs\n        preserveContent\n        [disableRipple]=\"true\"\n      >\n        <mat-tab>\n          <ng-template mat-tab-label>\n            <i class=\"uil uil-lg uil-apps\"></i>\n            <span>Apps</span>\n          </ng-template>\n          <div>Content 1</div>\n        </mat-tab>\n        <mat-tab label=\"Second\"> Content 2 </mat-tab>\n        <mat-tab label=\"Third\"> Content 3 </mat-tab>\n      </mat-tab-group>\n    </pm-tabs>\n  `\n})"
             },
             {
                 "name": "Template",
@@ -9217,6 +9481,34 @@
             }
         ],
         "functions": [
+            {
+                "name": "isMultiSelectOption",
+                "file": "src/components/inputs/multi-select/multi-select.component.ts",
+                "ctype": "miscellaneous",
+                "subtype": "function",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "",
+                "args": [
+                    {
+                        "name": "value",
+                        "type": "any",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "jsdoctags": [
+                    {
+                        "name": "value",
+                        "type": "any",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
             {
                 "name": "logEvent",
                 "file": "src/components/inputs/button/button.stories.ts",
@@ -9972,38 +10264,6 @@
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-XXXName\n    >\n    </pm-XXXName>\n  `\n})"
                 }
             ],
-            "src/components/containers/expansion-panel/expansion-panel.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/containers/expansion-panel/expansion-panel.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "object",
-                    "defaultValue": "{\n}"
-                },
-                {
-                    "name": "DefaultExpansionPanel",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/containers/expansion-panel/expansion-panel.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/components/containers/expansion-panel/expansion-panel.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Story<ExpansionPanelComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-expansion-panel\n    >\n        Conteúdo aqui\n    </pm-expansion-panel>\n  `\n})"
-                }
-            ],
             "src/components/cards/basic-card/basic-card.stories.ts": [
                 {
                     "name": "defaultArgs",
@@ -10034,6 +10294,38 @@
                     "deprecationMessage": "",
                     "type": "Story<BasicCardComponent>",
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-basic-card\n      [hoverable]=\"hoverable\"\n      [borderRadius]=\"borderRadius\"\n      [paddingClass]=\"paddingClass\"\n    >\n    </pm-basic-card>\n  `\n})"
+                }
+            ],
+            "src/components/containers/expansion-panel/expansion-panel.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/containers/expansion-panel/expansion-panel.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "object",
+                    "defaultValue": "{\n}"
+                },
+                {
+                    "name": "DefaultExpansionPanel",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/containers/expansion-panel/expansion-panel.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/components/containers/expansion-panel/expansion-panel.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story<ExpansionPanelComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-expansion-panel\n    >\n        Conteúdo aqui\n    </pm-expansion-panel>\n  `\n})"
                 }
             ],
             "src/components/containers/tabs/tabs.stories.ts": [
@@ -10568,6 +10860,36 @@
             ]
         },
         "groupedFunctions": {
+            "src/components/inputs/multi-select/multi-select.component.ts": [
+                {
+                    "name": "isMultiSelectOption",
+                    "file": "src/components/inputs/multi-select/multi-select.component.ts",
+                    "ctype": "miscellaneous",
+                    "subtype": "function",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "args": [
+                        {
+                            "name": "value",
+                            "type": "any",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "value",
+                            "type": "any",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
             "src/components/inputs/button/button.stories.ts": [
                 {
                     "name": "logEvent",
@@ -11493,8 +11815,8 @@
                 "type": "component",
                 "linktype": "component",
                 "name": "MultiSelectComponent",
-                "coveragePercent": 38,
-                "coverageCount": "13/34",
+                "coveragePercent": 30,
+                "coverageCount": "13/43",
                 "status": "medium"
             },
             {
@@ -11504,6 +11826,16 @@
                 "name": "MultiSelectOption",
                 "coveragePercent": 0,
                 "coverageCount": "0/4",
+                "status": "low"
+            },
+            {
+                "filePath": "src/components/inputs/multi-select/multi-select.component.ts",
+                "type": "function",
+                "linktype": "miscellaneous",
+                "linksubtype": "function",
+                "name": "isMultiSelectOption",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
                 "status": "low"
             },
             {
@@ -11630,7 +11962,7 @@
                 "linktype": "component",
                 "name": "SidebarContentComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/11",
+                "coverageCount": "0/12",
                 "status": "low"
             },
             {
@@ -11639,7 +11971,7 @@
                 "linktype": "component",
                 "name": "SidebarComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/11",
+                "coverageCount": "0/12",
                 "status": "low"
             },
             {

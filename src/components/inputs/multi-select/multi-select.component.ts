@@ -23,6 +23,10 @@ export interface MultiSelectOption {
   thumbnail?: string;
 }
 
+function isMultiSelectOption(value: any) {
+  return value.hasOwnProperty('label') && value.hasOwnProperty('value');
+}
+
 @Component({
   selector: 'pm-multi-select',
   templateUrl: './multi-select.component.html',
@@ -72,7 +76,14 @@ export class MultiSelectComponent implements OnInit, AfterViewInit, ControlValue
    * Opções que ja vem selecionadas
    */
   private _selectedOptions: MultiSelectOption[] = [];
-  @Input() set selectedOptions(options: MultiSelectOption[]) {
+  @Input() set selectedOptions(options: (MultiSelectOption | any)[]) {
+    options = options.reduce((acc: any[], val: any) => {
+      if (isMultiSelectOption(val)) {
+        return [...acc, val];
+      } else {
+        return [...acc, this.options.find((option: MultiSelectOption) => _.isEqual(option.value, val))];
+      }
+    }, []) as unknown as MultiSelectOption[];
     this._selectedOptions = options;
     this.selectedOptionsChanged.emit(this.selectedOptions);
     this.propagateChange(this.selectedOptions);
@@ -203,8 +214,12 @@ export class MultiSelectComponent implements OnInit, AfterViewInit, ControlValue
     this.clearInput();
   }
 
-  public isOptionSelected(option: MultiSelectOption): boolean {
-    return !!this.selectedOptions.find(sOptions => _.isEqual(sOptions, option));
+  public isOptionSelected(option: (MultiSelectOption|any)): boolean {
+    if (isMultiSelectOption(option)) {
+      return !!this.selectedOptions.find(sOptions => _.isEqual(sOptions, option));
+    } else {
+      return !!this.selectedOptions.find((sOptions) => _.isEqual(sOptions.value, option));
+    }
   }
 
   /**

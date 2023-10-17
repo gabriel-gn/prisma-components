@@ -88,15 +88,15 @@ PreSelectedOptions.args = {
   ...defaultArgs,
   placeholder: 'Busque algo',
   options: [
-    {label: 'Mary', value: {} },
-    {label: 'Shelley', value: {} },
-    {label: 'Gabs', value: {} },
-    {label: 'Pedrocs', value: {} },
-    {label: 'Rics', value: {} },
-    {label: 'Ana', value: {} },
-    {label: 'Igor', value: {} }
+    {label: 'Mary', value: 'm' },
+    {label: 'Shelley', value: 's' },
+    {label: 'Gabs', value: 'g' },
+    {label: 'Pedrocs', value: 'p' },
+    {label: 'Rics', value: 'r' },
+    {label: 'Ana', value: 'a' },
+    {label: 'Igor', value: 'i' }
   ],
-  selectedOptions: [{label: 'Mary', value: {} }]
+  selectedOptions: [{label: 'Mary', value: {} }, 'i']
 } as Partial<MultiSelectComponent>;
 
 export const ObservableInput = Template.bind({});
