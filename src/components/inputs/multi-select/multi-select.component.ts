@@ -77,6 +77,9 @@ export class MultiSelectComponent implements OnInit, AfterViewInit, ControlValue
    */
   private _selectedOptions: MultiSelectOption[] = [];
   @Input() set selectedOptions(options: (MultiSelectOption | any)[]) {
+    if (Array.isArray(options) === false) {
+      options = [];
+    }
     options = options
       .reduce((acc: any[], val: any) => {
         if (isMultiSelectOption(val)) {
