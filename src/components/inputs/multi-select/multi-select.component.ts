@@ -77,13 +77,16 @@ export class MultiSelectComponent implements OnInit, AfterViewInit, ControlValue
    */
   private _selectedOptions: MultiSelectOption[] = [];
   @Input() set selectedOptions(options: (MultiSelectOption | any)[]) {
-    options = options.reduce((acc: any[], val: any) => {
-      if (isMultiSelectOption(val)) {
-        return [...acc, val];
-      } else {
-        return [...acc, this.options.find((option: MultiSelectOption) => _.isEqual(option.value, val))];
-      }
-    }, []) as unknown as MultiSelectOption[];
+    options = options
+      .reduce((acc: any[], val: any) => {
+        if (isMultiSelectOption(val)) {
+          return [...acc, val];
+        } else {
+          return [...acc, this.options.find((option: MultiSelectOption) => _.isEqual(option.value, val))];
+        }
+      }, [])
+      // filtra as opções do "find" que podem ser undefined
+      .filter(i => !!i) as unknown as MultiSelectOption[];
     this._selectedOptions = options;
     this.selectedOptionsChanged.emit(this.selectedOptions);
     this.propagateChange(this.selectedOptions);
