@@ -30,6 +30,7 @@ export * from './directives/ng-if-loaded/spinner/spinner.component';
 export * from './directives/ng-if-loaded/ng-if-loaded.directive';
 export * from './directives/ng-if-loaded/ng-if-loaded.module';
 export * from './directives/ng-if-loaded/ng-if-loaded.providers';
+export * from './directives/ng-if-loaded/injection';
 
 export * from './directives/navigation-back-click/navigation-back-click.directive';
 export * from './directives/navigation-back-click/navigation-back-click.module';
