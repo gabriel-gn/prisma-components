@@ -1,3 +1,44 @@
 .pm-expansion-panel {
+  background-color: var(--bg-default-1);
+  border: solid 1px var(--color-gray-light);
+  border-radius: var(--border-radius-default);
 
+  mat-expansion-panel {
+    box-shadow: none;
+    border: 1.5px solid var(--color-gray-light);
+
+    &.mat-expanded {
+      mat-expansion-panel-header {
+        background: var(--bg-pale);
+      }
+    }
+  }
+
+  mat-expansion-panel-header {
+    background: var(--bg-default-1);
+    padding: 1.5em;
+
+    &:hover {
+      background: var(--bg-pale);
+    }
+
+    mat-panel-title {
+      font-size: 1.275rem;
+      color: var(--color-gray-dark);
+    }
+
+    mat-panel-description {
+      color: var(--color-gray-medium);
+    }
+
+    ::ng-deep .mat-expansion-indicator {
+      &:after {
+        color: var(--color-gray-medium) !important;
+      }
+    }
+  }
+
+  ::ng-deep .mat-expansion-panel-body {
+    padding: 1.5em;
+  }
 }

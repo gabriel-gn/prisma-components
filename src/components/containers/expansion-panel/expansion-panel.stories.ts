@@ -10,16 +10,22 @@ export const Template: Story<ExpansionPanelComponent> = (args) => ({
   props: args,
   template: `
     <pm-expansion-panel
+        [title]="title"
+        [subtitle]="subtitle"
     >
-        Conteúdo aqui
+        Add your content here
     </pm-expansion-panel>
   `
 });
 
 export const defaultArgs = {
+  title: '',
+  subtitle: '',
 };
 
 export const DefaultExpansionPanel = Template.bind({});
 DefaultExpansionPanel.args = {
-  ...defaultArgs
+  ...defaultArgs,
+  title: 'My Title',
+  subtitle: 'My Subtitle',
 };

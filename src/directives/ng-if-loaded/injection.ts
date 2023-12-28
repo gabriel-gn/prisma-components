@@ -4,4 +4,4 @@ import {ComponentType} from '@angular/cdk/overlay';
 
 export const defaultSpinner: ComponentType<any> = SpinnerComponent;
 
-export const IF_LOADED_SPINNER = new InjectionToken<ComponentType<any>>('defaultSpinner');
+export const IF_LOADED_SPINNER: InjectionToken<ComponentType<any>> = new InjectionToken<ComponentType<any>>('IF_LOADED_SPINNER');

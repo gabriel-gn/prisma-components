@@ -8643,6 +8643,16 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
+                "file": "src/directives/ng-if-loaded/spinner/spinner.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\n  flag: true\n}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
                 "file": "src/components/cards/basic-card/basic-card.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
@@ -8798,16 +8808,6 @@
                 "deprecationMessage": "",
                 "type": "object",
                 "defaultValue": "{}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/directives/ng-if-loaded/spinner/spinner.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "object",
-                "defaultValue": "{\n  flag: true\n}"
             },
             {
                 "name": "DefaultBasicCard",
@@ -9146,8 +9146,8 @@
                 "file": "src/directives/ng-if-loaded/injection.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
-                "type": "",
-                "defaultValue": "new InjectionToken<ComponentType<any>>('defaultSpinner')"
+                "type": "InjectionToken<ComponentType<any>>",
+                "defaultValue": "new InjectionToken<ComponentType<any>>('IF_LOADED_SPINNER')"
             },
             {
                 "name": "InfoButton",
@@ -9268,6 +9268,16 @@
                 "deprecationMessage": "",
                 "type": "Story<TriggerButtonComponent>",
                 "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-palette-trigger-button\n        [label]=\"label\"\n        [iconClass]=\"iconClass\"\n    >\n    </pm-palette-trigger-button>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/directives/ng-if-loaded/spinner/spinner.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<SpinnerComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <div *ngIfLoaded=\"flag\">\n        Conteúdo normal\n    </div>\n  `\n})"
             },
             {
                 "name": "Template",
@@ -9430,16 +9440,6 @@
                 "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-stepper>\n      <cdk-step> <p>This is any content of \"Step 1\"</p> </cdk-step>\n      <cdk-step> <p>This is any content of \"Step 2\"</p> </cdk-step>\n    </pm-stepper>\n  `\n})"
             },
             {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/directives/ng-if-loaded/spinner/spinner.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story<SpinnerComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <div *ngIfLoaded=\"flag\">\n        Conteúdo normal\n    </div>\n  `\n})"
-            },
-            {
                 "name": "TemplateDirective",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -9531,6 +9531,36 @@
                         "type": "any",
                         "deprecated": false,
                         "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "provideNgIfLoaded",
+                "file": "src/directives/ng-if-loaded/ng-if-loaded.providers.ts",
+                "ctype": "miscellaneous",
+                "subtype": "function",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "",
+                "args": [
+                    {
+                        "name": "spinnerComponent",
+                        "type": "ComponentType",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "defaultValue": "undefined"
+                    }
+                ],
+                "jsdoctags": [
+                    {
+                        "name": "spinnerComponent",
+                        "type": "ComponentType",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "defaultValue": "undefined",
                         "tagName": {
                             "text": "param"
                         }
@@ -10264,6 +10294,38 @@
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-XXXName\n    >\n    </pm-XXXName>\n  `\n})"
                 }
             ],
+            "src/directives/ng-if-loaded/spinner/spinner.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/directives/ng-if-loaded/spinner/spinner.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "object",
+                    "defaultValue": "{\n  flag: true\n}"
+                },
+                {
+                    "name": "DefaultSpinner",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/directives/ng-if-loaded/spinner/spinner.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/directives/ng-if-loaded/spinner/spinner.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story<SpinnerComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <div *ngIfLoaded=\"flag\">\n        Conteúdo normal\n    </div>\n  `\n})"
+                }
+            ],
             "src/components/cards/basic-card/basic-card.stories.ts": [
                 {
                     "name": "defaultArgs",
@@ -10770,38 +10832,6 @@
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-stepper>\n      <cdk-step> <p>This is any content of \"Step 1\"</p> </cdk-step>\n      <cdk-step> <p>This is any content of \"Step 2\"</p> </cdk-step>\n    </pm-stepper>\n  `\n})"
                 }
             ],
-            "src/directives/ng-if-loaded/spinner/spinner.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/directives/ng-if-loaded/spinner/spinner.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "object",
-                    "defaultValue": "{\n  flag: true\n}"
-                },
-                {
-                    "name": "DefaultSpinner",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/directives/ng-if-loaded/spinner/spinner.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/directives/ng-if-loaded/spinner/spinner.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Story<SpinnerComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <div *ngIfLoaded=\"flag\">\n        Conteúdo normal\n    </div>\n  `\n})"
-                }
-            ],
             "src/services/command-palette/command-palette.stories.ts": [
                 {
                     "name": "DefaultModal",
@@ -10842,8 +10872,8 @@
                     "file": "src/directives/ng-if-loaded/injection.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "new InjectionToken<ComponentType<any>>('defaultSpinner')"
+                    "type": "InjectionToken<ComponentType<any>>",
+                    "defaultValue": "new InjectionToken<ComponentType<any>>('IF_LOADED_SPINNER')"
                 }
             ],
             "src/directives/ng-if-loaded/ng-if-loaded.module.ts": [
@@ -10913,6 +10943,38 @@
                             "type": "any",
                             "deprecated": false,
                             "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "src/directives/ng-if-loaded/ng-if-loaded.providers.ts": [
+                {
+                    "name": "provideNgIfLoaded",
+                    "file": "src/directives/ng-if-loaded/ng-if-loaded.providers.ts",
+                    "ctype": "miscellaneous",
+                    "subtype": "function",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "args": [
+                        {
+                            "name": "spinnerComponent",
+                            "type": "ComponentType",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "defaultValue": "undefined"
+                        }
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "spinnerComponent",
+                            "type": "ComponentType",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "defaultValue": "undefined",
                             "tagName": {
                                 "text": "param"
                             }
@@ -12331,6 +12393,16 @@
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
                 "name": "directives",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/directives/ng-if-loaded/ng-if-loaded.providers.ts",
+                "type": "function",
+                "linktype": "miscellaneous",
+                "linksubtype": "function",
+                "name": "provideNgIfLoaded",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
