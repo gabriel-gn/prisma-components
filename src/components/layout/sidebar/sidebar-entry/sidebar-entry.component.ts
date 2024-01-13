@@ -61,9 +61,10 @@ export class SidebarEntryComponent implements OnInit {
   }
 
   public getIdForEntry(entry: SidebarItem, prefix: string = ''): string {
+    const randomHash = Math.random().toString(36).slice(2, 7);
     let entryId = entry.label.replace(/[^a-zA-Z0-9,._-]/g, '');
     entryId = prefix ? `${prefix}${entryId}` : entryId; // não pode ter "." senão o id não é reconhecido direito pelo bootstrap
-    return entryId;
+    return `${entryId}-${randomHash}`;
   }
 
 
