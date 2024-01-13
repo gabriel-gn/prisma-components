@@ -2,7 +2,7 @@
   $main-link-margin-top: 1.2em;
   $sub-link-margin-top: 0.6em;
 
-  padding: 0 1em 1em 0.5em;
+  padding: 0 1em 0 0.5em;
   list-style: none !important;
 
   .sidebar-nav {
@@ -60,7 +60,7 @@
 
     a {
       &:first-child {
-        margin-top: $main-link-margin-top;
+        //margin-top: $main-link-margin-top;
       }
 
       &.sub {

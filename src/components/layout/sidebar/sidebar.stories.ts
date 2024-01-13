@@ -14,9 +14,12 @@ export const Template: Story<SidebarComponent> = (args) => ({
         [showBackButton]="showBackButton"
         [showNextButton]="showNextButton"
         [nextButtonAction]="nextButtonAction"
-        [sidebarEntries]="sidebarEntries"
         [label]="label"
     >
+        <pm-sidebar-entry [entry]="sidebarEntries[0]"></pm-sidebar-entry>
+        <pm-sidebar-entry [entry]="sidebarEntries[1]"></pm-sidebar-entry>
+        <pm-sidebar-entry [entry]="sidebarEntries[2]"></pm-sidebar-entry>
+        <pm-sidebar-entry [entry]="sidebarEntries[3]"></pm-sidebar-entry>
         <p>Conteúdo aqui! algo como router-outlet</p>
         <ng-container *ngFor="let _ of [].constructor(20)">
             <p>.</p>
@@ -73,7 +76,7 @@ DefaultSidebar.args = {
         },
         {
           label: 'Favorites',
-          routerLink: `/favorites`,
+          routerLink: `/`,
           iconClass: 'uil uil-xl uil-favorite'
         },
       ]
@@ -85,8 +88,22 @@ DefaultSidebar.args = {
       children: [
         {
           label: 'Card Gallery',
-          routerLink: `/cards`,
-          iconClass: 'uil uil-xl uil-apps'
+          routerLink: `/`,
+          iconClass: 'uil uil-xl uil-apps',
+          children: [
+            {
+              label: 'Card Gallery',
+              routerLink: `/`,
+              iconClass: 'uil uil-xl uil-apps',
+              children: [
+                {
+                  label: 'Card Gallery',
+                  routerLink: `/`,
+                  iconClass: 'uil uil-xl uil-apps'
+                },
+              ]
+            },
+          ]
         },
       ]
     },

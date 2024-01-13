@@ -395,7 +395,7 @@
         {
             "name": "SidebarItem",
             "id": "interface-SidebarItem-aef6881e67be1cd1bbd70f724187d23310a4fb612ac4288eb50086ba0dd496c6e156949e90dda46a9aa6b5d48121de94312c46b22fa0f54f0c4f291c9c978aba",
-            "file": "src/components/layout/sidebar/sidebar-content/models.ts",
+            "file": "src/components/layout/sidebar/models.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
@@ -4634,7 +4634,7 @@
         },
         {
             "name": "ExpansionPanelComponent",
-            "id": "component-ExpansionPanelComponent-9f8acf351830e59c5ecb3e74da7fb20f2898098db711f03ca6096d5594acd662cb3a5a71fe5cfeb8571e783bde08a39aea0a254ca8929b1625ecabf9238f47a1",
+            "id": "component-ExpansionPanelComponent-57fe571095d9c7d7ffe6808e0a016d3d9becd662cccd70a5f8797e49b9f7b5d747a083ee6205452386a6641bdd9a0cb326d81db91e4941ab0bc783e3dcc1ce57",
             "file": "src/components/containers/expansion-panel/expansion-panel.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -4651,7 +4651,24 @@
             ],
             "viewProviders": [],
             "hostDirectives": [],
-            "inputsClass": [],
+            "inputsClass": [
+                {
+                    "name": "subtitle",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 11,
+                    "type": "string",
+                    "decorators": []
+                },
+                {
+                    "name": "title",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 10,
+                    "type": "string",
+                    "decorators": []
+                }
+            ],
             "outputsClass": [],
             "propertiesClass": [],
             "methodsClass": [
@@ -4661,7 +4678,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 12,
+                    "line": 15,
                     "deprecated": false,
                     "deprecationMessage": ""
                 }
@@ -4675,11 +4692,11 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, OnInit } from '@angular/core';\n\n@Component({\n  selector: 'pm-expansion-panel',\n  templateUrl: './expansion-panel.component.html',\n  styleUrls: ['./expansion-panel.component.scss']\n})\nexport class ExpansionPanelComponent implements OnInit {\n\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n\n}\n",
+            "sourceCode": "import {Component, Input, OnInit} from '@angular/core';\n\n@Component({\n  selector: 'pm-expansion-panel',\n  templateUrl: './expansion-panel.component.html',\n  styleUrls: ['./expansion-panel.component.scss']\n})\nexport class ExpansionPanelComponent implements OnInit {\n\n  @Input() title: string;\n  @Input() subtitle: string;\n\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": ".pm-expansion-panel {\n\n}\n",
+                    "data": ".pm-expansion-panel {\n  background-color: var(--bg-default-1);\n  border: solid 1px var(--color-gray-light);\n  border-radius: var(--border-radius-default);\n\n  mat-expansion-panel {\n    box-shadow: none;\n    border: 1.5px solid var(--color-gray-light);\n\n    &.mat-expanded {\n      mat-expansion-panel-header {\n        background: var(--bg-pale);\n      }\n    }\n  }\n\n  mat-expansion-panel-header {\n    background: var(--bg-default-1);\n    padding: 1.5em;\n\n    &:hover {\n      background: var(--bg-pale);\n    }\n\n    mat-panel-title {\n      font-size: 1.275rem;\n      color: var(--color-gray-dark);\n    }\n\n    mat-panel-description {\n      color: var(--color-gray-medium);\n    }\n\n    ::ng-deep .mat-expansion-indicator {\n      &:after {\n        color: var(--color-gray-medium) !important;\n      }\n    }\n  }\n\n  ::ng-deep .mat-expansion-panel-body {\n    padding: 1.5em;\n  }\n}\n",
                     "styleUrl": "./expansion-panel.component.scss"
                 }
             ],
@@ -4690,12 +4707,12 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "args": [],
-                "line": 8
+                "line": 11
             },
             "implements": [
                 "OnInit"
             ],
-            "templateData": "<div class=\"pm-expansion-panel\">\n  <mat-expansion-panel>\n    <mat-expansion-panel-header>\n      <mat-panel-title>\n        Personal data\n      </mat-panel-title>\n      <mat-panel-description>\n        Type your name and age\n        <i>hehe</i>\n      </mat-panel-description>\n    </mat-expansion-panel-header>\n    <ng-content></ng-content>\n  </mat-expansion-panel>\n</div>\n"
+            "templateData": "<div class=\"pm-expansion-panel\">\n  <mat-expansion-panel>\n    <mat-expansion-panel-header>\n      <mat-panel-title>\n        {{ title }}\n      </mat-panel-title>\n      <mat-panel-description>\n        {{ subtitle }}\n      </mat-panel-description>\n    </mat-expansion-panel-header>\n    <ng-content></ng-content>\n  </mat-expansion-panel>\n</div>\n"
         },
         {
             "name": "GridListComponent",
@@ -5916,7 +5933,7 @@
         },
         {
             "name": "SidebarComponent",
-            "id": "component-SidebarComponent-e1d41692728382aa6552bacc5974d2b54506bf191067e662bf614dd826c383078b34a3203f6a271b41ac8e753f86c0d53dc37ea6eea9d50cf6fa305d1acf74c8",
+            "id": "component-SidebarComponent-2810016ab791e6abef822ec7beeb4ea4562cfb6ce6480878cbf324d2d20e446065ad1f00577cfd91c1b5729cfaf250ea8672c877b7cf45fc7ce5535799d46893",
             "file": "src/components/layout/sidebar/sidebar.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [
@@ -6051,7 +6068,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, ViewEncapsulation} from '@angular/core';\nimport {SidebarItem} from \"./sidebar-content/models\";\nimport {isObservable, Observable, of} from \"rxjs\";\n\n@Component({\n  selector: 'pm-sidebar',\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  templateUrl: './sidebar.component.html',\n  styleUrls: ['./sidebar.component.scss'],\n  encapsulation: ViewEncapsulation.None\n})\nexport class SidebarComponent implements OnInit {\n\n  @Input() showBackButton: boolean = false;\n  @Input() showNextButton: boolean = false;\n  @Input() nextButtonAction: () => void;\n  @Input() sidebarEntries: SidebarItem[] = [];\n  @Input() zIndex: number;\n\n  private _label: Observable<string>;\n  @Input() set label(value: string | Observable<string>) {\n    if (isObservable(value) === false) {\n      value = of(`${value}`);\n    }\n    this._label = value as Observable<string>;\n    this.cdr.markForCheck();\n  }\n  get label(): Observable<string> {\n    return this._label;\n  }\n\n  constructor(\n    public readonly cdr: ChangeDetectorRef,\n  ) { }\n\n  ngOnInit(): void {\n  }\n\n  public isWindowWidthMobile(): boolean {\n    return window.innerWidth <= 991;\n  }\n\n}\n",
+            "sourceCode": "import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, ViewEncapsulation} from '@angular/core';\nimport {SidebarItem} from \"./models\";\nimport {isObservable, Observable, of} from \"rxjs\";\n\n@Component({\n  selector: 'pm-sidebar',\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  templateUrl: './sidebar.component.html',\n  styleUrls: ['./sidebar.component.scss'],\n  encapsulation: ViewEncapsulation.None\n})\nexport class SidebarComponent implements OnInit {\n\n  @Input() showBackButton: boolean = false;\n  @Input() showNextButton: boolean = false;\n  @Input() nextButtonAction: () => void;\n  @Input() sidebarEntries: SidebarItem[] = [];\n  @Input() zIndex: number;\n\n  private _label: Observable<string>;\n  @Input() set label(value: string | Observable<string>) {\n    if (isObservable(value) === false) {\n      value = of(`${value}`);\n    }\n    this._label = value as Observable<string>;\n    this.cdr.markForCheck();\n  }\n  get label(): Observable<string> {\n    return this._label;\n  }\n\n  constructor(\n    public readonly cdr: ChangeDetectorRef,\n  ) { }\n\n  ngOnInit(): void {\n  }\n\n  public isWindowWidthMobile(): boolean {\n    return window.innerWidth <= 991;\n  }\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -6131,7 +6148,7 @@
         },
         {
             "name": "SidebarContentComponent",
-            "id": "component-SidebarContentComponent-de741d0e35db4a58be3d0ed8d50135db193750d03a14fe385512fdfcf75189d717099b2e0efac59c1248c0a296d2e3e15b3edfb297f84c43814078390fd10977",
+            "id": "component-SidebarContentComponent-05c16c835757e25ffe69e5c8a4c1535e34fe2c22e8fc5d45fe20a16a51f686e3d2bf7ebed78cd613239c6a0d446dc121f1dca98f08f521b700421d75b6d73cd4",
             "file": "src/components/layout/sidebar/sidebar-content/sidebar-content.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -6389,7 +6406,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';\nimport {SidebarItem} from './models';\nimport {MatDrawer} from '@angular/material/sidenav';\n\n@Component({\n  selector: 'app-sidebar-content',\n  templateUrl: './sidebar-content.component.html',\n  styleUrls: ['./sidebar-content.component.scss'],\n  changeDetection: ChangeDetectionStrategy.OnPush\n})\nexport class SidebarContentComponent implements OnInit {\n\n  @Input() drawer: MatDrawer;\n  @Input() minWidth: string = '240px';\n  @Input() expandCurrentItem: boolean = true;\n  _sidebarEntries: SidebarItem[] = []\n  @Input() set sidebarEntries(entries: SidebarItem[]) {\n    this._sidebarEntries = entries;\n    this.cdr.detectChanges();\n  }\n  public get sidebarEntries() {\n    return this._sidebarEntries;\n  }\n  public currentExpandedSession: string = '';\n\n  constructor(private readonly cdr: ChangeDetectorRef) {\n  }\n\n  ngOnInit(): void {\n  }\n\n  public executeAction(event: any, entry: SidebarItem, closeDrawer: boolean = true): void {\n    if (entry?.action) {\n      event.stopPropagation();\n      entry.action();\n    }\n\n    if (closeDrawer && this.drawer) {\n      this.drawer.close();\n    }\n  }\n\n  public keepSessionExpanded(event: any, treeId: string): void {\n    if (\n      event === true\n      && this.expandCurrentItem\n      && !!treeId\n    ) {\n      this.currentExpandedSession = `${treeId}`;\n    }\n  }\n\n  public getIdForEntry(entry: SidebarItem, prefix: string = ''): string {\n    let entryId = entry.label.replace(/[^a-zA-Z0-9,._-]/g, '');\n    entryId = prefix ? `${prefix}${entryId}` : entryId; // não pode ter \".\" senão o id não é reconhecido direito pelo bootstrap\n    return entryId;\n  }\n\n}\n",
+            "sourceCode": "import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';\nimport {SidebarItem} from '../models';\nimport {MatDrawer} from '@angular/material/sidenav';\n\n@Component({\n  selector: 'app-sidebar-content',\n  templateUrl: './sidebar-content.component.html',\n  styleUrls: ['./sidebar-content.component.scss'],\n  changeDetection: ChangeDetectionStrategy.OnPush\n})\nexport class SidebarContentComponent implements OnInit {\n\n  @Input() drawer: MatDrawer;\n  @Input() minWidth: string = '240px';\n  @Input() expandCurrentItem: boolean = true;\n  _sidebarEntries: SidebarItem[] = []\n  @Input() set sidebarEntries(entries: SidebarItem[]) {\n    this._sidebarEntries = entries;\n    this.cdr.detectChanges();\n  }\n  public get sidebarEntries() {\n    return this._sidebarEntries;\n  }\n  public currentExpandedSession: string = '';\n\n  constructor(private readonly cdr: ChangeDetectorRef) {\n  }\n\n  ngOnInit(): void {\n  }\n\n  public executeAction(event: any, entry: SidebarItem, closeDrawer: boolean = true): void {\n    if (entry?.action) {\n      event.stopPropagation();\n      entry.action();\n    }\n\n    if (closeDrawer && this.drawer) {\n      this.drawer.close();\n    }\n  }\n\n  public keepSessionExpanded(event: any, treeId: string): void {\n    if (\n      event === true\n      && this.expandCurrentItem\n      && !!treeId\n    ) {\n      this.currentExpandedSession = `${treeId}`;\n    }\n  }\n\n  public getIdForEntry(entry: SidebarItem, prefix: string = ''): string {\n    let entryId = entry.label.replace(/[^a-zA-Z0-9,._-]/g, '');\n    entryId = prefix ? `${prefix}${entryId}` : entryId; // não pode ter \".\" senão o id não é reconhecido direito pelo bootstrap\n    return entryId;\n  }\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -6466,6 +6483,54 @@
                 }
             },
             "templateData": "<div class=\"app-sidebar-content\"\n     [ngStyle]=\"{'min-width': minWidth}\"\n>\n    <ul class=\"sidebar-nav\">\n        <ng-container *ngFor=\"let entry of sidebarEntries\">\n            <ng-container *ngTemplateOutlet=\"entryChecker; context: {$implicit: entry, prefixId: getIdForEntry(entry)}\"></ng-container>\n        </ng-container>\n    </ul>\n</div>\n\n<ng-template #entryChecker let-entry let-prefixId=\"prefixId\">\n    <li routerLinkActive=\"active\"\n        [routerLinkActiveOptions]=\"{exact: true}\"\n        [ngClass]=\"{'active': currentExpandedSession.startsWith(prefixId)}\"\n    >\n        <ng-container [ngSwitch]=\"!!entry?.children\">\n            <!--Se for um item sem submenus-->\n            <ng-container *ngSwitchCase=\"false\">\n                <ng-container *ngTemplateOutlet=\"noSubmenuEntry; context: {$implicit: entry}\"></ng-container>\n            </ng-container>\n\n            <!--Se for um item com submenus-->\n            <ng-container *ngSwitchCase=\"true\">\n                <ng-container *ngTemplateOutlet=\"submenuEntry; context: {$implicit: entry, prefixId: prefixId}\"></ng-container>\n            </ng-container>\n        </ng-container>\n    </li>\n</ng-template>\n\n<ng-template #noSubmenuEntry let-entry>\n    <a (click)=\"executeAction($event, entry)\"\n       [routerLink]=\"entry?.routerLink\"\n       [queryParams]=\"entry?.queryParams\"\n    >\n        <ng-container *ngTemplateOutlet=\"entryContent; context: {$implicit: entry}\"></ng-container>\n    </a>\n</ng-template>\n\n<ng-template #submenuEntry let-entry let-prefixId=\"prefixId\" let-isSub=\"isSub\">\n    <a [ngClass]=\"{'sub': isSub}\"\n       [attr.data-bs-toggle]=\"'collapse'\"\n       [attr.data-bs-target]=\"'#collapse' + prefixId\"\n    >\n        <ng-container *ngTemplateOutlet=\"entryContent; context: {$implicit: entry}\"></ng-container>\n    </a>\n\n    <!--Exibe os itens do submenu-->\n    <ng-container *ngTemplateOutlet=\"childEntryContent; context: {$implicit: entry, prefixId: prefixId}\"></ng-container>\n</ng-template>\n\n<ng-template #entryContent let-entry>\n    <i class=\"{{ entry.iconClass }}\"></i>\n    <p class=\"ms-2\">\n        {{entry.label}}\n        <b *ngIf=\"entry?.children\" class=\"caret ms-3\"></b>\n    </p>\n</ng-template>\n\n<ng-template #childEntryContent let-entry let-prefixId=\"prefixId\">\n    <div *ngIf=\"entry?.children\"\n         [attr.id]=\"'collapse' + prefixId\"\n         class=\"{{currentExpandedSession.startsWith(getIdForEntry(entry, prefixId)) ? 'show' : 'collapse'}}\"\n    >\n        <div class=\"d-flex\">\n            <div class=\"aux-bar\"></div>\n            <ul class=\"sidebar-nav\">\n                <ng-container *ngFor=\"let childEntry of entry.children\">\n                <li routerLinkActive=\"active\"\n                    [routerLinkActiveOptions]=\"{exact: true}\"\n                    (isActiveChange)=\"keepSessionExpanded($event, getIdForEntry(entry, prefixId))\"\n                    [ngClass]=\"{'active': currentExpandedSession.startsWith(getIdForEntry(childEntry, prefixId))}\"\n                >\n                    <ng-container [ngSwitch]=\"!!childEntry?.children\">\n                        <!--Se for um item sem submenus-->\n                        <ng-container *ngSwitchCase=\"false\">\n                            <a class=\"sub\"\n                               (click)=\"executeAction($event, childEntry)\"\n                               [routerLink]=\"childEntry?.routerLink\"\n                               [queryParams]=\"childEntry?.queryParams\"\n                            >\n                                <ng-container *ngTemplateOutlet=\"entryContent; context: {$implicit: childEntry}\"></ng-container>\n                            </a>\n                        </ng-container>\n\n                        <!--Se for um item com submenus-->\n                        <ng-container *ngSwitchCase=\"true\">\n                            <ng-container *ngTemplateOutlet=\"submenuEntry; context: {$implicit: childEntry, prefixId: getIdForEntry(childEntry, prefixId), isSub: true}\"></ng-container>\n                        </ng-container>\n                    </ng-container>\n                </li>\n                </ng-container>\n            </ul>\n        </div>\n    </div>\n</ng-template>\n"
+        },
+        {
+            "name": "SidebarEntryComponent",
+            "id": "component-SidebarEntryComponent-a4db64d87bb34d1cc3aec2cff11cb16c6a7e6d747a22caf9b99afe2e7971513789251ed1f3c22626fabd73f8f7f3f553d13e51fb3dfb010068096b50767980fb",
+            "file": "src/components/layout/sidebar/sidebar-entry/sidebar-entry.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "pm-sidebar-entry",
+            "styleUrls": [
+                "./sidebar-entry.component.css"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./sidebar-entry.component.html"
+            ],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [
+                {
+                    "name": "CommonModule",
+                    "type": "module"
+                }
+            ],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component } from '@angular/core';\nimport { CommonModule } from '@angular/common';\n\n@Component({\n  selector: 'pm-sidebar-entry',\n  standalone: true,\n  imports: [CommonModule],\n  templateUrl: './sidebar-entry.component.html',\n  styleUrls: ['./sidebar-entry.component.css']\n})\nexport class SidebarEntryComponent {\n\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": "",
+                    "styleUrl": "./sidebar-entry.component.css"
+                }
+            ],
+            "stylesData": "",
+            "templateData": "<p>sidebar-entry works!</p>\n"
         },
         {
             "name": "SpinnerComponent",
@@ -8677,7 +8742,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "object",
-                "defaultValue": "{\n}"
+                "defaultValue": "{\n  title: '',\n  subtitle: '',\n}"
             },
             {
                 "name": "defaultArgs",
@@ -9307,7 +9372,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story<ExpansionPanelComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-expansion-panel\n    >\n        Conteúdo aqui\n    </pm-expansion-panel>\n  `\n})"
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-expansion-panel\n        [title]=\"title\"\n        [subtitle]=\"subtitle\"\n    >\n        Add your content here\n    </pm-expansion-panel>\n  `\n})"
             },
             {
                 "name": "Template",
@@ -10367,7 +10432,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "object",
-                    "defaultValue": "{\n}"
+                    "defaultValue": "{\n  title: '',\n  subtitle: '',\n}"
                 },
                 {
                     "name": "DefaultExpansionPanel",
@@ -10387,7 +10452,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story<ExpansionPanelComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-expansion-panel\n    >\n        Conteúdo aqui\n    </pm-expansion-panel>\n  `\n})"
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-expansion-panel\n        [title]=\"title\"\n        [subtitle]=\"subtitle\"\n    >\n        Add your content here\n    </pm-expansion-panel>\n  `\n})"
                 }
             ],
             "src/components/containers/tabs/tabs.stories.ts": [
@@ -11437,7 +11502,7 @@
                 "linktype": "component",
                 "name": "ExpansionPanelComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/3",
+                "coverageCount": "0/5",
                 "status": "low"
             },
             {
@@ -12010,7 +12075,7 @@
                 "status": "low"
             },
             {
-                "filePath": "src/components/layout/sidebar/sidebar-content/models.ts",
+                "filePath": "src/components/layout/sidebar/models.ts",
                 "type": "interface",
                 "linktype": "interface",
                 "name": "SidebarItem",
@@ -12025,6 +12090,15 @@
                 "name": "SidebarContentComponent",
                 "coveragePercent": 0,
                 "coverageCount": "0/12",
+                "status": "low"
+            },
+            {
+                "filePath": "src/components/layout/sidebar/sidebar-entry/sidebar-entry.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "SidebarEntryComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
                 "status": "low"
             },
             {

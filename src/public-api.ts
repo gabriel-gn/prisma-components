@@ -91,4 +91,4 @@ export * from './components/inputs/multi-select/multi-select.module';
 
 export * from './components/layout/sidebar/sidebar.component';
 export * from './components/layout/sidebar/sidebar.module';
-export * from './components/layout/sidebar/sidebar-content/models';
+export * from './components/layout/sidebar/models';
