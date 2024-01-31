@@ -12,6 +12,7 @@
   .mat-drawer {
     background-color: $navbar-bg;
     border-right: 1px solid var(--color-gray-light);
+    padding: 1em 0px !important;
   }
 
   .drawer-content {

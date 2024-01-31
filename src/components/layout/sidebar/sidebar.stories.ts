@@ -50,7 +50,6 @@ DefaultSidebar.args = {
     {
       routerLink: `/`,
       label: 'Home',
-      translate: '',
       iconClass: 'uil uil-2x uil-home',
       badge: '1',
     },
