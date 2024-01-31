@@ -1,4 +1,13 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Host, Input, OnInit} from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ContentChildren,
+  Host,
+  Input,
+  OnInit
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {RouterLink, RouterLinkActive} from "@angular/router";
 import {MatDrawer} from "@angular/material/sidenav";
@@ -13,10 +22,12 @@ import {SidebarComponent} from "../sidebar.component";
   styleUrls: ['./sidebar-entry.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SidebarEntryComponent implements OnInit {
-  private drawer: MatDrawer;
+export class SidebarEntryComponent implements OnInit, AfterViewInit {
+  @ContentChildren(SidebarEntryComponent)
+  sidebarEntries: SidebarEntryComponent[];
   @Input() minWidth: string = '240px';
   @Input() expandCurrentItem: boolean = true;
+
   _entry: SidebarItem;
   @Input() set entry(item: SidebarItem) {
     this._entry = item;
@@ -25,8 +36,10 @@ export class SidebarEntryComponent implements OnInit {
   public get entry() {
     return this._entry;
   }
-  public currentExpandedSession: string = '';
+
+  private drawer: MatDrawer;
   private sidebarRef: SidebarComponent;
+  public currentExpandedSession: string = '';
 
   constructor(
     @Host() sidebar: SidebarComponent,
@@ -37,6 +50,20 @@ export class SidebarEntryComponent implements OnInit {
 
   public ngOnInit(): void {
     this.drawer = this.sidebarRef.matDrawerRef;
+  }
+
+  public ngAfterViewInit(): void {
+    this.detectChildrenNodes();
+  }
+
+  public detectChildrenNodes(): void {
+    if (this.sidebarEntries && this.sidebarEntries.length > 0) {
+      this.entry.children = [];
+      [...this.sidebarEntries].forEach(childEntry => {
+        this.entry.children.push(childEntry._entry);
+      })
+      this.cdr.detectChanges();
+    }
   }
 
   public executeAction(event: any, entry: SidebarItem, closeDrawer: boolean = true): void {

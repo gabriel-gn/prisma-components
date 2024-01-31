@@ -16,8 +16,11 @@ export const Template: Story<SidebarComponent> = (args) => ({
         [nextButtonAction]="nextButtonAction"
         [label]="label"
     >
-        <pm-sidebar-entry [entry]="sidebarEntries[0]"></pm-sidebar-entry>
-        <pm-sidebar-entry [entry]="sidebarEntries[1]"></pm-sidebar-entry>
+        <pm-sidebar-entry [entry]="sidebarEntries[0]">
+            <pm-sidebar-entry [entry]="sidebarEntries[3]">
+                <pm-sidebar-entry [entry]="sidebarEntries[4]"></pm-sidebar-entry>
+            </pm-sidebar-entry>
+        </pm-sidebar-entry>
         <pm-sidebar-entry [entry]="sidebarEntries[2]"></pm-sidebar-entry>
         <pm-sidebar-entry [entry]="sidebarEntries[3]"></pm-sidebar-entry>
         <p>Conteúdo aqui! algo como router-outlet</p>
@@ -111,6 +114,11 @@ DefaultSidebar.args = {
       label: 'Preferences',
       iconClass: 'uil uil-2x uil-setting',
       action: () => {console.log('Alguma coisa!')}
+    },
+    {
+      label: 'Settings',
+      iconClass: 'uil uil-2x uil-setting',
+      action: () => {console.log('Alguma coisa2!')}
     },
   ]
 } as Partial<SidebarComponent>;
