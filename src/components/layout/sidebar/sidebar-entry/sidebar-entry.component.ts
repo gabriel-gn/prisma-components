@@ -1,4 +1,5 @@
 import {
+  AfterViewChecked,
   AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -22,7 +23,7 @@ import {SidebarComponent} from "../sidebar.component";
   styleUrls: ['./sidebar-entry.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SidebarEntryComponent implements OnInit, AfterViewInit {
+export class SidebarEntryComponent implements OnInit, AfterViewInit, AfterViewChecked {
   @ContentChildren(SidebarEntryComponent)
   sidebarEntries: SidebarEntryComponent[];
   @Input() minWidth: string = '240px';
@@ -56,11 +57,15 @@ export class SidebarEntryComponent implements OnInit, AfterViewInit {
     this.detectChildrenNodes();
   }
 
+  public ngAfterViewChecked(): void {
+    this.detectChildrenNodes();
+  }
+
   public detectChildrenNodes(): void {
     if (this.sidebarEntries && this.sidebarEntries.length > 0) {
       this.entry.children = [];
-      [...this.sidebarEntries].forEach(childEntry => {
-        this.entry.children.push(childEntry._entry);
+      [...this.sidebarEntries].forEach((childEntry: SidebarEntryComponent) => {
+        this.entry.children.push(childEntry.entry);
       })
       this.cdr.detectChanges();
     }
