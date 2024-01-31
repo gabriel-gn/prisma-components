@@ -90,5 +90,6 @@ export * from './components/inputs/multi-select/multi-select.component';
 export * from './components/inputs/multi-select/multi-select.module';
 
 export * from './components/layout/sidebar/sidebar.component';
+export * from './components/layout/sidebar/sidebar-entry/sidebar-entry.component';
 export * from './components/layout/sidebar/sidebar.module';
 export * from './components/layout/sidebar/models';
