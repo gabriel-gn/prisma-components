@@ -10,7 +10,9 @@ import {
 } from "./sidebar.stories";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {APP_BASE_HREF} from '@angular/common';
-import {RouterModule} from "@angular/router";
+import {ActivatedRoute, RouterModule} from "@angular/router";
+import {RouterTestingModule} from "@angular/router/testing";
+import {SidebarEntryComponent} from "./sidebar-entry/sidebar-entry.component";
 
 export const argTypes = {
   // XXXArg1: {
@@ -29,8 +31,14 @@ export const argTypes = {
   parameters={{ badges: [ 'beta' ] }}
   decorators={[
     moduleMetadata({
-      imports: [SidebarModule, BrowserAnimationsModule, RouterModule],
-      providers: [{provide: APP_BASE_HREF, useValue: '/'}],
+      imports: [
+        SidebarModule,
+        BrowserAnimationsModule,
+        RouterTestingModule
+      ],
+      providers: [
+        {provide: APP_BASE_HREF, useValue: '/'},
+      ],
     })
   ]}
 />

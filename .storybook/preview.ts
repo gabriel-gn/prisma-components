@@ -3,6 +3,8 @@ import { setCompodocJson } from "@storybook/addon-docs/angular";
 import docJson from '../documentation.json';
 setCompodocJson(docJson);
 
+import 'bootstrap/dist/js/bootstrap.bundle';
+
 const preview: Preview = {
   parameters: {
     actions: {argTypesRegex: "^on[A-Z].*"},

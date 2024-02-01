@@ -7,4 +7,5 @@ export interface SidebarItem {
     translate?: string; // if provided, use transloco pipe
     badge?: any; // badge to be displayed, if not observable, turns into string
     children?: SidebarItem[];
+    externalUrl?: string;
 }

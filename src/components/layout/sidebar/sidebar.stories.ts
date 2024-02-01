@@ -14,9 +14,15 @@ export const Template: Story<SidebarComponent> = (args) => ({
         [showBackButton]="showBackButton"
         [showNextButton]="showNextButton"
         [nextButtonAction]="nextButtonAction"
-        [sidebarEntries]="sidebarEntries"
         [label]="label"
     >
+        <pm-sidebar-entry [entry]="sidebarEntries[0]">
+            <pm-sidebar-entry [entry]="sidebarEntries[3]">
+                <pm-sidebar-entry [entry]="sidebarEntries[4]"></pm-sidebar-entry>
+            </pm-sidebar-entry>
+        </pm-sidebar-entry>
+        <pm-sidebar-entry [entry]="sidebarEntries[2]"></pm-sidebar-entry>
+        <pm-sidebar-entry [entry]="sidebarEntries[3]"></pm-sidebar-entry>
         <p>Conteúdo aqui! algo como router-outlet</p>
         <ng-container *ngFor="let _ of [].constructor(20)">
             <p>.</p>
@@ -44,7 +50,6 @@ DefaultSidebar.args = {
     {
       routerLink: `/`,
       label: 'Home',
-      translate: '',
       iconClass: 'uil uil-2x uil-home',
       badge: '1',
     },
@@ -73,7 +78,7 @@ DefaultSidebar.args = {
         },
         {
           label: 'Favorites',
-          routerLink: `/favorites`,
+          routerLink: `/`,
           iconClass: 'uil uil-xl uil-favorite'
         },
       ]
@@ -85,8 +90,22 @@ DefaultSidebar.args = {
       children: [
         {
           label: 'Card Gallery',
-          routerLink: `/cards`,
-          iconClass: 'uil uil-xl uil-apps'
+          routerLink: `/`,
+          iconClass: 'uil uil-xl uil-apps',
+          children: [
+            {
+              label: 'Card Gallery',
+              routerLink: `/`,
+              iconClass: 'uil uil-xl uil-apps',
+              children: [
+                {
+                  label: 'Card Gallery',
+                  routerLink: `/`,
+                  iconClass: 'uil uil-xl uil-apps'
+                },
+              ]
+            },
+          ]
         },
       ]
     },
@@ -94,6 +113,11 @@ DefaultSidebar.args = {
       label: 'Preferences',
       iconClass: 'uil uil-2x uil-setting',
       action: () => {console.log('Alguma coisa!')}
+    },
+    {
+      label: 'Settings',
+      iconClass: 'uil uil-2x uil-setting',
+      action: () => {console.log('Alguma coisa2!')}
     },
   ]
 } as Partial<SidebarComponent>;

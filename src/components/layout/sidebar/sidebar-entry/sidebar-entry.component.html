@@ -1,0 +1,94 @@
+<div class="app-sidebar-content"
+     *ngIf="entry && (entry.action || entry.children || entry.routerLink || entry.externalUrl)"
+     [ngStyle]="{'min-width': minWidth}"
+>
+  <ul class="sidebar-nav">
+    <ng-container *ngTemplateOutlet="entryChecker; context: {$implicit: entry, prefixId: getIdForEntry(entry)}"></ng-container>
+  </ul>
+</div>
+
+<ng-template #entryChecker let-entry let-prefixId="prefixId">
+  <li routerLinkActive="active"
+      [routerLinkActiveOptions]="{exact: true}"
+      [ngClass]="{'active': currentExpandedSession.startsWith(prefixId)}"
+  >
+    <ng-container [ngSwitch]="!!entry?.children">
+      <!--Se for um item sem submenus-->
+      <ng-container *ngSwitchCase="false">
+        <ng-container *ngTemplateOutlet="noSubmenuEntry; context: {$implicit: entry}"></ng-container>
+      </ng-container>
+
+      <!--Se for um item com submenus-->
+      <ng-container *ngSwitchCase="true">
+        <ng-container *ngTemplateOutlet="submenuEntry; context: {$implicit: entry, prefixId: prefixId}"></ng-container>
+      </ng-container>
+    </ng-container>
+  </li>
+</ng-template>
+
+<ng-template #noSubmenuEntry let-entry>
+  <a (click)="executeAction($event, entry)"
+     [routerLink]="entry?.routerLink"
+     [queryParams]="entry?.queryParams"
+  >
+    <ng-container *ngTemplateOutlet="entryContent; context: {$implicit: entry}"></ng-container>
+  </a>
+</ng-template>
+
+<ng-template #submenuEntry let-entry let-prefixId="prefixId" let-isSub="isSub">
+  <a [ngClass]="{'sub': isSub}"
+     [attr.data-bs-toggle]="'collapse'"
+     [attr.data-bs-target]="'#collapse' + prefixId"
+  >
+    <ng-container *ngTemplateOutlet="entryContent; context: {$implicit: entry}"></ng-container>
+  </a>
+
+  <!--Exibe os itens do submenu-->
+  <ng-container *ngTemplateOutlet="childEntryContent; context: {$implicit: entry, prefixId: prefixId}"></ng-container>
+</ng-template>
+
+<ng-template #entryContent let-entry>
+  <i class="{{ entry.iconClass }}"></i>
+  <p class="ms-2">
+    {{entry.label}}
+    <b *ngIf="entry?.children" class="caret ms-3"></b>
+  </p>
+</ng-template>
+
+<ng-template #childEntryContent let-entry let-prefixId="prefixId">
+  <div *ngIf="entry?.children"
+       [attr.id]="'collapse' + prefixId"
+       class="{{currentExpandedSession.startsWith(getIdForEntry(entry, prefixId)) ? 'show' : 'collapse'}}"
+  >
+    <div class="d-flex">
+      <div class="aux-bar"></div>
+      <ul class="sidebar-nav">
+        <ng-container *ngFor="let childEntry of entry.children">
+          <li routerLinkActive="active"
+              [routerLinkActiveOptions]="{exact: true}"
+              (isActiveChange)="keepSessionExpanded($event, getIdForEntry(entry, prefixId))"
+              [ngClass]="{'active': currentExpandedSession.startsWith(getIdForEntry(childEntry, prefixId))}"
+          >
+            <ng-container [ngSwitch]="!!childEntry?.children">
+              <!--Se for um item sem submenus-->
+              <ng-container *ngSwitchCase="false">
+                <a class="sub"
+                   (click)="executeAction($event, childEntry)"
+                   [routerLink]="childEntry?.routerLink"
+                   [queryParams]="childEntry?.queryParams"
+                >
+                  <ng-container *ngTemplateOutlet="entryContent; context: {$implicit: childEntry}"></ng-container>
+                </a>
+              </ng-container>
+
+              <!--Se for um item com submenus-->
+              <ng-container *ngSwitchCase="true">
+                <ng-container *ngTemplateOutlet="submenuEntry; context: {$implicit: childEntry, prefixId: getIdForEntry(childEntry, prefixId), isSub: true}"></ng-container>
+              </ng-container>
+            </ng-container>
+          </li>
+        </ng-container>
+      </ul>
+    </div>
+  </div>
+</ng-template>

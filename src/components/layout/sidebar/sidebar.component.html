@@ -1,12 +1,7 @@
 <mat-drawer-container class="pm-sidebar" [autosize]="true" fullscreen>
 
   <mat-drawer #drawer [mode]="isWindowWidthMobile() === true ? 'over' : 'side'">
-    <app-sidebar-content
-      *ngIf="sidebarEntries.length > 0"
-      [sidebarEntries]="sidebarEntries"
-      [drawer]="drawer"
-    >
-    </app-sidebar-content>
+    <ng-content select="pm-sidebar-entry"></ng-content>
   </mat-drawer>
 
   <mat-drawer-content class="ion-content-scroll-host drawer-content">
