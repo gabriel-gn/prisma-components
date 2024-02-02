@@ -116,6 +116,10 @@ export class MultiSelectComponent implements OnInit, AfterViewInit, ControlValue
    * Caso contrário, ao clicar sobre um item, remove ele da lista de selecionados
    */
   @Input() showRemoveButton: boolean = false;
+  /**
+   * Caso a flag seja "true", filtra resultados selecionados apenas pela label.
+   */
+  @Input() uniqueByLabel: boolean = false;
   public _observableInputLoading: boolean = false;
 
   public readonly myControl: UntypedFormControl;
@@ -221,6 +225,12 @@ export class MultiSelectComponent implements OnInit, AfterViewInit, ControlValue
   }
 
   public isOptionSelected(option: (MultiSelectOption|any)): boolean {
+    if (this.uniqueByLabel) {
+      if (isMultiSelectOption(option)) {
+        return !!this.selectedOptions.find(sOptions => sOptions.label === option.label);
+      }
+    }
+
     if (isMultiSelectOption(option)) {
       return !!this.selectedOptions.find(sOptions => _.isEqual(sOptions, option));
     } else {
