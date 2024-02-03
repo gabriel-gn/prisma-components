@@ -16,13 +16,15 @@ export const Template: Story<SidebarComponent> = (args) => ({
         [nextButtonAction]="nextButtonAction"
         [label]="label"
     >
+        <pm-sidebar-entry [entry]="sidebarEntries[5]"></pm-sidebar-entry>
+        <pm-sidebar-entry [entry]="sidebarEntries[6]"></pm-sidebar-entry>
         <pm-sidebar-entry [entry]="sidebarEntries[0]">
             <pm-sidebar-entry [entry]="sidebarEntries[3]">
                 <pm-sidebar-entry [entry]="sidebarEntries[4]"></pm-sidebar-entry>
             </pm-sidebar-entry>
         </pm-sidebar-entry>
         <pm-sidebar-entry [entry]="sidebarEntries[2]"></pm-sidebar-entry>
-        <pm-sidebar-entry [entry]="sidebarEntries[3]"></pm-sidebar-entry>
+        <pm-sidebar-entry [entry]="sidebarEntries[4]"></pm-sidebar-entry>
         <p>Conteúdo aqui! algo como router-outlet</p>
         <ng-container *ngFor="let _ of [].constructor(20)">
             <p>.</p>
@@ -118,6 +120,18 @@ DefaultSidebar.args = {
       label: 'Settings',
       iconClass: 'uil uil-2x uil-setting',
       action: () => {console.log('Alguma coisa2!')}
+    },
+    {
+      routerLink: `/`,
+      label: 'Home 2',
+      iconClass: 'uil uil-2x uil-home',
+      badge: '1',
+    },
+    {
+      routerLink: `/a`,
+      label: 'Home 3',
+      iconClass: 'uil uil-2x uil-home',
+      badge: '1',
     },
   ]
 } as Partial<SidebarComponent>;

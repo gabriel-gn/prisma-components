@@ -262,12 +262,12 @@
         },
         {
             "name": "MultiSelectOption",
-            "id": "interface-MultiSelectOption-31029e45d78bc3af85f1d63f0d6c10564c4b7ad04ab8a9749de503e18f7108c33e554787d431a272f201a9651857904d59a1c5883b9c64485aedb6d34e4378c6",
+            "id": "interface-MultiSelectOption-6bfe1396ff99ffa57178ff3291f67041ae831ca391977731ecf5b2eff37aeea16f26cb06ea12b4b0dc836d40b581bc50036190927be7ced2f36d2e1642a07d52",
             "file": "src/components/inputs/multi-select/multi-select.component.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "import {\n  AfterViewInit,\n  ChangeDetectorRef,\n  Component,\n  ElementRef,\n  EventEmitter,\n  Input,\n  OnInit,\n  Output,\n  ViewChild,\n  ViewEncapsulation\n} from '@angular/core';\nimport {ControlValueAccessor, NG_VALUE_ACCESSOR, UntypedFormControl} from '@angular/forms';\nimport {catchError, concatMap, debounceTime, distinctUntilChanged, Observable, of, tap} from 'rxjs';\nimport {map, startWith} from 'rxjs/operators';\nimport _ from 'lodash';\nimport {MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, MatAutocompleteTrigger} from '@angular/material/autocomplete';\nimport {Sizes} from '../../../models/sizes';\n\nexport interface MultiSelectOption {\n  label: string;\n  value: any;\n  thumbnail?: string;\n}\n\nfunction isMultiSelectOption(value: any) {\n  return value.hasOwnProperty('label') && value.hasOwnProperty('value');\n}\n\n@Component({\n  selector: 'pm-multi-select',\n  templateUrl: './multi-select.component.html',\n  styleUrls: ['./multi-select.component.scss'],\n  encapsulation: ViewEncapsulation.None,\n  providers: [\n    {\n      provide: MAT_AUTOCOMPLETE_DEFAULT_OPTIONS,\n      useValue: {\n        autoActiveFirstOption: false,\n        overlayPanelClass: 'pm-multi-select-autocomplete-panel'\n      }\n    },\n    {\n      provide: NG_VALUE_ACCESSOR,\n      multi: true,\n      useExisting: MultiSelectComponent\n    }\n  ]\n})\nexport class MultiSelectComponent implements OnInit, AfterViewInit, ControlValueAccessor {\n\n  @ViewChild('inputBox', {static: true}) inputBoxEl: ElementRef;\n  @ViewChild('trigger', {static: true}) trigger: MatAutocompleteTrigger;\n  /**\n   * Ao ser selecionada uma opção nova, emite\n   */\n  @Output() selectedOptionsChanged = new EventEmitter<MultiSelectOption[]>();\n  /**\n   * Texto a ser exibido no input\n   */\n  @Input() placeholder: string = '';\n  /**\n   * opções a serem exibidas no input\n   */\n  @Input() options: MultiSelectOption[] = [];\n  @Input() borderRadius: Sizes = Sizes.md;\n  /**\n   * se as thumbnails serão arredondadas\n   */\n  @Input() roundedThumbnail: boolean = true;\n  /**\n   * limite máximo de seleções de itens\n   */\n  @Input() limit: number = 0;\n  /**\n   * Opções que ja vem selecionadas\n   */\n  private _selectedOptions: MultiSelectOption[] = [];\n  @Input() set selectedOptions(options: (MultiSelectOption | any)[]) {\n    if (Array.isArray(options) === false) {\n      options = [];\n    }\n    options = options\n      .reduce((acc: any[], val: any) => {\n        if (isMultiSelectOption(val)) {\n          return [...acc, val];\n        } else {\n          return [...acc, this.options.find((option: MultiSelectOption) => _.isEqual(option.value, val))];\n        }\n      }, [])\n      // filtra as opções do \"find\" que podem ser undefined\n      .filter(i => !!i) as unknown as MultiSelectOption[];\n    this._selectedOptions = options;\n    this.selectedOptionsChanged.emit(this.selectedOptions);\n    this.propagateChange(this.selectedOptions);\n    this.clearInput();\n  };\n  public get selectedOptions() {\n    return this._selectedOptions;\n  }\n  /**\n   * sort selected items instead of showing them in selected sequence\n   */\n  @Input() sortSelectedItems: boolean = true;\n  @Input() observableInput: (search: string) => Observable<MultiSelectOption[]>;\n  /**\n   * Tempo de espera em cada execução de chamada do observable ao digitar no campo de input\n   */\n  @Input() observableDebounce: number = 100;\n  /**\n   * Caso a flag seja \"true\", desativa o foco no input, escondendo o teclado virtual no mobile\n   */\n  @Input() unfocusOnSelect: boolean = true;\n  /**\n   * Caso a flag seja \"true\", mostra o botão \"X\" de remover cada item da lista de selecionados.\n   * Caso contrário, ao clicar sobre um item, remove ele da lista de selecionados\n   */\n  @Input() showRemoveButton: boolean = false;\n  public _observableInputLoading: boolean = false;\n\n  public readonly myControl: UntypedFormControl;\n  public inputValue: string = '';\n  public filteredOptions: Observable<MultiSelectOption[]>;\n\n  onChange = (selectedOptions) => {};\n  onTouched = () => {};\n  touched = false;\n  disabled = false;\n\n  constructor(\n    private cdr: ChangeDetectorRef\n  ) {\n    this.myControl = new UntypedFormControl();\n  }\n\n  ngOnInit(): void {\n    if (this.observableInput) {\n      this.filteredOptions = this.myControl.valueChanges.pipe(\n        debounceTime(this.observableDebounce),\n        distinctUntilChanged(),\n        tap(() => {this.observableInputLoading = true}),\n        concatMap(() => this.observableInput(`${this.myControl.value}`).pipe(\n          catchError(error => {this.observableInputLoading = false; return of(null); }),\n        )),\n        tap(() => {this.observableInputLoading = false}),\n      );\n    } else {\n      this.filteredOptions = this.myControl.valueChanges.pipe(\n        startWith(''),\n        map(value => (typeof value === 'string' ? value : `${value.label}`)),\n        map(label => this._filter(label)),\n      );\n    }\n  }\n\n  ngAfterViewInit(): void {\n    this.clearInput();\n  }\n\n  public set observableInputLoading(state: boolean) {\n    this._observableInputLoading = state;\n    this.cdr.detectChanges();\n  }\n\n  /**\n   * Função utilizada para colocar texto na caixa de input ao selecionar uma opção\n   * @param user\n   */\n  displayFn(option: MultiSelectOption): string {\n    return '';\n    // return option && option.label ? option.label : '';\n  }\n\n  private _filter(label: string): MultiSelectOption[] {\n    const filterValue = label.toLowerCase();\n\n    return _.difference(\n      this.options.filter(option => option.label.toLowerCase().includes(filterValue)),\n      this.selectedOptions\n    );\n  }\n\n  writeValue(value: MultiSelectOption[]) {\n    this.selectedOptions = value;\n  }\n\n  propagateChange = (_: any) => {};\n  registerOnChange(fn: any) {\n    this.propagateChange = fn;\n  }\n\n  registerOnTouched(onTouched: any) {\n    this.onTouched = onTouched;\n  }\n\n  public selectOption(option: any): void {\n    const currentOptions = this.selectedOptions;\n    currentOptions.push(option);\n\n    if (this.sortSelectedItems) {\n      this.selectedOptions = currentOptions.sort((a, b) => {\n        return this.options.indexOf(a) - this.options.indexOf(b);\n      });\n    } else {\n      this.selectedOptions = currentOptions;\n    }\n    this.blurInputSelect();\n  }\n\n  private clearInput(): void {\n    this.inputValue = '';\n    this.myControl.setValue(this.inputValue);\n    this.cdr.detectChanges();\n  }\n\n  public removeSelectedOption(option: MultiSelectOption): void {\n    _.remove(this.selectedOptions, option);\n    this.selectedOptions = this.selectedOptions;\n    this.trigger.closePanel();\n    this.clearInput();\n  }\n\n  public isOptionSelected(option: (MultiSelectOption|any)): boolean {\n    if (isMultiSelectOption(option)) {\n      return !!this.selectedOptions.find(sOptions => _.isEqual(sOptions, option));\n    } else {\n      return !!this.selectedOptions.find((sOptions) => _.isEqual(sOptions.value, option));\n    }\n  }\n\n  /**\n   * Use this method instead of \"trigger.openPanel()\" because it has some validations before opening the panel\n   */\n  public openSelect(): void {\n    if (this.isLimitReached() === false) {\n      this.trigger.openPanel();\n    }\n  }\n\n  /**\n   * Use this method instead of \"trigger.closePanel()\" because it has some validations before closing the panel\n   */\n  public closeSelect(): void {\n    this.trigger.closePanel();\n  }\n\n  public clearSelected(): void {\n    this.selectedOptions = [];\n  }\n\n  public togglePanel(): void {\n    if (this.trigger.panelOpen === false) {\n      this.openSelect();\n    } else {\n      this.closeSelect();\n    }\n  }\n\n  public isLimitReached() {\n    return !this.observableInput // caso tenha observable input, as options são dinâmicas, e não armazenadas no componente\n      && (this.selectedOptions.length === this.options.length || (!!this.limit && this.selectedOptions.length >= this.limit))\n  }\n\n  public blurInputSelect() {\n    if (this.unfocusOnSelect) {\n      setTimeout(() => {\n        try {\n          this.inputBoxEl.nativeElement.blur();\n        } catch (e) {}\n      });\n    }\n  }\n\n}\n",
+            "sourceCode": "import {\n  AfterViewInit,\n  ChangeDetectorRef,\n  Component,\n  ElementRef,\n  EventEmitter,\n  Input,\n  OnInit,\n  Output,\n  ViewChild,\n  ViewEncapsulation\n} from '@angular/core';\nimport {ControlValueAccessor, NG_VALUE_ACCESSOR, UntypedFormControl} from '@angular/forms';\nimport {catchError, concatMap, debounceTime, distinctUntilChanged, Observable, of, tap} from 'rxjs';\nimport {map, startWith} from 'rxjs/operators';\nimport _ from 'lodash';\nimport {MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, MatAutocompleteTrigger} from '@angular/material/autocomplete';\nimport {Sizes} from '../../../models/sizes';\n\nexport interface MultiSelectOption {\n  label: string;\n  value: any;\n  thumbnail?: string;\n}\n\nfunction isMultiSelectOption(value: any) {\n  return value.hasOwnProperty('label') && value.hasOwnProperty('value');\n}\n\n@Component({\n  selector: 'pm-multi-select',\n  templateUrl: './multi-select.component.html',\n  styleUrls: ['./multi-select.component.scss'],\n  encapsulation: ViewEncapsulation.None,\n  providers: [\n    {\n      provide: MAT_AUTOCOMPLETE_DEFAULT_OPTIONS,\n      useValue: {\n        autoActiveFirstOption: false,\n        overlayPanelClass: 'pm-multi-select-autocomplete-panel'\n      }\n    },\n    {\n      provide: NG_VALUE_ACCESSOR,\n      multi: true,\n      useExisting: MultiSelectComponent\n    }\n  ]\n})\nexport class MultiSelectComponent implements OnInit, AfterViewInit, ControlValueAccessor {\n\n  @ViewChild('inputBox', {static: true}) inputBoxEl: ElementRef;\n  @ViewChild('trigger', {static: true}) trigger: MatAutocompleteTrigger;\n  /**\n   * Ao ser selecionada uma opção nova, emite\n   */\n  @Output() selectedOptionsChanged = new EventEmitter<MultiSelectOption[]>();\n  /**\n   * Texto a ser exibido no input\n   */\n  @Input() placeholder: string = '';\n  /**\n   * opções a serem exibidas no input\n   */\n  @Input() options: MultiSelectOption[] = [];\n  @Input() borderRadius: Sizes = Sizes.md;\n  /**\n   * se as thumbnails serão arredondadas\n   */\n  @Input() roundedThumbnail: boolean = true;\n  /**\n   * limite máximo de seleções de itens\n   */\n  @Input() limit: number = 0;\n  /**\n   * Opções que ja vem selecionadas\n   */\n  private _selectedOptions: MultiSelectOption[] = [];\n  @Input() set selectedOptions(options: (MultiSelectOption | any)[]) {\n    if (Array.isArray(options) === false) {\n      options = [];\n    }\n    options = options\n      .reduce((acc: any[], val: any) => {\n        if (isMultiSelectOption(val)) {\n          return [...acc, val];\n        } else {\n          return [...acc, this.options.find((option: MultiSelectOption) => _.isEqual(option.value, val))];\n        }\n      }, [])\n      // filtra as opções do \"find\" que podem ser undefined\n      .filter(i => !!i) as unknown as MultiSelectOption[];\n    this._selectedOptions = options;\n    this.selectedOptionsChanged.emit(this.selectedOptions);\n    this.propagateChange(this.selectedOptions);\n    this.clearInput();\n  };\n  public get selectedOptions() {\n    return this._selectedOptions;\n  }\n  /**\n   * sort selected items instead of showing them in selected sequence\n   */\n  @Input() sortSelectedItems: boolean = true;\n  @Input() observableInput: (search: string) => Observable<MultiSelectOption[]>;\n  /**\n   * Tempo de espera em cada execução de chamada do observable ao digitar no campo de input\n   */\n  @Input() observableDebounce: number = 100;\n  /**\n   * Caso a flag seja \"true\", desativa o foco no input, escondendo o teclado virtual no mobile\n   */\n  @Input() unfocusOnSelect: boolean = true;\n  /**\n   * Caso a flag seja \"true\", mostra o botão \"X\" de remover cada item da lista de selecionados.\n   * Caso contrário, ao clicar sobre um item, remove ele da lista de selecionados\n   */\n  @Input() showRemoveButton: boolean = false;\n  /**\n   * Caso a flag seja \"true\", filtra resultados selecionados apenas pela label.\n   */\n  @Input() uniqueByLabel: boolean = false;\n  public _observableInputLoading: boolean = false;\n\n  public readonly myControl: UntypedFormControl;\n  public inputValue: string = '';\n  public filteredOptions: Observable<MultiSelectOption[]>;\n\n  onChange = (selectedOptions) => {};\n  onTouched = () => {};\n  touched = false;\n  disabled = false;\n\n  constructor(\n    private cdr: ChangeDetectorRef\n  ) {\n    this.myControl = new UntypedFormControl();\n  }\n\n  ngOnInit(): void {\n    if (this.observableInput) {\n      this.filteredOptions = this.myControl.valueChanges.pipe(\n        debounceTime(this.observableDebounce),\n        distinctUntilChanged(),\n        tap(() => {this.observableInputLoading = true}),\n        concatMap(() => this.observableInput(`${this.myControl.value}`).pipe(\n          catchError(error => {this.observableInputLoading = false; return of(null); }),\n        )),\n        tap(() => {this.observableInputLoading = false}),\n      );\n    } else {\n      this.filteredOptions = this.myControl.valueChanges.pipe(\n        startWith(''),\n        map(value => (typeof value === 'string' ? value : `${value.label}`)),\n        map(label => this._filter(label)),\n      );\n    }\n  }\n\n  ngAfterViewInit(): void {\n    this.clearInput();\n  }\n\n  public set observableInputLoading(state: boolean) {\n    this._observableInputLoading = state;\n    this.cdr.detectChanges();\n  }\n\n  /**\n   * Função utilizada para colocar texto na caixa de input ao selecionar uma opção\n   * @param user\n   */\n  displayFn(option: MultiSelectOption): string {\n    return '';\n    // return option && option.label ? option.label : '';\n  }\n\n  private _filter(label: string): MultiSelectOption[] {\n    const filterValue = label.toLowerCase();\n\n    return _.difference(\n      this.options.filter(option => option.label.toLowerCase().includes(filterValue)),\n      this.selectedOptions\n    );\n  }\n\n  writeValue(value: MultiSelectOption[]) {\n    this.selectedOptions = value;\n  }\n\n  propagateChange = (_: any) => {};\n  registerOnChange(fn: any) {\n    this.propagateChange = fn;\n  }\n\n  registerOnTouched(onTouched: any) {\n    this.onTouched = onTouched;\n  }\n\n  public selectOption(option: any): void {\n    const currentOptions = this.selectedOptions;\n    currentOptions.push(option);\n\n    if (this.sortSelectedItems) {\n      this.selectedOptions = currentOptions.sort((a, b) => {\n        return this.options.indexOf(a) - this.options.indexOf(b);\n      });\n    } else {\n      this.selectedOptions = currentOptions;\n    }\n    this.blurInputSelect();\n  }\n\n  private clearInput(): void {\n    this.inputValue = '';\n    this.myControl.setValue(this.inputValue);\n    this.cdr.detectChanges();\n  }\n\n  public removeSelectedOption(option: MultiSelectOption): void {\n    _.remove(this.selectedOptions, option);\n    this.selectedOptions = this.selectedOptions;\n    this.trigger.closePanel();\n    this.clearInput();\n  }\n\n  public isOptionSelected(option: (MultiSelectOption|any)): boolean {\n    if (this.uniqueByLabel) {\n      if (isMultiSelectOption(option)) {\n        return !!this.selectedOptions.find(sOptions => sOptions.label === option.label);\n      }\n    }\n\n    if (isMultiSelectOption(option)) {\n      return !!this.selectedOptions.find(sOptions => _.isEqual(sOptions, option));\n    } else {\n      return !!this.selectedOptions.find((sOptions) => _.isEqual(sOptions.value, option));\n    }\n  }\n\n  /**\n   * Use this method instead of \"trigger.openPanel()\" because it has some validations before opening the panel\n   */\n  public openSelect(): void {\n    if (this.isLimitReached() === false) {\n      this.trigger.openPanel();\n    }\n  }\n\n  /**\n   * Use this method instead of \"trigger.closePanel()\" because it has some validations before closing the panel\n   */\n  public closeSelect(): void {\n    this.trigger.closePanel();\n  }\n\n  public clearSelected(): void {\n    this.selectedOptions = [];\n  }\n\n  public togglePanel(): void {\n    if (this.trigger.panelOpen === false) {\n      this.openSelect();\n    } else {\n      this.closeSelect();\n    }\n  }\n\n  public isLimitReached() {\n    return !this.observableInput // caso tenha observable input, as options são dinâmicas, e não armazenadas no componente\n      && (this.selectedOptions.length === this.options.length || (!!this.limit && this.selectedOptions.length >= this.limit))\n  }\n\n  public blurInputSelect() {\n    if (this.unfocusOnSelect) {\n      setTimeout(() => {\n        try {\n          this.inputBoxEl.nativeElement.blur();\n        } catch (e) {}\n      });\n    }\n  }\n\n}\n",
             "properties": [
                 {
                     "name": "label",
@@ -394,12 +394,12 @@
         },
         {
             "name": "SidebarItem",
-            "id": "interface-SidebarItem-aef6881e67be1cd1bbd70f724187d23310a4fb612ac4288eb50086ba0dd496c6e156949e90dda46a9aa6b5d48121de94312c46b22fa0f54f0c4f291c9c978aba",
+            "id": "interface-SidebarItem-18ed64959ec7cee180f7ca5a7b8befdc5283218675a261da3dfe15aa7f2be2afaca0e143b82f2c5698c9b1645cb2c12e0da276932a42c0191b3b88622724afa6",
             "file": "src/components/layout/sidebar/models.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "export interface SidebarItem {\n    label: string; // should be unique\n    iconClass: string;\n    routerLink?: string | string[]; // router link\n    queryParams?: any; // queryParams router link\n    action?: () => void; // action to trigger\n    translate?: string; // if provided, use transloco pipe\n    badge?: any; // badge to be displayed, if not observable, turns into string\n    children?: SidebarItem[];\n}\n",
+            "sourceCode": "export interface SidebarItem {\n    label: string; // should be unique\n    iconClass: string;\n    routerLink?: string | string[]; // router link\n    queryParams?: any; // queryParams router link\n    action?: () => void; // action to trigger\n    translate?: string; // if provided, use transloco pipe\n    badge?: any; // badge to be displayed, if not observable, turns into string\n    children?: SidebarItem[];\n    externalUrl?: string;\n}\n",
             "properties": [
                 {
                     "name": "action",
@@ -427,6 +427,15 @@
                     "optional": true,
                     "description": "",
                     "line": 9
+                },
+                {
+                    "name": "externalUrl",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": true,
+                    "description": "",
+                    "line": 10
                 },
                 {
                     "name": "iconClass",
@@ -5012,7 +5021,7 @@
         },
         {
             "name": "MultiSelectComponent",
-            "id": "component-MultiSelectComponent-31029e45d78bc3af85f1d63f0d6c10564c4b7ad04ab8a9749de503e18f7108c33e554787d431a272f201a9651857904d59a1c5883b9c64485aedb6d34e4378c6",
+            "id": "component-MultiSelectComponent-6bfe1396ff99ffa57178ff3291f67041ae831ca391977731ecf5b2eff37aeea16f26cb06ea12b4b0dc836d40b581bc50036190927be7ced2f36d2e1642a07d52",
             "file": "src/components/inputs/multi-select/multi-select.component.ts",
             "encapsulation": [
                 "ViewEncapsulation.None"
@@ -5152,6 +5161,17 @@
                     "line": 113,
                     "type": "boolean",
                     "decorators": []
+                },
+                {
+                    "name": "uniqueByLabel",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n\nCaso a flag seja \"true\", filtra resultados selecionados apenas pela label.\n",
+                    "description": "<p>Caso a flag seja &quot;true&quot;, filtra resultados selecionados apenas pela label.</p>\n",
+                    "line": 122,
+                    "type": "boolean",
+                    "decorators": []
                 }
             ],
             "outputsClass": [
@@ -5175,7 +5195,7 @@
                     "type": "boolean",
                     "optional": false,
                     "description": "",
-                    "line": 119,
+                    "line": 123,
                     "modifierKind": [
                         123
                     ]
@@ -5202,7 +5222,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 128
+                    "line": 132
                 },
                 {
                     "name": "filteredOptions",
@@ -5211,7 +5231,7 @@
                     "type": "Observable<MultiSelectOption[]>",
                     "optional": false,
                     "description": "",
-                    "line": 123,
+                    "line": 127,
                     "modifierKind": [
                         123
                     ]
@@ -5242,7 +5262,7 @@
                     "type": "string",
                     "optional": false,
                     "description": "",
-                    "line": 122,
+                    "line": 126,
                     "modifierKind": [
                         123
                     ]
@@ -5254,7 +5274,7 @@
                     "type": "UntypedFormControl",
                     "optional": false,
                     "description": "",
-                    "line": 121,
+                    "line": 125,
                     "modifierKind": [
                         123,
                         146
@@ -5268,7 +5288,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 125
+                    "line": 129
                 },
                 {
                     "name": "onTouched",
@@ -5278,7 +5298,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 126
+                    "line": 130
                 },
                 {
                     "name": "propagateChange",
@@ -5288,7 +5308,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 187
+                    "line": 191
                 },
                 {
                     "name": "touched",
@@ -5298,7 +5318,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 127
+                    "line": 131
                 },
                 {
                     "name": "trigger",
@@ -5333,7 +5353,7 @@
                     "optional": false,
                     "returnType": "MultiSelectOption[]",
                     "typeParameters": [],
-                    "line": 174,
+                    "line": 178,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -5357,7 +5377,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 264,
+                    "line": 274,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -5370,7 +5390,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 210,
+                    "line": 214,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -5383,7 +5403,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 247,
+                    "line": 257,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -5396,7 +5416,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 243,
+                    "line": 253,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "rawdescription": "\n\nUse this method instead of \"trigger.closePanel()\" because it has some validations before closing the panel\n",
@@ -5418,7 +5438,7 @@
                     "optional": false,
                     "returnType": "string",
                     "typeParameters": [],
-                    "line": 169,
+                    "line": 173,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "rawdescription": "\n\nFunção utilizada para colocar texto na caixa de input ao selecionar uma opção\n",
@@ -5441,7 +5461,7 @@
                     "optional": false,
                     "returnType": "boolean",
                     "typeParameters": [],
-                    "line": 259,
+                    "line": 269,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -5461,7 +5481,7 @@
                     "optional": false,
                     "returnType": "boolean",
                     "typeParameters": [],
-                    "line": 223,
+                    "line": 227,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -5485,7 +5505,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 156,
+                    "line": 160,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -5495,7 +5515,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 136,
+                    "line": 140,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -5505,7 +5525,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 234,
+                    "line": 244,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "rawdescription": "\n\nUse this method instead of \"trigger.openPanel()\" because it has some validations before opening the panel\n",
@@ -5527,7 +5547,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 188,
+                    "line": 192,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -5555,7 +5575,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 192,
+                    "line": 196,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -5583,7 +5603,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 216,
+                    "line": 220,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -5614,7 +5634,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 196,
+                    "line": 200,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -5638,7 +5658,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 251,
+                    "line": 261,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -5658,7 +5678,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 183,
+                    "line": 187,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -5683,7 +5703,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {\n  AfterViewInit,\n  ChangeDetectorRef,\n  Component,\n  ElementRef,\n  EventEmitter,\n  Input,\n  OnInit,\n  Output,\n  ViewChild,\n  ViewEncapsulation\n} from '@angular/core';\nimport {ControlValueAccessor, NG_VALUE_ACCESSOR, UntypedFormControl} from '@angular/forms';\nimport {catchError, concatMap, debounceTime, distinctUntilChanged, Observable, of, tap} from 'rxjs';\nimport {map, startWith} from 'rxjs/operators';\nimport _ from 'lodash';\nimport {MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, MatAutocompleteTrigger} from '@angular/material/autocomplete';\nimport {Sizes} from '../../../models/sizes';\n\nexport interface MultiSelectOption {\n  label: string;\n  value: any;\n  thumbnail?: string;\n}\n\nfunction isMultiSelectOption(value: any) {\n  return value.hasOwnProperty('label') && value.hasOwnProperty('value');\n}\n\n@Component({\n  selector: 'pm-multi-select',\n  templateUrl: './multi-select.component.html',\n  styleUrls: ['./multi-select.component.scss'],\n  encapsulation: ViewEncapsulation.None,\n  providers: [\n    {\n      provide: MAT_AUTOCOMPLETE_DEFAULT_OPTIONS,\n      useValue: {\n        autoActiveFirstOption: false,\n        overlayPanelClass: 'pm-multi-select-autocomplete-panel'\n      }\n    },\n    {\n      provide: NG_VALUE_ACCESSOR,\n      multi: true,\n      useExisting: MultiSelectComponent\n    }\n  ]\n})\nexport class MultiSelectComponent implements OnInit, AfterViewInit, ControlValueAccessor {\n\n  @ViewChild('inputBox', {static: true}) inputBoxEl: ElementRef;\n  @ViewChild('trigger', {static: true}) trigger: MatAutocompleteTrigger;\n  /**\n   * Ao ser selecionada uma opção nova, emite\n   */\n  @Output() selectedOptionsChanged = new EventEmitter<MultiSelectOption[]>();\n  /**\n   * Texto a ser exibido no input\n   */\n  @Input() placeholder: string = '';\n  /**\n   * opções a serem exibidas no input\n   */\n  @Input() options: MultiSelectOption[] = [];\n  @Input() borderRadius: Sizes = Sizes.md;\n  /**\n   * se as thumbnails serão arredondadas\n   */\n  @Input() roundedThumbnail: boolean = true;\n  /**\n   * limite máximo de seleções de itens\n   */\n  @Input() limit: number = 0;\n  /**\n   * Opções que ja vem selecionadas\n   */\n  private _selectedOptions: MultiSelectOption[] = [];\n  @Input() set selectedOptions(options: (MultiSelectOption | any)[]) {\n    if (Array.isArray(options) === false) {\n      options = [];\n    }\n    options = options\n      .reduce((acc: any[], val: any) => {\n        if (isMultiSelectOption(val)) {\n          return [...acc, val];\n        } else {\n          return [...acc, this.options.find((option: MultiSelectOption) => _.isEqual(option.value, val))];\n        }\n      }, [])\n      // filtra as opções do \"find\" que podem ser undefined\n      .filter(i => !!i) as unknown as MultiSelectOption[];\n    this._selectedOptions = options;\n    this.selectedOptionsChanged.emit(this.selectedOptions);\n    this.propagateChange(this.selectedOptions);\n    this.clearInput();\n  };\n  public get selectedOptions() {\n    return this._selectedOptions;\n  }\n  /**\n   * sort selected items instead of showing them in selected sequence\n   */\n  @Input() sortSelectedItems: boolean = true;\n  @Input() observableInput: (search: string) => Observable<MultiSelectOption[]>;\n  /**\n   * Tempo de espera em cada execução de chamada do observable ao digitar no campo de input\n   */\n  @Input() observableDebounce: number = 100;\n  /**\n   * Caso a flag seja \"true\", desativa o foco no input, escondendo o teclado virtual no mobile\n   */\n  @Input() unfocusOnSelect: boolean = true;\n  /**\n   * Caso a flag seja \"true\", mostra o botão \"X\" de remover cada item da lista de selecionados.\n   * Caso contrário, ao clicar sobre um item, remove ele da lista de selecionados\n   */\n  @Input() showRemoveButton: boolean = false;\n  public _observableInputLoading: boolean = false;\n\n  public readonly myControl: UntypedFormControl;\n  public inputValue: string = '';\n  public filteredOptions: Observable<MultiSelectOption[]>;\n\n  onChange = (selectedOptions) => {};\n  onTouched = () => {};\n  touched = false;\n  disabled = false;\n\n  constructor(\n    private cdr: ChangeDetectorRef\n  ) {\n    this.myControl = new UntypedFormControl();\n  }\n\n  ngOnInit(): void {\n    if (this.observableInput) {\n      this.filteredOptions = this.myControl.valueChanges.pipe(\n        debounceTime(this.observableDebounce),\n        distinctUntilChanged(),\n        tap(() => {this.observableInputLoading = true}),\n        concatMap(() => this.observableInput(`${this.myControl.value}`).pipe(\n          catchError(error => {this.observableInputLoading = false; return of(null); }),\n        )),\n        tap(() => {this.observableInputLoading = false}),\n      );\n    } else {\n      this.filteredOptions = this.myControl.valueChanges.pipe(\n        startWith(''),\n        map(value => (typeof value === 'string' ? value : `${value.label}`)),\n        map(label => this._filter(label)),\n      );\n    }\n  }\n\n  ngAfterViewInit(): void {\n    this.clearInput();\n  }\n\n  public set observableInputLoading(state: boolean) {\n    this._observableInputLoading = state;\n    this.cdr.detectChanges();\n  }\n\n  /**\n   * Função utilizada para colocar texto na caixa de input ao selecionar uma opção\n   * @param user\n   */\n  displayFn(option: MultiSelectOption): string {\n    return '';\n    // return option && option.label ? option.label : '';\n  }\n\n  private _filter(label: string): MultiSelectOption[] {\n    const filterValue = label.toLowerCase();\n\n    return _.difference(\n      this.options.filter(option => option.label.toLowerCase().includes(filterValue)),\n      this.selectedOptions\n    );\n  }\n\n  writeValue(value: MultiSelectOption[]) {\n    this.selectedOptions = value;\n  }\n\n  propagateChange = (_: any) => {};\n  registerOnChange(fn: any) {\n    this.propagateChange = fn;\n  }\n\n  registerOnTouched(onTouched: any) {\n    this.onTouched = onTouched;\n  }\n\n  public selectOption(option: any): void {\n    const currentOptions = this.selectedOptions;\n    currentOptions.push(option);\n\n    if (this.sortSelectedItems) {\n      this.selectedOptions = currentOptions.sort((a, b) => {\n        return this.options.indexOf(a) - this.options.indexOf(b);\n      });\n    } else {\n      this.selectedOptions = currentOptions;\n    }\n    this.blurInputSelect();\n  }\n\n  private clearInput(): void {\n    this.inputValue = '';\n    this.myControl.setValue(this.inputValue);\n    this.cdr.detectChanges();\n  }\n\n  public removeSelectedOption(option: MultiSelectOption): void {\n    _.remove(this.selectedOptions, option);\n    this.selectedOptions = this.selectedOptions;\n    this.trigger.closePanel();\n    this.clearInput();\n  }\n\n  public isOptionSelected(option: (MultiSelectOption|any)): boolean {\n    if (isMultiSelectOption(option)) {\n      return !!this.selectedOptions.find(sOptions => _.isEqual(sOptions, option));\n    } else {\n      return !!this.selectedOptions.find((sOptions) => _.isEqual(sOptions.value, option));\n    }\n  }\n\n  /**\n   * Use this method instead of \"trigger.openPanel()\" because it has some validations before opening the panel\n   */\n  public openSelect(): void {\n    if (this.isLimitReached() === false) {\n      this.trigger.openPanel();\n    }\n  }\n\n  /**\n   * Use this method instead of \"trigger.closePanel()\" because it has some validations before closing the panel\n   */\n  public closeSelect(): void {\n    this.trigger.closePanel();\n  }\n\n  public clearSelected(): void {\n    this.selectedOptions = [];\n  }\n\n  public togglePanel(): void {\n    if (this.trigger.panelOpen === false) {\n      this.openSelect();\n    } else {\n      this.closeSelect();\n    }\n  }\n\n  public isLimitReached() {\n    return !this.observableInput // caso tenha observable input, as options são dinâmicas, e não armazenadas no componente\n      && (this.selectedOptions.length === this.options.length || (!!this.limit && this.selectedOptions.length >= this.limit))\n  }\n\n  public blurInputSelect() {\n    if (this.unfocusOnSelect) {\n      setTimeout(() => {\n        try {\n          this.inputBoxEl.nativeElement.blur();\n        } catch (e) {}\n      });\n    }\n  }\n\n}\n",
+            "sourceCode": "import {\n  AfterViewInit,\n  ChangeDetectorRef,\n  Component,\n  ElementRef,\n  EventEmitter,\n  Input,\n  OnInit,\n  Output,\n  ViewChild,\n  ViewEncapsulation\n} from '@angular/core';\nimport {ControlValueAccessor, NG_VALUE_ACCESSOR, UntypedFormControl} from '@angular/forms';\nimport {catchError, concatMap, debounceTime, distinctUntilChanged, Observable, of, tap} from 'rxjs';\nimport {map, startWith} from 'rxjs/operators';\nimport _ from 'lodash';\nimport {MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, MatAutocompleteTrigger} from '@angular/material/autocomplete';\nimport {Sizes} from '../../../models/sizes';\n\nexport interface MultiSelectOption {\n  label: string;\n  value: any;\n  thumbnail?: string;\n}\n\nfunction isMultiSelectOption(value: any) {\n  return value.hasOwnProperty('label') && value.hasOwnProperty('value');\n}\n\n@Component({\n  selector: 'pm-multi-select',\n  templateUrl: './multi-select.component.html',\n  styleUrls: ['./multi-select.component.scss'],\n  encapsulation: ViewEncapsulation.None,\n  providers: [\n    {\n      provide: MAT_AUTOCOMPLETE_DEFAULT_OPTIONS,\n      useValue: {\n        autoActiveFirstOption: false,\n        overlayPanelClass: 'pm-multi-select-autocomplete-panel'\n      }\n    },\n    {\n      provide: NG_VALUE_ACCESSOR,\n      multi: true,\n      useExisting: MultiSelectComponent\n    }\n  ]\n})\nexport class MultiSelectComponent implements OnInit, AfterViewInit, ControlValueAccessor {\n\n  @ViewChild('inputBox', {static: true}) inputBoxEl: ElementRef;\n  @ViewChild('trigger', {static: true}) trigger: MatAutocompleteTrigger;\n  /**\n   * Ao ser selecionada uma opção nova, emite\n   */\n  @Output() selectedOptionsChanged = new EventEmitter<MultiSelectOption[]>();\n  /**\n   * Texto a ser exibido no input\n   */\n  @Input() placeholder: string = '';\n  /**\n   * opções a serem exibidas no input\n   */\n  @Input() options: MultiSelectOption[] = [];\n  @Input() borderRadius: Sizes = Sizes.md;\n  /**\n   * se as thumbnails serão arredondadas\n   */\n  @Input() roundedThumbnail: boolean = true;\n  /**\n   * limite máximo de seleções de itens\n   */\n  @Input() limit: number = 0;\n  /**\n   * Opções que ja vem selecionadas\n   */\n  private _selectedOptions: MultiSelectOption[] = [];\n  @Input() set selectedOptions(options: (MultiSelectOption | any)[]) {\n    if (Array.isArray(options) === false) {\n      options = [];\n    }\n    options = options\n      .reduce((acc: any[], val: any) => {\n        if (isMultiSelectOption(val)) {\n          return [...acc, val];\n        } else {\n          return [...acc, this.options.find((option: MultiSelectOption) => _.isEqual(option.value, val))];\n        }\n      }, [])\n      // filtra as opções do \"find\" que podem ser undefined\n      .filter(i => !!i) as unknown as MultiSelectOption[];\n    this._selectedOptions = options;\n    this.selectedOptionsChanged.emit(this.selectedOptions);\n    this.propagateChange(this.selectedOptions);\n    this.clearInput();\n  };\n  public get selectedOptions() {\n    return this._selectedOptions;\n  }\n  /**\n   * sort selected items instead of showing them in selected sequence\n   */\n  @Input() sortSelectedItems: boolean = true;\n  @Input() observableInput: (search: string) => Observable<MultiSelectOption[]>;\n  /**\n   * Tempo de espera em cada execução de chamada do observable ao digitar no campo de input\n   */\n  @Input() observableDebounce: number = 100;\n  /**\n   * Caso a flag seja \"true\", desativa o foco no input, escondendo o teclado virtual no mobile\n   */\n  @Input() unfocusOnSelect: boolean = true;\n  /**\n   * Caso a flag seja \"true\", mostra o botão \"X\" de remover cada item da lista de selecionados.\n   * Caso contrário, ao clicar sobre um item, remove ele da lista de selecionados\n   */\n  @Input() showRemoveButton: boolean = false;\n  /**\n   * Caso a flag seja \"true\", filtra resultados selecionados apenas pela label.\n   */\n  @Input() uniqueByLabel: boolean = false;\n  public _observableInputLoading: boolean = false;\n\n  public readonly myControl: UntypedFormControl;\n  public inputValue: string = '';\n  public filteredOptions: Observable<MultiSelectOption[]>;\n\n  onChange = (selectedOptions) => {};\n  onTouched = () => {};\n  touched = false;\n  disabled = false;\n\n  constructor(\n    private cdr: ChangeDetectorRef\n  ) {\n    this.myControl = new UntypedFormControl();\n  }\n\n  ngOnInit(): void {\n    if (this.observableInput) {\n      this.filteredOptions = this.myControl.valueChanges.pipe(\n        debounceTime(this.observableDebounce),\n        distinctUntilChanged(),\n        tap(() => {this.observableInputLoading = true}),\n        concatMap(() => this.observableInput(`${this.myControl.value}`).pipe(\n          catchError(error => {this.observableInputLoading = false; return of(null); }),\n        )),\n        tap(() => {this.observableInputLoading = false}),\n      );\n    } else {\n      this.filteredOptions = this.myControl.valueChanges.pipe(\n        startWith(''),\n        map(value => (typeof value === 'string' ? value : `${value.label}`)),\n        map(label => this._filter(label)),\n      );\n    }\n  }\n\n  ngAfterViewInit(): void {\n    this.clearInput();\n  }\n\n  public set observableInputLoading(state: boolean) {\n    this._observableInputLoading = state;\n    this.cdr.detectChanges();\n  }\n\n  /**\n   * Função utilizada para colocar texto na caixa de input ao selecionar uma opção\n   * @param user\n   */\n  displayFn(option: MultiSelectOption): string {\n    return '';\n    // return option && option.label ? option.label : '';\n  }\n\n  private _filter(label: string): MultiSelectOption[] {\n    const filterValue = label.toLowerCase();\n\n    return _.difference(\n      this.options.filter(option => option.label.toLowerCase().includes(filterValue)),\n      this.selectedOptions\n    );\n  }\n\n  writeValue(value: MultiSelectOption[]) {\n    this.selectedOptions = value;\n  }\n\n  propagateChange = (_: any) => {};\n  registerOnChange(fn: any) {\n    this.propagateChange = fn;\n  }\n\n  registerOnTouched(onTouched: any) {\n    this.onTouched = onTouched;\n  }\n\n  public selectOption(option: any): void {\n    const currentOptions = this.selectedOptions;\n    currentOptions.push(option);\n\n    if (this.sortSelectedItems) {\n      this.selectedOptions = currentOptions.sort((a, b) => {\n        return this.options.indexOf(a) - this.options.indexOf(b);\n      });\n    } else {\n      this.selectedOptions = currentOptions;\n    }\n    this.blurInputSelect();\n  }\n\n  private clearInput(): void {\n    this.inputValue = '';\n    this.myControl.setValue(this.inputValue);\n    this.cdr.detectChanges();\n  }\n\n  public removeSelectedOption(option: MultiSelectOption): void {\n    _.remove(this.selectedOptions, option);\n    this.selectedOptions = this.selectedOptions;\n    this.trigger.closePanel();\n    this.clearInput();\n  }\n\n  public isOptionSelected(option: (MultiSelectOption|any)): boolean {\n    if (this.uniqueByLabel) {\n      if (isMultiSelectOption(option)) {\n        return !!this.selectedOptions.find(sOptions => sOptions.label === option.label);\n      }\n    }\n\n    if (isMultiSelectOption(option)) {\n      return !!this.selectedOptions.find(sOptions => _.isEqual(sOptions, option));\n    } else {\n      return !!this.selectedOptions.find((sOptions) => _.isEqual(sOptions.value, option));\n    }\n  }\n\n  /**\n   * Use this method instead of \"trigger.openPanel()\" because it has some validations before opening the panel\n   */\n  public openSelect(): void {\n    if (this.isLimitReached() === false) {\n      this.trigger.openPanel();\n    }\n  }\n\n  /**\n   * Use this method instead of \"trigger.closePanel()\" because it has some validations before closing the panel\n   */\n  public closeSelect(): void {\n    this.trigger.closePanel();\n  }\n\n  public clearSelected(): void {\n    this.selectedOptions = [];\n  }\n\n  public togglePanel(): void {\n    if (this.trigger.panelOpen === false) {\n      this.openSelect();\n    } else {\n      this.closeSelect();\n    }\n  }\n\n  public isLimitReached() {\n    return !this.observableInput // caso tenha observable input, as options são dinâmicas, e não armazenadas no componente\n      && (this.selectedOptions.length === this.options.length || (!!this.limit && this.selectedOptions.length >= this.limit))\n  }\n\n  public blurInputSelect() {\n    if (this.unfocusOnSelect) {\n      setTimeout(() => {\n        try {\n          this.inputBoxEl.nativeElement.blur();\n        } catch (e) {}\n      });\n    }\n  }\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -5705,7 +5725,7 @@
                         "deprecationMessage": ""
                     }
                 ],
-                "line": 128,
+                "line": 132,
                 "jsdoctags": [
                     {
                         "name": "cdr",
@@ -5776,7 +5796,7 @@
                             }
                         ],
                         "returnType": "void",
-                        "line": 160,
+                        "line": 164,
                         "jsdoctags": [
                             {
                                 "name": "state",
@@ -5933,7 +5953,7 @@
         },
         {
             "name": "SidebarComponent",
-            "id": "component-SidebarComponent-2810016ab791e6abef822ec7beeb4ea4562cfb6ce6480878cbf324d2d20e446065ad1f00577cfd91c1b5729cfaf250ea8672c877b7cf45fc7ce5535799d46893",
+            "id": "component-SidebarComponent-e0aeaf513498e05d930967fc70bb4683cf9cec444bb9e8c52ccc13942d5753fb533e4811ad0313865ef8f9637cf0d3774e3c55f8c8d4f102a1d0347496a5e87c",
             "file": "src/components/layout/sidebar/sidebar.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [
@@ -5958,7 +5978,7 @@
                     "name": "label",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 21,
+                    "line": 32,
                     "type": "string | Observable",
                     "decorators": []
                 },
@@ -5966,7 +5986,7 @@
                     "name": "nextButtonAction",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 16,
+                    "line": 26,
                     "type": "function",
                     "decorators": []
                 },
@@ -5975,7 +5995,7 @@
                     "defaultValue": "false",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 14,
+                    "line": 24,
                     "type": "boolean",
                     "decorators": []
                 },
@@ -5984,24 +6004,15 @@
                     "defaultValue": "false",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 15,
+                    "line": 25,
                     "type": "boolean",
-                    "decorators": []
-                },
-                {
-                    "name": "sidebarEntries",
-                    "defaultValue": "[]",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "line": 17,
-                    "type": "SidebarItem[]",
                     "decorators": []
                 },
                 {
                     "name": "zIndex",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 18,
+                    "line": 27,
                     "type": "number",
                     "decorators": []
                 }
@@ -6015,7 +6026,7 @@
                     "type": "Observable<string>",
                     "optional": false,
                     "description": "",
-                    "line": 20,
+                    "line": 31,
                     "modifierKind": [
                         121
                     ]
@@ -6027,10 +6038,28 @@
                     "type": "ChangeDetectorRef",
                     "optional": false,
                     "description": "",
-                    "line": 33,
+                    "line": 44,
                     "modifierKind": [
                         123,
                         146
+                    ]
+                },
+                {
+                    "name": "matDrawerRef",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "MatDrawer",
+                    "optional": false,
+                    "description": "",
+                    "line": 29,
+                    "decorators": [
+                        {
+                            "name": "ViewChild",
+                            "stringifiedArguments": "'drawer', {static: true}"
+                        }
+                    ],
+                    "modifierKind": [
+                        167
                     ]
                 }
             ],
@@ -6041,7 +6070,7 @@
                     "optional": false,
                     "returnType": "boolean",
                     "typeParameters": [],
-                    "line": 39,
+                    "line": 50,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -6054,7 +6083,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 36,
+                    "line": 47,
                     "deprecated": false,
                     "deprecationMessage": ""
                 }
@@ -6068,11 +6097,11 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, ViewEncapsulation} from '@angular/core';\nimport {SidebarItem} from \"./models\";\nimport {isObservable, Observable, of} from \"rxjs\";\n\n@Component({\n  selector: 'pm-sidebar',\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  templateUrl: './sidebar.component.html',\n  styleUrls: ['./sidebar.component.scss'],\n  encapsulation: ViewEncapsulation.None\n})\nexport class SidebarComponent implements OnInit {\n\n  @Input() showBackButton: boolean = false;\n  @Input() showNextButton: boolean = false;\n  @Input() nextButtonAction: () => void;\n  @Input() sidebarEntries: SidebarItem[] = [];\n  @Input() zIndex: number;\n\n  private _label: Observable<string>;\n  @Input() set label(value: string | Observable<string>) {\n    if (isObservable(value) === false) {\n      value = of(`${value}`);\n    }\n    this._label = value as Observable<string>;\n    this.cdr.markForCheck();\n  }\n  get label(): Observable<string> {\n    return this._label;\n  }\n\n  constructor(\n    public readonly cdr: ChangeDetectorRef,\n  ) { }\n\n  ngOnInit(): void {\n  }\n\n  public isWindowWidthMobile(): boolean {\n    return window.innerWidth <= 991;\n  }\n\n}\n",
+            "sourceCode": "import {\n  ChangeDetectionStrategy,\n  ChangeDetectorRef,\n  Component, ContentChildren,\n  Input,\n  OnInit,\n  QueryList, ViewChild,\n  ViewEncapsulation\n} from '@angular/core';\nimport {SidebarItem} from \"./models\";\nimport {isObservable, Observable, of} from \"rxjs\";\nimport {SidebarEntryComponent} from \"./sidebar-entry/sidebar-entry.component\";\nimport {MatDrawer} from \"@angular/material/sidenav\";\n\n@Component({\n  selector: 'pm-sidebar',\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  templateUrl: './sidebar.component.html',\n  styleUrls: ['./sidebar.component.scss'],\n  encapsulation: ViewEncapsulation.None\n})\nexport class SidebarComponent implements OnInit {\n\n  @Input() showBackButton: boolean = false;\n  @Input() showNextButton: boolean = false;\n  @Input() nextButtonAction: () => void;\n  @Input() zIndex: number;\n  // @ContentChildren(SidebarEntryComponent, {descendants: true}) entries: QueryList<SidebarEntryComponent>;\n  @ViewChild('drawer', {static: true}) matDrawerRef: MatDrawer;\n\n  private _label: Observable<string>;\n  @Input() set label(value: string | Observable<string>) {\n    if (isObservable(value) === false) {\n      value = of(`${value}`);\n    }\n    this._label = value as Observable<string>;\n    this.cdr.markForCheck();\n  }\n  get label(): Observable<string> {\n    return this._label;\n  }\n\n  constructor(\n    public readonly cdr: ChangeDetectorRef,\n  ) { }\n\n  ngOnInit(): void {\n  }\n\n  public isWindowWidthMobile(): boolean {\n    return window.innerWidth <= 991;\n  }\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": ".pm-sidebar {\n  $navbar-bg: rgba(var(--bg-default-rgb), 1);\n  $navbar-content-height: 40px; // necessário para saber\n  $navbar-padding: 0.5em;\n  $gradient-offset: $navbar-content-height * 0.7;\n  --navbar-height: calc(#{$navbar-content-height} + #{2 * $navbar-padding} + #{$gradient-offset});\n\n  .mat-drawer-content:after {\n    position: absolute;\n  }\n\n  .mat-drawer {\n    background-color: $navbar-bg;\n    border-right: 1px solid var(--color-gray-light);\n  }\n\n  .drawer-content {\n    position: relative;\n    background-color: var(--bg-default);\n    padding-top: var(--navbar-height);\n    max-width: 100vw;\n    overflow-x: hidden;\n\n    .navbar {\n      // border-bottom: 1px solid var(--color-gray-light);\n\n      height: var(--navbar-height);\n      max-height: var(--navbar-height);\n      position: sticky;\n      top: calc(-1 * var(--navbar-height));\n      margin-top: calc(-1 * var(--navbar-height));\n      z-index: 3;\n      padding: 0;\n\n      .navbar-bg {\n        position: absolute;\n        height: 100%;\n        width: 100%;\n        background-color: $navbar-bg;\n        -webkit-mask-image: linear-gradient(to bottom, $navbar-bg 60%, transparent 100%);\n        mask-image: linear-gradient(to bottom, $navbar-bg 60%, transparent 100%);\n        // backdrop-filter: blur(4px);\n        // -webkit-backdrop-filter: blur(4px);\n      }\n\n      .navbar-content {\n        padding: $navbar-padding $navbar-padding calc(#{$navbar-padding} + #{$gradient-offset}) $navbar-padding;\n        z-index: 1;\n        display: flex;\n        justify-content: flex-start;\n        align-items: center;\n\n        .ham {\n          cursor: pointer;\n          -webkit-tap-highlight-color: transparent;\n          transition: transform 400ms;\n          -moz-user-select: none;\n          -webkit-user-select: none;\n          -ms-user-select: none;\n          user-select: none;\n\n          .line {\n            fill: none;\n            transition: stroke-dasharray 400ms, stroke-dashoffset 400ms;\n            stroke: var(--color-gray-dark);\n            stroke-width: 6;\n            stroke-linecap: round;\n          }\n\n          .top, .bottom {\n            stroke-dasharray: 40 121;\n          }\n\n          &.active {\n            .top, .bottom {\n              stroke-dashoffset: -102px;\n            }\n          }\n        }\n\n        .hamRotate.active {\n          transform: rotate(45deg);\n        }\n\n        .hamRotate180.active {\n          transform: rotate(180deg);\n        }\n\n      }\n    }\n  }\n}\n",
+                    "data": ".pm-sidebar {\n  $navbar-bg: rgba(var(--bg-default-rgb), 1);\n  $navbar-content-height: 40px; // necessário para saber\n  $navbar-padding: 0.5em;\n  $gradient-offset: $navbar-content-height * 0.7;\n  --navbar-height: calc(#{$navbar-content-height} + #{2 * $navbar-padding} + #{$gradient-offset});\n\n  .mat-drawer-content:after {\n    position: absolute;\n  }\n\n  .mat-drawer {\n    background-color: $navbar-bg;\n    border-right: 1px solid var(--color-gray-light);\n    padding: 1em 0px !important;\n  }\n\n  .drawer-content {\n    position: relative;\n    background-color: var(--bg-default);\n    padding-top: var(--navbar-height);\n    max-width: 100vw;\n    overflow-x: hidden;\n\n    .navbar {\n      // border-bottom: 1px solid var(--color-gray-light);\n\n      height: var(--navbar-height);\n      max-height: var(--navbar-height);\n      position: sticky;\n      top: calc(-1 * var(--navbar-height));\n      margin-top: calc(-1 * var(--navbar-height));\n      z-index: 3;\n      padding: 0;\n\n      .navbar-bg {\n        position: absolute;\n        height: 100%;\n        width: 100%;\n        background-color: $navbar-bg;\n        -webkit-mask-image: linear-gradient(to bottom, $navbar-bg 60%, transparent 100%);\n        mask-image: linear-gradient(to bottom, $navbar-bg 60%, transparent 100%);\n        // backdrop-filter: blur(4px);\n        // -webkit-backdrop-filter: blur(4px);\n      }\n\n      .navbar-content {\n        padding: $navbar-padding $navbar-padding calc(#{$navbar-padding} + #{$gradient-offset}) $navbar-padding;\n        z-index: 1;\n        display: flex;\n        justify-content: flex-start;\n        align-items: center;\n\n        .ham {\n          cursor: pointer;\n          -webkit-tap-highlight-color: transparent;\n          transition: transform 400ms;\n          -moz-user-select: none;\n          -webkit-user-select: none;\n          -ms-user-select: none;\n          user-select: none;\n\n          .line {\n            fill: none;\n            transition: stroke-dasharray 400ms, stroke-dashoffset 400ms;\n            stroke: var(--color-gray-dark);\n            stroke-width: 6;\n            stroke-linecap: round;\n          }\n\n          .top, .bottom {\n            stroke-dasharray: 40 121;\n          }\n\n          &.active {\n            .top, .bottom {\n              stroke-dashoffset: -102px;\n            }\n          }\n        }\n\n        .hamRotate.active {\n          transform: rotate(45deg);\n        }\n\n        .hamRotate180.active {\n          transform: rotate(180deg);\n        }\n\n      }\n    }\n  }\n}\n",
                     "styleUrl": "./sidebar.component.scss"
                 }
             ],
@@ -6090,7 +6119,7 @@
                         "deprecationMessage": ""
                     }
                 ],
-                "line": 30,
+                "line": 41,
                 "jsdoctags": [
                     {
                         "name": "cdr",
@@ -6123,7 +6152,7 @@
                             }
                         ],
                         "returnType": "void",
-                        "line": 21,
+                        "line": 32,
                         "jsdoctags": [
                             {
                                 "name": "value",
@@ -6140,39 +6169,39 @@
                         "name": "label",
                         "type": "",
                         "returnType": "Observable<string>",
-                        "line": 28
+                        "line": 39
                     }
                 }
             },
-            "templateData": "<mat-drawer-container class=\"pm-sidebar\" [autosize]=\"true\" fullscreen>\n\n  <mat-drawer #drawer [mode]=\"isWindowWidthMobile() === true ? 'over' : 'side'\">\n    <app-sidebar-content\n      *ngIf=\"sidebarEntries.length > 0\"\n      [sidebarEntries]=\"sidebarEntries\"\n      [drawer]=\"drawer\"\n    >\n    </app-sidebar-content>\n  </mat-drawer>\n\n  <mat-drawer-content class=\"ion-content-scroll-host drawer-content\">\n    <div class=\"navbar\" [ngStyle]=\"{'z-index': zIndex}\">\n      <div class=\"navbar-bg\"></div>\n      <div class=\"navbar-content w-100 mb-3\">\n        <svg (click)=\"drawer.toggle(); cdr.detectChanges()\"\n             class=\"ham\"\n             [ngClass]=\"{'active': drawer.opened}\"\n             viewBox=\"0 0 100 100\" width=\"40\"\n        >\n          <path class=\"line top\" d=\"m 70,33 h -40 c -6.5909,0 -7.763966,-4.501509 -7.763966,-7.511428 0,-4.721448 3.376452,-9.583771 13.876919,-9.583771 14.786182,0 11.409257,14.896182 9.596449,21.970818 -1.812808,7.074636 -15.709402,12.124381 -15.709402,12.124381\"/>\n          <path class=\"line middle\" d=\"m 30,50 h 40\"/>\n          <path class=\"line bottom\" d=\"m 70,67 h -40 c -6.5909,0 -7.763966,4.501509 -7.763966,7.511428 0,4.721448 3.376452,9.583771 13.876919,9.583771 14.786182,0 11.409257,-14.896182 9.596449,-21.970818 -1.812808,-7.074636 -15.709402,-12.124381 -15.709402,-12.124381\"/>\n        </svg>\n        <span *ngIf=\"showBackButton\"\n              navigationBackButton\n              class=\"d-flex justify-content-center align-items-center overflow-hidden color-gray-dark no-outline no-shadow cursor-pointer\"\n              style=\"max-height: 20px\"\n        >\n                    <i class=\"uil uil-2x uil-angle-left text-center inline-block\"></i>\n        </span>\n        <h4 style=\"width: -webkit-fill-available;\" class=\"color-gray-dark m-0 ms-3 text-overflow\">{{ label | async }}</h4>\n        <span *ngIf=\"showNextButton && nextButtonAction\"\n              (click)=\"nextButtonAction()\"\n              class=\"d-flex justify-content-center align-items-center overflow-hidden color-gray-dark no-outline no-shadow cursor-pointer\"\n              style=\"max-height: 20px\"\n        >\n            <i class=\"uil uil-2x uil-angle-right text-center inline-block\"></i>\n        </span>\n      </div>\n    </div>\n    <div class=\"container\">\n      <ng-content></ng-content>\n    </div>\n  </mat-drawer-content>\n\n\n</mat-drawer-container>\n"
+            "templateData": "<mat-drawer-container class=\"pm-sidebar\" [autosize]=\"true\" fullscreen>\n\n  <mat-drawer #drawer [mode]=\"isWindowWidthMobile() === true ? 'over' : 'side'\">\n    <ng-content select=\"pm-sidebar-entry\"></ng-content>\n  </mat-drawer>\n\n  <mat-drawer-content class=\"ion-content-scroll-host drawer-content\">\n    <div class=\"navbar\" [ngStyle]=\"{'z-index': zIndex}\">\n      <div class=\"navbar-bg\"></div>\n      <div class=\"navbar-content w-100 mb-3\">\n        <svg (click)=\"drawer.toggle(); cdr.detectChanges()\"\n             class=\"ham\"\n             [ngClass]=\"{'active': drawer.opened}\"\n             viewBox=\"0 0 100 100\" width=\"40\"\n        >\n          <path class=\"line top\" d=\"m 70,33 h -40 c -6.5909,0 -7.763966,-4.501509 -7.763966,-7.511428 0,-4.721448 3.376452,-9.583771 13.876919,-9.583771 14.786182,0 11.409257,14.896182 9.596449,21.970818 -1.812808,7.074636 -15.709402,12.124381 -15.709402,12.124381\"/>\n          <path class=\"line middle\" d=\"m 30,50 h 40\"/>\n          <path class=\"line bottom\" d=\"m 70,67 h -40 c -6.5909,0 -7.763966,4.501509 -7.763966,7.511428 0,4.721448 3.376452,9.583771 13.876919,9.583771 14.786182,0 11.409257,-14.896182 9.596449,-21.970818 -1.812808,-7.074636 -15.709402,-12.124381 -15.709402,-12.124381\"/>\n        </svg>\n        <span *ngIf=\"showBackButton\"\n              navigationBackButton\n              class=\"d-flex justify-content-center align-items-center overflow-hidden color-gray-dark no-outline no-shadow cursor-pointer\"\n              style=\"max-height: 20px\"\n        >\n                    <i class=\"uil uil-2x uil-angle-left text-center inline-block\"></i>\n        </span>\n        <h4 style=\"width: -webkit-fill-available;\" class=\"color-gray-dark m-0 ms-3 text-overflow\">{{ label | async }}</h4>\n        <span *ngIf=\"showNextButton && nextButtonAction\"\n              (click)=\"nextButtonAction()\"\n              class=\"d-flex justify-content-center align-items-center overflow-hidden color-gray-dark no-outline no-shadow cursor-pointer\"\n              style=\"max-height: 20px\"\n        >\n            <i class=\"uil uil-2x uil-angle-right text-center inline-block\"></i>\n        </span>\n      </div>\n    </div>\n    <div class=\"container\">\n      <ng-content></ng-content>\n    </div>\n  </mat-drawer-content>\n\n\n</mat-drawer-container>\n"
         },
         {
-            "name": "SidebarContentComponent",
-            "id": "component-SidebarContentComponent-05c16c835757e25ffe69e5c8a4c1535e34fe2c22e8fc5d45fe20a16a51f686e3d2bf7ebed78cd613239c6a0d446dc121f1dca98f08f521b700421d75b6d73cd4",
-            "file": "src/components/layout/sidebar/sidebar-content/sidebar-content.component.ts",
+            "name": "SidebarEntryComponent",
+            "id": "component-SidebarEntryComponent-cd20f507b7b5d01715dfa1dcbfd9ca5ff084cea9fdacdcef32fb6461c648b499ad72db0e8e1e8604a620eaa08b2f92894caf43114096619a3ca357d48a8b57e6",
+            "file": "src/components/layout/sidebar/sidebar-entry/sidebar-entry.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
             "entryComponents": [],
             "inputs": [],
             "outputs": [],
             "providers": [],
-            "selector": "app-sidebar-content",
+            "selector": "pm-sidebar-entry",
             "styleUrls": [
-                "./sidebar-content.component.scss"
+                "./sidebar-entry.component.scss"
             ],
             "styles": [],
             "templateUrl": [
-                "./sidebar-content.component.html"
+                "./sidebar-entry.component.html"
             ],
             "viewProviders": [],
             "hostDirectives": [],
             "inputsClass": [
                 {
-                    "name": "drawer",
+                    "name": "entry",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 13,
-                    "type": "MatDrawer",
+                    "line": 33,
+                    "type": "SidebarItem",
                     "decorators": []
                 },
                 {
@@ -6180,7 +6209,7 @@
                     "defaultValue": "true",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 15,
+                    "line": 30,
                     "type": "boolean",
                     "decorators": []
                 },
@@ -6189,30 +6218,21 @@
                     "defaultValue": "'240px'",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 14,
+                    "line": 29,
                     "type": "string",
-                    "decorators": []
-                },
-                {
-                    "name": "sidebarEntries",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "line": 17,
-                    "type": "SidebarItem[]",
                     "decorators": []
                 }
             ],
             "outputsClass": [],
             "propertiesClass": [
                 {
-                    "name": "_sidebarEntries",
-                    "defaultValue": "[]",
+                    "name": "_entry",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "type": "SidebarItem[]",
+                    "type": "SidebarItem",
                     "optional": false,
                     "description": "",
-                    "line": 16
+                    "line": 32
                 },
                 {
                     "name": "currentExpandedSession",
@@ -6222,13 +6242,68 @@
                     "type": "string",
                     "optional": false,
                     "description": "",
-                    "line": 24,
+                    "line": 43,
                     "modifierKind": [
                         123
+                    ]
+                },
+                {
+                    "name": "drawer",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "MatDrawer",
+                    "optional": false,
+                    "description": "",
+                    "line": 41,
+                    "modifierKind": [
+                        121
+                    ]
+                },
+                {
+                    "name": "sidebarEntries",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "SidebarEntryComponent[]",
+                    "optional": false,
+                    "description": "",
+                    "line": 28,
+                    "decorators": [
+                        {
+                            "name": "ContentChildren",
+                            "stringifiedArguments": "SidebarEntryComponent"
+                        }
+                    ],
+                    "modifierKind": [
+                        167
+                    ]
+                },
+                {
+                    "name": "sidebarRef",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "SidebarComponent",
+                    "optional": false,
+                    "description": "",
+                    "line": 42,
+                    "modifierKind": [
+                        121
                     ]
                 }
             ],
             "methodsClass": [
+                {
+                    "name": "detectChildrenNodes",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 64,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        123
+                    ]
+                },
                 {
                     "name": "executeAction",
                     "args": [
@@ -6255,7 +6330,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 32,
+                    "line": 74,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -6312,7 +6387,7 @@
                     "optional": false,
                     "returnType": "string",
                     "typeParameters": [],
-                    "line": 53,
+                    "line": 95,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -6359,7 +6434,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 43,
+                    "line": 85,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -6387,31 +6462,71 @@
                     ]
                 },
                 {
+                    "name": "ngAfterViewChecked",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 60,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
+                    "name": "ngAfterViewInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 56,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
                     "name": "ngOnInit",
                     "args": [],
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 29,
+                    "line": 52,
                     "deprecated": false,
-                    "deprecationMessage": ""
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        123
+                    ]
                 }
             ],
             "deprecated": false,
             "deprecationMessage": "",
             "hostBindings": [],
             "hostListeners": [],
-            "standalone": false,
-            "imports": [],
+            "standalone": true,
+            "imports": [
+                {
+                    "name": "CommonModule",
+                    "type": "module"
+                },
+                {
+                    "name": "RouterLinkActive"
+                },
+                {
+                    "name": "RouterLink"
+                }
+            ],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';\nimport {SidebarItem} from '../models';\nimport {MatDrawer} from '@angular/material/sidenav';\n\n@Component({\n  selector: 'app-sidebar-content',\n  templateUrl: './sidebar-content.component.html',\n  styleUrls: ['./sidebar-content.component.scss'],\n  changeDetection: ChangeDetectionStrategy.OnPush\n})\nexport class SidebarContentComponent implements OnInit {\n\n  @Input() drawer: MatDrawer;\n  @Input() minWidth: string = '240px';\n  @Input() expandCurrentItem: boolean = true;\n  _sidebarEntries: SidebarItem[] = []\n  @Input() set sidebarEntries(entries: SidebarItem[]) {\n    this._sidebarEntries = entries;\n    this.cdr.detectChanges();\n  }\n  public get sidebarEntries() {\n    return this._sidebarEntries;\n  }\n  public currentExpandedSession: string = '';\n\n  constructor(private readonly cdr: ChangeDetectorRef) {\n  }\n\n  ngOnInit(): void {\n  }\n\n  public executeAction(event: any, entry: SidebarItem, closeDrawer: boolean = true): void {\n    if (entry?.action) {\n      event.stopPropagation();\n      entry.action();\n    }\n\n    if (closeDrawer && this.drawer) {\n      this.drawer.close();\n    }\n  }\n\n  public keepSessionExpanded(event: any, treeId: string): void {\n    if (\n      event === true\n      && this.expandCurrentItem\n      && !!treeId\n    ) {\n      this.currentExpandedSession = `${treeId}`;\n    }\n  }\n\n  public getIdForEntry(entry: SidebarItem, prefix: string = ''): string {\n    let entryId = entry.label.replace(/[^a-zA-Z0-9,._-]/g, '');\n    entryId = prefix ? `${prefix}${entryId}` : entryId; // não pode ter \".\" senão o id não é reconhecido direito pelo bootstrap\n    return entryId;\n  }\n\n}\n",
+            "sourceCode": "import {\n  AfterViewChecked,\n  AfterViewInit,\n  ChangeDetectionStrategy,\n  ChangeDetectorRef,\n  Component,\n  ContentChildren,\n  Host,\n  Input,\n  OnInit\n} from '@angular/core';\nimport { CommonModule } from '@angular/common';\nimport {RouterLink, RouterLinkActive} from \"@angular/router\";\nimport {MatDrawer} from \"@angular/material/sidenav\";\nimport {SidebarItem} from \"../models\";\nimport {SidebarComponent} from \"../sidebar.component\";\n\n@Component({\n  selector: 'pm-sidebar-entry',\n  standalone: true,\n  imports: [CommonModule, RouterLinkActive, RouterLink],\n  templateUrl: './sidebar-entry.component.html',\n  styleUrls: ['./sidebar-entry.component.scss'],\n  changeDetection: ChangeDetectionStrategy.OnPush\n})\nexport class SidebarEntryComponent implements OnInit, AfterViewInit, AfterViewChecked {\n  @ContentChildren(SidebarEntryComponent)\n  sidebarEntries: SidebarEntryComponent[];\n  @Input() minWidth: string = '240px';\n  @Input() expandCurrentItem: boolean = true;\n\n  _entry: SidebarItem;\n  @Input() set entry(item: SidebarItem) {\n    this._entry = item;\n    this.cdr.detectChanges();\n  }\n  public get entry() {\n    return this._entry;\n  }\n\n  private drawer: MatDrawer;\n  private sidebarRef: SidebarComponent;\n  public currentExpandedSession: string = '';\n\n  constructor(\n    @Host() sidebar: SidebarComponent,\n    private readonly cdr: ChangeDetectorRef\n  ) {\n    this.sidebarRef = sidebar;\n  }\n\n  public ngOnInit(): void {\n    this.drawer = this.sidebarRef.matDrawerRef;\n  }\n\n  public ngAfterViewInit(): void {\n    this.detectChildrenNodes();\n  }\n\n  public ngAfterViewChecked(): void {\n    this.detectChildrenNodes();\n  }\n\n  public detectChildrenNodes(): void {\n    if (this.sidebarEntries && this.sidebarEntries.length > 0) {\n      this.entry.children = [];\n      [...this.sidebarEntries].forEach((childEntry: SidebarEntryComponent) => {\n        this.entry.children.push(childEntry.entry);\n      })\n      this.cdr.detectChanges();\n    }\n  }\n\n  public executeAction(event: any, entry: SidebarItem, closeDrawer: boolean = true): void {\n    if (entry?.action) {\n      event.stopPropagation();\n      entry.action();\n    }\n\n    if (closeDrawer && this.drawer) {\n      this.drawer.close();\n    }\n  }\n\n  public keepSessionExpanded(event: any, treeId: string): void {\n    if (\n      event === true\n      && this.expandCurrentItem\n      && !!treeId\n    ) {\n      this.currentExpandedSession = `${treeId}`;\n    }\n  }\n\n  public getIdForEntry(entry: SidebarItem, prefix: string = ''): string {\n    const randomHash = Math.random().toString(36).slice(2, 7);\n    let entryId = entry.label.replace(/[^a-zA-Z0-9,._-]/g, '');\n    entryId = prefix ? `${prefix}${entryId}` : entryId; // não pode ter \".\" senão o id não é reconhecido direito pelo bootstrap\n    return `${entryId}-${randomHash}`;\n  }\n\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": ".app-sidebar-content {\n  $main-link-margin-top: 1.2em;\n  $sub-link-margin-top: 0.6em;\n\n  padding: 0 1em 1em 0.5em;\n  list-style: none !important;\n\n  .sidebar-nav {\n    padding: 0px;\n    display: block;\n    transition: 0.3s;\n    list-style: none !important;\n\n    li {\n      cursor: pointer;\n\n      * {\n        color: var(--color-gray-dark);\n\n        &:focus-visible {\n          outline: none;\n        }\n\n      }\n\n      a {\n        display: flex;\n        justify-content: center;\n        align-items: center;\n        padding: 0.5em 1em;\n        border-radius: 1em;\n\n        text-decoration: none;\n        font-size: 0.8em;\n        font-weight: 500;\n\n        &.expanded {\n          background-color: rgba(var(--color-gray-dark-rgb), 0.15);\n        }\n\n        &:hover {\n          background-color: rgba(var(--color-gray-dark-rgb), 0.15);\n\n          * {\n            color: var(--color-primary) !important;\n          }\n        }\n      }\n\n      &.active {\n        > a:first-child {\n          background-color: rgba(var(--color-primary-rgb), 0.2);\n\n          * {\n            color: var(--color-primary) !important;\n          }\n        }\n      }\n    }\n\n    a {\n      &:first-child {\n        margin-top: $main-link-margin-top;\n      }\n\n      &.sub {\n        margin-top: $sub-link-margin-top;\n      }\n    }\n\n    .collapse,\n    .collapsing {\n      .nav {\n        margin-top: 0;\n      }\n    }\n\n    p {\n      margin: 0;\n      white-space: nowrap;\n      display: flex;\n      justify-content: space-between;\n      width: 100%;\n\n      > {\n        align-self: center;\n      }\n    }\n\n    a:not(.sub) {\n      p {\n        font-size: 14px;\n        font-weight: 700;\n        text-transform: uppercase;\n      }\n    }\n\n    i {\n      font-size: 24px;\n      float: left;\n      line-height: 30px;\n      width: 34px;\n      text-align: center;\n      color: #ffffff;\n      position: relative;\n    }\n\n    ul {\n      margin: 0px;\n      width: 100%;\n    }\n\n    div {\n      .aux-bar {\n        width: 2px;\n        min-width: 2px;\n        border-radius: 50px;\n        margin: $sub-link-margin-top $sub-link-margin-top 0 $sub-link-margin-top;\n        background-color: rgba(var(--color-gray-dark-rgb), 0.3);\n      }\n    }\n\n  }\n}\n",
-                    "styleUrl": "./sidebar-content.component.scss"
+                    "data": ".app-sidebar-content {\n  $main-link-margin-top: 1.2em;\n  $sub-link-margin-top: 0.6em;\n\n  padding: 0 1em 0 0.5em;\n  list-style: none !important;\n\n  .sidebar-nav {\n    padding: 0px;\n    display: block;\n    transition: 0.3s;\n    list-style: none !important;\n\n    li {\n      cursor: pointer;\n\n      * {\n        color: var(--color-gray-dark);\n\n        &:focus-visible {\n          outline: none;\n        }\n\n      }\n\n      a {\n        display: flex;\n        justify-content: center;\n        align-items: center;\n        padding: 0.5em 1em;\n        border-radius: 1em;\n\n        text-decoration: none;\n        font-size: 0.8em;\n        font-weight: 500;\n\n        &.expanded {\n          background-color: rgba(var(--color-gray-dark-rgb), 0.15);\n        }\n\n        &:hover {\n          background-color: rgba(var(--color-gray-dark-rgb), 0.15);\n\n          * {\n            color: var(--color-primary) !important;\n          }\n        }\n      }\n\n      &.active {\n        > a:first-child {\n          background-color: rgba(var(--color-primary-rgb), 0.2);\n\n          * {\n            color: var(--color-primary) !important;\n          }\n        }\n      }\n    }\n\n    a {\n      &:first-child {\n        //margin-top: $main-link-margin-top;\n      }\n\n      &.sub {\n        margin-top: $sub-link-margin-top;\n      }\n    }\n\n    .collapse,\n    .collapsing {\n      .nav {\n        margin-top: 0;\n      }\n    }\n\n    p {\n      margin: 0;\n      white-space: nowrap;\n      display: flex;\n      justify-content: space-between;\n      width: 100%;\n\n      > {\n        align-self: center;\n      }\n    }\n\n    a:not(.sub) {\n      p {\n        font-size: 14px;\n        font-weight: 700;\n        text-transform: uppercase;\n      }\n    }\n\n    i {\n      font-size: 24px;\n      float: left;\n      line-height: 30px;\n      width: 34px;\n      text-align: center;\n      color: #ffffff;\n      position: relative;\n    }\n\n    ul {\n      margin: 0px;\n      width: 100%;\n    }\n\n    div {\n      .aux-bar {\n        width: 2px;\n        min-width: 2px;\n        border-radius: 50px;\n        margin: $sub-link-margin-top $sub-link-margin-top 0 $sub-link-margin-top;\n        background-color: rgba(var(--color-gray-dark-rgb), 0.3);\n      }\n    }\n\n  }\n}\n",
+                    "styleUrl": "./sidebar-entry.component.scss"
                 }
             ],
             "stylesData": "",
@@ -6422,14 +6537,29 @@
                 "deprecationMessage": "",
                 "args": [
                     {
+                        "name": "sidebar",
+                        "type": "SidebarComponent",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    },
+                    {
                         "name": "cdr",
                         "type": "ChangeDetectorRef",
                         "deprecated": false,
                         "deprecationMessage": ""
                     }
                 ],
-                "line": 24,
+                "line": 43,
                 "jsdoctags": [
+                    {
+                        "name": "sidebar",
+                        "type": "SidebarComponent",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
                     {
                         "name": "cdr",
                         "type": "ChangeDetectorRef",
@@ -6442,30 +6572,32 @@
                 ]
             },
             "implements": [
-                "OnInit"
+                "OnInit",
+                "AfterViewInit",
+                "AfterViewChecked"
             ],
             "accessors": {
-                "sidebarEntries": {
-                    "name": "sidebarEntries",
+                "entry": {
+                    "name": "entry",
                     "setSignature": {
-                        "name": "sidebarEntries",
+                        "name": "entry",
                         "type": "void",
                         "deprecated": false,
                         "deprecationMessage": "",
                         "args": [
                             {
-                                "name": "entries",
-                                "type": "SidebarItem[]",
+                                "name": "item",
+                                "type": "SidebarItem",
                                 "deprecated": false,
                                 "deprecationMessage": ""
                             }
                         ],
                         "returnType": "void",
-                        "line": 17,
+                        "line": 33,
                         "jsdoctags": [
                             {
-                                "name": "entries",
-                                "type": "SidebarItem[]",
+                                "name": "item",
+                                "type": "SidebarItem",
                                 "deprecated": false,
                                 "deprecationMessage": "",
                                 "tagName": {
@@ -6475,62 +6607,14 @@
                         ]
                     },
                     "getSignature": {
-                        "name": "sidebarEntries",
+                        "name": "entry",
                         "type": "",
                         "returnType": "",
-                        "line": 21
+                        "line": 37
                     }
                 }
             },
-            "templateData": "<div class=\"app-sidebar-content\"\n     [ngStyle]=\"{'min-width': minWidth}\"\n>\n    <ul class=\"sidebar-nav\">\n        <ng-container *ngFor=\"let entry of sidebarEntries\">\n            <ng-container *ngTemplateOutlet=\"entryChecker; context: {$implicit: entry, prefixId: getIdForEntry(entry)}\"></ng-container>\n        </ng-container>\n    </ul>\n</div>\n\n<ng-template #entryChecker let-entry let-prefixId=\"prefixId\">\n    <li routerLinkActive=\"active\"\n        [routerLinkActiveOptions]=\"{exact: true}\"\n        [ngClass]=\"{'active': currentExpandedSession.startsWith(prefixId)}\"\n    >\n        <ng-container [ngSwitch]=\"!!entry?.children\">\n            <!--Se for um item sem submenus-->\n            <ng-container *ngSwitchCase=\"false\">\n                <ng-container *ngTemplateOutlet=\"noSubmenuEntry; context: {$implicit: entry}\"></ng-container>\n            </ng-container>\n\n            <!--Se for um item com submenus-->\n            <ng-container *ngSwitchCase=\"true\">\n                <ng-container *ngTemplateOutlet=\"submenuEntry; context: {$implicit: entry, prefixId: prefixId}\"></ng-container>\n            </ng-container>\n        </ng-container>\n    </li>\n</ng-template>\n\n<ng-template #noSubmenuEntry let-entry>\n    <a (click)=\"executeAction($event, entry)\"\n       [routerLink]=\"entry?.routerLink\"\n       [queryParams]=\"entry?.queryParams\"\n    >\n        <ng-container *ngTemplateOutlet=\"entryContent; context: {$implicit: entry}\"></ng-container>\n    </a>\n</ng-template>\n\n<ng-template #submenuEntry let-entry let-prefixId=\"prefixId\" let-isSub=\"isSub\">\n    <a [ngClass]=\"{'sub': isSub}\"\n       [attr.data-bs-toggle]=\"'collapse'\"\n       [attr.data-bs-target]=\"'#collapse' + prefixId\"\n    >\n        <ng-container *ngTemplateOutlet=\"entryContent; context: {$implicit: entry}\"></ng-container>\n    </a>\n\n    <!--Exibe os itens do submenu-->\n    <ng-container *ngTemplateOutlet=\"childEntryContent; context: {$implicit: entry, prefixId: prefixId}\"></ng-container>\n</ng-template>\n\n<ng-template #entryContent let-entry>\n    <i class=\"{{ entry.iconClass }}\"></i>\n    <p class=\"ms-2\">\n        {{entry.label}}\n        <b *ngIf=\"entry?.children\" class=\"caret ms-3\"></b>\n    </p>\n</ng-template>\n\n<ng-template #childEntryContent let-entry let-prefixId=\"prefixId\">\n    <div *ngIf=\"entry?.children\"\n         [attr.id]=\"'collapse' + prefixId\"\n         class=\"{{currentExpandedSession.startsWith(getIdForEntry(entry, prefixId)) ? 'show' : 'collapse'}}\"\n    >\n        <div class=\"d-flex\">\n            <div class=\"aux-bar\"></div>\n            <ul class=\"sidebar-nav\">\n                <ng-container *ngFor=\"let childEntry of entry.children\">\n                <li routerLinkActive=\"active\"\n                    [routerLinkActiveOptions]=\"{exact: true}\"\n                    (isActiveChange)=\"keepSessionExpanded($event, getIdForEntry(entry, prefixId))\"\n                    [ngClass]=\"{'active': currentExpandedSession.startsWith(getIdForEntry(childEntry, prefixId))}\"\n                >\n                    <ng-container [ngSwitch]=\"!!childEntry?.children\">\n                        <!--Se for um item sem submenus-->\n                        <ng-container *ngSwitchCase=\"false\">\n                            <a class=\"sub\"\n                               (click)=\"executeAction($event, childEntry)\"\n                               [routerLink]=\"childEntry?.routerLink\"\n                               [queryParams]=\"childEntry?.queryParams\"\n                            >\n                                <ng-container *ngTemplateOutlet=\"entryContent; context: {$implicit: childEntry}\"></ng-container>\n                            </a>\n                        </ng-container>\n\n                        <!--Se for um item com submenus-->\n                        <ng-container *ngSwitchCase=\"true\">\n                            <ng-container *ngTemplateOutlet=\"submenuEntry; context: {$implicit: childEntry, prefixId: getIdForEntry(childEntry, prefixId), isSub: true}\"></ng-container>\n                        </ng-container>\n                    </ng-container>\n                </li>\n                </ng-container>\n            </ul>\n        </div>\n    </div>\n</ng-template>\n"
-        },
-        {
-            "name": "SidebarEntryComponent",
-            "id": "component-SidebarEntryComponent-a4db64d87bb34d1cc3aec2cff11cb16c6a7e6d747a22caf9b99afe2e7971513789251ed1f3c22626fabd73f8f7f3f553d13e51fb3dfb010068096b50767980fb",
-            "file": "src/components/layout/sidebar/sidebar-entry/sidebar-entry.component.ts",
-            "encapsulation": [],
-            "entryComponents": [],
-            "inputs": [],
-            "outputs": [],
-            "providers": [],
-            "selector": "pm-sidebar-entry",
-            "styleUrls": [
-                "./sidebar-entry.component.css"
-            ],
-            "styles": [],
-            "templateUrl": [
-                "./sidebar-entry.component.html"
-            ],
-            "viewProviders": [],
-            "hostDirectives": [],
-            "inputsClass": [],
-            "outputsClass": [],
-            "propertiesClass": [],
-            "methodsClass": [],
-            "deprecated": false,
-            "deprecationMessage": "",
-            "hostBindings": [],
-            "hostListeners": [],
-            "standalone": true,
-            "imports": [
-                {
-                    "name": "CommonModule",
-                    "type": "module"
-                }
-            ],
-            "description": "",
-            "rawdescription": "\n",
-            "type": "component",
-            "sourceCode": "import { Component } from '@angular/core';\nimport { CommonModule } from '@angular/common';\n\n@Component({\n  selector: 'pm-sidebar-entry',\n  standalone: true,\n  imports: [CommonModule],\n  templateUrl: './sidebar-entry.component.html',\n  styleUrls: ['./sidebar-entry.component.css']\n})\nexport class SidebarEntryComponent {\n\n}\n",
-            "assetsDirs": [],
-            "styleUrlsData": [
-                {
-                    "data": "",
-                    "styleUrl": "./sidebar-entry.component.css"
-                }
-            ],
-            "stylesData": "",
-            "templateData": "<p>sidebar-entry works!</p>\n"
+            "templateData": "<div class=\"app-sidebar-content\"\n     *ngIf=\"entry && (entry.action || entry.children || entry.routerLink || entry.externalUrl)\"\n     [ngStyle]=\"{'min-width': minWidth}\"\n>\n  <ul class=\"sidebar-nav\">\n    <ng-container *ngTemplateOutlet=\"entryChecker; context: {$implicit: entry, prefixId: getIdForEntry(entry)}\"></ng-container>\n  </ul>\n</div>\n\n<ng-template #entryChecker let-entry let-prefixId=\"prefixId\">\n  <li routerLinkActive=\"active\"\n      [routerLinkActiveOptions]=\"{exact: true}\"\n      [ngClass]=\"{'active': currentExpandedSession.startsWith(prefixId)}\"\n  >\n    <ng-container [ngSwitch]=\"!!entry?.children\">\n      <!--Se for um item sem submenus-->\n      <ng-container *ngSwitchCase=\"false\">\n        <ng-container *ngTemplateOutlet=\"noSubmenuEntry; context: {$implicit: entry}\"></ng-container>\n      </ng-container>\n\n      <!--Se for um item com submenus-->\n      <ng-container *ngSwitchCase=\"true\">\n        <ng-container *ngTemplateOutlet=\"submenuEntry; context: {$implicit: entry, prefixId: prefixId}\"></ng-container>\n      </ng-container>\n    </ng-container>\n  </li>\n</ng-template>\n\n<ng-template #noSubmenuEntry let-entry>\n  <a (click)=\"executeAction($event, entry)\"\n     [routerLink]=\"entry?.routerLink\"\n     [queryParams]=\"entry?.queryParams\"\n  >\n    <ng-container *ngTemplateOutlet=\"entryContent; context: {$implicit: entry}\"></ng-container>\n  </a>\n</ng-template>\n\n<ng-template #submenuEntry let-entry let-prefixId=\"prefixId\" let-isSub=\"isSub\">\n  <a [ngClass]=\"{'sub': isSub}\"\n     [attr.data-bs-toggle]=\"'collapse'\"\n     [attr.data-bs-target]=\"'#collapse' + prefixId\"\n  >\n    <ng-container *ngTemplateOutlet=\"entryContent; context: {$implicit: entry}\"></ng-container>\n  </a>\n\n  <!--Exibe os itens do submenu-->\n  <ng-container *ngTemplateOutlet=\"childEntryContent; context: {$implicit: entry, prefixId: prefixId}\"></ng-container>\n</ng-template>\n\n<ng-template #entryContent let-entry>\n  <i class=\"{{ entry.iconClass }}\"></i>\n  <p class=\"ms-2\">\n    {{entry.label}}\n    <b *ngIf=\"entry?.children\" class=\"caret ms-3\"></b>\n  </p>\n</ng-template>\n\n<ng-template #childEntryContent let-entry let-prefixId=\"prefixId\">\n  <div *ngIf=\"entry?.children\"\n       [attr.id]=\"'collapse' + prefixId\"\n       class=\"{{currentExpandedSession.startsWith(getIdForEntry(entry, prefixId)) ? 'show' : 'collapse'}}\"\n  >\n    <div class=\"d-flex\">\n      <div class=\"aux-bar\"></div>\n      <ul class=\"sidebar-nav\">\n        <ng-container *ngFor=\"let childEntry of entry.children\">\n          <li routerLinkActive=\"active\"\n              [routerLinkActiveOptions]=\"{exact: true}\"\n              (isActiveChange)=\"keepSessionExpanded($event, getIdForEntry(entry, prefixId))\"\n              [ngClass]=\"{'active': currentExpandedSession.startsWith(getIdForEntry(childEntry, prefixId))}\"\n          >\n            <ng-container [ngSwitch]=\"!!childEntry?.children\">\n              <!--Se for um item sem submenus-->\n              <ng-container *ngSwitchCase=\"false\">\n                <a class=\"sub\"\n                   (click)=\"executeAction($event, childEntry)\"\n                   [routerLink]=\"childEntry?.routerLink\"\n                   [queryParams]=\"childEntry?.queryParams\"\n                >\n                  <ng-container *ngTemplateOutlet=\"entryContent; context: {$implicit: childEntry}\"></ng-container>\n                </a>\n              </ng-container>\n\n              <!--Se for um item com submenus-->\n              <ng-container *ngSwitchCase=\"true\">\n                <ng-container *ngTemplateOutlet=\"submenuEntry; context: {$implicit: childEntry, prefixId: getIdForEntry(childEntry, prefixId), isSub: true}\"></ng-container>\n              </ng-container>\n            </ng-container>\n          </li>\n        </ng-container>\n      </ul>\n    </div>\n  </div>\n</ng-template>\n"
         },
         {
             "name": "SpinnerComponent",
@@ -8396,13 +8480,13 @@
         },
         {
             "name": "SidebarModule",
-            "id": "module-SidebarModule-9283c4f298505cb66fc4e53afc98d257235aa6b5bf96b3070843d4fd67ea2565ab827cedf324f7c57efe079335054157ecd655c877b3de100b9f9a126c44b6a4",
+            "id": "module-SidebarModule-b7b414a731e1d879037f3d3d548c4de3da855ebfa23999255c3730ba9ae572f5f858fcf15d6a7b5dd487cdf3b01faad2fb16a729ebd17b1b395a7c739e175741",
             "description": "",
             "deprecationMessage": "",
             "deprecated": false,
             "file": "src/components/layout/sidebar/sidebar.module.ts",
             "methods": [],
-            "sourceCode": "import {NgModule} from '@angular/core';\nimport {CommonModule} from '@angular/common';\nimport {SidebarComponent} from '../sidebar/sidebar.component';\nimport {MatSidenavModule} from \"@angular/material/sidenav\";\nimport {SidebarContentComponent} from \"./sidebar-content/sidebar-content.component\";\nimport {RouterModule} from \"@angular/router\";\nimport {NavigationBackClickModule} from \"../../../directives/navigation-back-click/navigation-back-click.module\";\n\n\n@NgModule({\n  declarations: [\n    SidebarComponent,\n    SidebarContentComponent\n  ],\n  exports: [\n    SidebarComponent\n  ],\n  imports: [\n    CommonModule,\n    MatSidenavModule,\n    RouterModule,\n    NavigationBackClickModule\n  ]\n})\nexport class SidebarModule {\n}\n",
+            "sourceCode": "import {NgModule} from '@angular/core';\nimport {CommonModule} from '@angular/common';\nimport {SidebarComponent} from './sidebar.component';\nimport {MatSidenavModule} from \"@angular/material/sidenav\";\nimport {RouterModule} from \"@angular/router\";\nimport {NavigationBackClickModule} from \"../../../directives/navigation-back-click/navigation-back-click.module\";\nimport {SidebarEntryComponent} from \"./sidebar-entry/sidebar-entry.component\";\n\n\n@NgModule({\n  declarations: [\n    SidebarComponent,\n  ],\n  exports: [\n    SidebarComponent,\n    SidebarEntryComponent\n  ],\n    imports: [\n        CommonModule,\n        MatSidenavModule,\n        RouterModule,\n        NavigationBackClickModule,\n        SidebarEntryComponent\n    ]\n})\nexport class SidebarModule {\n}\n",
             "children": [
                 {
                     "type": "providers",
@@ -8413,9 +8497,6 @@
                     "elements": [
                         {
                             "name": "SidebarComponent"
-                        },
-                        {
-                            "name": "SidebarContentComponent"
                         }
                     ]
                 },
@@ -8424,6 +8505,9 @@
                     "elements": [
                         {
                             "name": "NavigationBackClickModule"
+                        },
+                        {
+                            "name": "SidebarEntryComponent"
                         }
                     ]
                 },
@@ -8432,6 +8516,9 @@
                     "elements": [
                         {
                             "name": "SidebarComponent"
+                        },
+                        {
+                            "name": "SidebarEntryComponent"
                         }
                     ]
                 },
@@ -8708,16 +8795,6 @@
                 "name": "defaultArgs",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/directives/ng-if-loaded/spinner/spinner.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "object",
-                "defaultValue": "{\n  flag: true\n}"
-            },
-            {
-                "name": "defaultArgs",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "src/components/cards/basic-card/basic-card.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
@@ -8873,6 +8950,16 @@
                 "deprecationMessage": "",
                 "type": "object",
                 "defaultValue": "{}"
+            },
+            {
+                "name": "defaultArgs",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/directives/ng-if-loaded/spinner/spinner.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\n  flag: true\n}"
             },
             {
                 "name": "DefaultBasicCard",
@@ -9338,16 +9425,6 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/directives/ng-if-loaded/spinner/spinner.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story<SpinnerComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <div *ngIfLoaded=\"flag\">\n        Conteúdo normal\n    </div>\n  `\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "src/components/cards/basic-card/basic-card.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
@@ -9462,7 +9539,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story<SidebarComponent>",
-                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-sidebar\n        [showBackButton]=\"showBackButton\"\n        [showNextButton]=\"showNextButton\"\n        [nextButtonAction]=\"nextButtonAction\"\n        [sidebarEntries]=\"sidebarEntries\"\n        [label]=\"label\"\n    >\n        <p>Conteúdo aqui! algo como router-outlet</p>\n        <ng-container *ngFor=\"let _ of [].constructor(20)\">\n            <p>.</p>\n        </ng-container>\n    </pm-sidebar>\n  `\n})"
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-sidebar\n        [showBackButton]=\"showBackButton\"\n        [showNextButton]=\"showNextButton\"\n        [nextButtonAction]=\"nextButtonAction\"\n        [label]=\"label\"\n    >\n        <pm-sidebar-entry [entry]=\"sidebarEntries[0]\">\n            <pm-sidebar-entry [entry]=\"sidebarEntries[3]\">\n                <pm-sidebar-entry [entry]=\"sidebarEntries[4]\"></pm-sidebar-entry>\n            </pm-sidebar-entry>\n        </pm-sidebar-entry>\n        <pm-sidebar-entry [entry]=\"sidebarEntries[2]\"></pm-sidebar-entry>\n        <pm-sidebar-entry [entry]=\"sidebarEntries[3]\"></pm-sidebar-entry>\n        <p>Conteúdo aqui! algo como router-outlet</p>\n        <ng-container *ngFor=\"let _ of [].constructor(20)\">\n            <p>.</p>\n        </ng-container>\n    </pm-sidebar>\n  `\n})"
             },
             {
                 "name": "Template",
@@ -9503,6 +9580,16 @@
                 "deprecationMessage": "",
                 "type": "Story<StepperComponent>",
                 "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-stepper>\n      <cdk-step> <p>This is any content of \"Step 1\"</p> </cdk-step>\n      <cdk-step> <p>This is any content of \"Step 2\"</p> </cdk-step>\n    </pm-stepper>\n  `\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/directives/ng-if-loaded/spinner/spinner.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<SpinnerComponent>",
+                "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <div *ngIfLoaded=\"flag\">\n        Conteúdo normal\n    </div>\n  `\n})"
             },
             {
                 "name": "TemplateDirective",
@@ -10359,38 +10446,6 @@
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-XXXName\n    >\n    </pm-XXXName>\n  `\n})"
                 }
             ],
-            "src/directives/ng-if-loaded/spinner/spinner.stories.ts": [
-                {
-                    "name": "defaultArgs",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/directives/ng-if-loaded/spinner/spinner.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "object",
-                    "defaultValue": "{\n  flag: true\n}"
-                },
-                {
-                    "name": "DefaultSpinner",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/directives/ng-if-loaded/spinner/spinner.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/directives/ng-if-loaded/spinner/spinner.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Story<SpinnerComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <div *ngIfLoaded=\"flag\">\n        Conteúdo normal\n    </div>\n  `\n})"
-                }
-            ],
             "src/components/cards/basic-card/basic-card.stories.ts": [
                 {
                     "name": "defaultArgs",
@@ -10768,7 +10823,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story<SidebarComponent>",
-                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-sidebar\n        [showBackButton]=\"showBackButton\"\n        [showNextButton]=\"showNextButton\"\n        [nextButtonAction]=\"nextButtonAction\"\n        [sidebarEntries]=\"sidebarEntries\"\n        [label]=\"label\"\n    >\n        <p>Conteúdo aqui! algo como router-outlet</p>\n        <ng-container *ngFor=\"let _ of [].constructor(20)\">\n            <p>.</p>\n        </ng-container>\n    </pm-sidebar>\n  `\n})"
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-sidebar\n        [showBackButton]=\"showBackButton\"\n        [showNextButton]=\"showNextButton\"\n        [nextButtonAction]=\"nextButtonAction\"\n        [label]=\"label\"\n    >\n        <pm-sidebar-entry [entry]=\"sidebarEntries[0]\">\n            <pm-sidebar-entry [entry]=\"sidebarEntries[3]\">\n                <pm-sidebar-entry [entry]=\"sidebarEntries[4]\"></pm-sidebar-entry>\n            </pm-sidebar-entry>\n        </pm-sidebar-entry>\n        <pm-sidebar-entry [entry]=\"sidebarEntries[2]\"></pm-sidebar-entry>\n        <pm-sidebar-entry [entry]=\"sidebarEntries[3]\"></pm-sidebar-entry>\n        <p>Conteúdo aqui! algo como router-outlet</p>\n        <ng-container *ngFor=\"let _ of [].constructor(20)\">\n            <p>.</p>\n        </ng-container>\n    </pm-sidebar>\n  `\n})"
                 }
             ],
             "src/components/lists/draggable-list/draggable-list.stories.ts": [
@@ -10895,6 +10950,38 @@
                     "deprecationMessage": "",
                     "type": "Story<StepperComponent>",
                     "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <pm-stepper>\n      <cdk-step> <p>This is any content of \"Step 1\"</p> </cdk-step>\n      <cdk-step> <p>This is any content of \"Step 2\"</p> </cdk-step>\n    </pm-stepper>\n  `\n})"
+                }
+            ],
+            "src/directives/ng-if-loaded/spinner/spinner.stories.ts": [
+                {
+                    "name": "defaultArgs",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/directives/ng-if-loaded/spinner/spinner.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "object",
+                    "defaultValue": "{\n  flag: true\n}"
+                },
+                {
+                    "name": "DefaultSpinner",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/directives/ng-if-loaded/spinner/spinner.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/directives/ng-if-loaded/spinner/spinner.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story<SpinnerComponent>",
+                    "defaultValue": "(args) => ({\n  props: args,\n  template: `\n    <div *ngIfLoaded=\"flag\">\n        Conteúdo normal\n    </div>\n  `\n})"
                 }
             ],
             "src/services/command-palette/command-palette.stories.ts": [
@@ -11942,8 +12029,8 @@
                 "type": "component",
                 "linktype": "component",
                 "name": "MultiSelectComponent",
-                "coveragePercent": 30,
-                "coverageCount": "13/43",
+                "coveragePercent": 31,
+                "coverageCount": "14/44",
                 "status": "medium"
             },
             {
@@ -12080,16 +12167,7 @@
                 "linktype": "interface",
                 "name": "SidebarItem",
                 "coveragePercent": 0,
-                "coverageCount": "0/9",
-                "status": "low"
-            },
-            {
-                "filePath": "src/components/layout/sidebar/sidebar-content/sidebar-content.component.ts",
-                "type": "component",
-                "linktype": "component",
-                "name": "SidebarContentComponent",
-                "coveragePercent": 0,
-                "coverageCount": "0/12",
+                "coverageCount": "0/10",
                 "status": "low"
             },
             {
@@ -12098,7 +12176,7 @@
                 "linktype": "component",
                 "name": "SidebarEntryComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/1",
+                "coverageCount": "0/17",
                 "status": "low"
             },
             {

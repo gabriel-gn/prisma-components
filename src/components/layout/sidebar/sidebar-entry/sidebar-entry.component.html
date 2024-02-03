@@ -10,7 +10,7 @@
 <ng-template #entryChecker let-entry let-prefixId="prefixId">
   <li routerLinkActive="active"
       [routerLinkActiveOptions]="{exact: true}"
-      [ngClass]="{'active': currentExpandedSession.startsWith(prefixId)}"
+      [ngClass]="{'active': isActiveSession()}"
   >
     <ng-container [ngSwitch]="!!entry?.children">
       <!--Se for um item sem submenus-->
@@ -58,7 +58,7 @@
 <ng-template #childEntryContent let-entry let-prefixId="prefixId">
   <div *ngIf="entry?.children"
        [attr.id]="'collapse' + prefixId"
-       class="{{currentExpandedSession.startsWith(getIdForEntry(entry, prefixId)) ? 'show' : 'collapse'}}"
+       class="{{isActiveSession() ? 'show' : 'collapse'}}"
   >
     <div class="d-flex">
       <div class="aux-bar"></div>
@@ -67,7 +67,7 @@
           <li routerLinkActive="active"
               [routerLinkActiveOptions]="{exact: true}"
               (isActiveChange)="keepSessionExpanded($event, getIdForEntry(entry, prefixId))"
-              [ngClass]="{'active': currentExpandedSession.startsWith(getIdForEntry(childEntry, prefixId))}"
+              [ngClass]="{'active': isActiveSession()}"
           >
             <ng-container [ngSwitch]="!!childEntry?.children">
               <!--Se for um item sem submenus-->

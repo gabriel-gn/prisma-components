@@ -10,7 +10,7 @@ import {
   OnInit
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {RouterLink, RouterLinkActive} from "@angular/router";
+import {Router, RouterLink, RouterLinkActive} from "@angular/router";
 import {MatDrawer} from "@angular/material/sidenav";
 import {SidebarItem} from "../models";
 import {SidebarComponent} from "../sidebar.component";
@@ -27,7 +27,6 @@ export class SidebarEntryComponent implements OnInit, AfterViewInit, AfterViewCh
   @ContentChildren(SidebarEntryComponent)
   sidebarEntries: SidebarEntryComponent[];
   @Input() minWidth: string = '240px';
-  @Input() expandCurrentItem: boolean = true;
 
   _entry: SidebarItem;
   @Input() set entry(item: SidebarItem) {
@@ -40,11 +39,11 @@ export class SidebarEntryComponent implements OnInit, AfterViewInit, AfterViewCh
 
   private drawer: MatDrawer;
   private sidebarRef: SidebarComponent;
-  public currentExpandedSession: string = '';
+  public isRouteActive: boolean = false;
 
   constructor(
     @Host() sidebar: SidebarComponent,
-    private readonly cdr: ChangeDetectorRef
+    private readonly cdr: ChangeDetectorRef,
   ) {
     this.sidebarRef = sidebar;
   }
@@ -85,10 +84,20 @@ export class SidebarEntryComponent implements OnInit, AfterViewInit, AfterViewCh
   public keepSessionExpanded(event: any, treeId: string): void {
     if (
       event === true
-      && this.expandCurrentItem
       && !!treeId
     ) {
-      this.currentExpandedSession = `${treeId}`;
+      this.isRouteActive = true;
+    }
+  }
+
+  isActiveSession(): boolean {
+    if (this.isRouteActive) {
+      return true;
+    } else {
+      if (this.sidebarEntries && this.sidebarEntries.length > 0) {
+        return this.sidebarEntries.some(e => e.isRouteActive);
+      }
+      return false;
     }
   }
 
