@@ -65,7 +65,12 @@
       <ul class="sidebar-nav">
         <ng-container *ngFor="let childEntry of entry.children">
           <li routerLinkActive="active"
-              [routerLinkActiveOptions]="{exact: true}"
+              [routerLinkActiveOptions]="{
+                matrixParams: 'subset',
+                queryParams: 'subset',
+                paths: 'subset',
+                fragment: 'ignored'
+              }"
               (isActiveChange)="keepSessionExpanded($event, getIdForEntry(entry, prefixId))"
               [ngClass]="{'active': isActiveSession()}"
           >

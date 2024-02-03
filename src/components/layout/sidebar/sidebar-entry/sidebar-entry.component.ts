@@ -82,12 +82,8 @@ export class SidebarEntryComponent implements OnInit, AfterViewInit, AfterViewCh
   }
 
   public keepSessionExpanded(event: any, treeId: string): void {
-    if (
-      event === true
-      && !!treeId
-    ) {
-      this.isRouteActive = true;
-    }
+    this.isRouteActive = event === true
+      && !!treeId;
   }
 
   isActiveSession(): boolean {
